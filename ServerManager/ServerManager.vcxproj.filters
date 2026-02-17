@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{cf0e3c73-851d-4891-b555-480443e61c3f}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{1e0b21d1-9b5c-496a-a7bc-2a7c4576b0c8}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
+    </Filter>
+    <Filter Include="Source\UTIL">
+      <UniqueIdentifier>{5b229676-cb31-472e-a6aa-320015ba18d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CONTROL">
+      <UniqueIdentifier>{8e19b4cf-8c95-4141-95b5-b74033e8b3ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DIALOG">
+      <UniqueIdentifier>{3f7b0589-fdf3-4498-964b-23cc00fce370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\JOB_SCHEDULE">
+      <UniqueIdentifier>{7de51553-f418-45df-9a31-3f695b035e5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerManagerDlg.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="CLogFile.h">
+      <Filter>Source\UTIL</Filter>
+    </ClInclude>
+    <ClInclude Include="CManagerCfg.h">
+      <Filter>Source\UTIL</Filter>
+    </ClInclude>
+    <ClInclude Include="s_CNetCtrl.h">
+      <Filter>Source\UTIL</Filter>
+    </ClInclude>
+    <ClInclude Include="Led.h">
+      <Filter>Source\CONTROL</Filter>
+    </ClInclude>
+    <ClInclude Include="ListCtrlEx.h">
+      <Filter>Source\CONTROL</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixStatic.h">
+      <Filter>Source\CONTROL</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatMsgDlg.h">
+      <Filter>Source\DIALOG</Filter>
+    </ClInclude>
+    <ClInclude Include="JobManagerBroadcast.h">
+      <Filter>Source\DIALOG</Filter>
+    </ClInclude>
+    <ClInclude Include="JobManagerDlg.h">
+      <Filter>Source\DIALOG</Filter>
+    </ClInclude>
+    <ClInclude Include="s_CJobSchedule.h">
+      <Filter>Source\JOB_SCHEDULE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Lib_Network\s_NetGlobal.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ServerManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerManagerDlg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerManagerDlgMsg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CLogFile.cpp">
+      <Filter>Source\UTIL</Filter>
+    </ClCompile>
+    <ClCompile Include="CManagerCfg.cpp">
+      <Filter>Source\UTIL</Filter>
+    </ClCompile>
+    <ClCompile Include="s_CNetCtrl.cpp">
+      <Filter>Source\UTIL</Filter>
+    </ClCompile>
+    <ClCompile Include="Led.cpp">
+      <Filter>Source\CONTROL</Filter>
+    </ClCompile>
+    <ClCompile Include="ListCtrlEx.cpp">
+      <Filter>Source\CONTROL</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixStatic.cpp">
+      <Filter>Source\CONTROL</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatMsgDlg.cpp">
+      <Filter>Source\DIALOG</Filter>
+    </ClCompile>
+    <ClCompile Include="JobManagerBroadcast.cpp">
+      <Filter>Source\DIALOG</Filter>
+    </ClCompile>
+    <ClCompile Include="JobManagerDlg.cpp">
+      <Filter>Source\DIALOG</Filter>
+    </ClCompile>
+    <ClCompile Include="s_CJobSchedule.cpp">
+      <Filter>Source\JOB_SCHEDULE</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\leds.bmp">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="res\matrixla.bmp">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="res\matrixsetblue.bmp">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="res\matrixsetsmallblue.bmp">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="res\matrixsettinyblue.bmp">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="res\matrixsm.bmp">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="res\matrixti.bmp">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="res\ServerManager.rc2">
+      <Filter>Resource</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+    <None Include="..\res\Icon_Server2.ico">
+      <Filter>Resource</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ServerManager.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

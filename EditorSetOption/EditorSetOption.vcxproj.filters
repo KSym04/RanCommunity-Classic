@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{68a6ce3b-47ad-4ce4-9029-7abb770fc2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{7ca09bb8-05b2-4f69-95d9-ef4be730a71c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Helper">
+      <UniqueIdentifier>{bd729d54-a521-42d8-a70a-31f5c79418ac}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EditorSetOption.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\EditorSetOption.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Icon_Tool.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EditorSetOption.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorSetOptionDlg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="DlgSetOptionEdit.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFindItem.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EditorSetOption.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorSetOptionDlg.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="DlgSetOptionEdit.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFindItem.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

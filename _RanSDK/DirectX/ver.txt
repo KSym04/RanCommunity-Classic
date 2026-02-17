@@ -1,0 +1,7 @@
+dxsdk june 2010
+
+project only use:
+
+d3dx9_43.dll
+D3dx9d_43.dll
+D3DCompiler_43.dll

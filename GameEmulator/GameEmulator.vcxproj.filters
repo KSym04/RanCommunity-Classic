@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{425bbfb2-79ea-4771-8448-b224cd6fb736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b38256cf-1575-4e08-8d9f-f5e0e14b387c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameEmulator.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\GameEmulator.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\GameEmulatorDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Icon_Game.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DlgCharset.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEmulator.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEmulatorDoc.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEmulatorView.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEmulatorView3D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DlgCharset.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="EmulatorData.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEmulator.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEmulatorDoc.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEmulatorView.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,998 @@
+#pragma once
+
+#include "./GLACTOR.h"
+#include "./GLARoundSlot.h"
+#include "./GLChar.h"
+#include "./GLClubMan.h"
+#include "./GLEventProc.h"
+#include "./GLFreePK.h"
+#include "./GLITEMLMT.h"
+#include "./GLogicData.h"
+#include "./GLLandMan.h"
+#include "./GLMapList.h"
+#include "./GLPartyFieldMan.h"
+#include "./GLPetField.h"
+#include "./GLSummonField.h"
+#include "../DbActionLogic.h"
+
+#include "../../Lib_Engine/Common/CMemPool.h"
+#include "../../Lib_Engine/Common/StringFile.h"
+#include "../../Lib_Engine/DxOctree/DxLandGateMan.h"
+#include "../../Lib_Engine/G-Logic/DxConsoleMsg.h"
+#include "../../Lib_Engine/G-Logic/DxMsgServer.h"
+#include "../../Lib_Engine/G-Logic/GLDBMan.h"
+#include "../../Lib_Engine/G-Logic/GLPeriod.h"
+
+#include "../../Lib_Network/s_CDbAction.h"
+#include "../../Lib_Network/s_CConsoleMessage.h"
+#include "../../Lib_Network/s_CSMsgList.h"
+
+/* variable check, Juver, 2021/07/02 */
+#define VARIABLE_CHECK_TIME 10.0f
+
+#ifndef GLARoundSlot
+	class GLARoundSlot;
+#endif
+
+class GLCrow;
+
+namespace GLMSG
+{
+	struct SNETPC_PVP_PBG_A2F_REVIVE_REQ_FIELD_OUT;
+}
+
+struct SFIELDCROW
+{
+	EMCROW					emCROW;
+	DWORD					dwID;
+	DWORD					dwFRAME;
+	SGLNODE<SFIELDCROW*>*	pNODE;
+	/*dmk14 zoom out sys*/
+	DWORD					invisible;
+
+	SFIELDCROW () :
+		emCROW(CROW_PC),
+		dwID(0),
+		dwFRAME(0),
+		pNODE(NULL),
+		/*dmk14 zoom out sys*/
+		invisible(false)				
+	{
+	}
+
+	void RESET ()
+	{
+		emCROW = CROW_PC;
+		dwID = 0;
+
+		dwFRAME = 0;
+		pNODE = NULL;
+		/*dmk14 zoom out sys*/
+		invisible = false;
+	}
+};
+typedef SFIELDCROW* PSFIELDCROW;
+
+class CDbActToAgentMsg;
+
+struct SDROPOUTINFO
+{
+	DWORD				m_dwGaeaID;
+	DWORD				m_dwUserID;
+	CDbActToAgentMsg*	m_pMsg;
+
+	SDROPOUTINFO () :
+		m_dwGaeaID(0),
+		m_dwUserID(0),
+		m_pMsg(NULL)
+	{
+	}
+
+	SDROPOUTINFO ( DWORD dwGaeaID, DWORD dwUserID, CDbActToAgentMsg* pMsg ) :
+		m_dwGaeaID(dwGaeaID),
+		m_dwUserID(dwUserID),
+		m_pMsg(pMsg)
+	{
+	}
+};
+
+struct SDROPOUTPETINFO
+{
+	DWORD dwPetGuid;
+	bool  bLeaveFieldServer;
+	bool  bMoveMap;
+
+	SDROPOUTPETINFO () :
+		dwPetGuid(UINT_MAX),
+		bLeaveFieldServer(false),
+		bMoveMap(false)
+	{
+	}
+
+	SDROPOUTPETINFO ( DWORD _dwPetGuid, bool _bLeaveFieldServer, bool _bMoveMap ) :
+		dwPetGuid(_dwPetGuid),
+		bLeaveFieldServer(_bLeaveFieldServer),
+		bMoveMap(_bMoveMap)
+	{
+	}
+};
+
+struct SReserveMSG
+{
+	CTime  sendTime;
+	BYTE   sendMsg[NET_DATA_BUFSIZE];
+	DWORD  dwClientID;
+	DWORD  dwGaeaID;
+	
+};
+
+/*quest map move, Juver, 2018/08/12 */
+struct SQUEST_MAP_MOVE 
+{
+	DWORD		charid;
+	SNATIVEID	mapid;
+	DWORD		posx;
+	DWORD		posy;
+	DWORD		gateid;
+	bool		startmove;
+	DWORD		questid;
+
+	SQUEST_MAP_MOVE()
+		: charid(GAEAID_NULL)
+		, mapid(false)
+		, posx(USHRT_MAX)
+		, posy(USHRT_MAX)
+		, gateid(0)
+		, startmove(false)
+		, questid(0)
+	{
+	}
+};
+
+/*character disconnect function, EJCode, 2018/11/25 */
+struct SDISCONNECT_SCHEDULE
+{
+	DWORD dwCharID;
+	float fCurTime;
+	float fMaxTime;
+	bool bCloseClient;
+
+	SDISCONNECT_SCHEDULE()
+		: dwCharID(GAEAID_NULL)
+		, fCurTime(0.0f)
+		, fMaxTime(10.0f)
+		, bCloseClient(false)
+	{
+
+	};
+};
+
+class GLGaeaServer : public GLMapList
+{
+public:
+	typedef stdext::hash_map<DWORD,DWORD>	CLIENTMAP;
+	typedef CLIENTMAP::iterator				CLIENTMAP_ITER;
+
+	typedef std::vector<SDROPOUTINFO>		VPCID;
+	typedef VPCID::iterator					VPCID_ITER;
+
+	typedef stdext::hash_set<DWORD>			PCID;
+	typedef PCID::iterator					PCID_ITER;
+
+	typedef std::vector<SDROPOUTPETINFO>	VPETID;
+	typedef VPETID::iterator				VPETID_ITER;
+
+
+	typedef std::vector<DWORD>				VSUMMONID;
+	typedef VSUMMONID::iterator				VSUMMONID_ITER;
+
+	typedef std::vector<GLLandMan*> VEC_LANDMAN;
+	typedef VEC_LANDMAN::iterator	VEC_LANDMAN_ITER;
+
+	typedef std::list<DWORD>			LISTSEARCHSHOP;
+	typedef LISTSEARCHSHOP::iterator	LISTSEARCHSHOP_ITER;
+
+	typedef std::vector<DWORD>				VEC_INSTANT_MAPID;
+	typedef VEC_INSTANT_MAPID::iterator		VEC_INSTANT_MAPID_ITER;
+
+
+	typedef std::list<SReserveMSG>		RESERVEMSGLIST;
+	typedef RESERVEMSGLIST::iterator	RESERVEMSGLIST_ITER;
+
+	/*quest map move, Juver, 2018/08/12 */
+	typedef std::map<DWORD,SQUEST_MAP_MOVE>		SQUEST_MAP_MOVE_MAP;
+	typedef SQUEST_MAP_MOVE_MAP::iterator		SQUEST_MAP_MOVE_MAP_ITER;
+
+	/*character disconnect function, EJCode, 2018/11/25 */
+	typedef std::map<DWORD,SDISCONNECT_SCHEDULE>	SDISCONNECT_SCHEDULE_MAP;
+	typedef SDISCONNECT_SCHEDULE_MAP::iterator		SDISCONNECT_SCHEDULE_MAP_ITER;
+
+protected:
+	CString		m_strPath;
+
+public:
+	CString& GetPath ()				{ return m_strPath; }
+	void SetPath ( char* szPath )	{ m_strPath = szPath; }
+
+public:
+	bool					m_bBigHead;
+	bool					m_bBigHand;
+	bool					m_bBrightEvent;
+	/*dmk14 freepk*/
+	SNATIVEID				m_sBrightEventMap;
+
+	int						m_nServiceProvider;
+	SEVENT_FACT				m_sEVENTFACT;
+	SEventState				m_sEventState;
+
+	/* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
+	CLUBWAR_RANK_INFO_MAP		m_mapClubWarRankingInfo;
+	CLUBWAR_CLUB_RANK_INFO_MAP	m_mapClubWarRankingClub;
+	CLUBWAR_RANK_RESU_INFO_MAP	m_mapClubWarRankingResu;
+protected:
+	LPDIRECT3DDEVICEQ		m_pd3dDevice;
+	DxMsgServer*			m_pMsgServer;
+	DxConsoleMsg*			m_pConsoleMsg;
+	GLDBMan*				m_pDBMan;
+
+	GLEventProc				m_cEventProc;
+
+protected:
+	int						m_nServerChannel;
+	DWORD					m_dwFieldSvrID;
+	DWORD					m_dwAgentSlot;
+
+protected:
+	BOOL					m_bUpdate;
+	bool					m_bEmulator;
+	bool					m_bReservedStop;		// 서버 정지 예약
+
+	bool					m_bGenItemHold;
+	bool					m_bClubBattleStarted;
+	bool					m_bClubDMStarted;		// 클럽데스매치 시작여부
+
+	//float					m_fMaxDelayMsgProc;		//	메시지 처리의 최대 지연 시간.  ( 서버 Flip Time )
+
+	DWORD					m_dwMaxClient;
+	PGLCHAR*				m_PCArray;				//	PC 배열.
+	
+	GLCHARLIST				m_GaeaPCList;			//	PC 리스트.
+	GLCHAR_MAP				m_PCNameMap;			//	PC Name map.
+	CLIENTMAP				m_PCClientIDMAP;		//	PC ClientID map.
+	CLIENTMAP				m_mapCHARID;			//	CID map.
+
+	// PET
+	PGLPETFIELD*			m_PETArray;
+	CMemPool<GLPetField>	m_poolPET;
+	CMList<DWORD>			m_FreePETGIDs;			//	미사용된 PET GlobID 들.
+	VPETID					m_reqDropOutPet;		//  DropOutPet PET GUID
+
+	// Summon
+	PGLSUMMONFIELD*			m_SummonArray;
+	CMemPool<GLSummonField>	m_poolSummon;
+	CMList<DWORD>			m_FreeSummonGIDs;			//	미사용된 SUMMON GlobID 들.
+	VSUMMONID				m_reqDropOutSummon;		//  DropOutSummon SUMMON GUID
+
+	GLLandMan*				m_pLandMan[MAXLANDMID][MAXLANDSID];	// 랜드 포인터.
+	VEC_LANDMAN				m_vecLandMan;
+
+	VEC_INSTANT_MAPID		m_vecInstantMapId;						// 인던 맵 아이디 벡터
+	VEC_LANDMAN				m_vecInstantMapSrcLandMan;				// 인던 복사 대상 맵 벡터
+
+	GLPartyFieldMan			m_cPartyFieldMan;
+	GLClubMan				m_cClubMan;
+
+	VPCID					m_reqDropOutChar;		//	dropout 요청.
+	
+	PCID					m_reqSaveDBUserID;		//	저장요청한 userid.
+
+	float					m_fTIMER_CLUB;
+
+	CRITICAL_SECTION		m_CSPCLock;
+
+	CMemPool<GLChar>		m_poolCHAR;
+	CMemPool<GLCrow>		m_poolCROW;
+	CMemPool<GLMaterial>	m_poolMATERIAL;
+	CMemPool<SFIELDCROW>	m_poolFIELDCROW;
+	CMemPool<GLLandMan>		m_poolGLLandMan;
+
+	LISTSEARCHSHOP			m_listSearchShop;
+
+	RESERVEMSGLIST			m_listReserveMsg;
+
+	/* skill illusion, Juver, 2021/01/17 */
+	float					m_fCurrentFrameTime;
+
+public:
+	/*dmk14 freepk*/
+	GLFreePKField			m_cFreePK;
+
+	/*private market set, Juver, 2018/01/02 */
+	BOOL					m_bAllowPrivateMarket;
+
+	/*megaphone set, Juver, 2018/01/02 */
+	BOOL					m_bAllowMegaPhone;
+
+	DWORD					m_dwInstantMapNum;
+	DWORD					m_dwInstantMapStuckNum;
+
+	/*quest map move, Juver, 2018/08/12 */
+	SQUEST_MAP_MOVE_MAP		m_map_quest_move;
+
+	/*character disconnect function, EJCode, 2018/11/25 */
+	SDISCONNECT_SCHEDULE_MAP m_mapDisconnect;
+
+	/* variable check, Juver, 2021/07/02 */
+	float					m_fVarCheckTimer;
+
+public:
+	GLCrow* NEW_CROW ();
+	void RELEASE_CROW ( GLCrow* pCROW );
+
+	GLChar* NEW_CHAR ();
+	void RELEASE_CHAR ( GLChar* pCHAR );
+
+	GLMaterial* NEW_MATERIAL ();
+	void RELEASE_MATERIAL ( GLMaterial* pMaterial );
+
+	SFIELDCROW* NEW_FIELDCROW ();
+	void RELEASE_FIELDCROW ( SFIELDCROW* pFIELDCROW );
+
+	PGLPETFIELD NEW_PET ();
+	void RELEASE_PET ( PGLPETFIELD pPet );
+
+	PGLSUMMONFIELD NEW_SUMMON ();
+	void RELEASE_SUMMON ( PGLSUMMONFIELD pSummon );
+
+
+	PGLLANDMAN NEW_GLLANDMAN ();
+	void RELEASE_GLLANDMAN ( PGLLANDMAN pSummon );
+
+public:
+	void SetAgentSlot ( DWORD dwClient ) { m_dwAgentSlot = dwClient; }
+	DWORD GetAgentSlot () { return m_dwAgentSlot; }
+	void SetReserveServerStop () { m_bReservedStop = true; }
+	bool IsReserveServerStop () { return m_bReservedStop; }
+
+public:
+	bool IsGenItemHold ()				{ return m_bGenItemHold; }
+	/*dmk14 freepk*/
+	//bool IsBRIGHTEVENT ()				{ return m_bBrightEvent; }
+	bool IsBRIGHTEVENT( SNATIVEID sMap );
+	bool IsClubBattleStarted ()			{ return m_bClubBattleStarted; }
+	bool IsClubDMStarted()				{ return m_bClubDMStarted; }
+
+public:
+	DxMsgServer* GetMsgServer ()		{ return m_pMsgServer; }
+	DxConsoleMsg* GetConsoleMsg ()		{ return m_pConsoleMsg; }
+	GLDBMan* GetDBMan ()				{ return m_pDBMan; }
+
+	DWORD GetFieldSvrID ()				{ return m_dwFieldSvrID; }
+	int GetServerChannel ()				{ return m_nServerChannel; }
+
+	GLPARTY_FIELD* GetParty ( DWORD dwPartyID )		{ return m_cPartyFieldMan.GetParty(dwPartyID); }
+	GLPartyFieldMan& GetPartyMan ()					{ return m_cPartyFieldMan; }
+	GLClubMan& GetClubMan ()						{ return m_cClubMan; }
+
+	float GetCurrentFrameTime() { return m_fCurrentFrameTime; }
+public:
+	PGLCHAR GetChar ( DWORD dwID ) const;
+	PGLCHAR GetChar ( std::string strName );
+	PGLCHAR GetCharID ( DWORD dwCharID );
+
+	DWORD GetNumPC ()					{ return m_GaeaPCList.m_dwAmount; }
+	DWORD GetMaxClient ()				{ return m_dwMaxClient; }
+
+	// LG-7 GlobalRanking
+	PGLCHAR GetCharClientID(DWORD dwClientID);
+//public:
+//	void SetMaxDelayMsgProc ( float fmaxdelay )		{ m_fMaxDelayMsgProc = fmaxdelay; }
+//	float GetMaxDelayMsgProc ()						{ return m_fMaxDelayMsgProc; }
+
+public:
+	void ChangeNameMap ( PGLCHAR pChar, const char* pszOldName, const char* pszNewName );
+	void ChangeNameMap ( PGLCHAR pChar, const TCHAR* pszPhoneNumber );
+
+protected:
+	BOOL DropPC ( SNATIVEID MapID, D3DXVECTOR3 vPos, PGLCHAR pPC );
+	BOOL DropOutPC ( DWORD dwGaeaID, bool bForce = false );
+
+public:
+	BOOL SaveCharDB ( DWORD dwGaeaID );
+
+public:
+	BOOL ClearReservedDropOutPC ();
+
+public:
+	BOOL ReserveServerStop ();
+
+	// 종료시 모든 클럽 배틀 진행상황을 저장한다.
+public:
+	BOOL SaveClubBattle();
+	void DelPlayHostileClubBattle( DWORD dwClub_P, DWORD dwClub_S );
+	void DelPlayHostileAllianceBattle( DWORD dwClub_P, DWORD dwClub_S );
+
+public:
+	bool IsEmulatorMode () { return m_bEmulator; }
+
+	void InsertSearchShop( DWORD dwGaeaID );
+	void EraseSearchShop( DWORD dwGaeaID );
+	bool FindSearchShop( DWORD dwGaeaID );
+
+public:
+	BOOL ReserveDropOutPC ( DWORD dwGaeaID, CDbActToAgentMsg *pDbActToAgentMsg=NULL );
+	
+	BOOL FindSaveDBUserID ( DWORD dwUserID );
+	void SetSaveDBUserID ( DWORD dwUserID );
+	BOOL ResetSaveDBUserID ( DWORD dwUserID );
+
+	BOOL SaveNpcCommission( DWORD dwCharID, DWORD dwUserID, LONGLONG lnCommission );
+	BOOL SaveNpcCommissionDB( DWORD dwCharID, DWORD dwUserID, LONGLONG lnCommission );
+
+public:
+	PGLCHAR CreatePC ( PCHARDATA2 pCharData, DWORD dwClientID, DWORD dwGaeaID, BOOL bNEW=FALSE,
+		SNATIVEID *_pStartMap=NULL, DWORD _dwStartGate=0, D3DXVECTOR3 vPos=D3DXVECTOR3(0,0,0),
+		EMGAME_JOINTYPE emJOINTYPE=EMJOINTYPE_FIRST,
+		DWORD dwThaiCCafeClass = 0, __time64_t loginTime = 0, INT nMyCCafeClass = 0 );
+
+	BOOL EntryLand( DWORD dwGaeaID, DWORD dwGateID, DWORD dwToIndex, BOOL bInstantMap, SNATIVEID sMapID = NATIVEID_NULL() );
+
+	// PET
+	PGLPETFIELD CreatePET ( PGLPET pPetData, DWORD dwOwner, DWORD dwPetID, bool bValid = true );
+	void		CreatePETOnDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_CREATEPET_FROMDB_FB* pNetMsg );
+	void		GetPETInfoFromDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_GETPET_FROMDB_FB* pNetMsg );
+	void		GetPETInfoFromDBError( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_GETPET_FROMDB_ERROR* pNetMsg );
+	BOOL		DropPET ( PGLPETFIELD pPet, SNATIVEID sMapID );
+	BOOL		DropOutPET ( DWORD dwGUID, bool bLeaveFieldServer, bool bMoveMap );
+	PGLPETFIELD GetPET ( DWORD dwGUID ) const;
+	void		ReserveDropOutPet ( SDROPOUTPETINFO sPetInfo ) { m_reqDropOutPet.push_back (sPetInfo); }
+	void		ClearReserveDropOutPet ();
+
+	BOOL		RequestUsePETCARD ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_USEPETCARD* pNetMsg );
+	BOOL		RequestRevivePet ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_REVIVE* pNetMsg );
+	BOOL		RevivePet ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_REVIVE_FROMDB_FB* pNetMsg );
+
+	BOOL		ReqActiveVehicle ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_ACTIVE_VEHICLE* pNetMsg );
+	BOOL		ReqGetVehicle( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_GET_VEHICLE* pNetMsg );
+	BOOL		CreateVehicle( DWORD dwClientID, DWORD dwGaeaID, DWORD dwVehicleID );
+	void		CreateVehicleOnDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_CREATE_FROMDB_FB* pNetMsg );
+	void		GetVehicleInfoFromDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_GET_FROMDB_FB* pNetMsg );
+	void		GetVehicleInfoFromDBError( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_GET_FROMDB_ERROR* pNetMsg );
+	void		SaveVehicle( DWORD dwClientID, DWORD dwGaeaID, bool bLeaveFieldServer );
+	void		SetActiveVehicle ( DWORD dwClientID, DWORD dwGaeaID, bool bActive );
+	void		GetVehicleItemInfo ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_REQ_ITEM_INFO* pNetMsg );
+
+	//	예약 메시지 처리
+	void		ReserveMessage( DWORD dwClientID, DWORD dwGaeaID, CTime time, LPVOID nmg );
+	void		ReserveMessage( DWORD dwClientID, DWORD dwGaeaID, DWORD dwLatterSec, LPVOID nmg );
+	void		ReserveMessageProcess();
+
+	// 소환수
+	
+	/*skill summon, Juver, 2017/10/09 */
+	PGLSUMMONFIELD CreateSummon ( SUMMON_DATA_SKILL sdata, DWORD dwOwnerGaeaId );
+	BOOL		DropSummon ( PGLSUMMONFIELD pSummon, SNATIVEID sMapID );
+	BOOL		DropOutSummon ( DWORD dwGUID );
+	PGLSUMMONFIELD GetSummon ( DWORD dwGUID ) const;
+	void		ReserveDropOutSummon ( DWORD dwGuID ) { m_reqDropOutSummon.push_back (dwGuID); }
+	void		ClearReserveDropOutSummon ();
+
+	//	부활 스킬 사용 여부
+	void		SetNonRebirth ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_NON_REBIRTH_REQ* pNetMsg );
+	// QBox On/Off 옵션
+	void		ReqQBoxEnable ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_QBOX_OPTION_REQ_FLD* pNetMsg );
+
+	/*charinfoview , Juver, 2017/11/12 */
+	void		SetPrivateStats( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_PRIVATE_STATS_REQ* pNetMsg );
+
+	//	클럽데스매치 랭킹 요청
+	BOOL	ReqClubDeathMatchRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUB_DEATHMATCH_RANKING_REQ* pNetMsg );
+
+	/*woe Arc Development 08-06-2024*/
+	BOOL ReqWoeGuildRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_GUILD_RANKING_REQ* pNetMsg);
+	BOOL ReqWoePlayerRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_PLAYER_RANKING_REQ* pNetMsg);
+	BOOL ReqWoeResuRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_RESU_RANKING_REQ* netmsg);
+public:
+	BOOL RequestMustLeaveMap ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_REQ_MUST_LEAVE_MAP* pNetMsg );
+	BOOL RequestGateOutReq ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETREQ_GATEOUT_REQ* pNetMsg );
+	BOOL RequestReBirth ( const DWORD dwGaeaID, const SNATIVEID &sNID_Map, const DWORD dwGenGate, const D3DXVECTOR3 &_vPos );
+	BOOL RequestMoveMapPC ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETREQ_GATEOUT *pNetMsg );
+	BOOL RequestLandIn ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETREQ_LANDIN *pNetMsg );
+
+	BOOL RequestFieldSvrOut ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_FIELDSVR_OUT *pNetMsg );
+	BOOL RequestReBirthOut ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_REBIRTH_OUT *pNetMsg );
+
+	/* pvp club death match, Juver, 2020/11/26 */
+	BOOL PVPClubDeathMatchRequestReBirthOut ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_PVP_CLUB_DEATH_MATCH_A2F_REVIVE_REQ_FIELD_OUT *pNetMsg );
+
+	BOOL RequestTrade ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE *pNetMsg );
+	BOOL RequestTradeTarAns ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE_TAR_ANS *pNetMsg );
+
+	BOOL RequestTradeMoney ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE_MONEY *pNetMsg );
+	BOOL RequestTradeItemResist ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE_ITEM_REGIST *pNetMsg );
+	BOOL RequestTradeItemReMove ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE_ITEM_REMOVE *pNetMsg );
+
+	BOOL RequestTradeAgree ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE_AGREE *pNetMsg );
+	BOOL RequestTradeCancel ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE_CANCEL *pNetMsg );
+
+	/*trade lock, Juver, 2018/01/02 */
+	BOOL RequestTradeLock ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TRADE_LOCK *pNetMsg );
+
+	BOOL RequestFieldSvrCharChk ( DWORD dwClientID, GLMSG::SNETPC_FIELDSVR_CHARCHK *pNetMsg );
+
+	BOOL RequestConfrontPartyChkMbr ( GLMSG::SNETPC_CONFRONTPTY_CHECKMBR2_FLD *pNetMsg );
+	BOOL RequestConfrontParty ( GLMSG::SNETPC_CONFRONTPTY_START2_FLD *pNetMsg );
+	BOOL RequestConfrontPartyEnd ( GLMSG::SNETPC_CONFRONTPTY_END2_FLD *pNetMsg );
+
+	BOOL RequestConfrontClubChkMbr ( GLMSG::SNET_CONFRONTCLB_CHECKMBR_FLD *pNetMsg );
+	BOOL RequestConfrontClub ( GLMSG::SNETPC_CONFRONTCLB_START2_FLD *pNetMsg );
+	BOOL RequestConfrontClubEnd ( GLMSG::SNETPC_CONFRONTCLB_END2_FLD *pNetMsg );
+
+	BOOL RequestClubRank2Fld ( GLMSG::SNET_CLUB_RANK_2FLD *pNetMsg );
+	BOOL RequestClubInfo ( GLMSG::SNET_CLUB_INFO_2FLD *pNetMsg );
+	BOOL RequestClubDissolution2Fld ( GLMSG::SNET_CLUB_DISSOLUTION_2FLD *pNetMsg );
+	BOOL RequestClubDel2Fld ( GLMSG::SNET_CLUB_DEL_2FLD *pNetMsg );
+	
+	BOOL RequestClubAdd2Fld ( GLMSG::SNET_CLUB_MEMBER_ADD_2FLD *pNetMsg );
+	BOOL RequestClubDel ( GLMSG::SNET_CLUB_MEMBER_DEL_2FLD *pNetMsg );
+	BOOL RequestClubMarkChange ( GLMSG::SNET_CLUB_MARK_CHANGE_2FLD *pNetMsg );
+	BOOL RequestClubSubMaster ( GLMSG::SNET_CLUB_SUBMASTER_FLD *pNetMsg );
+	BOOL RequestClubAuthority ( GLMSG::SNET_CLUB_AUTHORITY_FLD *pNetMsg );	
+
+	BOOL RequestChargedItem2Inven ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CHARGED_ITEM2_INVEN *pNetMsg );
+
+	BOOL RequestConftSPtyExp ( GLMSG::SNET_CONFT_SPTY_EXP_FLD *pNetMsg );
+
+	BOOL RequestGenItemFieldFB ( GLMSG::SNET_REQ_GENITEM_FLD_FB * pNetMsg );
+
+	BOOL RequestInvenRecallThisSvr ( GLChar* pPC, SNATIVEID sMAPID, DWORD dwGATEID, D3DXVECTOR3 vPOS );
+	BOOL RequestInvenRecall ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_REQ_INVEN_RECALL *pNetMsg );
+	BOOL RequestBus ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_REQ_BUS *pNetMsg );
+	BOOL RequestTaxi ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_REQ_TAXI *pNetMsg );
+	BOOL RequestTaxiNpcPos ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_REQ_TAXI_NPCPOS *pNetMsg );
+	BOOL Request2FriendCK ( GLMSG::SNETPC_2_FRIEND_CK *pNetMsg );
+	BOOL RequestMove2CharPos ( DWORD dwClientID, GLMSG::SNETPC_GM_MOVE2CHAR_POS *pNetMsg );
+
+	BOOL RequestInvenTeleport ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_REQ_INVEN_TELEPORT *pNetMsg );
+	BOOL RequestInvenTeleportThisSvr ( GLChar* pPC, SNATIVEID sMAPID, D3DXVECTOR3 vPOS );
+
+	BOOL RequestCreateInstantMapReq ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETREQ_CREATE_INSTANT_MAP_REQ *pNetMsg );
+	BOOL RequestCreateInstantMap  ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETREQ_CREATE_INSTANT_MAP_FLD *pNetMsg );
+
+	void DeleteInstantMap( const DWORD i );
+
+
+	BOOL RequestNpcRecall( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_INVEN_NPC_RECALL *pNetMsg );
+	BOOL RequestNpcCommission( GLMSG::SNET_INVEN_NPC_COMMISSION_FB* pNetMsg );
+	
+	/*event map move, Juver, 2017/08/25 */
+	BOOL EventMoveMap ( DWORD dwCharID, SNATIVEID sMapID, WORD wPosX, WORD wPosY, BOOL bCheckCurMap = TRUE, BOOL bCalculatePos = TRUE );
+
+	/*pvp tyranny, Juver, 2017/08/25 */
+	BOOL TyrannyMoveMap ( DWORD dwCharID, SNATIVEID sMapID, D3DXVECTOR3 vPos, BOOL bCheckCurMap, BOOL source_map_check, SNATIVEID source_map_id );
+	void TyrannyResetBuff( GLMSG::SNETPC_TYRANNY_A2F_BUFF_RESET *pNetMsg );
+	void TyrannyRewardBuff( GLMSG::SNETPC_TYRANNY_A2F_BUFF_REWARD *pNetMsg );
+	void TyrannyBattleBuff( GLMSG::SNETPC_TYRANNY_A2F_BUFF_BATTLE *pNetMsg );
+
+	/*woe Arc Development 08-06-2024*/
+	BOOL WoeMoveMap(DWORD dwCharID, SNATIVEID sMapID, D3DXVECTOR3 vPos, BOOL bCheckCurMap = TRUE);
+	/*school wars, Juver, 2018/01/19 */
+	BOOL SchoolWarsMoveMap ( DWORD dwCharID, SNATIVEID sMapID, D3DXVECTOR3 vPos, BOOL bCheckCurMap, BOOL source_map_check, SNATIVEID source_map_id );
+
+	/*pvp capture the flag, Juver, 2018/01/29 */
+	void CaptureTheFlagPlayerTeam( GLMSG::SNETPC_CAPTURE_THE_FLAG_A2F_PLAYER_TEAM *pNetMsg );
+	BOOL CaptureTheFlagMoveMap ( DWORD dwCharID, SNATIVEID sMapID, D3DXVECTOR3 vPos, BOOL bCheckCurMap, BOOL source_map_check, SNATIVEID source_map_id);
+
+	/////////////////////////////////////////////////////////////////////////////
+	// LG-7 GlobalRanking
+	BOOL ReqGlobalRankingKillUpdate(STOP_RANK_KILL sTopKill, BOOL bWIN);
+	BOOL ReqGlobalRankingKillUpdateBr(STOP_RANK_KILL_BR sTopKill, BOOL bWIN);
+	BOOL ReqGlobalRankingKillUpdateSw(STOP_RANK_KILL_SW sTopKill, BOOL bWIN);
+	BOOL ReqGlobalRankingKillUpdateAr(STOP_RANK_KILL_AR sTopKill, BOOL bWIN);
+	BOOL ReqGlobalRankingKillUpdateSh(STOP_RANK_KILL_SH sTopKill, BOOL bWIN);
+	BOOL ReqGlobalRankingKillUpdateEx(STOP_RANK_KILL_EX sTopKill, BOOL bWIN);
+	BOOL ReqGlobalRankingKillUpdateSc(STOP_RANK_KILL_SC sTopKill, BOOL bWIN);
+	BOOL ReqGlobalRankingKillUpdateAs(STOP_RANK_KILL_AS sTopKill, BOOL bWIN);
+	/////////////////////////////////////////////////////////////////////////////
+
+public:
+	BOOL ServerClubBattleStart ( GLMSG::SNET_CLUB_BATTLE_START_FLD *pNetMsg );
+	BOOL ServerClubBattleEnd ( GLMSG::SNET_CLUB_BATTLE_END_FLD *pNetMsg );
+	
+	BOOL ServerClubDeathMatchReady( GLMSG::SNET_CLUB_DEATHMATCH_READY_FLD *pNetMsg );
+	BOOL ServerClubDeathMatchStart ( GLMSG::SNET_CLUB_DEATHMATCH_START_FLD *pNetMsg );
+	BOOL ServerClubDeathMatchEnd ( GLMSG::SNET_CLUB_DEATHMATCH_END_FLD *pNetMsg );
+	
+	BOOL ServerClubCertify ( GLMSG::SNET_CLUB_CERTIFIED_FLD *pNetMsg );
+	BOOL ServerClubGuidCommission ( GLMSG::SNET_CLUB_GUID_COMMISSION_FLD *pNetMsg );
+	BOOL ServerClubNotice ( GLMSG::SNET_CLUB_NOTICE_FLD *pNetMsg );
+	BOOL ServerClubStorageGetDB ( GLMSG::SNET_CLUB_STORAGE_GET_DB *pNetMsg );
+	BOOL ServerClubInComeDn ( DWORD dwClientID, GLMSG::SNET_CLUB_INCOME_DN *pNetMsg );
+	BOOL ServerClubAllianceAddFld ( GLMSG::SNET_CLUB_ALLIANCE_ADD_FLD *pNetMsg );
+	BOOL ServerClubAllianceDel ( GLMSG::SNET_CLUB_ALLIANCE_DEL_FLD *pNetMsg );
+	BOOL ServerClubAllianceDis ( GLMSG::SNET_CLUB_ALLIANCE_DIS_FLD *pNetMsg );
+
+	BOOL ServerClubBattleBeginFld ( GLMSG::SNET_CLUB_BATTLE_BEGIN_FLD *pNetMsg );
+	BOOL ServerClubBattleOverFld ( GLMSG::SNET_CLUB_BATTLE_OVER_FLD *pNetMsg );
+	BOOL ServerClubBattleKillUpdate( GLMSG::SNET_CLUB_BATTLE_KILL_UPDATE_FLD *pNetMsg );
+	BOOL ServerClubBattleLastKillUpdate( GLMSG::SNET_CLUB_BATTLE_LAST_KILL_UPDATE_FLD *pNetMsg );
+
+	BOOL ServerLevelEventEnd( GLMSG::SNET_LEVEL_EVENT_END_FLD *pNetMsg );
+	BOOL ServerLevelEventWarning( GLMSG::SNET_LEVEL_EVENT_WARNING_FLD * pNetMsg );
+	BOOL ServerLevelEventCountdown( GLMSG::SNET_LEVEL_EVENT_COUNTDOWN_FLD * pNetMsg );
+
+	BOOL ServerFieldInfoReset ( GLMSG::SNET_FIELDINFO_RESET *pNetMsg );
+	BOOL ServerSchoolFreePk ( GLMSG::SNETPC_SCHOOLFREEPK_FLD *pNetMsg );
+
+	BOOL ServerCtrlPeriod ( GLMSG::SNET_PERIOD *pNetMsg );
+	BOOL ServerCtrlWeather ( GLMSG::SNETSERVER_CTRL_WEATHER *pNetMsg );
+	BOOL ServerCtrlWeather2 ( GLMSG::SNETSERVER_CTRL_WEATHER2 *pNetMsg );
+	BOOL ServerCtrlTime ( GLMSG::SNETSERVER_CTRL_TIME *pNetMsg );
+	BOOL ServerCtrlMonth ( GLMSG::SNETSERVER_CTRL_MONTH *pNetMsg );
+	BOOL ServerCtrlGenItemHold ( GLMSG::SNETSERVER_CTRL_GENITEMHOLD *pNetMsg );
+	BOOL ServerCtrlPlayerKillingMode ( GLMSG::SNET_SERVER_PLAYERKILLING_MODE *pNetMsg );
+	BOOL ServerCtrlCharDropOutForced ( GLMSG::SNET_DROP_OUT_FORCED *pNetMsg );
+
+
+public:
+	BOOL GMCtrolMove2Gate ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOVE2GATE_FLD *pNetMsg );
+	//BOOL GMCtrolMove2Gate ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOVE2GATE *pNetMsg );
+	BOOL GMCtrolMove2MapPos ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOVE2MAPPOS_FLD *pNetMsg );
+
+	BOOL GMCtrlWhereNpc ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_WHERE_NPC_FLD *pNetMsg );
+	BOOL GMCtrolWherePcPos ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_WHERE_PC_POS *pNetMsg );
+	BOOL GMCtrlWarningMSG ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_WARNING_MSG_FLD* pNetMsg );
+
+	BOOL GMCtrolBigHead ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_BIGHEAD *pNetMsg );
+	BOOL GMCtrolBigHand ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_BIGHAND *pNetMsg );
+
+	/*private market set, Juver, 2018/01/02 */
+	BOOL GMCtrolSetPrivateMarket ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_SET_PRIVATE_MARKET *pNetMsg );
+
+	/*megaphone set, Juver, 2018/01/02 */
+	BOOL GMCtrolSetMegaPhone ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_SET_MEGAPHONE *pNetMsg );
+
+	BOOL GMCtrolFreePK ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_FREEPK *pNetMsg );
+	BOOL GMKicUser( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_KICK_USER_PROC_FLD* pNetMsgFld );
+	BOOL GMCtrolShowMeTheMoney( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_SHOWMETHEMONEY_FLD* pNetMsgFld );
+
+	BOOL GMCtrolMobGen ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOB_GEN_FLD *pNetMsg );
+	BOOL GMCtrolMobDel ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOB_DEL_FLD *pNetMsg );
+
+	BOOL GMCtrolMoPrintCrowList ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_PRINT_CROWLIST_FLD *pNetMsg );
+
+	BOOL GMCtrolMobGenEx ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOB_GEN_EX_FLD *pNetMsg );
+	BOOL GMCtrolMobDelEx ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOB_DEL_EX_FLD *pNetMsg );
+
+	BOOL GMCtrolEventEx ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_EVENT_EX *pNetMsg );
+	BOOL GMCtrolEventExEnd ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_EVENT_EX_END *pNetMsg );
+
+	BOOL GMCtrolLimitEventBegin ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_LIMIT_EVENT_BEGIN *pNetMsg );
+	BOOL GMCtrolLimitEventTimeReset ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_LIMIT_EVENT_TIME_RESET *pNetMsg );
+	BOOL GMCtrolLimitEventEnd   ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_LIMIT_EVENT_END *pNetMsg );
+
+	BOOL GMCtrolMobLevel ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOB_LEV *pNetMsg );
+	BOOL GMCtrolMobLevelClear ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_MOB_LEV_CLEAR *pNetMsg );
+	BOOL GMCtrolChatBlockFld ( GLMSG::SNET_GM_CHAT_BLOCK_FLD *pNetMsg );
+	BOOL GMCtrolCharInfoFld ( GLMSG::SNET_GM_CHAR_INFO_FLD *pNetMsg );
+
+	BOOL RequestViewAllPlayer ( GLMSG::SNET_GM_VIEWALLPLAYER_FLD_REQ *pNetMsg );
+
+	BOOL ReqClubMemberRename ( GLMSG::SNET_CLUB_MEMBER_RENAME_FLD* pNetMsg );
+
+	BOOL ReqSearchShopItem ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_PMARKET_SEARCH_ITEM* pNetMsg );
+	BOOL ReqSearchResultShopItem ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_PMARKET_SEARCH_ITEM_RESULT_REQ* pNetMsg );
+
+	BOOL RequestShopInfo ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_SHOP_INFO_REQ *pNetMsg );
+
+	BOOL CyberCafeClassUpdate ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CYBERCAFECLASS_UPDATE *pNetMsg );
+
+	void CheckMarketState( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_MARKETCHECK *pNetMsg );
+
+	BOOL VietnamAllInitTime ( GLMSG::SNETPC_VIETNAM_ALLINITTIME *pNetMsg );
+
+	BOOL MsgVietTimeReset( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_VIETNAM_TIME_REQ_FB *pNetMsg ); //vietnamtest%%% && vietnamtest2
+
+	/* Boss Spawn Viewer, Review000 */
+	BOOL MsgBossDetailsReq ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_BOSS_DETAILS_REQ* pNetMsgFld );
+
+public:
+	BOOL ValidCheckTarget ( GLLandMan* pLandMan, STARGETID &sTargetID );
+
+	GLACTOR* GetTarget ( const GLLandMan* pLandMan, const STARGETID &sTargetID );
+	const D3DXVECTOR3& GetTargetPos ( const GLLandMan* pLandMan, const STARGETID &sTargetID );
+	WORD GetTargetBodyRadius ( GLLandMan* pLandMan, STARGETID &sTargetID );
+
+	GLARoundSlot* GetARoundSlot ( const STARGETID &sTargetID );
+
+public:
+	GLLandMan* GetByMapID ( const SNATIVEID &sMapID );
+	GLLandMan* GetRootMap ();
+	void	   SetMapState();
+//	GLLANDMANLIST& GetLandManList ()	{ return m_LandManList; }
+	VEC_LANDMAN GetLandMan() { return m_vecLandMan; }
+
+	DWORD	GetInstantMapNum()		{ return m_dwInstantMapNum; }
+	DWORD	GetInstantMapNum2()		{ return (DWORD)m_vecInstantMapId.size(); }
+	DWORD	GetInstantMapStuckNum()	{ return m_dwInstantMapStuckNum; }
+
+protected:
+	HRESULT InsertMap ( GLLandMan* pNewLandMan );
+	HRESULT CreateInstantMap( SNATIVEID sDestMapID, SNATIVEID sInstantMapID, DWORD dwGaeaID, DWORD dwPartyID );
+	GLLandMan* GetInstantMapByMapID ( const SNATIVEID &sMapID );
+
+public:
+	HRESULT Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxConsoleMsg* pConsoleMsg, GLDBMan* pDBMan, int nServiceProvider, const char* szMapList=NULL, DWORD dwFieldSID=FIELDSERVER_MAX, int nChannel=0 );
+	HRESULT Create4Level ( LPDIRECT3DDEVICEQ pd3dDevice );
+	HRESULT CleanUp ();
+
+	void SetUpdate ( BOOL bUpdate )		{ m_bUpdate = bUpdate; }
+
+public:
+	HRESULT ClearDropObj ();
+
+public:
+	HRESULT OneTimeSceneInit();
+
+public:
+	HRESULT FrameMove ( float fTime, float fElapsedTime );
+	void	FrameMoveInstantMap( float fElapsedTime );
+	void	FrameMoveLandMan( float fTime, float fElapsedTime );
+	HRESULT Render ( LPDIRECT3DDEVICEQ pd3dDevice, CLIPVOLUME &cv );
+
+protected:
+	BOOL ChatMsgProc ( NET_MSG_GENERIC* nmg, DWORD dwClientID, DWORD dwGaeaID );
+
+public:
+	HRESULT MsgProcess ( NET_MSG_GENERIC* nmg, DWORD dwClientID, DWORD dwGaeaID );
+
+public:
+	void SENDTOALLCLIENT ( LPVOID nmg );
+	void SENDTOCLIENT ( DWORD dwClientID, LPVOID nmg );
+	void SENDTOAGENT ( DWORD dwClientID, LPVOID nmg );
+	void SENDTOAGENT ( LPVOID nmg );
+
+	void SENDTOPARTYCLIENT ( DWORD dwPartyID, LPVOID nmg );
+	void SENDTOCLUBCLIENT ( DWORD dwClubID, LPVOID nmg );
+	
+	void SENDTOCLIENT_ONMAP ( DWORD dwMapID, LPVOID nmg );
+	void SENDTOCLUBCLIENT_ONMAP ( DWORD dwMapID, DWORD dwClubID, LPVOID nmg );
+
+	void SendAgentQuestNpcPos();
+
+	/*dmk14 send notif less data*/
+	void SENDNOTIFICATION_ONMAP ( DWORD dwMapID, LPVOID nmg );
+	void SENDNOTIFICATIONTOCLIENT ( LPVOID nmg );	
+
+public:
+	/*quest map move, Juver, 2018/08/12 */
+	BOOL quest_move_insert( DWORD charid, SNATIVEID mapid, DWORD posx, DWORD posy, DWORD gateid, bool startmove, DWORD questid );
+	void quest_move_frame( float time, float elapsed_time );
+	BOOL quest_move_process( const SQUEST_MAP_MOVE& quest_move );
+
+	/*character disconnect function, EJCode, 2018/11/25 */
+	BOOL character_disconnect_request_char_id( DWORD char_id, float fTime = 0.0f, bool bCloseClient = true );
+	BOOL character_disconnect_request_gaea_id( DWORD gaea_id, float fTime = 0.0f, bool bCloseClient = true );
+	BOOL msg_character_disconnect( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CHARACTER_DISCONNECT_AGENT_TO_FIELD* pNetMsgFld );
+	void CharacterDisconnectUpdate( float fElapsedTime );
+
+	void PVPClubWarSendReward( NET_MSG_GENERIC* nmg );
+
+	/* charinfoview, Juver, 2020/03/03 */
+	void CharInfoViewRequest( GLMSG::SNETPC_REQ_CHARINFO_FLD *pNetMsg );
+	
+	/* user flag restricted, Juver, 2020/04/21 */
+	BOOL GMUserRestrict( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_GM_USER_RESTRICT_PROC_FLD* pNetMsgFld );
+
+	/* pvp club death match, Juver, 2020/11/10 */
+	BOOL PVPClubDeathMatchMoveMap ( DWORD dwCharID, SNATIVEID sMapID, D3DXVECTOR3 vPos, BOOL bCheckCurMap, BOOL bSourceMapCheck, SNATIVEID sSourceLobbyMapID, SNATIVEID sSourceBattleMapID );
+
+	/* play time system, Juver, 2021/01/26 */
+	void UpdatePlayTime( GLMSG::SNET_UPDATE_PLAY_TIME_A2F *pNetMsg );
+
+	/* gm command send item, Juver, 2021/02/14 */
+	void MsgGMSendItem( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_GM_COMMAND_A2F_SEND_ITEM *pNetMsg );
+
+#if defined( BUILD_CH ) || defined( BUILD_CHY )
+	/* wtf, Juver, 2021/06/24 */
+	void MsgWTF( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WTF_FLD *pNetMsg );
+#endif
+
+	/* variable check, Juver, 2021/07/02 */
+	void SendClientVariableCheck();
+	void VariableCheckResult( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VARIABLE_CHECK_RESULT *pNetMsg );
+
+/* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
+public:
+	void	SENDTOCLIENTPLAYERCLUB_ONMAP ( DWORD dwMapID, DWORD dwClubID, LPVOID nmg );
+	BOOL PVPPBGMoveMap (
+		DWORD dwCharID,
+		SNATIVEID sMapID, 
+		D3DXVECTOR3 vPos, 
+		BOOL bCheckCurMap, 
+		BOOL bSourceMapCheck,
+		SNATIVEID sSourceLobbyMapID,
+		SNATIVEID sSourceBattleMapID );
+
+	BOOL PVPPBGRequestReBirthOut ( 
+		DWORD dwClientID, 
+		DWORD dwGaeaID, 
+		GLMSG::SNETPC_PVP_PBG_A2F_REVIVE_REQ_FIELD_OUT *pNetMsg );
+/* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
+public:
+	BOOL	ReqTyrannyClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_CLUB_RANKING_REQ* pNetMsg );
+	BOOL	ReqTyrannyRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_RANKING_REQ* pNetMsg );
+	BOOL	ReqTyrannyRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_RANKING_RESU_REQ* pNetMsg );
+
+/* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
+public:
+	BOOL	ReqClubWarClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_CLUB_RANKING_REQ* pNetMsg );
+	BOOL	ReqClubWarRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_RANKING_REQ* pNetMsg );
+	BOOL	ReqClubWarRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_RANKING_RESU_REQ* pNetMsg );
+
+
+protected:
+	GLGaeaServer(void);
+
+public:
+	~GLGaeaServer(void);
+
+public:
+	static GLGaeaServer& GetInstance();
+
+public:
+	void CHECKVALID();
+};
+
+//-----------------------------------------------------------------------------------------
+inline PGLPETFIELD GLGaeaServer::GetPET ( DWORD dwGUID ) const
+{
+	if ( dwGUID >= m_dwMaxClient )	return NULL;
+	return m_PETArray[dwGUID];
+}
+
+inline PGLSUMMONFIELD GLGaeaServer::GetSummon ( DWORD dwGUID ) const
+{
+	if ( dwGUID >= m_dwMaxClient )	return NULL;
+	return m_SummonArray[dwGUID];
+}
+
+
+inline PGLCHAR GLGaeaServer::GetChar ( DWORD dwID ) const
+{
+	if ( dwID >= m_dwMaxClient )	return NULL;
+	return m_PCArray[dwID];
+}
+
+inline PGLCHAR GLGaeaServer::GetCharID ( DWORD dwCharID )
+{
+	CLIENTMAP_ITER pos = m_mapCHARID.find(dwCharID);
+	if ( pos==m_mapCHARID.end() )		return NULL;
+
+	return GetChar ( (*pos).second );
+}
+
+// LG-7 GlobalRanking
+inline PGLCHAR GLGaeaServer::GetCharClientID(DWORD dwClientID)
+{
+	CLIENTMAP_ITER iter		= m_mapCHARID.begin();
+	CLIENTMAP_ITER iter_end	= m_mapCHARID.end();
+
+	for (; iter != iter_end; iter++)
+	{
+		PGLCHAR pChar = GetChar((*iter).second);
+		if (pChar->m_dwClientID == dwClientID)
+			return GetChar((*iter).second);
+	}
+
+	return NULL;
+}
+
+inline void GLGaeaServer::SENDTOAGENT ( DWORD dwClientID, LPVOID nmg )
+{
+	if ( m_pMsgServer )
+		m_pMsgServer->SendAgent ( dwClientID, nmg );
+}
+
+inline void GLGaeaServer::SENDTOAGENT ( LPVOID nmg )
+{
+	if ( m_pMsgServer )
+		m_pMsgServer->SendAgent ( nmg );
+}
+
+inline void GLGaeaServer::SENDTOPARTYCLIENT ( DWORD dwPartyID, LPVOID nmg )
+{
+	m_cPartyFieldMan.SendMsgToMember ( dwPartyID, (NET_MSG_GENERIC*) nmg );
+}
+
+inline void CONSOLEMSG_WRITE ( const char* msg, ... )
+{
+	GASSERT ( msg && "CONSOLEMSG_WRITE()" );
+
+	DxConsoleMsg* pConsoleMsg = GLGaeaServer::GetInstance().GetConsoleMsg();
+	if ( !pConsoleMsg )		return;
+
+	char sbuf[C_BUFFER_SIZE];
+	
+	va_list ap;
+	va_start(ap, msg);
+	StringCbVPrintf ( sbuf, C_BUFFER_SIZE, msg, ap);
+	va_end(ap);	
+
+	pConsoleMsg->Write( LOG_CONSOLE, sbuf );
+}
+
+inline void TEXTCONSOLEMSG_WRITE ( const char* msg, ... )
+{
+	GASSERT ( msg && "CONSOLEMSG_WRITE()" );
+
+	DxConsoleMsg* pConsoleMsg = GLGaeaServer::GetInstance().GetConsoleMsg();
+	if ( !pConsoleMsg )		return;
+
+	char sbuf[C_BUFFER_SIZE];
+
+	va_list ap;
+	va_start(ap, msg);
+	StringCbVPrintf ( sbuf, C_BUFFER_SIZE, msg, ap);
+	va_end(ap);	
+
+	pConsoleMsg->Write( LOG_TEXT_CONSOLE, sbuf );
+}
+
+inline void HACKINGLOG_WRITE ( const char* msg, ... )
+{
+	GASSERT ( msg && "DEBUGMSG_WRITE()" );
+
+	char sbuf[C_BUFFER_SIZE];
+
+	va_list ap;
+	va_start(ap, msg);
+	StringCbVPrintf ( sbuf, C_BUFFER_SIZE, msg, ap);
+	va_end(ap);	
+
+	CDebugSet::ToHackingFile( sbuf );
+
+	DxConsoleMsg* pConsoleMsg = GLGaeaServer::GetInstance().GetConsoleMsg();
+	if ( !pConsoleMsg )		return;
+
+	pConsoleMsg->Write ( LOG_CONSOLE, sbuf );
+}
+
+inline void BILLIONUPDATE_WRITE ( const char* msg, ... )
+{
+	GASSERT ( msg && "DEBUGMSG_WRITE()" );
+
+	char sbuf[C_BUFFER_SIZE];
+
+	va_list ap;
+	va_start(ap, msg);
+	StringCbVPrintf ( sbuf, C_BUFFER_SIZE, msg, ap);
+	va_end(ap);	
+
+//	CDebugSet::ToBillionUpdateFile( sbuf );
+
+	/*DxConsoleMsg* pConsoleMsg = GLGaeaServer::GetInstance().GetConsoleMsg();
+	if ( !pConsoleMsg )		return;
+
+	pConsoleMsg->Write ( LOG_CONSOLE, sbuf );*/
+}
+
+
+inline void DEBUGMSG_WRITE ( const char* msg, ... )
+{
+	GASSERT ( msg && "DEBUGMSG_WRITE()" );
+
+	char sbuf[C_BUFFER_SIZE];
+	
+	va_list ap;
+	va_start(ap, msg);
+	StringCbVPrintf ( sbuf, C_BUFFER_SIZE, msg, ap);
+	va_end(ap);	
+
+	CDebugSet::ToLogFile ( sbuf );
+
+	DxConsoleMsg* pConsoleMsg = GLGaeaServer::GetInstance().GetConsoleMsg();
+	if ( !pConsoleMsg )		return;
+
+	pConsoleMsg->Write ( LOG_CONSOLE, sbuf );
+}

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\_Include;$(SolutionDir)_Build\$(Configuration)\Lib_Import\;..\..\RanSDK\BugTrap;..\..\RanSDK\DirectX\Include;..\..\RanSDK\ZLib\Source;..\..\RanSDK\OggVorbis\Include;..\..\RanSDK\LZO\lzo\include;..\..\RanSDK\LZO\lzo;..\..\RanSDK\Boost;..\..\RanSDK\LuaPlus\Source;..\..\RanSDK\LuaPlus\Source\src;..\..\RanSDK\libcpuid\libcpuid;..\..\RanSDK\HackShield\Include;..\..\RanSDK\CV\Include\C;..\..\RanSDK\ETC\Include\;..\..\RanSDK\Freetype\Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_WARNINGS;_SECURE_SCL=0;_SECURE_ATL=0;_HAS_ITERATOR_DEBUGGING=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

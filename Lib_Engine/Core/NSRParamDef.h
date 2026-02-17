@@ -1,0 +1,55 @@
+#ifndef NSRPARAMDEF_H__INCLUDED
+#define NSRPARAMDEF_H__INCLUDED
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+#define RANPARAM_STRING_NUM_16	16
+#define RANPARAM_STRING_NUM_32	32
+#define RANPARAM_STRING_NUM_64	64
+#define RANPARAM_STRING_NUM_128	128
+#define RANPARAM_STRING_NUM_256	256
+
+
+enum EMSERVICE_TYPE
+{
+	EMSERVICE_DEFAULT		= 0,
+	EMSERVICE_KOREA			= 1,
+	EMSERVICE_FEYA			= 2,
+	EMSERVICE_MALAYSIA_CN	= 3,
+	EMSERVICE_MALAYSIA_EN	= 4,
+	EMSERVICE_JAPAN			= 5,
+	EMSERVICE_THAILAND		= 6,
+	EMSERVICE_CHINA			= 7,
+	EMSERVICE_INDONESIA		= 8,
+	EMSERVICE_PHILIPPINES	= 9,
+	EMSERVICE_VIETNAM		= 10,
+	EMSERVICE_GLOBAL		= 11,	//	글로벌 서비스
+};
+
+namespace RPARAM
+{
+	enum
+	{ 
+		MAX_FTP				= 24, 
+		MAX_HTTP			= 24,
+		MAX_SERVER			= 20,
+		MAX_CHINA_REGION	= 8
+	};
+
+	struct SERVER_SET
+	{
+		CString	strName;
+		CString	LoginAddress;
+		UINT	nLoginPort;
+		CString	HttpAddressTable[MAX_HTTP];
+		CString	strNewsURL;
+		CString	ServerName[MAX_SERVER];
+		CString strItemShop;
+	};
+};
+
+
+
+#endif // NSRPARAMDEF_H__INCLUDED

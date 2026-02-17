@@ -1,0 +1,25 @@
+/*!
+ * \file FriendWindowDef.h
+ *
+ * \author Juver
+ * \date 2020/03/02
+ *
+ * 
+ */
+
+#ifndef FRIENDWINDOWDEF_H_INCLUDED__
+#define FRIENDWINDOWDEF_H_INCLUDED__
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+//	사용자 메시지 정의
+const DWORD UIMSG_EDIT_END = UIMSG_USER1;
+const DWORD UIMSG_ADDNAME_TO_CHATBOX = UIMSG_USER2;
+
+const DWORD UIMSG_RECEIVE_NOTE_VISIBLE = UIMSG_USER3;
+const DWORD UIMSG_WRITE_NOTE_VISIBLE = UIMSG_USER4;
+
+
+#endif // FRIENDWINDOWDEF_H_INCLUDED__

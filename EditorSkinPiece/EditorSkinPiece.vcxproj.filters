@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{5e615322-8873-4dda-a827-84f78aa715eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{c10a3899-02c6-41ae-a3a2-1e8c15e72d85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Editor">
+      <UniqueIdentifier>{620a6387-1e57-410a-8d78-643752614a79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Editor\Eff">
+      <UniqueIdentifier>{d76f268f-937f-4c97-8ba1-78b9fdeb34a8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\dragitem.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\EditorSkinPiece.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\EditorSkinPieceDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Icon_Tool.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EditorSkinPiece.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EditorSkinPiece.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorSkinPieceDoc.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorSkinPieceView.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorSkinPieceViewD3D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorBar.cpp">
+      <Filter>Source\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>Source\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="PageMain.cpp">
+      <Filter>Source\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SelColorDlg.cpp">
+      <Filter>Source\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SheetWithTab.cpp">
+      <Filter>Source\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_00_Single.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_01_Blur.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_02_CloneBlur.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_04_Shock.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_06_Arrow.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_08_Level.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_10_Alpha.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_11_Neon.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_12_Mark.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_13_NoAlpha.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_14_Reflection2.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_15_Ambient.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_17_MultiTex.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_18_Ghosting.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_19_Specular2.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_20_Toon.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_21_TexDiff.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_22_Particle.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_23_BonePos.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_24_BoneList.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_25_UserColor.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_26_Normal.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_27_Line2Bone.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="PageEff_28_AroundEff.cpp">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EditorSkinPiece.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorSkinPieceDoc.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorSkinPieceView.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorBar.h">
+      <Filter>Source\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Source\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="PageMain.h">
+      <Filter>Source\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SelColorDlg.h">
+      <Filter>Source\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="SheetWithTab.h">
+      <Filter>Source\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_00_Single.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_01_Blur.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_02_CloneBlur.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_04_Shock.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_06_Arrow.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_08_Level.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_10_Alpha.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_11_Neon.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_12_Mark.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_13_NoAlpha.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_14_Reflection2.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_15_Ambient.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_17_MultiTex.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_18_Ghosting.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_19_Specular2.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_20_Toon.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_21_TexDiff.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_22_Particle.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_23_BonePos.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_24_BoneList.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_25_UserColor.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_26_Normal.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_27_Line2Bone.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="PageEff_28_AroundEff.h">
+      <Filter>Source\Editor\Eff</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+boost 1.70
+
+b2 toolset=msvc-10.0 --build-type=complete --abbreviate-paths architecture=x86 address-model=32 install -j12 define=_SECURE_SCL=0 define=_SECURE_ATL=0 define=_HAS_ITERATOR_DEBUGGING=0

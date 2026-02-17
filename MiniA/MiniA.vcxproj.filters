@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{8158c8a5-d30a-4b99-b539-bd811e2c906e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b32d4f07-98b0-4f94-9e1c-5c6b6946f93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protect">
+      <UniqueIdentifier>{107ab0d4-a456-45f6-ad0d-099b4b84020b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Protect\MShield">
+      <UniqueIdentifier>{6272d400-67bf-4b7c-b1a5-6b5ad2f5a3ea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MiniA.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\MiniA.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Icon_Game.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MiniA.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniAWnd.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniAWndD3d.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="MiniAHS.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AppString.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MShieldClient.cpp">
+      <Filter>Protect\MShield</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniAPSGG.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MiniA.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniAWnd.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="AppString.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MShieldClient.h">
+      <Filter>Protect\MShield</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

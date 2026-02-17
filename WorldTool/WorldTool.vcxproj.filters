@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{0d6915d3-b20d-4018-8394-b3f504a2ac95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tool">
+      <UniqueIdentifier>{cda15e45-5e3c-4ece-889d-4477dda559c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tool\Landman">
+      <UniqueIdentifier>{b7a7a5d2-e024-46aa-88e9-6a91ec3f30b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tool\Piece">
+      <UniqueIdentifier>{aade29c2-11d4-4587-9b5d-908b12efd5ec}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\dragitem.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Icon_Tool.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\Toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\WorldTool.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\WorldToolDoc.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WorldTool.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTool.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldToolDoc.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldToolView.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldToolViewD3D.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldToolViewFile.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorBar.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="MainTab.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="SelColorDlg.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="LandmanBasic.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="LandmanBGM.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="LandmanFog.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="LandmanMain.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="LandmanSky.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="LandmanSound.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="LandmanTab.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="MainLandman.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="MainPiece.cpp">
+      <Filter>Source\Tool\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="PieceMain.cpp">
+      <Filter>Source\Tool\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="PieceTab.cpp">
+      <Filter>Source\Tool\Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="LandmanEffect.cpp">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldToolViewEdit.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldTool.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldToolDoc.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldToolView.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorBar.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="MainTab.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="SelColorDlg.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolPages.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="LandmanBasic.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="LandmanBGM.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="LandmanFog.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="LandmanMain.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="LandmanSky.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="LandmanSound.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="LandmanTab.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="MainLandman.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+    <ClInclude Include="MainPiece.h">
+      <Filter>Source\Tool\Piece</Filter>
+    </ClInclude>
+    <ClInclude Include="PieceMain.h">
+      <Filter>Source\Tool\Piece</Filter>
+    </ClInclude>
+    <ClInclude Include="PieceTab.h">
+      <Filter>Source\Tool\Piece</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="LandmanEffect.h">
+      <Filter>Source\Tool\Landman</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

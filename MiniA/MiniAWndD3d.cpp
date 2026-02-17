@@ -1,0 +1,511 @@
+#include "stdafx.h"
+
+#include "../Lib_Engine/Core/NSREngineGlobal.h"
+#include "../Lib_Engine/Core/NSROption.h"
+#include "../Lib_Engine/Core/NSRParam.h"
+#include "../Lib_Engine/Core/NSRPath.h"
+
+#include "../Lib_Engine/Common/SubPath.h"
+#include "../Lib_Engine/DxCommon/Dxviewport.h"
+#include "../Lib_Client/dxincommand.h"
+#include "../Lib_Engine/DxCommon/DxInputDevice.h"
+#include "../Lib_Engine/DxEffect/DxEffectMan.h"
+
+#include "../Lib_Engine/DxCommon/DxSurfaceTex.h"
+#include "../Lib_Engine/DxCommon/DxGlowMan.h"
+#include "../Lib_Engine/DxCommon/DxPostProcess.h"
+
+#include "../Lib_Engine/G-Logic/GLPeriod.h"
+#include "../Lib_Engine/DxResponseMan.h"
+#include "../Lib_Client/DxGlobalStage.h"
+#include "../Lib_Network/s_NetClient.h"
+#include "../Lib_Engine/DxCommon/DxShadowMap.h"
+#include "../Lib_Client/dxparamset.h"
+
+#include "../Lib_Client/DxGlobalStage.h"
+#include "../Lib_Client/G-Logic/GLGaeaClient.h"
+#include "../Lib_Engine/Meshs/NsSMeshSceneGraph.h"
+
+#include "./MiniA.h"
+#include "./MiniAWnd.h"
+
+#include "../Lib_Engine/DxCommon/D3DFont.h"
+#include "../Lib_Engine/Utils/BlockProg.h"
+
+#include "../Lib_Engine/Common/CommonWeb.h"
+#include "../Lib_Engine/DxCommon/DxMeshTexMan.h"
+
+#include "../Lib_ClientUI/Interface/LoadingThread.h"
+#include "../Lib_ClientUI/Interface/InnerInterface.h"
+#include "../Lib_ClientUI/Interface/WaitServerDialogue.h"
+#include "../Lib_ClientUI/Interface/GameTextControl.h"
+
+#include "../Lib_Engine/DxCommon/DxFontMan.h"
+#include "../Lib_Engine/GUInterface/Cursor.h"
+
+#include "../Lib_Engine/DxSound/DxSoundMan.h"
+#include "../Lib_Engine/DxSound/BgmSound.h"
+#include "../Lib_Engine/TextTexture/TextUtil.h"
+
+#include "../Lib_Client/MShieldGlobal.h"
+#include "./MShieldClient.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+
+extern HWND g_hWnd;
+
+HRESULT CMiniAWnd::ConfirmDevice ( D3DCAPSQ* pCaps, DWORD dwBehavior, D3DFORMAT Format )
+{
+	if ( dwBehavior & D3DCREATE_HARDWARE_VERTEXPROCESSING )
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::Resize3DEnvironment()
+{
+	HRESULT hr=S_OK;
+	hr = CD3DApplication::Resize3DEnvironment();
+	if ( FAILED(hr) ) return hr;
+
+	DxGlobalStage::GetInstance().ReSizeWindow ( m_d3dpp.BackBufferWidth, m_d3dpp.BackBufferHeight );
+
+	return S_OK;
+}
+
+void CMiniAWnd::OnSize(UINT nType, int cx, int cy) 
+{
+	CWnd::OnSize(nType, cx, cy);
+
+	CRect rectWnd;
+	GetClientRect ( &rectWnd );
+
+	WORD wWidth = rectWnd.Width();
+	WORD wHeight = rectWnd.Height();
+
+	if ( !ROPTION::bScrWindowed && GetD3dDevice() )
+	{
+		LPDIRECT3DSURFACEQ pBackBuffer=NULL;
+		GetD3dDevice()->GetBackBuffer ( 0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBuffer );
+
+		if ( pBackBuffer )
+		{
+			pBackBuffer->GetDesc( &m_d3dsdBackBuffer );
+			pBackBuffer->Release();
+
+			wWidth = static_cast<WORD> ( m_d3dsdBackBuffer.Width );
+			wHeight = static_cast<WORD> ( m_d3dsdBackBuffer.Height );
+		}
+	}
+
+	if ( m_bCreated )	ReSizeWindow ( wWidth, wHeight );
+}
+
+HRESULT CMiniAWnd::OneTimeSceneInit()
+{
+	HRESULT hr(S_OK);
+
+	hr = DxResponseMan::GetInstance().OneTimeSceneInit ( RPATH::getAppPath(), this, ROPTION::strFontType, RPARAM::emLangSet, RPARAM::strGDIFont );
+
+	if ( FAILED(hr) )
+	{
+		return  E_FAIL;
+	}
+
+	dxincommand::bDISP_CONSOLE = RENGINE_GLOBAL::bDISP_CONSOLE;
+	dxincommand::bDISP_FPS = RENGINE_GLOBAL::bDISP_FPS;
+
+	//if( m_bEnableGUI )	CCommonWeb::Get()->Create( (CWnd*)this, &m_bVisibleGUI, &m_rtBoundGUI );
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::CreateObjects()
+{
+	DxFontMan::GetInstance().InitDeviceObjects ( m_pd3dDevice );
+	CD3DFontPar* pD3dFont9 = DxFontMan::GetInstance().LoadDxFont ( _DEFAULT_FONT, 9, _DEFAULT_FONT_FLAG );
+	CD3DFontPar* pD3dFont8 = DxFontMan::GetInstance().LoadDxFont ( _DEFAULT_FONT, 8, D3DFONT_SHADOW|D3DFONT_ASCII );
+	CDebugSet::InitDeviceObjects( pD3dFont9 );
+
+	HRESULT hr = S_OK;
+
+	CString strImage = "loading_000.dds";
+#if defined( BUILD_EP6 ) || defined( BUILD_EP4 )
+	strImage = "loading_001.tga";
+#endif 
+
+	hr = NLOADINGTHREAD::StartThreadLOAD ( &m_pd3dDevice, m_hWnd, RPATH::getAppPath(), strImage.GetString(), CString(""), FALSE );
+	if( FAILED(hr) )	return E_FAIL;
+	
+	NLOADINGTHREAD::WaitThread ();
+
+	hr = InitDeviceObjects ();
+	if( FAILED(hr) )
+	{
+		NLOADINGTHREAD::EndThread ();
+		return hr;
+	}
+
+	NLOADINGTHREAD::EndThread ();	
+	
+	hr = RestoreDeviceObjects();	
+	if( FAILED(hr) )	return hr;
+
+	return hr;
+}
+
+HRESULT CMiniAWnd::InitDeviceObjects()
+{	
+	HRESULT hr = S_OK;
+
+	DxViewPort::GetInstance().InitDeviceObjects ( m_pd3dDevice, m_hWnd );
+	DxResponseMan::GetInstance().InitDeviceObjects ( m_pd3dDevice, TRUE );	
+
+	DXLIGHT sDirectional;
+	sDirectional.SetDefault();
+	sDirectional.m_Light.Diffuse = D3DXCOLOR(0,0,0,1);
+	sDirectional.m_Light.Ambient = D3DXCOLOR(0,0,0,1);
+	DxLightMan::SetDefDirect ( sDirectional );
+
+	WORD wWidth = m_wndSizeX;
+	WORD wHeight = m_wndSizeY;
+
+	DxGlobalStage::GetInstance().SetD3DApp(this);
+	hr = DxGlobalStage::GetInstance().OneTimeSceneInit ( RPATH::getAppPath(), m_hWndApp, FALSE, wWidth, wHeight );
+	if ( FAILED(hr) )	return hr;
+
+	hr = DxGlobalStage::GetInstance().InitDeviceObjects ( m_pd3dDevice );	
+	if ( FAILED(hr) )	return hr;
+
+	NSOCTREE::EnableDynamicLoad();
+
+	LOADINGSTEP::SETSTEP ( 11 );
+
+	char szFullPath[MAX_PATH] = {0};
+	StringCchCopy ( szFullPath, MAX_PATH, RPATH::getAppPath() );
+	StringCchCat ( szFullPath, MAX_PATH, SUBPATH::OBJ_FILE_EDIT );
+
+	CCursor::GetInstance().SetGameCursor ( ROPTION::bGameCursor );
+	CCursor::GetInstance().OneTimeSceneInit(szFullPath,m_hWnd);
+	CCursor::GetInstance().InitDeviceObjects ();
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::RestoreDeviceObjects()
+{
+	HRESULT hr=S_OK;
+	DxResponseMan::GetInstance().RestoreDeviceObjects ();
+	DxGlobalStage::GetInstance().RestoreDeviceObjects ();
+	DxGlowMan::GetInstance().SetProjectActiveON();
+	DxPostProcess::GetInstance().SetProjectActiveON();
+	DXPARAMSET::INIT ();
+	PROFILE_INIT();
+	PROFILE_INIT2();
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::FrameMove3DEnvironment ()
+{
+	HRESULT hr=S_OK;
+
+	if ( m_bCreated )
+	{
+		hr = CD3DApplication::FrameMove3DEnvironment ();
+		if ( FAILED(hr) )	return hr;
+	}
+
+	PROFILE_BLOCKEND();
+	PROFILE_DUMPOUTPUT();
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::Render3DEnvironment ()
+{
+	HRESULT hr=S_OK;
+	
+	if ( m_bCreated )
+	{
+		hr = CD3DApplication::Render3DEnvironment ();
+		if ( FAILED(hr) )	return hr;
+	}
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::FrameMove()
+{
+	PROFILE_BLOCKSTART();
+
+	PROFILE_BEGIN("FrameMove");
+
+	DxGlobalStage::GetInstance().FrameMove ( m_fTime, m_fElapsedTime );
+	DxResponseMan::GetInstance().FrameMove ( m_fTime, m_fElapsedTime, m_bDefWin, TRUE );
+	DxViewPort::GetInstance().FrameMove ( m_fTime, m_fElapsedTime );
+
+	PROFILE_END("FrameMove");
+	PROFILE_BLOCKEND();
+	PROFILE_DUMPOUTPUT();
+
+	DWORD dwL_ALT = DxInputDevice::GetInstance().GetKeyState ( DIK_LMENU );
+	DWORD dwRETURN = DxInputDevice::GetInstance().GetKeyState ( DIK_RETURN );
+	if ( (dwL_ALT&DXKEY_PRESSED) && (dwRETURN&DXKEY_UP) )	
+	{
+		if ( ROPTION::bScrAllowToggle )
+		{
+			if ( SUCCEEDED( ToggleFullscreen() ) )
+			{
+				ROPTION::bScrWindowed = !ROPTION::bScrWindowed;
+				DXPARAMSET::GetInstance().m_bScrWindowed = !DXPARAMSET::GetInstance().m_bScrWindowed;
+			}
+		}
+	}
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::Render()
+{
+	HRESULT hr(S_OK);
+	if ( !m_pd3dDevice )	return S_FALSE;
+
+	PROFILE_BLOCKSTART2();
+
+	PROFILE_BEGIN2("Render");
+
+	D3DCOLOR colorClear = D3DCOLOR_XRGB(89,135,179);
+	DxFogMan::GetInstance().RenderFogSB ( m_pd3dDevice );
+	colorClear = DxFogMan::GetInstance().GetFogColor();
+
+	// Clear the viewport
+	hr = m_pd3dDevice->Clear( 0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER,colorClear, 1.0f, 0L );
+
+	// Begin the scene
+	if( SUCCEEDED(hr=m_pd3dDevice->BeginScene()) )
+	{
+		DxLightMan::GetInstance()->Render ( m_pd3dDevice );
+
+		DXLIGHT &Light = *DxLightMan::GetInstance()->GetDirectLight ();
+		m_pd3dDevice->SetVertexShaderConstantF ( VSC_LIGHTDIRECT, (float*)&Light.m_Light.Direction, 1 );
+		m_pd3dDevice->SetVertexShaderConstantF ( VSC_LIGHTDIFFUSE, (float*)&Light.m_Light.Diffuse, 1 );
+		m_pd3dDevice->SetVertexShaderConstantF ( VSC_LIGHTAMBIENT, (float*)&Light.m_Light.Ambient, 1 );
+
+		D3DXVECTOR3 &vFromPt = DxViewPort::GetInstance().GetFromPt ();
+		m_pd3dDevice->SetVertexShaderConstantF ( VSC_CAMERAPOSITION, (float*)&vFromPt, 1 );
+
+		D3DLIGHTQ	pLight;
+		D3DXVECTOR4	vPointPos;
+		D3DXVECTOR3	vPointDiff;
+		for ( int i=0; i<7; i++ )
+		{
+			if ( DxLightMan::GetInstance()->GetClosedLight(i+1) )
+			{
+				pLight = DxLightMan::GetInstance()->GetClosedLight(i+1)->m_Light;
+				vPointDiff = D3DXVECTOR3 ( pLight.Diffuse.r, pLight.Diffuse.g, pLight.Diffuse.b );
+				vPointPos.x = pLight.Position.x;
+				vPointPos.y = pLight.Position.y;
+				vPointPos.z = pLight.Position.z;
+				vPointPos.w = pLight.Range;
+			}
+			else
+			{
+				vPointPos = D3DXVECTOR4 ( 0.f, 0.f, 0.f, 0.1f );
+				vPointDiff = D3DXVECTOR3 ( 0.f, 0.f, 0.f );
+			}
+			m_pd3dDevice->SetVertexShaderConstantF (i*2+VSC_PLIGHTPOS01, (float*)&vPointPos, 1);
+			m_pd3dDevice->SetVertexShaderConstantF (i*2+VSC_PLIGHTDIFF01, (float*)&vPointDiff, 1);
+		}
+
+		D3DXMATRIX matView = DxViewPort::GetInstance().GetMatView();
+		D3DXMATRIX matProj = DxViewPort::GetInstance().GetMatProj();
+
+		m_pd3dDevice->SetVertexShaderConstantF ( VSC_SKIN_DEFAULT, (float*)&D3DXVECTOR4 (1.f, 0.5f, 0.f, 765.01f), 1 );
+
+		D3DXVECTOR3	vLightVector = DxLightMan::GetInstance()->GetDirectLight()->m_Light.Direction;
+		D3DXVec3TransformNormal ( &vLightVector, &vLightVector, &matView );
+		D3DXVec3Normalize ( &vLightVector, &vLightVector);
+		vLightVector = -vLightVector;
+		m_pd3dDevice->SetVertexShaderConstantF ( VSC_LIGHTDIRECT_VIEW, (float*)&vLightVector, 1 );
+
+		D3DXMatrixTranspose( &matView, &matView );
+		D3DXMatrixTranspose( &matProj, &matProj );
+
+		D3DXMATRIX matIdentity;
+		D3DXMatrixIdentity( &matIdentity );
+		m_pd3dDevice->SetTransform( D3DTS_WORLD,  &matIdentity );
+
+		m_pd3dDevice->SetTextureStageState( 0, D3DTSS_COLOROP,	D3DTOP_MODULATE );
+
+		PROFILE_BEGIN2("Render_DxGlobalStage");
+		DxGlobalStage::GetInstance().Render ();
+		PROFILE_END2("Render_DxGlobalStage");
+
+		CCursor::GetInstance().Render ( m_pd3dDevice, DxInputDevice::GetInstance().GetMouseLocateX(), DxInputDevice::GetInstance().GetMouseLocateY() );
+
+		PROFILE_END2("Render");
+		PROFILE_BLOCKEND2();
+		PROFILE_DUMPOUTPUT2();
+
+		RenderText();
+
+		m_pd3dDevice->EndScene();
+
+		return S_OK;
+	}else{
+		m_pd3dDevice->EndScene();
+	}
+
+	PROFILE_END2("Render");
+	PROFILE_BLOCKEND2();
+	PROFILE_DUMPOUTPUT2();
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::RenderText()
+{
+	if ( !dxincommand::bDISP_CONSOLE && !dxincommand::bDISP_FPS )	return S_OK;
+
+    D3DCOLOR fontColor        = D3DCOLOR_ARGB(255,255,255,255);
+    D3DCOLOR fontWarningColor = D3DCOLOR_ARGB(255,0,255,255);
+    TCHAR szMsg[MAX_PATH] = TEXT("");
+
+	// Output display stats
+	CD3DFontPar* pD3dFont = DxFontMan::GetInstance().FindFont ( _DEFAULT_FONT, 8, D3DFONT_SHADOW|D3DFONT_ASCII );
+	if ( !pD3dFont )	return S_OK;
+
+	CTextUtil::Get()->Render( TRUE );
+
+	if ( dxincommand::bDISP_FPS )
+	{
+		// Output display stats
+		FLOAT fNextLine = 40.0f; 
+
+		StringCchCopy ( szMsg, MAX_PATH, m_strDeviceStats );
+		fNextLine -= 20.0f;
+		pD3dFont->DrawText( 2, fNextLine, fontColor, szMsg );
+
+		StringCchCopy( szMsg, MAX_PATH, m_strFrameStats );
+		fNextLine -= 20.0f;
+		pD3dFont->DrawText( 2, fNextLine, fontColor, szMsg );
+	}
+
+	if ( dxincommand::bDISP_CONSOLE )
+	{
+		CDebugSet::Render ();
+	}
+
+	 CTextUtil::Get()->Render( FALSE );
+
+    return S_OK;
+}
+
+HRESULT CMiniAWnd::InvalidateDeviceObjects()
+{
+	DxResponseMan::GetInstance().InvalidateDeviceObjects ();
+	DxGlobalStage::GetInstance().InvalidateDeviceObjects ();
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::DeleteDeviceObjects()
+{
+	DxResponseMan::GetInstance().DeleteDeviceObjects ();
+	DxGlobalStage::GetInstance().DeleteDeviceObjects ();
+	CCursor::GetInstance().DeleteDeviceObjects ();
+
+	return S_OK;
+}
+
+HRESULT CMiniAWnd::FinalCleanup()
+{
+	DxGlobalStage::GetInstance().FinalCleanup ();
+	DxResponseMan::GetInstance().FinalCleanup ();
+	return S_OK;
+}
+
+void CMiniAWnd::OnSysCommand(UINT nID, LPARAM lParam)
+{
+	if(nID==SC_KEYMENU)	return;
+	__super::OnSysCommand(nID, lParam);
+}
+
+BOOL CMiniAWnd::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+	MSG msg;
+	msg.hwnd = m_hWnd;
+	msg.message = message;
+	msg.wParam = wParam;
+	msg.lParam = lParam;
+	DxGlobalStage::GetInstance().MsgProc ( &msg );
+
+#ifdef USE_MSHIELD
+	switch( message )
+	{
+	case MSHIELD_LOGIN_FEEDBACK:
+		{
+			//CDebugSet::MsgBox( "MSHIELD_LOGIN_FEEDBACK MShield::pMtSetCallback %s", MShieldGlobal::szLastUser );
+			MShield::pMtSetCallback(MShieldGlobal::szLastUser);
+		}break;
+
+	case MSHIELD_RESET_INFO_FEEDBACK:
+		{
+			//CDebugSet::MsgBox( "MSHIELD_RESET_INFO_FEEDBACK MShield::pMtSetCallback 0" );
+			MShield::pMtSetCallback(0);
+		}break;
+
+	case MSHIELD_HANDSHAKE_REQUEST:
+		{
+			MShieldGlobal::nHandShakeResultKey = MShield::MakeHandShakeHash(MShieldGlobal::nHandShakeRequestKey );
+			DxGlobalStage::GetInstance().MShieldReplyHandShake();
+		}break;
+
+	case WM_COPYDATA:
+		{
+			PCOPYDATASTRUCT cds = (PCOPYDATASTRUCT)lParam;
+
+			//CDebugSet::MsgBox( GetSafeHwnd(), "WM_COPYDATA" );
+			if ((cds->dwData == GyxMessages::SETACCOUNTCALLBACK) && (cds->lpData))
+			{
+				MoveMemory(&MShield::pMtSetCallback, cds->lpData, cds->cbData);
+			}
+		}break;
+
+	};
+
+#endif
+
+	return __super::OnWndMsg(message, wParam, lParam, pResult);
+}
+
+
+void CMiniAWnd::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	lpMMI->ptMinTrackSize.x = 800;
+	lpMMI->ptMinTrackSize.y = 600;
+
+	__super::OnGetMinMaxInfo(lpMMI);
+}
+
+BOOL CMiniAWnd::OnNcActivate(BOOL bActive)
+{
+	DxInputDevice::GetInstance().OnActivate ( bActive );
+	DxBgmSound::GetInstance().SetActivate ( bActive );
+	return __super::OnNcActivate(bActive);
+}
+
+void CMiniAWnd::OnTimer(UINT nIDEvent)
+{
+	__super::OnTimer(nIDEvent);
+}
+
+void CMiniAWnd::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
+{
+	__super::OnActivate(nState, pWndOther, bMinimized);
+	m_pApp->SetActive ( !bMinimized );
+}

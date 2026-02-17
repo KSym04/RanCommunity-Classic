@@ -1,0 +1,3134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{abac3eba-4211-4c12-964d-2b4cd3a88f3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Lua">
+      <UniqueIdentifier>{7764410f-6437-4a47-be94-449b7bf2ed4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxCommon">
+      <UniqueIdentifier>{6e3bb8dc-0f88-44fe-a011-309757cd8531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxCommon9">
+      <UniqueIdentifier>{6a5c36df-d2d4-456b-90e8-c30e94c27a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect">
+      <UniqueIdentifier>{76ea73fd-f99d-4527-8794-ee5bc06bafcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\EffAni">
+      <UniqueIdentifier>{2d260b33-b4bf-4c1b-8942-a4f45b281cd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\EffChar">
+      <UniqueIdentifier>{4d6aed20-a346-4111-841d-bff4510aef2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\EffChar\DxEffCharData">
+      <UniqueIdentifier>{474b7414-8c30-48c4-b7a6-d1e506f72b59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\EffChar\DxEffSelfEffect">
+      <UniqueIdentifier>{d09e1c9e-b3b7-4f2f-af86-ccb0b374ef72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\EffKeep">
+      <UniqueIdentifier>{3bfd0fa4-7805-4e29-a665-48b050e2c39f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\EffProj">
+      <UniqueIdentifier>{afd80955-a6ae-42b0-8dd0-c63e1e68e6a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Frame">
+      <UniqueIdentifier>{7b36f70a-a0f6-4b62-bc54-3e31d4fd3f6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh">
+      <UniqueIdentifier>{63e60b75-ebf0-481e-b25d-2c8087797bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxTexEff">
+      <UniqueIdentifier>{54979f27-eb07-4c92-9aa7-ae63f6bb7fcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Shader">
+      <UniqueIdentifier>{97ec2ce2-7988-42e9-80e3-3da3d5a9c74b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Single">
+      <UniqueIdentifier>{979eca76-2b3e-488e-a1f8-9c34d4f28ad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxLand">
+      <UniqueIdentifier>{f07e2d0e-ca90-462a-9da6-5befd10e67d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs">
+      <UniqueIdentifier>{628a8978-4164-406a-a9c2-a3a6d56fcc51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\FrameMesh">
+      <UniqueIdentifier>{9d453049-ee79-4b3b-b720-3760465e6923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh">
+      <UniqueIdentifier>{9cbab545-8244-4830-98de-3645e319175e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxSkinMesh9">
+      <UniqueIdentifier>{b99b533a-cead-48ff-bd65-ff75bc7e882e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxSkinChar">
+      <UniqueIdentifier>{db61a59f-526b-4496-b3e1-12bb936027b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\SAnimation">
+      <UniqueIdentifier>{36174e4f-c01b-4914-93f0-f4a3fbd3e8e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\SAnimation\SAnimationInfo">
+      <UniqueIdentifier>{220c2947-4f3d-4d2a-af50-1a71ca93fdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxSkinPiece">
+      <UniqueIdentifier>{d56a2038-01ad-4f37-b589-ee83dbeae006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxSkinPiece\STrace">
+      <UniqueIdentifier>{2f27a944-1234-4caa-b2a3-1903651c0cb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxSkinPiece\MaterialPiece">
+      <UniqueIdentifier>{5dd4081e-f0c4-45ff-99ee-55baa56f6492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxSkinPiece\DxUserSlot">
+      <UniqueIdentifier>{6b6c49d8-c554-4835-9f99-80fac55a2c3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxAttBone">
+      <UniqueIdentifier>{46ed413f-5503-4777-8e67-dac5b054c602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxAttBone\DxAttBoneData">
+      <UniqueIdentifier>{eec034aa-1c54-4974-8e83-b0120d152902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxAttBone\DxAttBoneLink">
+      <UniqueIdentifier>{78f8af58-81ec-4239-89eb-ea6bcf95afe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxVehicle">
+      <UniqueIdentifier>{2389a75b-c353-4273-98a2-2dc332941655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\SkinMesh\DxVehicle\DxVehicleData">
+      <UniqueIdentifier>{1797e2ff-5aaa-433f-b511-b275198ba8e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxSound">
+      <UniqueIdentifier>{7806ba60-01bb-44b6-a5dc-09fe95637834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools">
+      <UniqueIdentifier>{0de7616d-3de0-4c9b-b8b6-00825d1010f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\MemoryTexture">
+      <UniqueIdentifier>{6b321726-d4d1-44ff-a2be-27abb6acf3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\MemoryXFile">
+      <UniqueIdentifier>{80d3867d-ed66-4abb-b717-6b4f69e2c452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic">
+      <UniqueIdentifier>{d59d3a46-6966-4656-bbeb-92ab34f8907f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface">
+      <UniqueIdentifier>{a3aceaec-c603-4244-9c7f-b82bfd523950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\Cursor">
+      <UniqueIdentifier>{6c7e37b3-0d16-4cb2-b754-0a1c06333015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\GameTextLoader">
+      <UniqueIdentifier>{f1c5fe82-c338-4421-9740-5a7ac836b281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\InterfaceCfg">
+      <UniqueIdentifier>{b94508d1-a4aa-44f5-88b5-d311740f8cd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\PositionKeeper">
+      <UniqueIdentifier>{a17deaa6-6b29-456c-9bdf-1c77ab29c5a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\RanXML">
+      <UniqueIdentifier>{f095a6af-fd51-470c-99b1-3037a72e5fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\tinyxml">
+      <UniqueIdentifier>{641852b2-d1e9-4dc0-9d81-c4b4a7748d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIControl">
+      <UniqueIdentifier>{ebbaff40-1d64-4383-8575-c097439e4696}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIControlContainer">
+      <UniqueIdentifier>{809063bb-e406-4802-af1a-5c49db1c765e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIControlDefine">
+      <UniqueIdentifier>{cf442a68-5ae1-42a1-8240-1a10e348907e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIControlMessage">
+      <UniqueIdentifier>{53488ae8-8608-4a77-927f-ae7207f2d4a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIDebugSet">
+      <UniqueIdentifier>{b31c65bb-4444-4fb5-b4dd-f77ed6ead753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIFocusContainer">
+      <UniqueIdentifier>{a96de6ad-c297-4f98-b726-9d3d7b61c046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIGroup">
+      <UniqueIdentifier>{76883e8d-c80e-4c81-bdda-546da24b43c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIKeyCheck">
+      <UniqueIdentifier>{2425971d-43e6-41b8-9cca-b982175bea7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIMan">
+      <UniqueIdentifier>{2f1f75a0-275e-47f8-a938-84f0982d7d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIMessageQueue">
+      <UniqueIdentifier>{935f6d33-1f01-47ad-a6c9-123a459c3910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIRenderQueue">
+      <UniqueIdentifier>{ddd25ba1-ca44-4980-9411-a075584e0a01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UITextUtil">
+      <UniqueIdentifier>{28fec62b-45fe-47ec-8e6c-cc0ff0c78c5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hash">
+      <UniqueIdentifier>{2226bdbf-4e2a-4c7a-af42-45f5a3bc1e36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NaviMesh">
+      <UniqueIdentifier>{c68a7a37-9885-4974-b385-7005f3426729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TextTexture">
+      <UniqueIdentifier>{0a34e24b-6e75-4549-bd3d-07e58e3b5883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{064144b7-3c94-478b-b93d-37405708cba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxPieceManager">
+      <UniqueIdentifier>{daa4f6a3-cb30-49c7-adb2-f76d60b8992d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxMultiStaticMesh">
+      <UniqueIdentifier>{8191de5d-aab4-481b-a691-6bb6ab511f2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxTexEffect">
+      <UniqueIdentifier>{a0fb872c-3ef0-4fe9-8e1e-76f87b448ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\PIECETREE">
+      <UniqueIdentifier>{648fb635-f693-40b2-b1ad-4e83f63c635b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxPieceAABB">
+      <UniqueIdentifier>{742eb2bf-2e85-4b25-b688-690ebb2a132c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxPieceQuickSort">
+      <UniqueIdentifier>{6e3ae8b7-d262-44c4-b0c6-d023aa0fb896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxPieceNode">
+      <UniqueIdentifier>{1ff16710-7dc2-406d-89e4-fea8a520dd87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxPiece">
+      <UniqueIdentifier>{86059f9a-52af-4f54-b668-bc1498659c03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxMapEditMan">
+      <UniqueIdentifier>{07f52206-5d8f-4a37-abb3-d5b49393163e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxPieceContainer">
+      <UniqueIdentifier>{2ea711fc-ff44-4fea-97ff-da5b7eacd824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxAABBOctree">
+      <UniqueIdentifier>{07e855da-392c-4031-9bc6-e0009db2e38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxLight">
+      <UniqueIdentifier>{fdc0563b-c00a-4755-a7cb-952e8b4a4072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxLightNode">
+      <UniqueIdentifier>{b3ad9167-0c5c-4559-8894-a57229b7ad4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\OBJOCTree">
+      <UniqueIdentifier>{7ca72a9a-2574-46ac-aa33-074c58557c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxSingleTexMesh">
+      <UniqueIdentifier>{c224b734-fff2-4ed0-a3ba-3f453151931e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxLightMan">
+      <UniqueIdentifier>{b3d63b25-7ed1-4777-9bad-9795714b9176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\NsOCTree">
+      <UniqueIdentifier>{52e38cfc-fedb-4fa5-8bd3-2d876ea901f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\VMSetting">
+      <UniqueIdentifier>{76d33e6a-f632-4311-b1c7-e74d1446c875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxMultiStaticMaterialMesh">
+      <UniqueIdentifier>{9ae685b4-7331-45a2-b345-47f6adb0c7a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxPieceMultiStaticMaterialMesh">
+      <UniqueIdentifier>{cea38067-a237-4469-830c-d36be11e9183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxStaticMaterialMeshThread">
+      <UniqueIdentifier>{46e1ebe0-c1e8-4c50-8422-e3657d5087e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxStaticMaterialMesh">
+      <UniqueIdentifier>{b51cc488-f9df-45ea-b064-7180e91fe6a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxStaticMesh">
+      <UniqueIdentifier>{8d415fda-89f9-4153-8976-931c3a2b532f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxStaticMeshThread">
+      <UniqueIdentifier>{34536222-52be-43a6-ba53-e503b91a49ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxEffect\Mesh\DxMultiPieceAABB">
+      <UniqueIdentifier>{51d37ff6-4349-4ba7-ac33-3d4006829617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxMeshs\FrameMesh\DxPieceAnimation">
+      <UniqueIdentifier>{cc485f1e-a173-4eb0-9c82-12902ff2193f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxSingleTexMaterialMesh">
+      <UniqueIdentifier>{34d97955-3279-46a6-bda9-abe199614bc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxMaterialManager">
+      <UniqueIdentifier>{e39fbfa8-74a0-4936-8784-015e58fd71b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxShaderManager">
+      <UniqueIdentifier>{3b6bb4ae-167a-46ee-a79c-3f55a6b21cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\MaterialShaderParam">
+      <UniqueIdentifier>{6cae8da6-2e82-459e-8cfa-c35059bd8521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxAABBOctree\LightMap">
+      <UniqueIdentifier>{f2bf8cd8-ccfc-4eaf-bfc6-3bf86d942b7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxAABBOctree\Orig">
+      <UniqueIdentifier>{830be514-bbb6-4399-889b-e23e37c2df31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\OBJOCTree\Orig">
+      <UniqueIdentifier>{d12fd965-7247-4f4f-93d6-48cdec15887f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\OBJOCTree\LightMap">
+      <UniqueIdentifier>{c3ca458c-aa8f-4374-a0fe-5e0fb8ba3c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\OBJOCTree\Material">
+      <UniqueIdentifier>{51fff5cd-d615-4b5e-a879-70e222b3c984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxLand\DxLandBasic">
+      <UniqueIdentifier>{7f2dbcdd-a49b-4944-9f0a-31162e8c33ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxShadowMap">
+      <UniqueIdentifier>{bb5f2a23-5283-42e6-a280-dda042522dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxSoftShadowMap">
+      <UniqueIdentifier>{412cb2c9-e261-4cc5-90c2-a02cc9afefdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxShadowMesh">
+      <UniqueIdentifier>{15df6ad6-ed67-456c-9f04-00b8431948a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxShaderData">
+      <UniqueIdentifier>{dc206563-b209-46e3-953d-5f84f67029ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\BaseStream">
+      <UniqueIdentifier>{923a2554-2a7d-4775-a4a6-23acad7009d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Ran2Crypt">
+      <UniqueIdentifier>{d2d689b3-2501-47b3-ad23-87f8b7126689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{a9a97c0b-cddc-4c26-ac85-c2be3bc89e74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Global">
+      <UniqueIdentifier>{6a2dde76-3a00-4b6a-8d38-ff6ef3f1d998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Settings">
+      <UniqueIdentifier>{9b77f144-5d05-44a2-b45c-74f5f8b4ea50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\RCrypt">
+      <UniqueIdentifier>{31fd3062-a80d-47d8-bac7-09b5d5c0d78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\BasicTextLoader">
+      <UniqueIdentifier>{2eb756f0-aa11-4405-aee2-fbbbb0c6c3ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\GS">
+      <UniqueIdentifier>{c983571b-af79-4a16-90a0-47801dd5dbcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\GS\V4">
+      <UniqueIdentifier>{b6bdc28e-ddba-421f-b94e-2843b087df9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIConfigMgr">
+      <UniqueIdentifier>{1e55cf45-51df-4438-8f5b-271ae27298c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UITextureListXml">
+      <UniqueIdentifier>{68e7a9c6-2fee-41e6-aca3-e41695671c3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIControlListXml">
+      <UniqueIdentifier>{0b5afba4-ff3f-4bb8-88af-000f92a2ff0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIDockingMan">
+      <UniqueIdentifier>{10716a31-7dbe-43e2-9ecf-e0e841dc14e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUInterface\UIMutuallyExclusive">
+      <UniqueIdentifier>{3511788b-a8f9-4692-81fd-446259791c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DxTools\DxFontMan">
+      <UniqueIdentifier>{09eb53c8-44ea-4c71-abf5-194c63e0cbb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\FreetypeLib">
+      <UniqueIdentifier>{2b5ce833-9a2d-47f9-9304-9ee59aea96ad}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common\BaseString.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BugTrapStr.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CFileFind.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\charset.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CList.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\cmacro.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CMemPool.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CommonWeb.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CompByte.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\creportfiles.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DoubleBuffering.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DXInputString.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\gassert.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\gltexfile.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\IMEEdit.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\IniLoader.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Method.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\profile.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Rijndael.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\seqrandom.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SFileSystem.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SHA.H">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StlFunctions.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringFile.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringMemory.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringUtils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SUBPATH.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Unzipper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\lua_tinker.h">
+      <Filter>Common\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="dxframe\d3dapp.h">
+      <Filter>DxCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="dxframe\dsutil.h">
+      <Filter>DxCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="dxframe\dxutil.h">
+      <Filter>DxCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="dxframe\xrmxftmpl.h">
+      <Filter>DxCommon</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon9\dxstdafx.h">
+      <Filter>DxCommon9</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon9\DXUT.h">
+      <Filter>DxCommon9</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon9\DXUTenum.h">
+      <Filter>DxCommon9</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon9\DXUTgui.h">
+      <Filter>DxCommon9</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon9\DXUTMesh.h">
+      <Filter>DxCommon9</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon9\DXUTmisc.h">
+      <Filter>DxCommon9</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon9\getdxver.h">
+      <Filter>DxCommon9</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectMan.h">
+      <Filter>DxEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxLoadShader.h">
+      <Filter>DxEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\ShaderConstant.h">
+      <Filter>DxEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffAni\DxEffAni.h">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffAni\DxEffAniFaceOff.h">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffAni\DxEffAniGhosting.h">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffAni\DxEffAniPlayer.h">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffAni\DxEffAniSingle.h">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffAni\DxEffAniTrace.h">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffChar.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharAlpha.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharAmbient.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharAroundEff.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharArrow.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharAttribute.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharBlur.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharBoneListEff.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharBonePosEff.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharCloneBlur.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharDot3.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharDust.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharEmit.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharGhosting.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharLevel.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharLine2BoneEff.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharMark.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharMultiTex.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharNeon.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharNoAlpha.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharNormal.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharParticle.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharReflection2.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharShock.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharSingle.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharSpecular.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharSpecular2.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharTexDiff.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharToon.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharUserColor.h">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffCharData.h">
+      <Filter>DxEffect\EffChar\DxEffCharData</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Char\DxEffSelfEffect.h">
+      <Filter>DxEffect\EffChar\DxEffSelfEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffKeep\DxEffKeep.h">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffKeep\DxEffKeepCTColor.h">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffKeep\DxEffKeepCTEdge.h">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffKeep\DxEffKeepCTShade.h">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffKeep\DxEffKeepPlayer.h">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffProj\DxEffProj.h">
+      <Filter>DxEffect\EffProj</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffProj\DxEffProjGetItem.h">
+      <Filter>DxEffect\EffProj</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\EffProj\DxEffProjSpeed.h">
+      <Filter>DxEffect\EffProj</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectCloth.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectDefine.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectDot3.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectFrame.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectFur.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectGlow.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectGrass.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectLightMap.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectMultiTex.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectNature.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectNeon.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectRainDrop.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectReflect.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectRender.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectRenderState.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectRiver.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectShadow.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectShadowLow.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectSpecReflect.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectSpecular.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectSpecular2.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectSpore.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectTiling.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectToon.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectWater.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectWater2.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectWaterLight.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxFrameAni.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxFrameAniMan.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxMapBlend.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceEff.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceEffMan.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceMorph.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceStaticAni.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceTexEff.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxStaticPisMan.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTextureEff.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTextureEffMan.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\TextureSetDXT.h">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEff.h">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEffDiffuse.h">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEffFlowUV.h">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEffMan.h">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEffRotate.h">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEffSpecular.h">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEffVisualMaterial.h">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectBlurSys.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectCamera.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectDecal.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectGround.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectLighting.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectMesh.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectMoveRotate.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectMoveTarget.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectParticleSys.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectPointLight.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectSequence.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectSingleType.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectSkinMesh.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffectWave.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffExtra.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffGroupPlayer.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffMemPool.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffSingle.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffSingleMan.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\Single\DxEffSinglePropGMan.h">
+      <Filter>DxEffect\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\CollisionContainer.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\CollisionMap.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\CollisionMapCell.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DxLandDef.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DXLANDEFF.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DxLandGateMan.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DxLandMan.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DXLANDSKINOBJ.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DxOctree.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DxOctreeMesh.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DxSetLandMan.h">
+      <Filter>DxLand</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxAniKeys.h">
+      <Filter>DxMeshs</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxDecal.h">
+      <Filter>DxMeshs</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxMaterial.h">
+      <Filter>DxMeshs</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSimpleMeshMan.h">
+      <Filter>DxMeshs</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxAnimationManager.h">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxFrameMesh.h">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxReplaceContainer.h">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxAniBoneScale.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxBoneCollector.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxCharPart.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxMaterialHLSL.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinAniControl.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinAniMan.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinDefine.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinEffResult.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinMeshMan.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinObject.h">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinMesh9.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinMesh9_NORMAL.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinMeshContainer9.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinVB_ATT.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSMeshDATA.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\NsSMeshSceneGraph.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinChar.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinChar</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinCharData.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinChar</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinDataDummy.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinChar</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\SAnimation.h">
+      <Filter>DxMeshs\SkinMesh\SAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\SAnimationInfo.h">
+      <Filter>DxMeshs\SkinMesh\SAnimation\SAnimationInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxPieceDefine.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinPieceContainer.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSTrace.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece\STrace</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxSkinPieceMaterial.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece\MaterialPiece</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxUserSlot.h">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece\DxUserSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxAttBone.h">
+      <Filter>DxMeshs\SkinMesh\DxAttBone</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxAttBoneRender.h">
+      <Filter>DxMeshs\SkinMesh\DxAttBone</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxAttBoneData.h">
+      <Filter>DxMeshs\SkinMesh\DxAttBone\DxAttBoneData</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxAttBoneLink.h">
+      <Filter>DxMeshs\SkinMesh\DxAttBone\DxAttBoneLink</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxVehicle.h">
+      <Filter>DxMeshs\SkinMesh\DxVehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxVehicleData.h">
+      <Filter>DxMeshs\SkinMesh\DxVehicle\DxVehicleData</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\BgmSound.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\BgmSoundData.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\CharacterSound.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\DxSoundLib.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\DxSoundMan.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\MovableSound.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\StaticSoundMan.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxSound\SuperSound.h">
+      <Filter>DxSound</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\Collision.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DebugSet.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxBackUpRendTarget.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxCamAniMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxClubMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxCubeMap.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxCursor.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxCustomTypes.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxDamper.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxDynamicVB.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxEditBox.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxEditMat.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxEffToTexMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxEnvironment.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxFogMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxGlowMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxGrapUtils.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxInputDevice.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxMeshTexMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxMethods.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxObject.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxObjectMRS.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxPhysical.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxPostProcess.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxQUADTree.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxRenderStates.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSequenceUV.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSkyBase.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSkyCloud.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSkyMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSpring.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSurfaceTex.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxVertexFVF.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxViewPort.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxWeatherMan.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxWind.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\EditMeshs.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\GammaControl.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\MatrixDecompose.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\NsCollisionMap.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\NsOptimizeMesh.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\ScanCode.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\TextureManager.h">
+      <Filter>DxTools</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\NsOCTree.h">
+      <Filter>DxTools\NsOCTree</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\MemoryTexture.h">
+      <Filter>DxTools\MemoryTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\MemoryXFile.h">
+      <Filter>DxTools\MemoryXFile</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\DxConsoleMsg.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\DxMsgProcessor.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\DxMsgServer.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLActiveMap.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowTracer.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLDBMan.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLDefine.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLList.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLogic.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPeriod.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuadTree.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\Cursor.h">
+      <Filter>GUInterface\Cursor</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\GameTextLoader.h">
+      <Filter>GUInterface\GameTextLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\InterfaceCfg.h">
+      <Filter>GUInterface\InterfaceCfg</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\InterfaceCfgXml.h">
+      <Filter>GUInterface\InterfaceCfg</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\PositionKeeper.h">
+      <Filter>GUInterface\PositionKeeper</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\RanXML.h">
+      <Filter>GUInterface\RanXML</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\RanXMLParser.h">
+      <Filter>GUInterface\RanXML</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\tinyxml.h">
+      <Filter>GUInterface\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIControl.h">
+      <Filter>GUInterface\UIControl</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIControlContainer.h">
+      <Filter>GUInterface\UIControlContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIControlDefine.h">
+      <Filter>GUInterface\UIControlDefine</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIDataType.h">
+      <Filter>GUInterface\UIControlDefine</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIControlMessage.h">
+      <Filter>GUInterface\UIControlMessage</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIDebugSet.h">
+      <Filter>GUInterface\UIDebugSet</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIFocusContainer.h">
+      <Filter>GUInterface\UIFocusContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIGroup.h">
+      <Filter>GUInterface\UIGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIKeyCheck.h">
+      <Filter>GUInterface\UIKeyCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIMan.h">
+      <Filter>GUInterface\UIMan</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIMessageQueue.h">
+      <Filter>GUInterface\UIMessageQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIRenderQueue.h">
+      <Filter>GUInterface\UIRenderQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UITextUtil.h">
+      <Filter>GUInterface\UITextUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\CHash.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\Common.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\CRC32.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\gosthash.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\HashCommon.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\md2.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\md4.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\md5.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\MD52.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\sha1.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="Hash\sha2.h">
+      <Filter>Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\actor.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\line2d.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\navigationcell.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\navigationheap.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\navigationmesh.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\navigationpath.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\Navigations.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh\plane.h">
+      <Filter>NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextColor.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextGroup.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextNode.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextObject.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextTexture.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextTexture16.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextTexture32.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="TextTexture\TextUtil.h">
+      <Filter>TextTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\BlockProg.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\CrashFileNames.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\DaumGameParameter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\ExceptionHandler.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\FunctionStackTrace.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\GetWinVer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\HPro.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\MinBugTrap.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\MiniVersion.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\RanFilter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\RegFunction.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\SimpleProcessAPI.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Slangfilter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\SoundSourceMan.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\webbrowser2.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DxResponseMan.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="DxEffect\DxPieceManager.h">
+      <Filter>DxEffect\Mesh\DxPieceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxMultiStaticMesh.h">
+      <Filter>DxEffect\Mesh\DxMultiStaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxStaticMesh.h">
+      <Filter>DxEffect\Mesh\DxStaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxTexEffect.h">
+      <Filter>DxEffect\Mesh\DxTexEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\PIECETREE.h">
+      <Filter>DxEffect\Mesh\PIECETREE</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceAABB.h">
+      <Filter>DxEffect\Mesh\DxPieceAABB</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceQuickSort.h">
+      <Filter>DxEffect\Mesh\DxPieceQuickSort</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceNode.h">
+      <Filter>DxEffect\Mesh\DxPieceNode</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPiece.h">
+      <Filter>DxEffect\Mesh\DxPiece</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxMapEditMan.h">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceContainer.h">
+      <Filter>DxEffect\Mesh\DxPieceContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxAABBOctree.h">
+      <Filter>DxTools\DxAABBOctree</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxLight.h">
+      <Filter>DxTools\DxLight</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxLightNode.h">
+      <Filter>DxTools\DxLightNode</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\LandTypeDef.h">
+      <Filter>DxTools\OBJOCTree</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\OBJOCTree.h">
+      <Filter>DxTools\OBJOCTree</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSingleTexMesh.h">
+      <Filter>DxTools\DxSingleTexMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxLightMan.h">
+      <Filter>DxTools\DxLightMan</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\VMSetting.h">
+      <Filter>DxTools\VMSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxEffectCloth2.h">
+      <Filter>DxEffect\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxMultiStaticMaterialMesh.h">
+      <Filter>DxEffect\Mesh\DxMultiStaticMaterialMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxStaticMeshThread.h">
+      <Filter>DxEffect\Mesh\DxStaticMeshThread</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxStaticMaterialMeshThread.h">
+      <Filter>DxEffect\Mesh\DxStaticMaterialMeshThread</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxStaticMaterialMesh.h">
+      <Filter>DxEffect\Mesh\DxStaticMaterialMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxPieceMultiStaticMaterialMesh.h">
+      <Filter>DxEffect\Mesh\DxPieceMultiStaticMaterialMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxEffect\DxMultiPieceAABB.h">
+      <Filter>DxEffect\Mesh\DxMultiPieceAABB</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshs\DxPieceAnimation.h">
+      <Filter>DxMeshs\FrameMesh\DxPieceAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSingleTexMaterialMesh.h">
+      <Filter>DxTools\DxSingleTexMaterialMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxMaterialManager.h">
+      <Filter>DxTools\DxMaterialManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxShaderManager.h">
+      <Filter>DxTools\DxShaderManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\MaterialShaderParam.h">
+      <Filter>DxTools\MaterialShaderParam</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxAABBOctreeLightMap.h">
+      <Filter>DxTools\DxAABBOctree\LightMap</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxAABBOctreeOrig.h">
+      <Filter>DxTools\DxAABBOctree\Orig</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\OBJOCTreeOrig.h">
+      <Filter>DxTools\OBJOCTree\Orig</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\OBJOCTreeLightMap.h">
+      <Filter>DxTools\OBJOCTree\LightMap</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\OBJOCTreeMaterial.h">
+      <Filter>DxTools\OBJOCTree\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="DxOctree\DxLandBasic.h">
+      <Filter>DxLand\DxLandBasic</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxShadowMap.h">
+      <Filter>DxTools\DxShadowMap</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxSoftShadowMap.h">
+      <Filter>DxTools\DxSoftShadowMap</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxShadowMesh.h">
+      <Filter>DxTools\DxShadowMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxShadowMeshData.h">
+      <Filter>DxTools\DxShadowMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxShaderData.h">
+      <Filter>DxTools\DxShaderData</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\basestream.h">
+      <Filter>Common\BaseStream</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ByteStream.h">
+      <Filter>Common\BaseStream</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SerialFile.h">
+      <Filter>Common\BaseStream</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\SerialMemory.h">
+      <Filter>Common\BaseStream</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Ran2Crypt.h">
+      <Filter>Common\Ran2Crypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSREngineGlobal.h">
+      <Filter>Core\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRGameGlobal.h">
+      <Filter>Core\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSROption.h">
+      <Filter>Core\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSROptionDef.h">
+      <Filter>Core\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRParam.h">
+      <Filter>Core\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRParamDef.h">
+      <Filter>Core\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRProfile.h">
+      <Filter>Core\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRProfileDef.h">
+      <Filter>Core\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRPath.h">
+      <Filter>Core\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRInfo.h">
+      <Filter>Core\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\NSRLog.h">
+      <Filter>Core\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RCryptBase.h">
+      <Filter>Common\RCrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RCryptByte.h">
+      <Filter>Common\RCrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RCryptByteArray.h">
+      <Filter>Common\RCrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RCryptByteDefine.h">
+      <Filter>Common\RCrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RCryptXML.h">
+      <Filter>Common\RCrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\BasicTextLoader.h">
+      <Filter>GUInterface\BasicTextLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RijndaelGS.h">
+      <Filter>Common\GS</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BaseStringGS.h">
+      <Filter>Common\GS</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringFileGS.h">
+      <Filter>Common\GS</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringMemoryGS.h">
+      <Filter>Common\GS</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BaseStringGSV4.h">
+      <Filter>Common\GS\V4</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringMemoryGSV4.h">
+      <Filter>Common\GS\V4</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringFileGSV4.h">
+      <Filter>Common\GS\V4</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RijndaelGSV4.h">
+      <Filter>Common\GS\V4</Filter>
+    </ClInclude>
+    <ClInclude Include="PreCompile.h" />
+    <ClInclude Include="Common\StringFormat.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\StringFormatW.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DepthWithTextToFile.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIConfigMgr.h">
+      <Filter>GUInterface\UIConfigMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIControlListXml.h">
+      <Filter>GUInterface\UIControlListXml</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UITextureListXml.h">
+      <Filter>GUInterface\UITextureListXml</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIDockingMan.h">
+      <Filter>GUInterface\UIDockingMan</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\UIMutuallyExclusive.h">
+      <Filter>GUInterface\UIMutuallyExclusive</Filter>
+    </ClInclude>
+    <ClInclude Include="GUInterface\NSGUI.h">
+      <Filter>GUInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxFontDefine.h">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\d3dfont.h">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\D3DFontX.h">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClInclude>
+    <ClInclude Include="DxCommon\DxFontMan.h">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FreetypeLib.h">
+      <Filter>Common\FreetypeLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Internal.hpp">
+      <Filter>Common\FreetypeLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RCryptByteArray2021.h">
+      <Filter>Common\RCrypt</Filter>
+    </ClInclude>
+    <ClInclude Include="StealthCodeArea.h" />
+    <ClInclude Include="StealthCodeArea_Max.h" />
+    <ClInclude Include="StealthDataArea.h" />
+    <ClInclude Include="Core\RegisterRefferalDef.h">
+      <Filter>Core\Settings</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Common\BaseString.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\BugTrapStr.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CFileFind.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\charset.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CommonWeb.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CompByte.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\creportfiles.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\DoubleBuffering.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\DXInputString.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\gassert.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\gltexfile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\IMEEdit.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\IniLoader.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Method.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\profile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Rijndael.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\seqrandom.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\SFileSystem.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\SHA.CPP">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringFile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringMemory.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringUtils.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\SUBPATH.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Unzipper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\lua_tinker.cpp">
+      <Filter>Common\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="dxframe\d3dapp.cpp">
+      <Filter>DxCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="dxframe\dsutil.cpp">
+      <Filter>DxCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="dxframe\dxutil.cpp">
+      <Filter>DxCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="dxframe\xrmxftmpl.cpp">
+      <Filter>DxCommon</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon9\dxstdafx.cpp">
+      <Filter>DxCommon9</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon9\DXUT.cpp">
+      <Filter>DxCommon9</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon9\DXUTenum.cpp">
+      <Filter>DxCommon9</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon9\DXUTgui.cpp">
+      <Filter>DxCommon9</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon9\DXUTMesh.cpp">
+      <Filter>DxCommon9</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon9\DXUTmisc.cpp">
+      <Filter>DxCommon9</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon9\getdxver.cpp">
+      <Filter>DxCommon9</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectMan.cpp">
+      <Filter>DxEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxLoadShader.cpp">
+      <Filter>DxEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffAni\DxEffAni.cpp">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffAni\DxEffAniFaceOff.cpp">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffAni\DxEffAniGhosting.cpp">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffAni\DxEffAniPlayer.cpp">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffAni\DxEffAniSingle.cpp">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffAni\DxEffAniTrace.cpp">
+      <Filter>DxEffect\EffAni</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffChar.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharAlpha.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharAmbient.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharAroundEff.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharArrow.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharAttribute.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharBlur.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharBoneListEff.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharBonePosEff.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharCloneBlur.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharDot3.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharDust.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharEmit.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharGhosting.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharLevel.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharLine2BoneEff.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharMark.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharMultiTex.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharNeon.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharNoAlpha.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharNormal.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharParticle.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharReflection2.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharShock.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharSingle.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharSpecular.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharSpecular2.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharTexDiff.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharToon.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharUserColor.cpp">
+      <Filter>DxEffect\EffChar</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharData.cpp">
+      <Filter>DxEffect\EffChar\DxEffCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffCharData2.cpp">
+      <Filter>DxEffect\EffChar\DxEffCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Char\DxEffSelfEffect.cpp">
+      <Filter>DxEffect\EffChar\DxEffSelfEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffKeep\DxEffKeep.cpp">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffKeep\DxEffKeepCTColor.cpp">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffKeep\DxEffKeepCTEdge.cpp">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffKeep\DxEffKeepCTShade.cpp">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffKeep\DxEffKeepPlayer.cpp">
+      <Filter>DxEffect\EffKeep</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffProj\DxEffProj.cpp">
+      <Filter>DxEffect\EffProj</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffProj\DxEffProjGetItem.cpp">
+      <Filter>DxEffect\EffProj</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\EffProj\DxEffProjSpeed.cpp">
+      <Filter>DxEffect\EffProj</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectCloth.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectDot3.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectFrameSaveLoad.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectFrameSetSaveLoad.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectFur.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectGlow.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectGrass.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectLightMap.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectMultiTex.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectNature.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectNeon.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRainDrop.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRainDropEx.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRainDropFireFly.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectReflect.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectReflectEX.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRenderState.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRiver.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRiverDraw.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRiverEX.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectRiverRainDrop.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectShadow.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectShadowDraw.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectShadowEX.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectShadowLow.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectShadowLowDraw.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectShadowStatic.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectSpecReflect.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectSpecular.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectSpecular2.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectSpore.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectTiling.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectTilingEX.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectTilingSaveLoad.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectToon.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectWater.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectWater2.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectWaterLight.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxFrameAniMan.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapBlend.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapBlendSaveLoad.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceEff.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceEffMan.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceMorph.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceStaticAni.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceTexEff.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticPisMan.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticPisManEX.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticPisManThread.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTextureEff.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTextureEffDraw.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTextureEffMan.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\TextureSetDXT.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEff.cpp">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffDiffuse.cpp">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffFlowUV.cpp">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffMan.cpp">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffRotate.cpp">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffSpecular.cpp">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffVisualMaterial.cpp">
+      <Filter>DxEffect\Mesh\DxTexEff</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderBump.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderDefault.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderDot3.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderFur.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderRain.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderReflect.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderReflection.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderShadow.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderSpecular.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderStreamSource.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxShaderToon.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\PossasiHLSL.cpp">
+      <Filter>DxEffect\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectBlurSys.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectCamera.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectDecal.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectGround.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectLighting.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectMesh.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectMeshPROP.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectMoveRotate.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectMoveTarget.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectParticleSys.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectParticleSysDraw.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectParticleSysPROP.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectParticleSysVer.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectPointLight.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectSequence.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectSkinMesh.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffectWave.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffExtra.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffGroupPlayer.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffMemPool.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffSingle.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffSingleMan.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffSinglePropGMan.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\Single\DxEffSinglePropGManSaveLoad.cpp">
+      <Filter>DxEffect\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\CollisionContainer.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\CollisionMap.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\CollisionMapCell.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\CollisionMapTree.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxLandDef.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DXLANDEFF.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxLandGateMan.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxLandMan.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxLandManSaveLoad.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DXLANDSKINOBJ.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxOctree.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxOctreeBoxCreate.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxOctreeBoxRegion.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxOctreeCollision.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxOctreeMesh.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxOctreeMeshSaveLoad.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxOctreeSaveLoad.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxSetLandMan.cpp">
+      <Filter>DxLand</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxDecal.cpp">
+      <Filter>DxMeshs</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxMaterial.cpp">
+      <Filter>DxMeshs</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSimpleMeshMan.cpp">
+      <Filter>DxMeshs</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAnimationManager.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAnimationManagerSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAnimationManagerSetSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAnimationSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameMesh.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameMeshCollision.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameMeshDraw.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameMeshExtr.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameMeshMethod.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameMeshSetSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameMeshToOctree.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxFrameSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxMeshesSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxReplaceContainer.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxReplaceContainerSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxReplaceContainerSetSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAniBoneScale.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxBoneCollector.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxCharPart.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxMaterialHLSL.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinAniControl.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinAniMan.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinAniManSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinAniManThread.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinMeshMan.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinObject.cpp">
+      <Filter>DxMeshs\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinMesh9.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinMesh9_NORMAL.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinMeshCartoon.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinMeshContainer9.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinMeshDraw9.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinMeshLoad9.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinVB_ATT.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSMeshContainerLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSMeshContainerLOD.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSMeshContainerToon.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSMeshDATA.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\NsSMeshSceneGraph.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinMesh9</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinChar.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinChar</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinCharData.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinChar</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinCharDataSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinChar</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinDataDummy.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinChar</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\SAnimation.cpp">
+      <Filter>DxMeshs\SkinMesh\SAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\SAnimationSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\SAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\SAnimationInfo.cpp">
+      <Filter>DxMeshs\SkinMesh\SAnimation\SAnimationInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\SAnimationInfoSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\SAnimation\SAnimationInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxPieceDefine.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinPieceContainer.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinPieceSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSTrace.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece\STrace</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxSkinPieceMaterial.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece\MaterialPiece</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxUserSlot.cpp">
+      <Filter>DxMeshs\SkinMesh\DxSkinPiece\DxUserSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAttBone.cpp">
+      <Filter>DxMeshs\SkinMesh\DxAttBone</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAttBoneRender.cpp">
+      <Filter>DxMeshs\SkinMesh\DxAttBone</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAttBoneData.cpp">
+      <Filter>DxMeshs\SkinMesh\DxAttBone\DxAttBoneData</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAttBoneDataSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\DxAttBone\DxAttBoneData</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAttBoneLink.cpp">
+      <Filter>DxMeshs\SkinMesh\DxAttBone\DxAttBoneLink</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxAttBoneLinkSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\DxAttBone\DxAttBoneLink</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxVehicle.cpp">
+      <Filter>DxMeshs\SkinMesh\DxVehicle</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxVehicleData.cpp">
+      <Filter>DxMeshs\SkinMesh\DxVehicle\DxVehicleData</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxVehicleDataSaveLoad.cpp">
+      <Filter>DxMeshs\SkinMesh\DxVehicle\DxVehicleData</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\BgmSound.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\BgmSoundData.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\BgmSoundEx.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\CharacterSound.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\DxSoundLib.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\DxSoundMan.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\MovableSound.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\StaticSoundMan.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\StaticSoundManEx.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxSound\SuperSound.cpp">
+      <Filter>DxSound</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\Collision.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\CollisionAABBTree.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DebugSet.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxBackUpRendTarget.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxCamAniMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxClubMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxCubeMap.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxCursor.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxCustomTypes.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxDynamicVB.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxEditBox.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxEditMat.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxEffToTexMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxEnvironment.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxFogMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxGlowMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxGrapUtils.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxInputDevice.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxMeshTexMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxMethods.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxObjectMRS.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxObjectMRS_MOVE.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxObjectMRS_ROTATE.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxObjectMRS_SCALE.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxPhysical.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxPostProcess.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxQUADTree.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxRenderStates.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSequenceUV.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSkyBase.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSkyCloud.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSkyMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSkyManDayNight.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSkyManEtc.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSkyManEx.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSurfaceTex.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxViewPort.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxViewPortSetCamera.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxWeatherMan.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxWeatherManEx.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxWeatherManSnow.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\EditMeshs.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\GammaControl.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\MatrixDecompose.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\NsCollisionMap.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\NsOptimizeMesh.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\TextureManager.cpp">
+      <Filter>DxTools</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\NsOCTree.cpp">
+      <Filter>DxTools\NsOCTree</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\NsOCTreeSaveLoad.cpp">
+      <Filter>DxTools\NsOCTree</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\MemoryTexture.cpp">
+      <Filter>DxTools\MemoryTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\MemoryXFile.cpp">
+      <Filter>DxTools\MemoryXFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLDefine.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLogic.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPeriod.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuadTree.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\Cursor.cpp">
+      <Filter>GUInterface\Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\GameTextLoader.cpp">
+      <Filter>GUInterface\GameTextLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\InterfaceCfg.cpp">
+      <Filter>GUInterface\InterfaceCfg</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\InterfaceCfgXml.cpp">
+      <Filter>GUInterface\InterfaceCfg</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\PositionKeeper.cpp">
+      <Filter>GUInterface\PositionKeeper</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\RanXML.cpp">
+      <Filter>GUInterface\RanXML</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\RanXMLParser.cpp">
+      <Filter>GUInterface\RanXML</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\tinyxml.cpp">
+      <Filter>GUInterface\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\tinyxmlerror.cpp">
+      <Filter>GUInterface\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\tinyxmlparser.cpp">
+      <Filter>GUInterface\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIControl.cpp">
+      <Filter>GUInterface\UIControl</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIControlEx.cpp">
+      <Filter>GUInterface\UIControl</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIControlUpdate.cpp">
+      <Filter>GUInterface\UIControl</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIControlContainer.cpp">
+      <Filter>GUInterface\UIControlContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIControlDefine.cpp">
+      <Filter>GUInterface\UIControlDefine</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIControlMessage.cpp">
+      <Filter>GUInterface\UIControlMessage</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIDebugSet.cpp">
+      <Filter>GUInterface\UIDebugSet</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIFocusContainer.cpp">
+      <Filter>GUInterface\UIFocusContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIGroup.cpp">
+      <Filter>GUInterface\UIGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIGroupBasic.cpp">
+      <Filter>GUInterface\UIGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIGroupParentFunc.cpp">
+      <Filter>GUInterface\UIGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIKeyCheck.cpp">
+      <Filter>GUInterface\UIKeyCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIMan.cpp">
+      <Filter>GUInterface\UIMan</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIManBasic.cpp">
+      <Filter>GUInterface\UIMan</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIMessageQueue.cpp">
+      <Filter>GUInterface\UIMessageQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIRenderQueue.cpp">
+      <Filter>GUInterface\UIRenderQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UITextUtil.cpp">
+      <Filter>GUInterface\UITextUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\CHash.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\CRC32.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\gosthash.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\md2.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\md4.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\md5.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\MD52.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\sha1.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="Hash\sha2.cpp">
+      <Filter>Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh\actor.cpp">
+      <Filter>NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh\navagationtree.cpp">
+      <Filter>NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh\navigationcell.cpp">
+      <Filter>NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh\navigationmesh.cpp">
+      <Filter>NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh\Navigations.cpp">
+      <Filter>NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh\NavigationSaveLoad.cpp">
+      <Filter>NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh\playpen.cpp">
+      <Filter>NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextColor.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextGroup.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextNode.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextObject.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextTexture.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextTexture16.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextTexture32.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="TextTexture\TextUtil.cpp">
+      <Filter>TextTexture</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\BlockProg.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\DaumGameParameter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\ExceptionHandler.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\GetWinVer.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\HPro.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\MinBugTrap.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\MiniVersion.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\RanFilter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\RegFunction.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\SimpleProcessAPI.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Slangfilter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\SoundSourceMan.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\webbrowser2.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="DxResponseMan.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="DxEffect\DxFrameAni.cpp">
+      <Filter>DxEffect\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceManager.cpp">
+      <Filter>DxEffect\Mesh\DxPieceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceManagerSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxPieceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMultiStaticMesh.cpp">
+      <Filter>DxEffect\Mesh\DxMultiStaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMultiStaticMeshSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxMultiStaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticMesh.cpp">
+      <Filter>DxEffect\Mesh\DxStaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticMeshSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxStaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffect.cpp">
+      <Filter>DxEffect\Mesh\DxTexEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxTexEffectSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxTexEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\PIECETREE.cpp">
+      <Filter>DxEffect\Mesh\PIECETREE</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceAABB.cpp">
+      <Filter>DxEffect\Mesh\DxPieceAABB</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceQuickSort.cpp">
+      <Filter>DxEffect\Mesh\DxPieceQuickSort</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceNode.cpp">
+      <Filter>DxEffect\Mesh\DxPieceNode</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPiece.cpp">
+      <Filter>DxEffect\Mesh\DxPiece</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxPiece</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapEditMan.cpp">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapEditManTile.cpp">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapEditManEx.cpp">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapEditManGrid.cpp">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapEditManHeight.cpp">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapEditManSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMapEditManThread.cpp">
+      <Filter>DxEffect\Mesh\DxMapEditMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceContainer.cpp">
+      <Filter>DxEffect\Mesh\DxPieceContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxAABBOctree.cpp">
+      <Filter>DxTools\DxAABBOctree</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxLight.cpp">
+      <Filter>DxTools\DxLight</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxLightNode.cpp">
+      <Filter>DxTools\DxLightNode</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\OBJOCTree.cpp">
+      <Filter>DxTools\OBJOCTree</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSingleTexMesh.cpp">
+      <Filter>DxTools\DxSingleTexMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSingleTexMeshSaveLoad.cpp">
+      <Filter>DxTools\DxSingleTexMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxLightMan.cpp">
+      <Filter>DxTools\DxLightMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxLightManSetSaveLoad.cpp">
+      <Filter>DxTools\DxLightMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\VMSetting.cpp">
+      <Filter>DxTools\VMSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxEffectCloth2.cpp">
+      <Filter>DxEffect\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMultiStaticMaterialMesh.cpp">
+      <Filter>DxEffect\Mesh\DxMultiStaticMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMultiStaticMaterialMeshSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxMultiStaticMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticMeshThread.cpp">
+      <Filter>DxEffect\Mesh\DxStaticMeshThread</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticMaterialMeshThread.cpp">
+      <Filter>DxEffect\Mesh\DxStaticMaterialMeshThread</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticMaterialMesh.cpp">
+      <Filter>DxEffect\Mesh\DxStaticMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxStaticMaterialMeshSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxStaticMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceMultiStaticMaterialMesh.cpp">
+      <Filter>DxEffect\Mesh\DxPieceMultiStaticMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxPieceMultiStaticMaterialMeshSaveLoad.cpp">
+      <Filter>DxEffect\Mesh\DxPieceMultiStaticMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxEffect\DxMultiPieceAABB.cpp">
+      <Filter>DxEffect\Mesh\DxMultiPieceAABB</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxPieceAnimation.cpp">
+      <Filter>DxMeshs\FrameMesh\DxPieceAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshs\DxPieceAnimationSaveLoad.cpp">
+      <Filter>DxMeshs\FrameMesh\DxPieceAnimation</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSingleTexMaterialMesh.cpp">
+      <Filter>DxTools\DxSingleTexMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSingleTexMaterialMeshSaveLoad.cpp">
+      <Filter>DxTools\DxSingleTexMaterialMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxMaterialManager.cpp">
+      <Filter>DxTools\DxMaterialManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxShaderManager.cpp">
+      <Filter>DxTools\DxShaderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\MaterialShaderParam.cpp">
+      <Filter>DxTools\MaterialShaderParam</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxAABBOctreeLightMap.cpp">
+      <Filter>DxTools\DxAABBOctree\LightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxAABBOctreeLightMapSaveLoad.cpp">
+      <Filter>DxTools\DxAABBOctree\LightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxAABBOctreeOrig.cpp">
+      <Filter>DxTools\DxAABBOctree\Orig</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxAABBOctreeOrigSaveLoad.cpp">
+      <Filter>DxTools\DxAABBOctree\Orig</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\OBJOCTreeOrig.cpp">
+      <Filter>DxTools\OBJOCTree\Orig</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\OBJOCTreeOrigSaveLoad.cpp">
+      <Filter>DxTools\OBJOCTree\Orig</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\OBJOCTreeLightMap.cpp">
+      <Filter>DxTools\OBJOCTree\LightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\OBJOCTreeLightMapSaveLoad.cpp">
+      <Filter>DxTools\OBJOCTree\LightMap</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\OBJOCTreeMaterial.cpp">
+      <Filter>DxTools\OBJOCTree\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\OBJOCTreeMaterialSaveLoad.cpp">
+      <Filter>DxTools\OBJOCTree\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="DxOctree\DxLandBasic.cpp">
+      <Filter>DxLand\DxLandBasic</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxShadowMap.cpp">
+      <Filter>DxTools\DxShadowMap</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxSoftShadowMap.cpp">
+      <Filter>DxTools\DxSoftShadowMap</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxShadowMesh.cpp">
+      <Filter>DxTools\DxShadowMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxShadowMeshSaveLoad.cpp">
+      <Filter>DxTools\DxShadowMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxShaderData.cpp">
+      <Filter>DxTools\DxShaderData</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxMaterialManagerImport.cpp">
+      <Filter>DxTools\DxMaterialManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxMaterialManagerSaveLoad.cpp">
+      <Filter>DxTools\DxMaterialManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\ByteStream.cpp">
+      <Filter>Common\BaseStream</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\SerialFile.cpp">
+      <Filter>Common\BaseStream</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\SerialMemory.cpp">
+      <Filter>Common\BaseStream</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Ran2Crypt.cpp">
+      <Filter>Common\Ran2Crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSREngineGlobal.cpp">
+      <Filter>Core\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRGameGlobal.cpp">
+      <Filter>Core\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSROption.cpp">
+      <Filter>Core\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSROptionLoad.cpp">
+      <Filter>Core\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRParam.cpp">
+      <Filter>Core\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRParamLoad.cpp">
+      <Filter>Core\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRProfile.cpp">
+      <Filter>Core\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRProfileLoad.cpp">
+      <Filter>Core\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRInfo.cpp">
+      <Filter>Core\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRLog.cpp">
+      <Filter>Core\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\NSRPath.cpp">
+      <Filter>Core\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\RCryptByte.cpp">
+      <Filter>Common\RCrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\RCryptXML.cpp">
+      <Filter>Common\RCrypt</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\BasicTextLoader.cpp">
+      <Filter>GUInterface\BasicTextLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\RijndaelGS.cpp">
+      <Filter>Common\GS</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\BaseStringGS.cpp">
+      <Filter>Common\GS</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringFileGS.cpp">
+      <Filter>Common\GS</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringMemoryGS.cpp">
+      <Filter>Common\GS</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\BaseStringGSV4.cpp">
+      <Filter>Common\GS\V4</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringMemoryGSV4.cpp">
+      <Filter>Common\GS\V4</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringFileGSV4.cpp">
+      <Filter>Common\GS\V4</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\RijndaelGSV4.cpp">
+      <Filter>Common\GS\V4</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringFormat.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\StringFormatW.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\DepthWithTextToFile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIConfigMgr.cpp">
+      <Filter>GUInterface\UIConfigMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIControlListXml.cpp">
+      <Filter>GUInterface\UIControlListXml</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UITextureListXml.cpp">
+      <Filter>GUInterface\UITextureListXml</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIDockingMan.cpp">
+      <Filter>GUInterface\UIDockingMan</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\UIMutuallyExclusive.cpp">
+      <Filter>GUInterface\UIMutuallyExclusive</Filter>
+    </ClCompile>
+    <ClCompile Include="GUInterface\NSGUI.cpp">
+      <Filter>GUInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxFontDefine.cpp">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\D3DFontX.cpp">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\d3dfont.cpp">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClCompile>
+    <ClCompile Include="DxCommon\DxFontMan.cpp">
+      <Filter>DxTools\DxFontMan</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\FreetypeLib.cpp">
+      <Filter>Common\FreetypeLib</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.txt" />
+  </ItemGroup>
+</Project>

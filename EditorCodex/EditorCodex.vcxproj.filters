@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{cf08c25f-1f2f-4cb8-965d-67d2bc5fed6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{333dc279-3917-452f-b4b3-d4eeb1eec061}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Helper">
+      <UniqueIdentifier>{1e2fc261-3fd1-474b-b03b-4629a96ab772}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EditorCodex.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\res\Icon_Tool.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+    <None Include="res\Editorodex.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EditorCodex.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFindCrow.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFindItem.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFindMap.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgFindQuest.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="EditorCodex.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EditorCodex.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorCodexDlg.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFindCrow.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFindItem.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFindMap.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgFindQuest.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+</Project>

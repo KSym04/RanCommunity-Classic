@@ -1,0 +1,13 @@
+===== Start [21:42:15] =====
+[21:42:42.627] Left Button Clicked. X = 378, Y = 355
+[21:42:42.914] Right Button Clicked. X = 376, Y = 351
+[21:42:43.987] Right Button Clicked. X = 375, Y = 351
+[21:42:44.415] Left Button Clicked. X = 330, Y = 422
+[21:42:44.609] Left Button Clicked. X = 330, Y = 422
+[21:42:44.804] Left Button Clicked. X = 330, Y = 422
+[21:42:44.975] Left Button Clicked. X = 330, Y = 422
+[21:42:45.349] Right Button Clicked. X = 426, Y = 413
+[21:42:45.710] Left Button Clicked. X = 615, Y = 414
+[21:42:48.780] Left Button Clicked. X = 606, Y = 410
+===== End [21:42:49] =====
+MajorVer = 6 MinorVer = 1 BuildNumber = 7601

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile />
+    <Link>
+      <AdditionalDependencies>winmm.lib;imm32.lib;DbgHelp.Lib;version.lib;../_Library/ggsrvlib.lib;../_Library/ijl15.lib;../../RanSDK/DirectX/Lib/dsound.lib;../../RanSDK/DirectX/Lib/dinput8.lib;../../RanSDK/DirectX/Lib/dxerr.lib;../../RanSDK/DirectX/Lib/d3dx9.lib;../../RanSDK/DirectX/Lib/d3d9.lib;../../RanSDK/DirectX/Lib/d3dxof.lib;../../RanSDK/DirectX/Lib/dxguid.lib;../../RanSDK/ETC/lib32/fci.lib;../../RanSDK/ETC/lib32/fdi.lib;../../RanSDK/_Bin/Release/BugTrap.lib;../../RanSDK/_Lib/Release/libogg_static.lib;../../RanSDK/_Lib/Release/libvorbis_static.lib;../../RanSDK/_Lib/Release/libvorbisfile_static.lib;../../RanSDK/_Lib/Release/lzolib.lib;../../RanSDK/_Lib/Release/zlibstatic.lib;../../RanSDK/_Lib/Release/luaplus.lib;../../RanSDK/_Lib/Release/libcpuid.lib;../../RanSDK/_Lib/Release/freetype.lib;../../RanSDK/HackShield/Lib/Multithreaded/AntiCrack/AntiCpXSvr.lib;../../RanSDK/HackShield/Lib/Multithreaded/HShield/HShield.lib;../../RanSDK/HackShield/Lib/Multithreaded/Update/HSUpChk.lib;../../RanSDK/HackShield/Lib/Multithreaded/UserUtil/HsUserUtil.lib;../../RanSDK/Boost/Lib32/libboost_filesystem-vc100-mt-s-x32-1_70.lib;../../RanSDK/Boost/Lib32/libboost_chrono-vc100-mt-s-x32-1_70.lib;../../RanSDK/CV/Lib/COFF/VirtualizerSDK32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libci.lib;libc.lib;libcmtd.lib;MSVCRT.LIB;MSVCRTD.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

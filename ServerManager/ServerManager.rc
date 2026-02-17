@@ -1,0 +1,391 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Korean (Korea) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+LANGUAGE LANG_KOREAN, SUBLANG_DEFAULT
+#pragma code_page(949)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)\r\n"
+    "LANGUAGE 18, 1\r\n"
+    "#pragma code_page(949)\r\n"
+    "#include ""res\\ServerManager.rc2""  // Microsoft Visual C++¢®E¡ËcE?¢®E¡ËcE¡Ë¢çEc¢®E¡Ëc¡Ë¢ç¢®¢¯u¡Ë¢çE¢®Ec¡Ë¢ç¢®¡¿I ¢®E¡Ëc¡Ë¢ç¢®¢¯¡Ë¢çE¢®EciAy¢®E¡ËcIiCAo ¢®E¡Ëc¡Ë¢ç¢®¢¯uEA¢®E¡Ëc¡Ë¢ç¢®¢¯¢®E¡Ëc¡§I¢®¨Ï ¢®E¡ËcE¢®E¡Ëc¡§I¢®¨Ï¢®E¡ËcEc¢®E¡Ëc¡Ë¢ç¢®¢¯uO¢®E¡Ëc¡Ë¢ç¢®¢¯o¢®E¡Ëc¡Ë¢ç¢®¢¯¢®E¡Ëc¡§I¢®¨Ï\r\n"
+    "#include ""afxres.rc""         // C¡Ë¢çE¢®EcIA¢®E¡Ëc¡Ë¢ç¢®¢¯¡Ë¢ç¢®¡¿¡Ë¢çI ¡Ë¢çE¢®Ec¡Ë¢ç¢®¡¿u¢®E¡ËcE¢®E¡Ëc¡§I¢®¨Ï¢®E¡Ëc¡Ë¢ç¢®¢¯u¢®E¡Ëc¡Ë¢ç¢®¢¯¢®E¡Ëc¡§I¢®¨Ï ¢®E¡ËcE?a¢®E¡Ëc¡Ë¢ç¢®¢¯uO\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Korean (Korea) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 222, 61
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ServerManager"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
+    LTEXT           "ServerManager ver 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (c) 2003-2005 Min Communication",IDC_STATIC,40,25,150,8
+    DEFPUSHBUTTON   "OK",IDOK,85,38,50,16,WS_GROUP
+END
+
+IDD_DLG_JOB_BROADCAST_MESSAGE DIALOGEX 0, 0, 411, 248
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Broadcast message"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,301,227,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,354,227,50,14
+    LTEXT           "Hour",IDC_STATIC,8,9,19,8
+    COMBOBOX        IDC_COMBO_HOUR,32,7,24,127,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Min",IDC_STATIC,59,10,12,8
+    COMBOBOX        IDC_COMBO_MIN,73,7,25,128,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Type",IDC_STATIC,100,9,17,8
+    COMBOBOX        IDC_COMBO_TYPE,122,7,111,54,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Message",IDC_STATIC,7,47,37,8
+    CONTROL         "All Server",IDC_SEND_TYPE1,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,9,25,40,14
+    CONTROL         "Each Group",IDC_SEND_TYPE2,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,51,25,48,15
+    CONTROL         "1",IDC_SVR_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,105,27,20,13
+    CONTROL         "2",IDC_SVR_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,27,20,13
+    CONTROL         "3",IDC_SVR_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,155,27,20,13
+    CONTROL         "4",IDC_SVR_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,180,27,20,13
+    CONTROL         "5",IDC_SVR_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,205,27,20,13
+    CONTROL         "6",IDC_SVR_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,230,27,20,13
+    CONTROL         "7",IDC_SVR_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,255,27,20,13
+    CONTROL         "8",IDC_SVR_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,280,27,20,13
+    CONTROL         "",IDC_MONTHCALENDAR1,"SysMonthCal32",MCS_NOTODAY | MCS_NOTODAYCIRCLE | WS_TABSTOP,240,67,159,94
+    EDITTEXT        IDC_EDIT_BROADCAST_MESSAGE,7,57,227,165,ES_MULTILINE | ES_WANTRETURN | WS_VSCROLL
+END
+
+IDD_DLG_MESSAGE DIALOGEX 0, 0, 295, 154
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Send Message"
+FONT 9, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_EDIT1,7,19,281,113,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,7,133,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,238,133,50,14
+    LTEXT           "Type Message (Max : 50)",IDC_STATIC,7,7,281,8
+END
+
+IDD_SERVERMANAGER_DIALOG DIALOGEX 0, 0, 699, 400
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ServerManager"
+MENU IDR_MENU1
+FONT 8, "Microsoft Sans Serif", 400, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_IPADDRESS,"SysIPAddress32",WS_TABSTOP,50,9,77,15
+    EDITTEXT        IDC_EDIT_PORT,151,9,22,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+    PUSHBUTTON      "Connect",IDC_BTN_CONNECT,180,9,37,14
+    EDITTEXT        IDC_EDIT_REFRESH_RATE,252,9,21,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+    PUSHBUTTON      "Apply",IDC_BUTTON1,277,10,34,14
+    EDITTEXT        IDC_EDIT_MSG1,375,98,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG2,375,112,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG3,375,126,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG4,375,140,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG5,375,154,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG6,375,168,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG7,375,182,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG8,375,196,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG9,375,210,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG10,375,224,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG11,375,238,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG12,375,252,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG13,375,266,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG14,375,280,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG15,375,294,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG16,375,308,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG17,375,322,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG18,375,336,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG19,375,350,300,12,ES_MULTILINE
+    EDITTEXT        IDC_EDIT_MSG20,375,364,300,12,ES_MULTILINE
+    PUSHBUTTON      "Send",IDC_BTN_MSG_SND,418,81,22,12
+    CONTROL         "Each Group",IDC_SEND_TYPE2,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,420,65,42,12
+    CONTROL         "All Server",IDC_SEND_TYPE1,"Button",BS_AUTORADIOBUTTON | BS_PUSHLIKE,376,65,35,12
+    CONTROL         "1",IDC_SVR_CHECK1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,464,65,20,14
+    CONTROL         "2",IDC_SVR_CHECK2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,489,65,20,14
+    CONTROL         "3",IDC_SVR_CHECK3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,514,65,20,14
+    CONTROL         "4",IDC_SVR_CHECK4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,539,65,20,14
+    CONTROL         "5",IDC_SVR_CHECK5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,564,65,20,14
+    CONTROL         "6",IDC_SVR_CHECK6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,589,65,20,14
+    CONTROL         "7",IDC_SVR_CHECK7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,614,65,20,14
+    CONTROL         "8",IDC_SVR_CHECK8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,636,65,20,14
+    CONTROL         "",IDC_LIST_SERVER,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,61,360,239
+    LTEXT           "Address",IDC_STATIC,20,13,28,8
+    LTEXT           "Port",IDC_STATIC,134,13,14,12
+    CONTROL         "",IDC_LED1,"Static",SS_BLACKFRAME,7,9,12,13
+    LTEXT           "Refresh",IDC_STATIC,223,13,27,8
+    LTEXT           "Max",IDC_STATIC,14,39,15,8
+    LTEXT           "Current",IDC_STATIC,98,39,26,8
+    GROUPBOX        "User",IDC_STATIC,7,27,358,28
+    LTEXT           "",IDC_STATIC_MAX,32,36,47,13,SS_SUNKEN,WS_EX_RTLREADING
+    LTEXT           "",IDC_STATIC_CRT,131,36,43,12,SS_SUNKEN,WS_EX_RTLREADING
+    PUSHBUTTON      "Schedule",IDC_BTN_JOB_SCHEDULE,642,10,50,12
+    EDITTEXT        IDC_EDIT_CONSOLE,8,305,360,68,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_VSCROLL | WS_HSCROLL
+    GROUPBOX        "",IDC_STATIC,369,57,316,325
+    PUSHBUTTON      "10",IDC_VIEW10_BUTTON,389,81,14,12
+    PUSHBUTTON      "19",IDC_VIEW20_BUTTON,404,81,14,12
+    PUSHBUTTON      "1",IDC_VIEW1_BUTTON,375,81,14,12
+    PUSHBUTTON      "Clear",IDC_BTN_MSG_CLEAR,442,81,22,12
+END
+
+IDD_DLG_JOB_SCHEDULE DIALOGEX 0, 0, 535, 257
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Job Schedule"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Confirm",IDOK,493,7,35,14
+    CONTROL         "",IDC_LIST_JOB,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,25,521,225,WS_EX_LEFTSCROLLBAR
+    PUSHBUTTON      "BroadCast Message",IDC_BTN_BROADCAST_MESSAGE_ADD,7,7,72,14
+    PUSHBUTTON      "Export",IDC_SCH_EXPORT,85,7,30,14
+    PUSHBUTTON      "Import",IDC_SCH_IMPORT,117,7,30,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 215
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 54
+    END
+
+    IDD_DLG_JOB_BROADCAST_MESSAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 404
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 241
+    END
+
+    IDD_DLG_MESSAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 288
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_SERVERMANAGER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 692
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 393
+    END
+
+    IDD_DLG_JOB_SCHEDULE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 528
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 250
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LEDS                BITMAP                  "res\\leds.bmp"
+IDB_MATRIXLARGE         BITMAP                  "res\\matrixla.bmp"
+IDB_MATRIXSMALL         BITMAP                  "res\\matrixsm.bmp"
+IDB_MATRIXTINY          BITMAP                  "res\\matrixti.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_SERVER_LIST_MENU MENU
+BEGIN
+    POPUP "Context Menu"
+    BEGIN
+        MENUITEM "Open",                        138
+        MENUITEM SEPARATOR
+        MENUITEM "Notice Message",              ID_CONTEXTMENU_MESSAGE
+    END
+END
+
+IDR_MENU1 MENU
+BEGIN
+    POPUP "File(&F)"
+    BEGIN
+        MENUITEM "New",                         ID_Menu
+        MENUITEM "Close(&X)",                   ID_134
+    END
+    POPUP "Server(&S)"
+    BEGIN
+        MENUITEM "Refresh",                     ID_133
+    END
+END
+
+IDR_SERVER_JOB_MENU MENU
+BEGIN
+    POPUP "Job Menu"
+    BEGIN
+        MENUITEM "ADD",                         ID_JOB_ADD
+        MENUITEM "EDIT",                        ID_JOB_EDIT
+        MENUITEM "DELETE",                      ID_JOB_DELETE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "../res/Icon_Server2.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040903b5"
+        BEGIN
+            VALUE "CompanyName", "EJCode"
+            VALUE "FileDescription", "ServerManager"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "ServerManager"
+            VALUE "LegalCopyright", "(c) EJCode.  All rights reserved."
+            VALUE "OriginalFilename", "ServerManager.exe"
+            VALUE "ProductName", "RanOnline"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 949
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUTBOX            "ServerManager Info(&A)..."
+    IDS_STRING102           "Connect OK"
+    IDS_STRING103           "Connection Failed"
+    IDS_STRING104           "Already Registered"
+    IDS_STRING105           "Server Registered"
+    IDS_STRING106           "OK"
+    IDS_STRING107           "Not responsed"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CONTEXTMENU_MESSAGE  "Open Server status"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
+LANGUAGE 18, 1
+#pragma code_page(949)
+#include "res\ServerManager.rc2"  // Microsoft Visual C++?®E??®E¡Ec?®¡×u¡E?c¡§I ?®¡×¡E?ciAy?®IiCAo ?®¡×uEA?®¡×?®?­ ?®E?®?­?®Ec?®¡×uO?®¡×o?®¡×?®?­
+#include "afxres.rc"         // C¡E?cIA?®¡×¡§¡I ¡E?c¡§u?®E?®?­?®¡×u?®¡×?®?­ ?®E?a?®¡×uO
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

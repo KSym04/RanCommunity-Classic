@@ -1,0 +1,29 @@
+/*!
+ * \file GLAutoPotionDef.h
+ *
+ * \author Juver
+ * \date 2022/03/15
+ *
+ * 
+ */
+
+#ifndef GLAUTOPOTIONDEF_H_INCLUDED__
+#define GLAUTOPOTIONDEF_H_INCLUDED__
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+#include "../../Lib_Engine/G-Logic/GLDefine.h"
+
+enum AUTO_POTION_COOLDOWN_TYPE
+{
+	AUTO_POTION_COOLDOWN_TYPE_HP = 0,
+	AUTO_POTION_COOLDOWN_TYPE_MP = 1,
+	AUTO_POTION_COOLDOWN_TYPE_SP = 2,
+	AUTO_POTION_COOLDOWN_TYPE_CURE = 3,
+	AUTO_POTION_COOLDOWN_TYPE_SIZE = 4
+};
+
+
+#endif // GLAUTOPOTIONDEF_H_INCLUDED__

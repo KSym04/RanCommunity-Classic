@@ -1,0 +1,49 @@
+/*!
+ * \file GLAwardTitle.h
+ *
+ * \author Juver
+ * \date 2021/02/12
+ *
+ * 
+ */
+
+#ifndef GLAWARDTITLE_H_INCLUDED__
+#define GLAWARDTITLE_H_INCLUDED__
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+#define AWARD_TITLE_LENGTH		100
+#define AWARD_TITLE_ID_NULL		0
+#define AWARD_TITLE_CHANGE_SELECTED_TIME 2
+
+enum EMAWARD_TITLE_TYPE
+{
+	EMAWARD_TITLE_TYPE_0		= 0,
+	EMAWARD_TITLE_TYPE_1		= 1, 
+	EMAWARD_TITLE_TYPE_2		= 2,
+	EMAWARD_TITLE_TYPE_SIZE		= 3,
+};
+
+struct SAWARD_TITLE_DATA
+{
+	DWORD				dwID;
+	EMAWARD_TITLE_TYPE	emType;
+	TCHAR				szTitle[AWARD_TITLE_LENGTH+1];
+
+	SAWARD_TITLE_DATA();
+	~SAWARD_TITLE_DATA();	
+
+	void Reset();
+	BOOL IsValid();
+
+	SAWARD_TITLE_DATA& operator= ( const SAWARD_TITLE_DATA &cData );
+};
+
+
+typedef std::map<DWORD, SAWARD_TITLE_DATA>		MAP_AWARD_TITLE_DATA;
+typedef MAP_AWARD_TITLE_DATA::iterator			MAP_AWARD_TITLE_DATA_ITER;
+
+
+#endif // GLAWARDTITLE_H_INCLUDED__

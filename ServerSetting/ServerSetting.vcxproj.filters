@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{468dd523-deba-409f-975e-64f468cd97fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{10d9170a-6f17-40e4-b1d8-c4b50a77d631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tool">
+      <UniqueIdentifier>{ddb19ab1-6960-4425-843b-2123ddf65cfe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ServerSetting.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\ServerSetting.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Icon_Tool.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ServerSetting.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerSettingDlg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="PageBasic.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerSettingTab.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="PageDatabase.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="PageServer1.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="PageServer2.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ServerSetting.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSettingDlg.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="PageBasic.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSettingTab.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="PageDatabase.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="PageServer1.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="PageServer2.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

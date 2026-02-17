@@ -1,0 +1,228 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\EditorSetOptionData.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "../res/Icon_Tool.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EDITOR_SET_OPTION_DATA_DIALOG DIALOGEX 0, 0, 583, 400
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Editor SetOption Data"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LIST_SET_OPTION,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,22,260,356
+    DEFPUSHBUTTON   "Load",IDC_BUTTON_LOAD,7,7,30,12
+    PUSHBUTTON      "Save",IDC_BUTTON_SAVE,39,7,30,12
+    PUSHBUTTON      "Add",IDC_BUTTON_ADD,7,381,30,12
+    PUSHBUTTON      "Delete",IDC_BUTTON_DELETE,71,381,30,12
+    PUSHBUTTON      "Clear",IDC_BUTTON_CLEAR,237,381,30,12
+    PUSHBUTTON      "Edit",IDC_BUTTON_EDIT,39,381,30,12
+    PUSHBUTTON      "Copy",IDC_BUTTON_COPY,103,381,30,12
+    EDITTEXT        IDC_EDIT_SET_OPTION_NUM,241,8,25,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT_SET_OPTION_ID,344,16,60,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SET_OPTION_NAME,344,32,220,12,ES_AUTOHSCROLL
+    CONTROL         "Slot Head",IDC_CHECK_USE_PART_0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,316,52,47,10
+    CONTROL         "Slot Upper",IDC_CHECK_USE_PART_1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,316,64,49,10
+    CONTROL         "Slot Lower",IDC_CHECK_USE_PART_2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,316,76,49,10
+    CONTROL         "Slot Hand",IDC_CHECK_USE_PART_3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,316,88,47,10
+    CONTROL         "Slot Foot",IDC_CHECK_USE_PART_4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,316,100,45,10
+    CONTROL         "Slot Weapon",IDC_CHECK_USE_PART_5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,402,52,57,10
+    CONTROL         "Slot Neck",IDC_CHECK_USE_PART_6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,402,64,45,10
+    CONTROL         "Slot Wrist",IDC_CHECK_USE_PART_7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,402,76,47,10
+    CONTROL         "Slot Finger",IDC_CHECK_USE_PART_8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,402,88,62,8
+    CONTROL         "Slot Belt",IDC_CHECK_USE_PART_9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,402,100,42,10
+    CONTROL         "Slot Earring",IDC_CHECK_USE_PART_10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,488,52,53,10
+    CONTROL         "Slot Accessory",IDC_CHECK_USE_PART_11,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,488,64,63,10
+    CONTROL         "Slot Decoration",IDC_CHECK_USE_PART_12,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,488,76,65,10
+    LTEXT           "Set ID",IDC_STATIC,284,18,21,8
+    LTEXT           "Set Name",IDC_STATIC,284,34,32,8
+    COMBOBOX        IDC_COMBO_OPTION_1,370,128,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 2 Option",IDC_STATIC,288,130,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_1,515,128,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_2,370,144,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 3 Option",IDC_STATIC,288,146,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_2,515,144,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_3,370,160,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 4 Option",IDC_STATIC,288,162,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_3,515,160,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_4,370,176,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 5 Option",IDC_STATIC,288,178,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_4,515,176,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_5,370,192,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 6 Option",IDC_STATIC,288,194,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_5,515,192,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_6,370,208,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 7 Option",IDC_STATIC,288,210,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_6,515,208,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_7,370,224,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 8 Option",IDC_STATIC,288,226,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_7,515,224,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_8,370,240,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 9 Option",IDC_STATIC,288,242,41,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_8,515,240,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_9,370,256,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 10 Option",IDC_STATIC,288,258,45,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_9,515,256,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_10,370,272,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 11 Option",IDC_STATIC,288,274,45,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_10,515,272,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_11,370,288,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 12 Option",IDC_STATIC,288,290,45,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_11,515,288,40,12,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMBO_OPTION_12,370,304,140,126,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Set 13 Option",IDC_STATIC,288,306,45,8
+    EDITTEXT        IDC_EDIT_OPTION_VAR_12,515,304,40,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Set Option Save",IDC_BUTTON_SET_OPTION_SAVE,487,355,70,12
+    PUSHBUTTON      "Load CSV",IDC_BUTTON_LOAD_CSV,84,7,40,12
+    PUSHBUTTON      "Save CSV",IDC_BUTTON_SAVE_CSV,127,7,40,12
+    GROUPBOX        "Data Edit",IDC_STATIC,274,4,301,389,BS_CENTER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "EJCode"
+            VALUE "FileDescription", "EditorSetOptionData"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "EditorSetOptionData.exe"
+            VALUE "LegalCopyright", "(c) EJCode.  All rights reserved."
+            VALUE "OriginalFilename", "EditorSetOptionData.exe"
+            VALUE "ProductName", "RanOnline"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_EDITOR_SET_OPTION_DATA_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 576
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 393
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\EditorSetOptionData.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

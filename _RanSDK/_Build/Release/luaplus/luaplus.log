@@ -1,0 +1,109 @@
+﻿Build started 5/22/2025 4:18:59 PM.
+     1>Project "E:\RANSource\_2k10_RanSource\RanSDK\LuaPlus\Source\luaplus.vcxproj" on node 8 (rebuild target(s)).
+     1>InitializeBuildStatus:
+         Creating "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\luaplus.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I./src /Z7 /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D _LIB /D NDEBUG /D LUAPLUS_LIB /D LUA_WIDESTRING /D LUA_WIDESTRING_FILE /D LUA_OPNAMES /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_WARNINGS /GF /Gm- /MT /GS- /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\\" /Fd"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\lapi.c src\lauxlib.c src\lbaselib.c src\lcode.c src\ldblib.c src\ldebug.c src\ldo.c src\ldump.c src\lfunc.c src\lgc.c src\linit.c src\liolib.c src\llex.c src\lmathlib.c src\lmem.c src\loadlib.c src\lobject.c src\lopcodes.c src\loslib.c src\lparser.c src\lstate.c src\lstring.c src\lstrlib.c src\ltable.c src\ltablib.c src\ltm.c src\lundump.c src\lvm.c src\lzio.c src\print.c LuaPlusAddons.c luathread.c lwstrlib.c popen.c pt.c srm.c
+         lapi.c
+         lauxlib.c
+         lbaselib.c
+         lcode.c
+         ldblib.c
+         ldebug.c
+         ldo.c
+         ldump.c
+         lfunc.c
+         lgc.c
+         linit.c
+         liolib.c
+         llex.c
+         lmathlib.c
+         lmem.c
+         loadlib.c
+         lobject.c
+         lopcodes.c
+         loslib.c
+         lparser.c
+         Generating Code...
+         Compiling...
+         lstate.c
+         lstring.c
+         lstrlib.c
+         ltable.c
+         ltablib.c
+         ltm.c
+         lundump.c
+         lvm.c
+         lzio.c
+         print.c
+         LuaPlusAddons.c
+         luathread.c
+         lwstrlib.c
+         popen.c
+         pt.c
+         srm.c
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I./src /Z7 /nologo /W3 /WX- /O2 /Ob1 /Oy- /D WIN32 /D _LIB /D NDEBUG /D LUAPLUS_LIB /D LUA_WIDESTRING /D LUA_WIDESTRING_FILE /D LUA_OPNAMES /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_WARNINGS /GF /Gm- /MT /GS- /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\\" /Fd"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt LuaObject.cpp LuaPlus.cpp LuaPlus_Libs.cpp LuaPlusFunctions.cpp LuaState.cpp LuaState_DumpObject.cpp LuaStateOutFile.cpp LuaTableIterator.cpp
+         LuaObject.cpp
+         LuaPlus.cpp
+         LuaPlus_Libs.cpp
+         LuaPlusFunctions.cpp
+         LuaState.cpp
+         LuaState_DumpObject.cpp
+         LuaStateOutFile.cpp
+         LuaTableIterator.cpp
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"E:\RANSource\_2k10_RanSource\RanSDK\_Lib\Release\luaplus.lib" /NOLOGO E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lapi.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lauxlib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lbaselib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lcode.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\ldblib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\ldebug.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\ldo.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\ldump.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lfunc.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lgc.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\linit.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\liolib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\llex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lmathlib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lmem.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\loadlib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lobject.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lopcodes.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\loslib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lparser.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lstate.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lstring.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lstrlib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\ltable.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\ltablib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\ltm.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lundump.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lvm.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lzio.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\print.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaObject.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaPlus.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaPlus_Libs.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaPlusAddons.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaPlusFunctions.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaState.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaState_DumpObject.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaStateOutFile.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\LuaTableIterator.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\luathread.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\lwstrlib.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\popen.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\pt.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\srm.obj /MACHINE:X86 /NODEFAULTLIB 
+         luaplus.vcxproj -> E:\RANSource\_2k10_RanSource\RanSDK\_Lib\Release\luaplus.lib
+       FinalizeBuildStatus:
+         Deleting file "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\luaplus.unsuccessfulbuild".
+         Touching "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\luaplus\luaplus.lastbuildstate".
+     1>Done Building Project "E:\RANSource\_2k10_RanSource\RanSDK\LuaPlus\Source\luaplus.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:08.38

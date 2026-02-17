@@ -1,0 +1,2103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DbAction">
+      <UniqueIdentifier>{99bfb9f9-b47a-4c51-94fc-56ade681ee07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic">
+      <UniqueIdentifier>{10618bc1-8b0f-4897-912f-b59128e974c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data">
+      <UniqueIdentifier>{924128d1-abba-4db5-beeb-8a27a333e412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\Emoticon">
+      <UniqueIdentifier>{a64b99fa-b625-4dc8-8420-af918294759c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLBus">
+      <UniqueIdentifier>{8e0c94d8-581e-4cf0-88ce-49a85761508e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCommentFile">
+      <UniqueIdentifier>{71c4d153-b169-410c-93ac-92b9aad6510f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCrowData">
+      <UniqueIdentifier>{ec086569-2d56-4cf1-a25a-735134e24abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCrowData\Data">
+      <UniqueIdentifier>{1e27793e-1ace-4bec-850e-f857bf0f41eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLDescriptionFile">
+      <UniqueIdentifier>{dc5b2430-cf82-40ed-b83f-3a1d8526544a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLItem">
+      <UniqueIdentifier>{2ae9809e-4e51-458f-9853-1d0352c39c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLItem\Data">
+      <UniqueIdentifier>{56bc87d0-1400-4271-9cb9-a47844fe76f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLItemMix">
+      <UniqueIdentifier>{39fed932-5684-4365-9dc5-5563be018e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLLandMark">
+      <UniqueIdentifier>{e60975c7-bf7e-40f6-9fef-d55ae90760ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLLevelFile">
+      <UniqueIdentifier>{8c99c1f5-5045-481f-96de-6dc76325627f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLMapAxisInfo">
+      <UniqueIdentifier>{2fa6c6c8-90bf-419b-9581-df6bd95ecd5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLMapList">
+      <UniqueIdentifier>{f2d56be2-547e-4f53-af89-6dc51a7ee279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLMobSchedule">
+      <UniqueIdentifier>{df156bf5-d836-4844-9903-2a7dbbda2086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLNote">
+      <UniqueIdentifier>{30c65859-2e60-4e09-a482-3fe6f69eb463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLQuest">
+      <UniqueIdentifier>{ae8c8749-f3a9-44de-a43a-ffdf9a4cb98b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLQuest\Data">
+      <UniqueIdentifier>{d21f7b36-50b8-4b97-a7c6-8da9ca75ba3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLSkill">
+      <UniqueIdentifier>{af6029ca-da9b-4de2-b5e7-d751bb244210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLSkill\Data">
+      <UniqueIdentifier>{9b9c4c17-dbdf-4c02-8670-ca75bba1dc2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLTaxiStation">
+      <UniqueIdentifier>{b73dcf8a-810d-4ff8-b351-a1e0fc643e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\NPCTalk">
+      <UniqueIdentifier>{5c521157-631e-444d-9a94-e8ea541d9ddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLItemLink">
+      <UniqueIdentifier>{252c275d-ecdc-4e35-a3a3-071693be087b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLActivity">
+      <UniqueIdentifier>{903c5422-fac5-4c38-af15-a477c26a22a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLRandomOption">
+      <UniqueIdentifier>{dd5f31b5-812d-4ee6-8b7a-93a173d31bec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\GLMSG">
+      <UniqueIdentifier>{eedfa5da-34d8-4b9f-93e2-4050fdbd895c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicClient">
+      <UniqueIdentifier>{5e65f796-ca13-4dc4-850f-9b9c6407f928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicClient\ClientChar">
+      <UniqueIdentifier>{a417419c-cc4f-4599-8cfa-d283ca0292c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicClient\ClientCrow">
+      <UniqueIdentifier>{832f2c6b-7b9a-4479-a016-c68ec5f7370d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicClient\ClientMaterial">
+      <UniqueIdentifier>{32ddb618-ce19-4ebb-98e2-988a1155f14c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicClient\ClientPet">
+      <UniqueIdentifier>{fbf9edf6-5fbc-4a12-8057-3a3cfc9242f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicClient\ClientSummon">
+      <UniqueIdentifier>{201b0b0d-4856-4552-bcf0-1d811116cd15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicClient\GLCharacter">
+      <UniqueIdentifier>{e7227333-6552-4955-9e56-608e9dca49b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer">
+      <UniqueIdentifier>{2dac2047-70f3-41d1-98a5-a007f7d397ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerAgent">
+      <UniqueIdentifier>{3cf28d45-c7ad-41fe-af36-ef102a14126d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerAgent\AgentChar">
+      <UniqueIdentifier>{64d8617e-90f5-4066-9493-1cfeaf024196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerAgent\AutoLevel">
+      <UniqueIdentifier>{016beb86-c85f-4e17-8ff8-acb21734734b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerAgent\Party">
+      <UniqueIdentifier>{90efa677-d95f-4520-9074-284a4199ec2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerField">
+      <UniqueIdentifier>{da65f994-2e94-4c8f-b166-72bfcc6de13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerField\FieldChar">
+      <UniqueIdentifier>{1cc3d955-f0d5-4cb1-8eae-312a5c5bbaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerField\FieldCrow">
+      <UniqueIdentifier>{30b33999-44f5-411e-bac7-42500564f430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerField\FieldMaterial">
+      <UniqueIdentifier>{00dc5127-b406-4291-a2ab-f9b02513c8ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerField\FieldPet">
+      <UniqueIdentifier>{b4be7b51-6a55-4510-b0b8-27e472e4fd72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerField\FieldSummon">
+      <UniqueIdentifier>{1880a3f4-f771-48b9-97a0-b64d99d971e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\LogicServer\ServerField\Party">
+      <UniqueIdentifier>{9c6e5774-5cfb-4297-91e1-fa2890bb4212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\StrikeSelector">
+      <UniqueIdentifier>{e032f3db-a2e9-429c-864e-ff168d9f0ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStage">
+      <UniqueIdentifier>{939caa5a-293e-4a3f-836e-5928c7beb87f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GlobalStage">
+      <UniqueIdentifier>{451e8c46-0f5e-4a27-8813-f83818bdfaba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LobbyStage">
+      <UniqueIdentifier>{0e4aa9b1-7c7d-4d73-8be8-d28cde2f71e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLItemUser">
+      <UniqueIdentifier>{6a65012e-39e2-43ab-849a-2cd7be127593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLTransformSkinSet">
+      <UniqueIdentifier>{fe2ff1d1-661c-422f-b2cc-e857f488200c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLPKCombo">
+      <UniqueIdentifier>{bd921436-8528-41fe-b357-39646ca6c27b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCrowData\GLCrowSale">
+      <UniqueIdentifier>{4589a079-d7a9-4aaa-9bda-96a20f7124d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCrowData\GLCurrencyShop">
+      <UniqueIdentifier>{06521ea5-d1f2-47c1-8c5f-29c94ed11e98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCrowData\GLNPCShop">
+      <UniqueIdentifier>{2c2557cb-8f56-4ba2-94e6-24b16fd95681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCrowData\GLItemExchange">
+      <UniqueIdentifier>{cb59ba06-d8fa-4383-830b-07d394145945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP">
+      <UniqueIdentifier>{31df1e90-77cc-489e-a29d-92e0047c8167}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPCaptureTheFlag">
+      <UniqueIdentifier>{c026df92-04a4-41c4-b809-f88f7f40cc68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagAgent">
+      <UniqueIdentifier>{6adce0d7-45af-492b-a0ae-6f6b0fef917a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagField">
+      <UniqueIdentifier>{898ae0a3-8114-40ac-958e-fefe5de61a27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagClient">
+      <UniqueIdentifier>{45c9cd23-898b-4705-8486-e73b4e5b4ee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPClubDeathMatch">
+      <UniqueIdentifier>{b78438e0-1673-4402-8597-47435eb33c4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPClubDeathMatch\Agent">
+      <UniqueIdentifier>{32c2e826-4d00-493e-add4-77becfec6c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPClubDeathMatch\Client">
+      <UniqueIdentifier>{93fa10da-c051-493c-b1e6-706528726a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPClubDeathMatch\Field">
+      <UniqueIdentifier>{7ed9a9fb-8ce4-4e8b-a39e-af28b581491d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPSchoolWars">
+      <UniqueIdentifier>{8e9636cb-9b39-4fd2-b571-8294aa088558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPSchoolWars\SchoolWarsField">
+      <UniqueIdentifier>{f8bbea48-4be9-43a1-a215-be8e5db75fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPSchoolWars\SchoolWarsAgent">
+      <UniqueIdentifier>{4852d102-50c0-41fa-b363-2f86bde5a55a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPSchoolWars\SchoolWarsClient">
+      <UniqueIdentifier>{1a920ec7-7d88-4a62-b717-e1bf5f45ddbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPTyranny">
+      <UniqueIdentifier>{495c8428-512f-4274-b7a6-d133c7de8b82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPTyranny\TyrannyAgent">
+      <UniqueIdentifier>{27ef3e1e-bf44-4ffc-8078-01c5d94d2399}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPTyranny\TyrannyField">
+      <UniqueIdentifier>{120ddce1-e83b-4095-9ecf-851938ed6c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPTyranny\TyrannyClient">
+      <UniqueIdentifier>{5f553e4d-bcd4-47e8-bfde-ea2988d2236f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCharData">
+      <UniqueIdentifier>{4a3408f4-9689-4923-996c-4322be7e14c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLPost">
+      <UniqueIdentifier>{f936c0f8-fdfa-41c2-a84f-a7ce708ea6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLSetOption">
+      <UniqueIdentifier>{c58193e3-51b6-44c1-9fdf-b1967bc05b01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLTaxiStation\GLStringTable">
+      <UniqueIdentifier>{6151967e-f6f3-4cf6-a8dc-084161289188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLCrowData\GLContributionShop">
+      <UniqueIdentifier>{04a17519-9bc7-4079-9cd2-1e507a5a9c40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\GLAutoPotion">
+      <UniqueIdentifier>{0bdc7fed-d85b-4628-87bc-e4a135e948d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\GLAutoPilot">
+      <UniqueIdentifier>{eb2a358e-ee48-48ac-b0b6-ccf0bca7f903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLReborn">
+      <UniqueIdentifier>{d725ceee-7a6e-4b37-984b-544091622f27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\Data\GLExchangeItem">
+      <UniqueIdentifier>{29812e99-1fa2-4dbc-8120-9265e1412a80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPPartyBattleGrounds">
+      <UniqueIdentifier>{7ee83025-6c32-4660-b1ba-875a8895ee97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPPartyBattleGrounds\Client">
+      <UniqueIdentifier>{f9b1ed88-6c1c-45f9-961e-5cfbd93e5d23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPPartyBattleGrounds\SField">
+      <UniqueIdentifier>{aaf502c5-7b9f-4534-a9ce-fd8916f8669e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\PVP\PVPPartyBattleGrounds\SAgent">
+      <UniqueIdentifier>{172a7f23-91c4-4a23-8c9a-0639c345a1af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="G-Logic\DailyLogin">
+      <UniqueIdentifier>{58fd9ad5-7b00-4f89-abee-dc87d611bdab}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DbActionLogic.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicClub.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicLog.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicPet.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicShop.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicSMS.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicVehicle.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\stl_Func.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLActivityDefine.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLFactData.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLInventory.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMoney.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLogicData.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLogicDataLoad.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPet.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLProductDefine.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummon.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLTrade.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLVEHICLE.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\Emoticon.cpp">
+      <Filter>G-Logic\Data\Emoticon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLBusData.cpp">
+      <Filter>G-Logic\Data\GLBus</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLBusList.cpp">
+      <Filter>G-Logic\Data\GLBus</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLBusStation.cpp">
+      <Filter>G-Logic\Data\GLBus</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCommentFile.cpp">
+      <Filter>G-Logic\Data\GLCommentFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowData.cpp">
+      <Filter>G-Logic\Data\GLCrowData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowDataLoad.cpp">
+      <Filter>G-Logic\Data\GLCrowData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowDataAction.cpp">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowDataAttack.cpp">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowDataBasic.cpp">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowDataGen.cpp">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLDescriptionFile.cpp">
+      <Filter>G-Logic\Data\GLDescriptionFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItem.cpp">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemDef.cpp">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemDef2.cpp">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemMan.cpp">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemBasic.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemBox.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemDrug.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemGenerate.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemGrinding.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemPet.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemPetSkin.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemQuestion.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemRandomBox.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemRandomOption.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemRVCard.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemSkillBook.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemSuit.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemVehicle.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemMix.cpp">
+      <Filter>G-Logic\Data\GLItemMix</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemMixMan.cpp">
+      <Filter>G-Logic\Data\GLItemMix</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLandMark.cpp">
+      <Filter>G-Logic\Data\GLLandMark</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLevelEtcFunction.cpp">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLevelFile.cpp">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLevelFileSaveLoad.cpp">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLevelHead.cpp">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLevelRequire.cpp">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMapAxisInfo.cpp">
+      <Filter>G-Logic\Data\GLMapAxisInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMapList.cpp">
+      <Filter>G-Logic\Data\GLMapList</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMapNode.cpp">
+      <Filter>G-Logic\Data\GLMapList</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMobSchedule.cpp">
+      <Filter>G-Logic\Data\GLMobSchedule</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMobScheduleSaveLoad.cpp">
+      <Filter>G-Logic\Data\GLMobSchedule</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLNote.cpp">
+      <Filter>G-Logic\Data\GLNote</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuest.cpp">
+      <Filter>G-Logic\Data\GLQuest</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuestMan.cpp">
+      <Filter>G-Logic\Data\GLQuest</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuestPlay.cpp">
+      <Filter>G-Logic\Data\GLQuest</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuestAttendance.cpp">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuestGenItem.cpp">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuestStart.cpp">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLQuestStep.cpp">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkill.cpp">
+      <Filter>G-Logic\Data\GLSkill</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkillApply.cpp">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkillBasic.cpp">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkillDefine.cpp">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkillExData.cpp">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkillLearn.cpp">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkillSpecial.cpp">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLStringTable.cpp">
+      <Filter>G-Logic\Data\GLTaxiStation\GLStringTable</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLTaxiData.cpp">
+      <Filter>G-Logic\Data\GLTaxiStation</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLTaxiStation.cpp">
+      <Filter>G-Logic\Data\GLTaxiStation</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcTalk\NpcDialogue.cpp">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcTalk\NpcDialogueCase.cpp">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcTalk\NpcDialogueSet.cpp">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcTalk\NpcTalk.cpp">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcTalk\NpcTalkCondition.cpp">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="NpcTalk\NpcTalkControl.cpp">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemLink.cpp">
+      <Filter>G-Logic\Data\GLItemLink</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLActivity.cpp">
+      <Filter>G-Logic\Data\GLActivity</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLActivityData.cpp">
+      <Filter>G-Logic\Data\GLActivity</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLRandomOption.cpp">
+      <Filter>G-Logic\Data\GLRandomOption</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLContrlMsg.cpp">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLContrlPcMsg.cpp">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLFactEffect.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLFriendClient.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGaeaClient.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLandManClient.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPartyClient.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLTradeClient.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharClient.cpp">
+      <Filter>G-Logic\LogicClient\ClientChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowClient.cpp">
+      <Filter>G-Logic\LogicClient\ClientCrow</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowRenList.cpp">
+      <Filter>G-Logic\LogicClient\ClientCrow</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMaterialClient.cpp">
+      <Filter>G-Logic\LogicClient\ClientMaterial</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAnyPet.cpp">
+      <Filter>G-Logic\LogicClient\ClientPet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPetClient.cpp">
+      <Filter>G-Logic\LogicClient\ClientPet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPetClientMsg.cpp">
+      <Filter>G-Logic\LogicClient\ClientPet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPetClientReq.cpp">
+      <Filter>G-Logic\LogicClient\ClientPet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPetClientSkill.cpp">
+      <Filter>G-Logic\LogicClient\ClientPet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAnySummon.cpp">
+      <Filter>G-Logic\LogicClient\ClientSummon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAnySummonMsg.cpp">
+      <Filter>G-Logic\LogicClient\ClientSummon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonClient.cpp">
+      <Filter>G-Logic\LogicClient\ClientSummon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonClientMsg.cpp">
+      <Filter>G-Logic\LogicClient\ClientSummon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacter.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterAllianceMsg.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterClubBattleMsg.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterClubMsg.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterConfrontMsg.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterMiniGameMsg.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterMsg.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterQuestMsg.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterSkill.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterSkillTarget.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharactorReq.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharactorReq2.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLARoundSlot.cpp">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLClubDeathMatch.cpp">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGuidance.cpp">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLITEMLMT.cpp">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPrivateMarket.cpp">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAgentServer.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAgentServerEx.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAgentServerMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAGLandMan.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLClubMan.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLFreePK.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSchoolFreePK.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharAG.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent\AgentChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharAGClub.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent\AgentChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAutoLevel.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent\AutoLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAutoLevelMan.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent\AutoLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLParty.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPartyMan.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLEventProc.cpp">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGaeaServer.cpp">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGaeaServerEx.cpp">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGaeaServerMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLandMan.cpp">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLLandManSet.cpp">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLChar.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharActivity.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharClubMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharEx.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharInvenMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharInvenMsg2.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharMsg2.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharPetMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharPMarketMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharQuest.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharQuestMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharSkillMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharStorageMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrow.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldCrow</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowGenerateReward.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldCrow</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowReAction.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldCrow</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowSkill.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldCrow</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowSkillTarget.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldCrow</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMaterial.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldMaterial</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPetField.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldPet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPetFieldMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldPet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonField.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldSummon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonFieldMsg.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldSummon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPartyField.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPartyFieldMan.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\Party</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLStrikeSelector.cpp">
+      <Filter>G-Logic\StrikeSelector</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyranny.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgent.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentMapMove.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentMSG.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentRegister.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentTower.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyField.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldMSG.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldRanking.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyClient.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyClientMSG.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWars.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsField.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsFieldMSG.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsFieldRanking.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgent.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgentMapMove.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgentMsg.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgentRegister.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsClient.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsClientMSG.cpp">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlag.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgent.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgentMapMove.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgentMsg.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgentRegister.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagField.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagFieldFlag.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagFieldMSG.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagFieldRanking.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagClient.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagClientFlag.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagClientMSG.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagClient</Filter>
+    </ClCompile>
+    <ClCompile Include="DxGameStage.cpp">
+      <Filter>GameStage</Filter>
+    </ClCompile>
+    <ClCompile Include="DxGlobalStage.cpp">
+      <Filter>GlobalStage</Filter>
+    </ClCompile>
+    <ClCompile Include="DxLobyStage.cpp">
+      <Filter>LobbyStage</Filter>
+    </ClCompile>
+    <ClCompile Include="DxLobyStageCreateChar.cpp">
+      <Filter>LobbyStage</Filter>
+    </ClCompile>
+    <ClCompile Include="DxLobyStageSelectChar.cpp">
+      <Filter>LobbyStage</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientApex.cpp" />
+    <ClCompile Include="DxCharSham.cpp" />
+    <ClCompile Include="dxincommand.cpp" />
+    <ClCompile Include="DxParamSet.cpp" />
+    <ClCompile Include="DxServerInstance.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="G-Logic\GLItemUser.cpp">
+      <Filter>G-Logic\Data\GLItemUser</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemEtc1.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemEtc2.cpp">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicGMLogs.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLTransformSkinSet.cpp">
+      <Filter>G-Logic\Data\GLTransformSkinSet</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPKCombo.cpp">
+      <Filter>G-Logic\Data\GLPKCombo</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGuidanceScore.cpp">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGaeaClientEx.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPClubWarData.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\UserTypeDefine.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCurrencyShop.cpp">
+      <Filter>G-Logic\Data\GLCrowData\GLCurrencyShop</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLNPCShop.cpp">
+      <Filter>G-Logic\Data\GLCrowData\GLNPCShop</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLItemExchange.cpp">
+      <Filter>G-Logic\Data\GLCrowData\GLItemExchange</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowSale.cpp">
+      <Filter>G-Logic\Data\GLCrowData\GLCrowSale</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowDataEx.cpp">
+      <Filter>G-Logic\Data\GLCrowData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatch.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchData.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchDefine.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgent.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Agent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgentRegister.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Agent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgentMsg.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Agent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchClient.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchClientMsg.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchField.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchFieldMsg.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GMCommandPass.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharDataActivity.cpp">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharData.cpp">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharDataLoad.cpp">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharDefine.cpp">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPersonalLock.cpp">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPartyFinder.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAgentServerKickOutList.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="SGameStageInfo.cpp">
+      <Filter>GameStage</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharLogicClient.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharLogicServer.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLogicCommon.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLogicCommonChar.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowLogicClient.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowLogicServer.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharDataEx.cpp">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="DBActionLogicEx.cpp">
+      <Filter>DbAction</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonLogicClient.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonLogicServer.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonDefine.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSummonFieldSkill.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldSummon</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharAGEx.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent\AgentChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharLogicClientEx.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="MShieldGlobal.cpp" />
+    <ClCompile Include="HackShieldGlobal.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagDefine.cpp">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCrowDataWarden.cpp">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgentMapMove.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Agent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPClubDeathMatchFieldScore.cpp">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPost.cpp">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPostClient.cpp">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPostData.cpp">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPostDataLoad.cpp">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPostDefine.cpp">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAwardTitle.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAwardTitleClient.cpp">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyData.cpp">
+      <Filter>G-Logic\PVP\PVPTyranny</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLGameNotice.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLWTF.cpp">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLChaosMachine.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLChaosMachineDefine.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharSkillCheck.cpp">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSetOption.cpp">
+      <Filter>G-Logic\Data\GLSetOption</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSetOptionDefine.cpp">
+      <Filter>G-Logic\Data\GLSetOption</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPKMark.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLContributionShop.cpp">
+      <Filter>G-Logic\Data\GLCrowData\GLContributionShop</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLMaxRvPreview.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLSkillPurchase.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLWeaponSimplify.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAutoPotion.cpp">
+      <Filter>G-Logic\GLAutoPotion</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAutoPilot.cpp">
+      <Filter>G-Logic\GLAutoPilot</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAutoPilotC.cpp">
+      <Filter>G-Logic\GLAutoPilot</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLAutoPilotS.cpp">
+      <Filter>G-Logic\GLAutoPilot</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharacterAutoPilot.cpp">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLReborn.cpp">
+      <Filter>G-Logic\Data\GLReborn</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLExchangeItem.cpp">
+      <Filter>G-Logic\Data\GLExchangeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\VipDefine.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCombatRecord.cpp">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClCompile>
+    <ClCompile Include="PSDefine.cpp" />
+    <ClCompile Include="G-Logic\MapDropFilter.cpp">
+      <Filter>G-Logic\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPPartyBattleGrounds.cpp">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsDefine.cpp">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsData.cpp">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsClient.cpp">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsAgent.cpp">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds\SAgent</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsField.cpp">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds\SField</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharDataDailyLogin.cpp">
+      <Filter>G-Logic\DailyLogin</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLDailyLogin.cpp">
+      <Filter>G-Logic\DailyLogin</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCodex.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCodexData.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCodexDefine.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharCodex.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharDataCodex.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLBattlePass.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLBattlePassData.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLBattlePassDefine.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLBattlePassReward.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharBattlePass.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLCharDataBattlePass.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="DbActionLogicUser.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoe.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeAgent.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeAgentMapMove.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeAgentMSG.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeAgentRegister.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeAgentTower.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeClient.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeClientMSG.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeField.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeFieldMSG.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPWoeFieldRanking.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldRankingClubDisplay.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldRankingDisplay.cpp">
+      <Filter>G-Logic</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DbActionLogic.h">
+      <Filter>DbAction</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\stl_Func.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLActivityDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBikeColorDef.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLFactData.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLInventory.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMoney.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLogicData.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPet.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLProductDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSummon.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLTrade.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLVEHICLE.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\Emoticon.h">
+      <Filter>G-Logic\Data\Emoticon</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBusData.h">
+      <Filter>G-Logic\Data\GLBus</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBusList.h">
+      <Filter>G-Logic\Data\GLBus</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBusStation.h">
+      <Filter>G-Logic\Data\GLBus</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCommentFile.h">
+      <Filter>G-Logic\Data\GLCommentFile</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowData.h">
+      <Filter>G-Logic\Data\GLCrowData</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowDataAction.h">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowDataAttack.h">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowDataBasic.h">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowDataGen.h">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLDescriptionFile.h">
+      <Filter>G-Logic\Data\GLDescriptionFile</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItem.h">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemDef.h">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemDefEX.h">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemMan.h">
+      <Filter>G-Logic\Data\GLItem</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemBasic.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemBox.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemDrug.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemGenerate.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemGrinding.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemPet.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemPetSkin.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemQuestion.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemRandomBox.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemRandomOption.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemRVCard.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemSkillBook.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemSuit.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemVehicle.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemMix.h">
+      <Filter>G-Logic\Data\GLItemMix</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemMixMan.h">
+      <Filter>G-Logic\Data\GLItemMix</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLLandMark.h">
+      <Filter>G-Logic\Data\GLLandMark</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLLevelEtcFunction.h">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLLevelFile.h">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLLevelHead.h">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLLevelRequire.h">
+      <Filter>G-Logic\Data\GLLevelFile</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMapAxisInfo.h">
+      <Filter>G-Logic\Data\GLMapAxisInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMapList.h">
+      <Filter>G-Logic\Data\GLMapList</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMapNode.h">
+      <Filter>G-Logic\Data\GLMapList</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMobSchedule.h">
+      <Filter>G-Logic\Data\GLMobSchedule</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLNote.h">
+      <Filter>G-Logic\Data\GLNote</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuest.h">
+      <Filter>G-Logic\Data\GLQuest</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuestMan.h">
+      <Filter>G-Logic\Data\GLQuest</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuestPlay.h">
+      <Filter>G-Logic\Data\GLQuest</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuestAttendance.h">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuestGenItem.h">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuestStart.h">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLQuestStep.h">
+      <Filter>G-Logic\Data\GLQuest\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkill.h">
+      <Filter>G-Logic\Data\GLSkill</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkillApply.h">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkillBasic.h">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkillDefine.h">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkillExData.h">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkillLearn.h">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkillSpecial.h">
+      <Filter>G-Logic\Data\GLSkill\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLStringTable.h">
+      <Filter>G-Logic\Data\GLTaxiStation\GLStringTable</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLTaxiData.h">
+      <Filter>G-Logic\Data\GLTaxiStation</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLTaxiStation.h">
+      <Filter>G-Logic\Data\GLTaxiStation</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcTalk\NpcDialogue.h">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcTalk\NpcDialogueCase.h">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcTalk\NpcDialogueSet.h">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcTalk\NpcTalk.h">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcTalk\NpcTalkCondition.h">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcTalk\NpcTalkControl.h">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="NpcTalk\NpcTalkData.h">
+      <Filter>G-Logic\Data\NPCTalk</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemLink.h">
+      <Filter>G-Logic\Data\GLItemLink</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLActivity.h">
+      <Filter>G-Logic\Data\GLActivity</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLActivityData.h">
+      <Filter>G-Logic\Data\GLActivity</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLRandomOption.h">
+      <Filter>G-Logic\Data\GLRandomOption</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlActivityMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlBaseMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlCharJoinMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlClubMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlConflictMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlCrowMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlFriendMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlInDunMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlInvenMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlInvenMsgEnum.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlNpcMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlPartyMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlPcMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlPcMsg2.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlPcMsgEnum.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlPetMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlPrivateMarket.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlQuestMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlServerMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlSkillMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlSummonMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlTradeMsg.h">
+      <Filter>G-Logic\GLMSG</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCOPY.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLFactEffect.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLFriendClient.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLGaeaClient.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLLandManClient.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPartyClient.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLTradeClient.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCharClient.h">
+      <Filter>G-Logic\LogicClient\ClientChar</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowClient.h">
+      <Filter>G-Logic\LogicClient\ClientCrow</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowRenList.h">
+      <Filter>G-Logic\LogicClient\ClientCrow</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMaterialClient.h">
+      <Filter>G-Logic\LogicClient\ClientMaterial</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAnyPet.h">
+      <Filter>G-Logic\LogicClient\ClientPet</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPetClient.h">
+      <Filter>G-Logic\LogicClient\ClientPet</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAnySummon.h">
+      <Filter>G-Logic\LogicClient\ClientSummon</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSummonClient.h">
+      <Filter>G-Logic\LogicClient\ClientSummon</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCharacter.h">
+      <Filter>G-Logic\LogicClient\GLCharacter</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLARoundSlot.h">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCDMDefine.h">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLClubDeathMatch.h">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLGuidance.h">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLITEMLMT.h">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPrivateMarket.h">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAgentServer.h">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAGLandMan.h">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLClubMan.h">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLFreePK.h">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSchoolFreePK.h">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCharAG.h">
+      <Filter>G-Logic\LogicServer\ServerAgent\AgentChar</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoLevel.h">
+      <Filter>G-Logic\LogicServer\ServerAgent\AutoLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoLevelMan.h">
+      <Filter>G-Logic\LogicServer\ServerAgent\AutoLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLParty.h">
+      <Filter>G-Logic\LogicServer\ServerAgent\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPartyMan.h">
+      <Filter>G-Logic\LogicServer\ServerAgent\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLACTOR.h">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLEventProc.h">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLGaeaServer.h">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLLandMan.h">
+      <Filter>G-Logic\LogicServer\ServerField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLChar.h">
+      <Filter>G-Logic\LogicServer\ServerField\FieldChar</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrow.h">
+      <Filter>G-Logic\LogicServer\ServerField\FieldCrow</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMaterial.h">
+      <Filter>G-Logic\LogicServer\ServerField\FieldMaterial</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPetField.h">
+      <Filter>G-Logic\LogicServer\ServerField\FieldPet</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSummonField.h">
+      <Filter>G-Logic\LogicServer\ServerField\FieldSummon</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPartyField.h">
+      <Filter>G-Logic\LogicServer\ServerField\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPartyFieldMan.h">
+      <Filter>G-Logic\LogicServer\ServerField\Party</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLStrikeM.h">
+      <Filter>G-Logic\StrikeSelector</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLStrikeSelector.h">
+      <Filter>G-Logic\StrikeSelector</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPTyranny.h">
+      <Filter>G-Logic\PVP\PVPTyranny</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPTyrannyData.h">
+      <Filter>G-Logic\PVP\PVPTyranny</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPTyrannyDefine.h">
+      <Filter>G-Logic\PVP\PVPTyranny</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPTyrannyAgent.h">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPTyrannyField.h">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPTyrannyClient.h">
+      <Filter>G-Logic\PVP\PVPTyranny\TyrannyClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPSchoolWars.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsData.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsDefine.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsField.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsAgent.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsClient.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars\SchoolWarsClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlag.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagData.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagDefine.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagAgent.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagField.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagClient.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag\CaptureTheFlagClient</Filter>
+    </ClInclude>
+    <ClInclude Include="DxGameStage.h">
+      <Filter>GameStage</Filter>
+    </ClInclude>
+    <ClInclude Include="DxGlobalStage.h">
+      <Filter>GlobalStage</Filter>
+    </ClInclude>
+    <ClInclude Include="DxLobyStage.h">
+      <Filter>LobbyStage</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientApex.h" />
+    <ClInclude Include="DxCharSham.h" />
+    <ClInclude Include="dxincommand.h" />
+    <ClInclude Include="DxParamSet.h" />
+    <ClInclude Include="DxServerInstance.h" />
+    <ClInclude Include="DxStage.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="G-Logic\GLItemUser.h">
+      <Filter>G-Logic\Data\GLItemUser</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemEtc1.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemEtc2.h">
+      <Filter>G-Logic\Data\GLItem\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLTransformSkinSet.h">
+      <Filter>G-Logic\Data\GLTransformSkinSet</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\SkillTransformData.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPKCombo.h">
+      <Filter>G-Logic\Data\GLPKCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPClubWarData.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\RTimerDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\UserTypeDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\CheckWearDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCurrencyShop.h">
+      <Filter>G-Logic\Data\GLCrowData\GLCurrencyShop</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLNPCShop.h">
+      <Filter>G-Logic\Data\GLCrowData\GLNPCShop</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLItemExchange.h">
+      <Filter>G-Logic\Data\GLCrowData\GLItemExchange</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowSale.h">
+      <Filter>G-Logic\Data\GLCrowData\GLCrowSale</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatch.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatchControlMsg.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatchData.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatchDefine.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatchAgent.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Agent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatchClient.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatchField.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlTyrannyMsg.h">
+      <Filter>G-Logic\PVP\PVPTyranny</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlTyrannyMsgEnum.h">
+      <Filter>G-Logic\PVP\PVPTyranny</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlSchoolWarsMsg.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlSchoolWarsMsgEnum.h">
+      <Filter>G-Logic\PVP\PVPSchoolWars</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlCaptureTheFlagMsg.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlCaptureTheFlagMsgEnum.h">
+      <Filter>G-Logic\PVP\PVPCaptureTheFlag</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GMCommandPass.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCharData.h">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCharDefine.h">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPersonalLock.h">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPartyFinder.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPartyFinderDef.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMapNodeDefine.h">
+      <Filter>G-Logic\Data\GLMapList</Filter>
+    </ClInclude>
+    <ClInclude Include="SGameStageInfo.h">
+      <Filter>GameStage</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCharLogicClient.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCharLogicServer.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLogicCommon.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowLogicClient.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowLogicServer.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSummonDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSummonLogicClient.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSummonLogicServer.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="MShieldGlobal.h" />
+    <ClInclude Include="HackShieldGlobal.h" />
+    <ClInclude Include="G-Logic\GLRouteDefine.h">
+      <Filter>G-Logic\LogicServer</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCrowDataWarden.h">
+      <Filter>G-Logic\Data\GLCrowData\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPClubDeathMatchControlMsgEnum.h">
+      <Filter>G-Logic\PVP\PVPClubDeathMatch</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPost.h">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPostDefine.h">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPostClient.h">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPostData.h">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPostControlMsg.h">
+      <Filter>G-Logic\Data\GLPost</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPKComboDefine.h">
+      <Filter>G-Logic\Data\GLPKCombo</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAwardTitle.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAwardTitleClient.h">
+      <Filter>G-Logic\LogicClient</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLGameNotice.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLWTF.h">
+      <Filter>G-Logic\LogicServer\ServerAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLChaosMachine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLChaosMachineDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSetOption.h">
+      <Filter>G-Logic\Data\GLSetOption</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSetOptionDefine.h">
+      <Filter>G-Logic\Data\GLSetOption</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\SClubBattleTime.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPKMark.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContributionShop.h">
+      <Filter>G-Logic\Data\GLCrowData\GLContributionShop</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLMaxRvPreview.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLSkillPurchase.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLWeaponSimplify.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoPotion.h">
+      <Filter>G-Logic\GLAutoPotion</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoPotionDef.h">
+      <Filter>G-Logic\GLAutoPotion</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoPilot.h">
+      <Filter>G-Logic\GLAutoPilot</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoPilotDef.h">
+      <Filter>G-Logic\GLAutoPilot</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoPilotC.h">
+      <Filter>G-Logic\GLAutoPilot</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLAutoPilotS.h">
+      <Filter>G-Logic\GLAutoPilot</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLReborn.h">
+      <Filter>G-Logic\Data\GLReborn</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLExchangeItem.h">
+      <Filter>G-Logic\Data\GLExchangeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\VipDefine.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCombatRecord.h">
+      <Filter>G-Logic\Data\GLCharData</Filter>
+    </ClInclude>
+    <ClInclude Include="PSDefine.h" />
+    <ClInclude Include="G-Logic\MapDropFilter.h">
+      <Filter>G-Logic\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPPartyBattleGrounds.h">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsDefine.h">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsData.h">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsClient.h">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsAgent.h">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds\SAgent</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsField.h">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds\SField</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsMsg.h">
+      <Filter>G-Logic\PVP\PVPPartyBattleGrounds</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlDailyLoginMsg.h">
+      <Filter>G-Logic\DailyLogin</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLDailyLogin.h">
+      <Filter>G-Logic\DailyLogin</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCodex.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCodexData.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLCodexDefine.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlCodexMsg.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBattlePass.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBattlePassData.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBattlePassDefine.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLBattlePassReward.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlBattlePassMsg.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="LG7DLL.h" />
+    <ClInclude Include="G-Logic\GLContrlWoeMsg.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLContrlWoeMsgEnum.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPWoe.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPWoeAgent.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPWoeClient.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPWoeData.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPWoeDefine.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLPVPWoeField.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="G-Logic\GLClubWarDefine.h">
+      <Filter>G-Logic</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

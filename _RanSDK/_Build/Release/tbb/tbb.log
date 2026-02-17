@@ -1,0 +1,118 @@
+﻿Build started 5/22/2025 4:18:59 PM.
+     1>Project "E:\RANSource\_2k10_RanSource\RanSDK\TBB\build\vs2010\tbb.vcxproj" on node 2 (rebuild target(s)).
+     1>InitializeBuildStatus:
+         Creating "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         generating tbb.def file
+         win32-tbb-export.def
+       _MASM:
+         Assembling [Inputs]...
+         cmd.exe /C "C:\Users\madju\AppData\Local\Temp\tmpe56d8d02460644228ae1637ca11bab60.cmd"
+         ml.exe /c /nologo /safeseh /Zi /Fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\atomic_support.obj" /W3 /errorReport:prompt /coff /Ta"..\..\src\tbb\ia32-masm\atomic_support.asm"
+       _MASM:
+         Assembling [Inputs]...
+         cmd.exe /C "C:\Users\madju\AppData\Local\Temp\tmp9d0ed3b452dd4ed7ac8d3fc2c6983ea2.cmd"
+         ml.exe /c /nologo /safeseh /Zi /Fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\itsx.obj" /W3 /errorReport:prompt /coff /Ta"..\..\src\tbb\ia32-masm\itsx.asm"
+       _MASM:
+         Assembling [Inputs]...
+         cmd.exe /C "C:\Users\madju\AppData\Local\Temp\tmpf8f55258059047c3adeef4e806a8a3b2.cmd"
+         ml.exe /c /nologo /safeseh /Zi /Fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\lock_byte.obj" /W3 /errorReport:prompt /coff /Ta"..\..\src\tbb\ia32-masm\lock_byte.asm"
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I. /I../../src /I../../include /IE:\RANSource\_2k10_RanSource\RanSDK\TBB\build\vs2010\ /Zi /nologo /W4 /WX- /O2 /Oy- /GL /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_WARNINGS /D _WINDLL /Gm- /EHsc /MT /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\\" /Fd"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\src\tbb\concurrent_hash_map.cpp ..\..\src\tbb\concurrent_queue.cpp ..\..\src\tbb\concurrent_vector.cpp ..\..\src\tbb\dynamic_link.cpp ..\..\src\tbb\itt_notify.cpp ..\..\src\tbb\cache_aligned_allocator.cpp ..\..\src\tbb\pipeline.cpp ..\..\src\tbb\queuing_mutex.cpp ..\..\src\tbb\queuing_rw_mutex.cpp ..\..\src\tbb\reader_writer_lock.cpp ..\..\src\tbb\spin_rw_mutex.cpp ..\..\src\tbb\spin_mutex.cpp ..\..\src\tbb\critical_section.cpp ..\..\src\tbb\mutex.cpp ..\..\src\tbb\recursive_mutex.cpp ..\..\src\tbb\condition_variable.cpp ..\..\src\tbb\tbb_thread.cpp ..\..\src\tbb\concurrent_monitor.cpp ..\..\src\tbb\semaphore.cpp ..\..\src\tbb\private_server.cpp ..\..\src\rml\client\rml_tbb.cpp ..\..\src\tbb\tbb_misc.cpp ..\..\src\tbb\tbb_misc_ex.cpp ..\..\src\tbb\task.cpp ..\..\src\tbb\task_group_context.cpp ..\..\src\tbb\governor.cpp ..\..\src\tbb\market.cpp ..\..\src\tbb\arena.cpp ..\..\src\tbb\scheduler.cpp ..\..\src\tbb\observer_proxy.cpp ..\..\src\tbb\tbb_statistics.cpp ..\..\src\tbb\tbb_main.cpp ..\..\src\old\concurrent_vector_v2.cpp ..\..\src\old\concurrent_queue_v2.cpp ..\..\src\old\spin_rw_mutex_v2.cpp ..\..\src\old\task_v2.cpp ..\..\src\tbb\x86_rtm_rw_mutex.cpp   /c /MT /O2 /Zi /EHsc /GR /Zc:forScope /Zc:wchar_t /D__TBB_LIB_NAME=tbb.lib /DDO_ITT_NOTIFY /GS /volatile:iso /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0502 /D__TBB_BUILD=1 /W4 /I../../src /I../../src/rml/include /I../../include
+     1>cl : Command line warning D9002: ignoring unknown option '/volatile:iso'
+         concurrent_hash_map.cpp
+         concurrent_queue.cpp
+         concurrent_vector.cpp
+         dynamic_link.cpp
+         itt_notify.cpp
+         cache_aligned_allocator.cpp
+         pipeline.cpp
+         queuing_mutex.cpp
+         queuing_rw_mutex.cpp
+         reader_writer_lock.cpp
+         spin_rw_mutex.cpp
+         spin_mutex.cpp
+         critical_section.cpp
+         mutex.cpp
+         recursive_mutex.cpp
+         condition_variable.cpp
+         tbb_thread.cpp
+         concurrent_monitor.cpp
+         semaphore.cpp
+         private_server.cpp
+         Compiling...
+         rml_tbb.cpp
+         tbb_misc.cpp
+         tbb_misc_ex.cpp
+         task.cpp
+         task_group_context.cpp
+         governor.cpp
+         market.cpp
+         arena.cpp
+         scheduler.cpp
+         observer_proxy.cpp
+         tbb_statistics.cpp
+         tbb_main.cpp
+         concurrent_vector_v2.cpp
+         concurrent_queue_v2.cpp
+         spin_rw_mutex_v2.cpp
+         task_v2.cpp
+         x86_rtm_rw_mutex.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /l"0x0409" /I. /I../../src /I../../include /IE:\RANSource\_2k10_RanSource\RanSDK\TBB\build\vs2010\ /nologo /fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb_resource.res" /I../../src /I../../include /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400  ..\..\src\tbb\tbb_resource.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.lib" /MACHINE:X86 /DLL E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb_resource.res
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\concurrent_hash_map.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\concurrent_queue.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\concurrent_vector.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\dynamic_link.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\itt_notify.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\cache_aligned_allocator.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\pipeline.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\queuing_mutex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\queuing_rw_mutex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\reader_writer_lock.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\spin_rw_mutex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\spin_mutex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\critical_section.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\mutex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\recursive_mutex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\condition_variable.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb_thread.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\concurrent_monitor.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\semaphore.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\private_server.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\rml_tbb.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb_misc.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb_misc_ex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\task.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\task_group_context.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\governor.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\market.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\arena.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\scheduler.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\observer_proxy.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb_statistics.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb_main.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\concurrent_vector_v2.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\concurrent_queue_v2.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\spin_rw_mutex_v2.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\task_v2.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\x86_rtm_rw_mutex.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\atomic_support.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\itsx.obj
+         E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\lock_byte.obj /nologo /DLL /MAP /DEBUG /fixed:no /INCREMENTAL:NO  /DEF:"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb.def" 
+            Creating library E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.lib and object E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.exp
+         Generating code
+         Finished generating code
+         tbb.vcxproj -> E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.dll
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.dll;#2" /manifest E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb.dll.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb.unsuccessfulbuild".
+         Touching "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\tbb.lastbuildstate".
+     1>Done Building Project "E:\RANSource\_2k10_RanSource\RanSDK\TBB\build\vs2010\tbb.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:19.67

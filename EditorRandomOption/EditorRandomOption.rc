@@ -1,0 +1,232 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\EditorRandomOption.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "../res/Icon_Tool.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EDITORRANDOMOPTION_DIALOG DIALOGEX 0, 0, 793, 400
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "EditorRandomOption"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LIST_RANDOM_OPTION,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,22,260,356
+    DEFPUSHBUTTON   "Load",IDC_BUTTON_LOAD,7,7,30,12
+    PUSHBUTTON      "Save",IDC_BUTTON_SAVE,39,7,30,12
+    PUSHBUTTON      "Import",IDC_BUTTON_IMPORT,178,7,30,12
+    PUSHBUTTON      "Export",IDC_BUTTON_EXPORT,209,7,30,12
+    PUSHBUTTON      "Add",IDC_BUTTON_ADD,7,381,30,12
+    PUSHBUTTON      "Delete",IDC_BUTTON_DELETE,71,381,30,12
+    PUSHBUTTON      "Clear",IDC_BUTTON_CLEAR,237,381,30,12
+    PUSHBUTTON      "Edit",IDC_BUTTON_EDIT,39,381,30,12
+    PUSHBUTTON      "Copy",IDC_BUTTON_COPY,103,381,30,12
+    EDITTEXT        IDC_EDIT_RANDOM_OPTION_NUM,241,8,25,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT_GEN_NAME,320,14,180,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GEN_RATE,320,27,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GEN_DPOINT,320,40,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GEN_SVALUE,320,53,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GEN_MIN_GAIN,450,36,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_GEN_MAX_GAIN,450,50,45,12,ES_AUTOHSCROLL
+    CONTROL         "",IDC_LIST_GEN_SET,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,278,80,250,130
+    CONTROL         "",IDC_LIST_GEN_SETR,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,531,80,250,130
+    LTEXT           "Name",IDC_STATIC,286,16,19,8
+    LTEXT           "Rate",IDC_STATIC,286,29,16,8
+    LTEXT           "DPoint",IDC_STATIC,286,42,22,8
+    LTEXT           "SValue",IDC_STATIC,286,55,22,8
+    CTEXT           "Set",IDC_STATIC,281,69,244,8
+    CTEXT           "SetR",IDC_STATIC,535,69,244,8
+    PUSHBUTTON      "Add",IDC_BUTTON_GEN_SET_ADD1,277,211,30,12
+    PUSHBUTTON      "Add",IDC_BUTTON_GEN_SET_ADD2,531,211,30,12
+    PUSHBUTTON      "Edit",IDC_BUTTON_GEN_SET_EDIT1,309,211,30,12
+    PUSHBUTTON      "Edit",IDC_BUTTON_GEN_SET_EDIT2,563,211,30,12
+    PUSHBUTTON      "Delete",IDC_BUTTON_GEN_SET_DEL1,341,211,30,12
+    PUSHBUTTON      "Delete",IDC_BUTTON_GEN_SET_DEL2,595,211,30,12
+    PUSHBUTTON      "Clear",IDC_BUTTON_GEN_SET_CLEAR1,473,211,30,12
+    PUSHBUTTON      "Clear",IDC_BUTTON_GEN_SET_CLEAR2,727,211,30,12
+    COMBOBOX        IDC_COMBO_SET_TYPE,281,235,140,155,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Gen Edit",IDC_STATIC,273,3,514,390
+    GROUPBOX        "Set Edit",IDC_STATIC,277,224,487,139
+    EDITTEXT        IDC_EDIT_SET_RATE,328,251,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SET_LOW,328,264,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SET_HIGH,328,277,45,12,ES_AUTOHSCROLL
+    LTEXT           "Rate",IDC_STATIC,285,253,16,8
+    LTEXT           "Total Low",IDC_STATIC,285,266,32,8
+    LTEXT           "Total High",IDC_STATIC,285,279,33,8
+    PUSHBUTTON      "Generate",IDC_BUTTON_SET_GENERATE,327,291,45,12
+    CONTROL         "",IDC_LIST_SET_SECTION,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,425,231,196,114
+    PUSHBUTTON      "Add",IDC_BUTTON_SET_SECTION_ADD,426,348,30,12
+    PUSHBUTTON      "Edit",IDC_BUTTON_SET_SECTION_EDIT,458,348,30,12
+    PUSHBUTTON      "Delete",IDC_BUTTON_SET_SECTION_DEL,490,348,30,12
+    PUSHBUTTON      "Clear",IDC_BUTTON_SET_SECTION_CLEAR,548,348,30,12
+    PUSHBUTTON      "SAVE GEN",IDC_BUTTON_GEN_SAVE,722,377,60,12
+    PUSHBUTTON      "SAVE SET",IDC_BUTTON_SET_SAVE,284,347,60,12
+    EDITTEXT        IDC_EDIT_SECTION_RATE,670,245,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SECTION_LOW,670,258,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SECTION_HIGH,670,271,45,12,ES_AUTOHSCROLL
+    LTEXT           "Rate",IDC_STATIC,635,247,16,8
+    LTEXT           "Low",IDC_STATIC,635,260,14,8
+    LTEXT           "High",IDC_STATIC,635,273,15,8
+    GROUPBOX        "Section Edit",IDC_STATIC,626,231,134,94
+    PUSHBUTTON      "SAVE SECTION",IDC_BUTTON_SECTION_SAVE,697,308,60,12
+    EDITTEXT        IDC_EDIT_SET_TOTAL,579,348,40,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Copy",IDC_BUTTON_GEN_SET_COPY1,373,211,30,12
+    PUSHBUTTON      "Copy",IDC_BUTTON_GEN_SET_COPY2,627,211,30,12
+    PUSHBUTTON      "Copy Set to SetR",IDC_BUTTON_GEN_COPY_SET_TO_SETR,598,377,94,12
+    PUSHBUTTON      "CSV Save",IDC_BUTTON_SAVE2,120,7,35,12
+    PUSHBUTTON      "CSV Load",IDC_BUTTON_LOAD2,82,7,35,12
+    LTEXT           "Min Gain",IDC_STATIC,400,38,28,8
+    LTEXT           "Max Gain",IDC_STATIC,400,52,30,8
+    EDITTEXT        IDC_EDIT_GEN_MAX_GEN_D,555,36,45,12,ES_AUTOHSCROLL
+    LTEXT           "Max Gen D",IDC_STATIC,510,38,36,8
+    EDITTEXT        IDC_EDIT_GEN_MAX_GEN_R,555,50,45,12,ES_AUTOHSCROLL
+    LTEXT           "Max Gen R",IDC_STATIC,510,52,36,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "EJCode"
+            VALUE "FileDescription", "EditorRandomOption"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "EditorRandomOption.exe"
+            VALUE "LegalCopyright", "(c) EJCode.  All rights reserved."
+            VALUE "OriginalFilename", "EditorRandomOption.exe"
+            VALUE "ProductName", "RanOnline"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_EDITORRANDOMOPTION_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 786
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 393
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\EditorRandomOption.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

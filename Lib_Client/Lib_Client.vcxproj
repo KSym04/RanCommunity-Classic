@@ -1,0 +1,2065 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="CHY_Debug_EP7|Win32">
+      <Configuration>CHY_Debug_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="CH_Debug_EP7|Win32">
+      <Configuration>CH_Debug_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="CH_Debug_EP9|Win32">
+      <Configuration>CH_Debug_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="CHY_Release_EP7|Win32">
+      <Configuration>CHY_Release_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="CH_Release_EP7|Win32">
+      <Configuration>CH_Release_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="CH_Release_EP9|Win32">
+      <Configuration>CH_Release_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Debug_EP4|Win32">
+      <Configuration>X_Debug_EP4</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Debug_EP6|Win32">
+      <Configuration>X_Debug_EP6</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Debug_EP7|Win32">
+      <Configuration>X_Debug_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Debug_EP9|Win32">
+      <Configuration>X_Debug_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_EP4|Win32">
+      <Configuration>Debug_EP4</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_EP9|Win32">
+      <Configuration>Debug_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Release_EP4|Win32">
+      <Configuration>X_Release_EP4</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Release_EP6|Win32">
+      <Configuration>X_Release_EP6</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Release_EP7|Win32">
+      <Configuration>X_Release_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="X_Release_EP9|Win32">
+      <Configuration>X_Release_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_EP4|Win32">
+      <Configuration>Release_EP4</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_EP9|Win32">
+      <Configuration>Release_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_EP6|Win32">
+      <Configuration>Debug_EP6</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_EP7|Win32">
+      <Configuration>Debug_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_EP6|Win32">
+      <Configuration>Release_EP6</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_EP7|Win32">
+      <Configuration>Release_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Debug_EP4|Win32">
+      <Configuration>Z_Debug_EP4</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Debug_EP6|Win32">
+      <Configuration>Z_Debug_EP6</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Debug_EP7|Win32">
+      <Configuration>Z_Debug_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Debug_EP9|Win32">
+      <Configuration>Z_Debug_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Release_EP4|Win32">
+      <Configuration>Z_Release_EP4</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Release_EP6|Win32">
+      <Configuration>Z_Release_EP6</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Release_EP7|Win32">
+      <Configuration>Z_Release_EP7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Z_Release_EP9|Win32">
+      <Configuration>Z_Release_EP9</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{48C5F730-9C88-401B-BD25-6F2C100B5064}</ProjectGuid>
+    <RootNamespace>Lib_Client</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\_Props\common_debug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'">$(SolutionDir)_Build\$(Configuration)\$(ProjectName)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_BASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_BASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP7;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_CH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_CHY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP9;BUILD_CH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP9;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP9;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP6;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP6;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP6;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP4;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;KR_PARAM;BUILD_EP4;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP7;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_CH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_CHY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP7;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP9;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP9;BUILD_CH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP9;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP9;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP6;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP6;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP6;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP4;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP4;BUILD_X;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;KR_PARAM;BUILD_EP4;BUILD_Z;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0412</Culture>
+    </ResourceCompile>
+    <Lib>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lib_Import\Lib_Import.vcxproj">
+      <Project>{794b5833-3d4e-425f-b2ee-1e29274a6fd4}</Project>
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DbActionLogic.cpp" />
+    <ClCompile Include="DbActionLogicClub.cpp" />
+    <ClCompile Include="DBActionLogicEx.cpp" />
+    <ClCompile Include="DbActionLogicGMLogs.cpp" />
+    <ClCompile Include="DbActionLogicLog.cpp" />
+    <ClCompile Include="DbActionLogicPet.cpp" />
+    <ClCompile Include="DbActionLogicShop.cpp" />
+    <ClCompile Include="DbActionLogicSMS.cpp" />
+    <ClCompile Include="DbActionLogicUser.cpp" />
+    <ClCompile Include="DbActionLogicVehicle.cpp" />
+    <ClCompile Include="G-Logic\GLAgentServerKickOutList.cpp" />
+    <ClCompile Include="G-Logic\GLAutoPilot.cpp" />
+    <ClCompile Include="G-Logic\GLAutoPilotC.cpp" />
+    <ClCompile Include="G-Logic\GLAutoPilotS.cpp" />
+    <ClCompile Include="G-Logic\GLAutoPotion.cpp" />
+    <ClCompile Include="G-Logic\GLAwardTitle.cpp" />
+    <ClCompile Include="G-Logic\GLAwardTitleClient.cpp" />
+    <ClCompile Include="G-Logic\GLBattlePass.cpp" />
+    <ClCompile Include="G-Logic\GLBattlePassData.cpp" />
+    <ClCompile Include="G-Logic\GLBattlePassDefine.cpp" />
+    <ClCompile Include="G-Logic\GLBattlePassReward.cpp" />
+    <ClCompile Include="G-Logic\GLChaosMachine.cpp" />
+    <ClCompile Include="G-Logic\GLChaosMachineDefine.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterAutoPilot.cpp" />
+    <ClCompile Include="G-Logic\GLCharAGEx.cpp" />
+    <ClCompile Include="G-Logic\GLCharBattlePass.cpp" />
+    <ClCompile Include="G-Logic\GLCharCodex.cpp" />
+    <ClCompile Include="G-Logic\GLCharDataBattlePass.cpp" />
+    <ClCompile Include="G-Logic\GLCharDataCodex.cpp" />
+    <ClCompile Include="G-Logic\GLCharDataDailyLogin.cpp" />
+    <ClCompile Include="G-Logic\GLCharDataEx.cpp" />
+    <ClCompile Include="G-Logic\GLCharLogicClientEx.cpp" />
+    <ClCompile Include="G-Logic\GLCharSkillCheck.cpp" />
+    <ClCompile Include="G-Logic\GLCodex.cpp" />
+    <ClCompile Include="G-Logic\GLCodexData.cpp" />
+    <ClCompile Include="G-Logic\GLCodexDefine.cpp" />
+    <ClCompile Include="G-Logic\GLCombatRecord.cpp" />
+    <ClCompile Include="G-Logic\GLContributionShop.cpp" />
+    <ClCompile Include="G-Logic\GLCrowDataEx.cpp" />
+    <ClCompile Include="G-Logic\GLCrowDataWarden.cpp" />
+    <ClCompile Include="G-Logic\GLCrowLogicServer.cpp" />
+    <ClCompile Include="G-Logic\GLCrowSale.cpp" />
+    <ClCompile Include="G-Logic\GLCurrencyShop.cpp" />
+    <ClCompile Include="G-Logic\GLDailyLogin.cpp" />
+    <ClCompile Include="G-Logic\GLExchangeItem.cpp" />
+    <ClCompile Include="G-Logic\GLGaeaClientEx.cpp" />
+    <ClCompile Include="G-Logic\GLGameNotice.cpp" />
+    <ClCompile Include="G-Logic\GLGuidanceScore.cpp" />
+    <ClCompile Include="G-Logic\GLItemEtc1.cpp" />
+    <ClCompile Include="G-Logic\GLItemEtc2.cpp" />
+    <ClCompile Include="G-Logic\GLItemExchange.cpp" />
+    <ClCompile Include="G-Logic\GLItemUser.cpp" />
+    <ClCompile Include="G-Logic\GLCharLogicServer.cpp" />
+    <ClCompile Include="G-Logic\GLCharLogicClient.cpp" />
+    <ClCompile Include="G-Logic\GLMaxRvPreview.cpp" />
+    <ClCompile Include="G-Logic\GLogicCommonChar.cpp" />
+    <ClCompile Include="G-Logic\GLogicCommon.cpp" />
+    <ClCompile Include="G-Logic\GLCrowLogicClient.cpp" />
+    <ClCompile Include="G-Logic\GLNPCShop.cpp" />
+    <ClCompile Include="G-Logic\GLPartyFinder.cpp" />
+    <ClCompile Include="G-Logic\GLPersonalLock.cpp" />
+    <ClCompile Include="G-Logic\GLPKCombo.cpp" />
+    <ClCompile Include="G-Logic\GLPKMark.cpp" />
+    <ClCompile Include="G-Logic\GLPost.cpp" />
+    <ClCompile Include="G-Logic\GLPostClient.cpp" />
+    <ClCompile Include="G-Logic\GLPostData.cpp" />
+    <ClCompile Include="G-Logic\GLPostDataLoad.cpp" />
+    <ClCompile Include="G-Logic\GLPostDefine.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagDefine.cpp" />
+    <ClCompile Include="G-Logic\GLPVPClubWarData.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyData.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldRankingClubDisplay.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldRankingDisplay.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoe.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeAgent.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeAgentMapMove.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeAgentMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeAgentRegister.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeAgentTower.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeClient.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeClientMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeField.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeFieldMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPWoeFieldRanking.cpp" />
+    <ClCompile Include="G-Logic\GLReborn.cpp" />
+    <ClCompile Include="G-Logic\GLSetOption.cpp" />
+    <ClCompile Include="G-Logic\GLSetOptionDefine.cpp" />
+    <ClCompile Include="G-Logic\GLSkillPurchase.cpp" />
+    <ClCompile Include="G-Logic\GLSummonDefine.cpp" />
+    <ClCompile Include="G-Logic\GLSummonLogicClient.cpp" />
+    <ClCompile Include="G-Logic\GLSummonLogicServer.cpp" />
+    <ClCompile Include="G-Logic\GLTransformSkinSet.cpp" />
+    <ClCompile Include="G-Logic\GLWeaponSimplify.cpp" />
+    <ClCompile Include="G-Logic\GLWTF.cpp" />
+    <ClCompile Include="G-Logic\GMCommandPass.cpp" />
+    <ClCompile Include="G-Logic\MapDropFilter.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatch.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgent.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgentMapMove.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgentMsg.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchAgentRegister.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchClient.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchClientMsg.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchData.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchDefine.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchField.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchFieldMsg.cpp" />
+    <ClCompile Include="G-Logic\PVPClubDeathMatchFieldScore.cpp" />
+    <ClCompile Include="G-Logic\PVPPartyBattleGrounds.cpp" />
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsAgent.cpp" />
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsClient.cpp" />
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsData.cpp" />
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsDefine.cpp" />
+    <ClCompile Include="G-Logic\PVPPartyBattleGroundsField.cpp" />
+    <ClCompile Include="G-Logic\stl_Func.cpp" />
+    <ClCompile Include="G-Logic\GLActivityDefine.cpp" />
+    <ClCompile Include="G-Logic\GLCharData.cpp" />
+    <ClCompile Include="G-Logic\GLCharDataActivity.cpp" />
+    <ClCompile Include="G-Logic\GLCharDataLoad.cpp" />
+    <ClCompile Include="G-Logic\GLCharDefine.cpp" />
+    <ClCompile Include="G-Logic\GLFactData.cpp" />
+    <ClCompile Include="G-Logic\GLInventory.cpp" />
+    <ClCompile Include="G-Logic\GLMoney.cpp" />
+    <ClCompile Include="G-Logic\GLogicData.cpp" />
+    <ClCompile Include="G-Logic\GLogicDataLoad.cpp" />
+    <ClCompile Include="G-Logic\GLPet.cpp" />
+    <ClCompile Include="G-Logic\GLProductDefine.cpp" />
+    <ClCompile Include="G-Logic\GLSummon.cpp" />
+    <ClCompile Include="G-Logic\GLTrade.cpp" />
+    <ClCompile Include="G-Logic\GLVEHICLE.cpp" />
+    <ClCompile Include="G-Logic\Emoticon.cpp" />
+    <ClCompile Include="G-Logic\GLBusData.cpp" />
+    <ClCompile Include="G-Logic\GLBusList.cpp" />
+    <ClCompile Include="G-Logic\GLBusStation.cpp" />
+    <ClCompile Include="G-Logic\GLCommentFile.cpp" />
+    <ClCompile Include="G-Logic\GLCrowData.cpp" />
+    <ClCompile Include="G-Logic\GLCrowDataLoad.cpp" />
+    <ClCompile Include="G-Logic\GLCrowDataAction.cpp" />
+    <ClCompile Include="G-Logic\GLCrowDataAttack.cpp" />
+    <ClCompile Include="G-Logic\GLCrowDataBasic.cpp" />
+    <ClCompile Include="G-Logic\GLCrowDataGen.cpp" />
+    <ClCompile Include="G-Logic\GLDescriptionFile.cpp" />
+    <ClCompile Include="G-Logic\GLItem.cpp" />
+    <ClCompile Include="G-Logic\GLItemDef.cpp" />
+    <ClCompile Include="G-Logic\GLItemDef2.cpp" />
+    <ClCompile Include="G-Logic\GLItemMan.cpp" />
+    <ClCompile Include="G-Logic\GLItemBasic.cpp" />
+    <ClCompile Include="G-Logic\GLItemBox.cpp" />
+    <ClCompile Include="G-Logic\GLItemDrug.cpp" />
+    <ClCompile Include="G-Logic\GLItemGenerate.cpp" />
+    <ClCompile Include="G-Logic\GLItemGrinding.cpp" />
+    <ClCompile Include="G-Logic\GLItemPet.cpp" />
+    <ClCompile Include="G-Logic\GLItemPetSkin.cpp" />
+    <ClCompile Include="G-Logic\GLItemQuestion.cpp" />
+    <ClCompile Include="G-Logic\GLItemRandomBox.cpp" />
+    <ClCompile Include="G-Logic\GLItemRandomOption.cpp" />
+    <ClCompile Include="G-Logic\GLItemRVCard.cpp" />
+    <ClCompile Include="G-Logic\GLItemSkillBook.cpp" />
+    <ClCompile Include="G-Logic\GLItemSuit.cpp" />
+    <ClCompile Include="G-Logic\GLItemVehicle.cpp" />
+    <ClCompile Include="G-Logic\GLItemMix.cpp" />
+    <ClCompile Include="G-Logic\GLItemMixMan.cpp" />
+    <ClCompile Include="G-Logic\GLLandMark.cpp" />
+    <ClCompile Include="G-Logic\GLLevelEtcFunction.cpp" />
+    <ClCompile Include="G-Logic\GLLevelFile.cpp" />
+    <ClCompile Include="G-Logic\GLLevelFileSaveLoad.cpp" />
+    <ClCompile Include="G-Logic\GLLevelHead.cpp" />
+    <ClCompile Include="G-Logic\GLLevelRequire.cpp" />
+    <ClCompile Include="G-Logic\GLMapAxisInfo.cpp" />
+    <ClCompile Include="G-Logic\GLMapList.cpp" />
+    <ClCompile Include="G-Logic\GLMapNode.cpp" />
+    <ClCompile Include="G-Logic\GLMobSchedule.cpp" />
+    <ClCompile Include="G-Logic\GLMobScheduleSaveLoad.cpp" />
+    <ClCompile Include="G-Logic\GLNote.cpp" />
+    <ClCompile Include="G-Logic\GLQuest.cpp" />
+    <ClCompile Include="G-Logic\GLQuestMan.cpp" />
+    <ClCompile Include="G-Logic\GLQuestPlay.cpp" />
+    <ClCompile Include="G-Logic\GLQuestAttendance.cpp" />
+    <ClCompile Include="G-Logic\GLQuestGenItem.cpp" />
+    <ClCompile Include="G-Logic\GLQuestStart.cpp" />
+    <ClCompile Include="G-Logic\GLQuestStep.cpp" />
+    <ClCompile Include="G-Logic\GLSkill.cpp" />
+    <ClCompile Include="G-Logic\GLSkillApply.cpp" />
+    <ClCompile Include="G-Logic\GLSkillBasic.cpp" />
+    <ClCompile Include="G-Logic\GLSkillDefine.cpp" />
+    <ClCompile Include="G-Logic\GLSkillExData.cpp" />
+    <ClCompile Include="G-Logic\GLSkillLearn.cpp" />
+    <ClCompile Include="G-Logic\GLSkillSpecial.cpp" />
+    <ClCompile Include="G-Logic\GLStringTable.cpp" />
+    <ClCompile Include="G-Logic\GLTaxiData.cpp" />
+    <ClCompile Include="G-Logic\GLTaxiStation.cpp" />
+    <ClCompile Include="G-Logic\UserTypeDefine.cpp" />
+    <ClCompile Include="G-Logic\VipDefine.cpp" />
+    <ClCompile Include="HackShieldGlobal.cpp" />
+    <ClCompile Include="MShieldGlobal.cpp" />
+    <ClCompile Include="NpcTalk\NpcDialogue.cpp" />
+    <ClCompile Include="NpcTalk\NpcDialogueCase.cpp" />
+    <ClCompile Include="NpcTalk\NpcDialogueSet.cpp" />
+    <ClCompile Include="NpcTalk\NpcTalk.cpp" />
+    <ClCompile Include="NpcTalk\NpcTalkCondition.cpp" />
+    <ClCompile Include="NpcTalk\NpcTalkControl.cpp" />
+    <ClCompile Include="G-Logic\GLItemLink.cpp" />
+    <ClCompile Include="G-Logic\GLActivity.cpp" />
+    <ClCompile Include="G-Logic\GLActivityData.cpp" />
+    <ClCompile Include="G-Logic\GLRandomOption.cpp" />
+    <ClCompile Include="G-Logic\GLContrlMsg.cpp" />
+    <ClCompile Include="G-Logic\GLContrlPcMsg.cpp" />
+    <ClCompile Include="G-Logic\GLFactEffect.cpp" />
+    <ClCompile Include="G-Logic\GLFriendClient.cpp" />
+    <ClCompile Include="G-Logic\GLGaeaClient.cpp" />
+    <ClCompile Include="G-Logic\GLLandManClient.cpp" />
+    <ClCompile Include="G-Logic\GLPartyClient.cpp" />
+    <ClCompile Include="G-Logic\GLTradeClient.cpp" />
+    <ClCompile Include="G-Logic\GLCharClient.cpp" />
+    <ClCompile Include="G-Logic\GLCrowClient.cpp" />
+    <ClCompile Include="G-Logic\GLCrowRenList.cpp" />
+    <ClCompile Include="G-Logic\GLMaterialClient.cpp" />
+    <ClCompile Include="G-Logic\GLAnyPet.cpp" />
+    <ClCompile Include="G-Logic\GLPetClient.cpp" />
+    <ClCompile Include="G-Logic\GLPetClientMsg.cpp" />
+    <ClCompile Include="G-Logic\GLPetClientReq.cpp" />
+    <ClCompile Include="G-Logic\GLPetClientSkill.cpp" />
+    <ClCompile Include="G-Logic\GLAnySummon.cpp" />
+    <ClCompile Include="G-Logic\GLAnySummonMsg.cpp" />
+    <ClCompile Include="G-Logic\GLSummonClient.cpp" />
+    <ClCompile Include="G-Logic\GLSummonClientMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacter.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterAllianceMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterClubBattleMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterClubMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterConfrontMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterMiniGameMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterQuestMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterSkill.cpp" />
+    <ClCompile Include="G-Logic\GLCharacterSkillTarget.cpp" />
+    <ClCompile Include="G-Logic\GLCharactorReq.cpp" />
+    <ClCompile Include="G-Logic\GLCharactorReq2.cpp" />
+    <ClCompile Include="G-Logic\GLARoundSlot.cpp" />
+    <ClCompile Include="G-Logic\GLClubDeathMatch.cpp" />
+    <ClCompile Include="G-Logic\GLGuidance.cpp" />
+    <ClCompile Include="G-Logic\GLITEMLMT.cpp" />
+    <ClCompile Include="G-Logic\GLPrivateMarket.cpp" />
+    <ClCompile Include="G-Logic\GLAgentServer.cpp" />
+    <ClCompile Include="G-Logic\GLAgentServerEx.cpp" />
+    <ClCompile Include="G-Logic\GLAgentServerMsg.cpp" />
+    <ClCompile Include="G-Logic\GLAGLandMan.cpp" />
+    <ClCompile Include="G-Logic\GLClubMan.cpp" />
+    <ClCompile Include="G-Logic\GLFreePK.cpp" />
+    <ClCompile Include="G-Logic\GLSchoolFreePK.cpp" />
+    <ClCompile Include="G-Logic\GLCharAG.cpp" />
+    <ClCompile Include="G-Logic\GLCharAGClub.cpp" />
+    <ClCompile Include="G-Logic\GLAutoLevel.cpp" />
+    <ClCompile Include="G-Logic\GLAutoLevelMan.cpp" />
+    <ClCompile Include="G-Logic\GLParty.cpp" />
+    <ClCompile Include="G-Logic\GLPartyMan.cpp" />
+    <ClCompile Include="G-Logic\GLEventProc.cpp" />
+    <ClCompile Include="G-Logic\GLGaeaServer.cpp" />
+    <ClCompile Include="G-Logic\GLGaeaServerEx.cpp" />
+    <ClCompile Include="G-Logic\GLGaeaServerMsg.cpp" />
+    <ClCompile Include="G-Logic\GLLandMan.cpp" />
+    <ClCompile Include="G-Logic\GLLandManSet.cpp" />
+    <ClCompile Include="G-Logic\GLChar.cpp" />
+    <ClCompile Include="G-Logic\GLCharActivity.cpp" />
+    <ClCompile Include="G-Logic\GLCharClubMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharEx.cpp" />
+    <ClCompile Include="G-Logic\GLCharInvenMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharInvenMsg2.cpp" />
+    <ClCompile Include="G-Logic\GLCharMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharMsg2.cpp" />
+    <ClCompile Include="G-Logic\GLCharPetMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharPMarketMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharQuest.cpp" />
+    <ClCompile Include="G-Logic\GLCharQuestMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharSkillMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCharStorageMsg.cpp" />
+    <ClCompile Include="G-Logic\GLCrow.cpp" />
+    <ClCompile Include="G-Logic\GLCrowGenerateReward.cpp" />
+    <ClCompile Include="G-Logic\GLCrowReAction.cpp" />
+    <ClCompile Include="G-Logic\GLCrowSkill.cpp" />
+    <ClCompile Include="G-Logic\GLCrowSkillTarget.cpp" />
+    <ClCompile Include="G-Logic\GLMaterial.cpp" />
+    <ClCompile Include="G-Logic\GLPetField.cpp" />
+    <ClCompile Include="G-Logic\GLPetFieldMsg.cpp" />
+    <ClCompile Include="G-Logic\GLSummonField.cpp" />
+    <ClCompile Include="G-Logic\GLSummonFieldMsg.cpp" />
+    <ClCompile Include="G-Logic\GLSummonFieldSkill.cpp" />
+    <ClCompile Include="G-Logic\GLPartyField.cpp" />
+    <ClCompile Include="G-Logic\GLPartyFieldMan.cpp" />
+    <ClCompile Include="G-Logic\GLStrikeSelector.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyranny.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgent.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentMapMove.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentRegister.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyAgentTower.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyField.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyFieldRanking.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyClient.cpp" />
+    <ClCompile Include="G-Logic\GLPVPTyrannyClientMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWars.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsField.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsFieldMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsFieldRanking.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgent.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgentMapMove.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgentMsg.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsAgentRegister.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsClient.cpp" />
+    <ClCompile Include="G-Logic\GLPVPSchoolWarsClientMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlag.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgent.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgentMapMove.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgentMsg.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagAgentRegister.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagField.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagFieldFlag.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagFieldMSG.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagFieldRanking.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagClient.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagClientFlag.cpp" />
+    <ClCompile Include="G-Logic\GLPVPCaptureTheFlagClientMSG.cpp" />
+    <ClCompile Include="DxGameStage.cpp" />
+    <ClCompile Include="DxGlobalStage.cpp" />
+    <ClCompile Include="DxLobyStage.cpp" />
+    <ClCompile Include="DxLobyStageCreateChar.cpp" />
+    <ClCompile Include="DxLobyStageSelectChar.cpp" />
+    <ClCompile Include="ClientApex.cpp" />
+    <ClCompile Include="DxCharSham.cpp" />
+    <ClCompile Include="dxincommand.cpp" />
+    <ClCompile Include="DxParamSet.cpp" />
+    <ClCompile Include="DxServerInstance.cpp" />
+    <ClCompile Include="PSDefine.cpp" />
+    <ClCompile Include="SGameStageInfo.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CHY_Debug_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CH_Debug_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_EP6|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP6|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP6|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_EP4|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Debug_EP4|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Debug_EP4|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CHY_Release_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Release_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP7|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CH_Release_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Release_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP9|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_EP6|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Release_EP6|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP6|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_EP4|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='X_Release_EP4|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Z_Release_EP4|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DbActionLogic.h" />
+    <ClInclude Include="G-Logic\CheckWearDefine.h" />
+    <ClInclude Include="G-Logic\GLAutoPilot.h" />
+    <ClInclude Include="G-Logic\GLAutoPilotC.h" />
+    <ClInclude Include="G-Logic\GLAutoPilotDef.h" />
+    <ClInclude Include="G-Logic\GLAutoPilotS.h" />
+    <ClInclude Include="G-Logic\GLAutoPotion.h" />
+    <ClInclude Include="G-Logic\GLAutoPotionDef.h" />
+    <ClInclude Include="G-Logic\GLAwardTitle.h" />
+    <ClInclude Include="G-Logic\GLAwardTitleClient.h" />
+    <ClInclude Include="G-Logic\GLBattlePass.h" />
+    <ClInclude Include="G-Logic\GLBattlePassData.h" />
+    <ClInclude Include="G-Logic\GLBattlePassDefine.h" />
+    <ClInclude Include="G-Logic\GLBattlePassReward.h" />
+    <ClInclude Include="G-Logic\GLChaosMachine.h" />
+    <ClInclude Include="G-Logic\GLChaosMachineDefine.h" />
+    <ClInclude Include="G-Logic\GLClubWarDefine.h" />
+    <ClInclude Include="G-Logic\GLCodex.h" />
+    <ClInclude Include="G-Logic\GLCodexData.h" />
+    <ClInclude Include="G-Logic\GLCodexDefine.h" />
+    <ClInclude Include="G-Logic\GLCombatRecord.h" />
+    <ClInclude Include="G-Logic\GLContributionShop.h" />
+    <ClInclude Include="G-Logic\GLContrlBattlePassMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlCodexMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlDailyLoginMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlWoeMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlWoeMsgEnum.h" />
+    <ClInclude Include="G-Logic\GLCrowDataWarden.h" />
+    <ClInclude Include="G-Logic\GLCrowLogicServer.h" />
+    <ClInclude Include="G-Logic\GLCrowSale.h" />
+    <ClInclude Include="G-Logic\GLCurrencyShop.h" />
+    <ClInclude Include="G-Logic\GLDailyLogin.h" />
+    <ClInclude Include="G-Logic\GLExchangeItem.h" />
+    <ClInclude Include="G-Logic\GLGameNotice.h" />
+    <ClInclude Include="G-Logic\GLItemEtc1.h" />
+    <ClInclude Include="G-Logic\GLItemEtc2.h" />
+    <ClInclude Include="G-Logic\GLItemExchange.h" />
+    <ClInclude Include="G-Logic\GLItemUser.h" />
+    <ClInclude Include="G-Logic\GLCharLogicServer.h" />
+    <ClInclude Include="G-Logic\GLCharLogicClient.h" />
+    <ClInclude Include="G-Logic\GLMaxRvPreview.h" />
+    <ClInclude Include="G-Logic\GLogicCommon.h" />
+    <ClInclude Include="G-Logic\GLCrowLogicClient.h" />
+    <ClInclude Include="G-Logic\GLMapNodeDefine.h" />
+    <ClInclude Include="G-Logic\GLNPCShop.h" />
+    <ClInclude Include="G-Logic\GLPartyFinder.h" />
+    <ClInclude Include="G-Logic\GLPartyFinderDef.h" />
+    <ClInclude Include="G-Logic\GLPersonalLock.h" />
+    <ClInclude Include="G-Logic\GLPKCombo.h" />
+    <ClInclude Include="G-Logic\GLPKComboDefine.h" />
+    <ClInclude Include="G-Logic\GLPKMark.h" />
+    <ClInclude Include="G-Logic\GLPost.h" />
+    <ClInclude Include="G-Logic\GLPostClient.h" />
+    <ClInclude Include="G-Logic\GLPostControlMsg.h" />
+    <ClInclude Include="G-Logic\GLPostData.h" />
+    <ClInclude Include="G-Logic\GLPostDefine.h" />
+    <ClInclude Include="G-Logic\GLPVPClubWarData.h" />
+    <ClInclude Include="G-Logic\GLPVPWoe.h" />
+    <ClInclude Include="G-Logic\GLPVPWoeAgent.h" />
+    <ClInclude Include="G-Logic\GLPVPWoeClient.h" />
+    <ClInclude Include="G-Logic\GLPVPWoeData.h" />
+    <ClInclude Include="G-Logic\GLPVPWoeDefine.h" />
+    <ClInclude Include="G-Logic\GLPVPWoeField.h" />
+    <ClInclude Include="G-Logic\GLReborn.h" />
+    <ClInclude Include="G-Logic\GLRouteDefine.h" />
+    <ClInclude Include="G-Logic\GLSetOption.h" />
+    <ClInclude Include="G-Logic\GLSetOptionDefine.h" />
+    <ClInclude Include="G-Logic\GLSkillPurchase.h" />
+    <ClInclude Include="G-Logic\GLSummonDefine.h" />
+    <ClInclude Include="G-Logic\GLSummonLogicClient.h" />
+    <ClInclude Include="G-Logic\GLSummonLogicServer.h" />
+    <ClInclude Include="G-Logic\GLTransformSkinSet.h" />
+    <ClInclude Include="G-Logic\GLWeaponSimplify.h" />
+    <ClInclude Include="G-Logic\GLWTF.h" />
+    <ClInclude Include="G-Logic\GMCommandPass.h" />
+    <ClInclude Include="G-Logic\MapDropFilter.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatch.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatchAgent.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatchClient.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatchControlMsg.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatchControlMsgEnum.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatchData.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatchDefine.h" />
+    <ClInclude Include="G-Logic\PVPClubDeathMatchField.h" />
+    <ClInclude Include="G-Logic\PVPPartyBattleGrounds.h" />
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsAgent.h" />
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsClient.h" />
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsData.h" />
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsDefine.h" />
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsField.h" />
+    <ClInclude Include="G-Logic\PVPPartyBattleGroundsMsg.h" />
+    <ClInclude Include="G-Logic\RTimerDefine.h" />
+    <ClInclude Include="G-Logic\SClubBattleTime.h" />
+    <ClInclude Include="G-Logic\SkillTransformData.h" />
+    <ClInclude Include="G-Logic\stl_Func.h" />
+    <ClInclude Include="G-Logic\GLActivityDefine.h" />
+    <ClInclude Include="G-Logic\GLBikeColorDef.h" />
+    <ClInclude Include="G-Logic\GLCharData.h" />
+    <ClInclude Include="G-Logic\GLCharDefine.h" />
+    <ClInclude Include="G-Logic\GLFactData.h" />
+    <ClInclude Include="G-Logic\GLInventory.h" />
+    <ClInclude Include="G-Logic\GLMoney.h" />
+    <ClInclude Include="G-Logic\GLogicData.h" />
+    <ClInclude Include="G-Logic\GLPet.h" />
+    <ClInclude Include="G-Logic\GLProductDefine.h" />
+    <ClInclude Include="G-Logic\GLSummon.h" />
+    <ClInclude Include="G-Logic\GLTrade.h" />
+    <ClInclude Include="G-Logic\GLVEHICLE.h" />
+    <ClInclude Include="G-Logic\Emoticon.h" />
+    <ClInclude Include="G-Logic\GLBusData.h" />
+    <ClInclude Include="G-Logic\GLBusList.h" />
+    <ClInclude Include="G-Logic\GLBusStation.h" />
+    <ClInclude Include="G-Logic\GLCommentFile.h" />
+    <ClInclude Include="G-Logic\GLCrowData.h" />
+    <ClInclude Include="G-Logic\GLCrowDataAction.h" />
+    <ClInclude Include="G-Logic\GLCrowDataAttack.h" />
+    <ClInclude Include="G-Logic\GLCrowDataBasic.h" />
+    <ClInclude Include="G-Logic\GLCrowDataGen.h" />
+    <ClInclude Include="G-Logic\GLDescriptionFile.h" />
+    <ClInclude Include="G-Logic\GLItem.h" />
+    <ClInclude Include="G-Logic\GLItemDef.h" />
+    <ClInclude Include="G-Logic\GLItemDefEX.h" />
+    <ClInclude Include="G-Logic\GLItemMan.h" />
+    <ClInclude Include="G-Logic\GLItemBasic.h" />
+    <ClInclude Include="G-Logic\GLItemBox.h" />
+    <ClInclude Include="G-Logic\GLItemDrug.h" />
+    <ClInclude Include="G-Logic\GLItemGenerate.h" />
+    <ClInclude Include="G-Logic\GLItemGrinding.h" />
+    <ClInclude Include="G-Logic\GLItemPet.h" />
+    <ClInclude Include="G-Logic\GLItemPetSkin.h" />
+    <ClInclude Include="G-Logic\GLItemQuestion.h" />
+    <ClInclude Include="G-Logic\GLItemRandomBox.h" />
+    <ClInclude Include="G-Logic\GLItemRandomOption.h" />
+    <ClInclude Include="G-Logic\GLItemRVCard.h" />
+    <ClInclude Include="G-Logic\GLItemSkillBook.h" />
+    <ClInclude Include="G-Logic\GLItemSuit.h" />
+    <ClInclude Include="G-Logic\GLItemVehicle.h" />
+    <ClInclude Include="G-Logic\GLItemMix.h" />
+    <ClInclude Include="G-Logic\GLItemMixMan.h" />
+    <ClInclude Include="G-Logic\GLLandMark.h" />
+    <ClInclude Include="G-Logic\GLLevelEtcFunction.h" />
+    <ClInclude Include="G-Logic\GLLevelFile.h" />
+    <ClInclude Include="G-Logic\GLLevelHead.h" />
+    <ClInclude Include="G-Logic\GLLevelRequire.h" />
+    <ClInclude Include="G-Logic\GLMapAxisInfo.h" />
+    <ClInclude Include="G-Logic\GLMapList.h" />
+    <ClInclude Include="G-Logic\GLMapNode.h" />
+    <ClInclude Include="G-Logic\GLMobSchedule.h" />
+    <ClInclude Include="G-Logic\GLNote.h" />
+    <ClInclude Include="G-Logic\GLQuest.h" />
+    <ClInclude Include="G-Logic\GLQuestMan.h" />
+    <ClInclude Include="G-Logic\GLQuestPlay.h" />
+    <ClInclude Include="G-Logic\GLQuestAttendance.h" />
+    <ClInclude Include="G-Logic\GLQuestGenItem.h" />
+    <ClInclude Include="G-Logic\GLQuestStart.h" />
+    <ClInclude Include="G-Logic\GLQuestStep.h" />
+    <ClInclude Include="G-Logic\GLSkill.h" />
+    <ClInclude Include="G-Logic\GLSkillApply.h" />
+    <ClInclude Include="G-Logic\GLSkillBasic.h" />
+    <ClInclude Include="G-Logic\GLSkillDefine.h" />
+    <ClInclude Include="G-Logic\GLSkillExData.h" />
+    <ClInclude Include="G-Logic\GLSkillLearn.h" />
+    <ClInclude Include="G-Logic\GLSkillSpecial.h" />
+    <ClInclude Include="G-Logic\GLStringTable.h" />
+    <ClInclude Include="G-Logic\GLTaxiData.h" />
+    <ClInclude Include="G-Logic\GLTaxiStation.h" />
+    <ClInclude Include="G-Logic\UserTypeDefine.h" />
+    <ClInclude Include="G-Logic\VipDefine.h" />
+    <ClInclude Include="HackShieldGlobal.h" />
+    <ClInclude Include="LG7DLL.h" />
+    <ClInclude Include="MShieldGlobal.h" />
+    <ClInclude Include="NpcTalk\NpcDialogue.h" />
+    <ClInclude Include="NpcTalk\NpcDialogueCase.h" />
+    <ClInclude Include="NpcTalk\NpcDialogueSet.h" />
+    <ClInclude Include="NpcTalk\NpcTalk.h" />
+    <ClInclude Include="NpcTalk\NpcTalkCondition.h" />
+    <ClInclude Include="NpcTalk\NpcTalkControl.h" />
+    <ClInclude Include="NpcTalk\NpcTalkData.h" />
+    <ClInclude Include="G-Logic\GLItemLink.h" />
+    <ClInclude Include="G-Logic\GLActivity.h" />
+    <ClInclude Include="G-Logic\GLActivityData.h" />
+    <ClInclude Include="G-Logic\GLRandomOption.h" />
+    <ClInclude Include="G-Logic\GLContrlActivityMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlBaseMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlCaptureTheFlagMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlCaptureTheFlagMsgEnum.h" />
+    <ClInclude Include="G-Logic\GLContrlCharJoinMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlClubMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlConflictMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlCrowMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlFriendMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlInDunMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlInvenMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlInvenMsgEnum.h" />
+    <ClInclude Include="G-Logic\GLContrlMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlNpcMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlPartyMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlPcMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlPcMsg2.h" />
+    <ClInclude Include="G-Logic\GLContrlPcMsgEnum.h" />
+    <ClInclude Include="G-Logic\GLContrlPetMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlPrivateMarket.h" />
+    <ClInclude Include="G-Logic\GLContrlQuestMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlSchoolWarsMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlSchoolWarsMsgEnum.h" />
+    <ClInclude Include="G-Logic\GLContrlServerMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlSkillMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlSummonMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlTradeMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlTyrannyMsg.h" />
+    <ClInclude Include="G-Logic\GLContrlTyrannyMsgEnum.h" />
+    <ClInclude Include="G-Logic\GLCOPY.h" />
+    <ClInclude Include="G-Logic\GLFactEffect.h" />
+    <ClInclude Include="G-Logic\GLFriendClient.h" />
+    <ClInclude Include="G-Logic\GLGaeaClient.h" />
+    <ClInclude Include="G-Logic\GLLandManClient.h" />
+    <ClInclude Include="G-Logic\GLPartyClient.h" />
+    <ClInclude Include="G-Logic\GLTradeClient.h" />
+    <ClInclude Include="G-Logic\GLCharClient.h" />
+    <ClInclude Include="G-Logic\GLCrowClient.h" />
+    <ClInclude Include="G-Logic\GLCrowRenList.h" />
+    <ClInclude Include="G-Logic\GLMaterialClient.h" />
+    <ClInclude Include="G-Logic\GLAnyPet.h" />
+    <ClInclude Include="G-Logic\GLPetClient.h" />
+    <ClInclude Include="G-Logic\GLAnySummon.h" />
+    <ClInclude Include="G-Logic\GLSummonClient.h" />
+    <ClInclude Include="G-Logic\GLCharacter.h" />
+    <ClInclude Include="G-Logic\GLARoundSlot.h" />
+    <ClInclude Include="G-Logic\GLCDMDefine.h" />
+    <ClInclude Include="G-Logic\GLClubDeathMatch.h" />
+    <ClInclude Include="G-Logic\GLGuidance.h" />
+    <ClInclude Include="G-Logic\GLITEMLMT.h" />
+    <ClInclude Include="G-Logic\GLPrivateMarket.h" />
+    <ClInclude Include="G-Logic\GLAgentServer.h" />
+    <ClInclude Include="G-Logic\GLAGLandMan.h" />
+    <ClInclude Include="G-Logic\GLClubMan.h" />
+    <ClInclude Include="G-Logic\GLFreePK.h" />
+    <ClInclude Include="G-Logic\GLSchoolFreePK.h" />
+    <ClInclude Include="G-Logic\GLCharAG.h" />
+    <ClInclude Include="G-Logic\GLAutoLevel.h" />
+    <ClInclude Include="G-Logic\GLAutoLevelMan.h" />
+    <ClInclude Include="G-Logic\GLParty.h" />
+    <ClInclude Include="G-Logic\GLPartyMan.h" />
+    <ClInclude Include="G-Logic\GLACTOR.h" />
+    <ClInclude Include="G-Logic\GLEventProc.h" />
+    <ClInclude Include="G-Logic\GLGaeaServer.h" />
+    <ClInclude Include="G-Logic\GLLandMan.h" />
+    <ClInclude Include="G-Logic\GLChar.h" />
+    <ClInclude Include="G-Logic\GLCrow.h" />
+    <ClInclude Include="G-Logic\GLMaterial.h" />
+    <ClInclude Include="G-Logic\GLPetField.h" />
+    <ClInclude Include="G-Logic\GLSummonField.h" />
+    <ClInclude Include="G-Logic\GLPartyField.h" />
+    <ClInclude Include="G-Logic\GLPartyFieldMan.h" />
+    <ClInclude Include="G-Logic\GLStrikeM.h" />
+    <ClInclude Include="G-Logic\GLStrikeSelector.h" />
+    <ClInclude Include="G-Logic\GLPVPTyranny.h" />
+    <ClInclude Include="G-Logic\GLPVPTyrannyData.h" />
+    <ClInclude Include="G-Logic\GLPVPTyrannyDefine.h" />
+    <ClInclude Include="G-Logic\GLPVPTyrannyAgent.h" />
+    <ClInclude Include="G-Logic\GLPVPTyrannyField.h" />
+    <ClInclude Include="G-Logic\GLPVPTyrannyClient.h" />
+    <ClInclude Include="G-Logic\GLPVPSchoolWars.h" />
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsData.h" />
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsDefine.h" />
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsField.h" />
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsAgent.h" />
+    <ClInclude Include="G-Logic\GLPVPSchoolWarsClient.h" />
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlag.h" />
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagData.h" />
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagDefine.h" />
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagAgent.h" />
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagField.h" />
+    <ClInclude Include="G-Logic\GLPVPCaptureTheFlagClient.h" />
+    <ClInclude Include="DxGameStage.h" />
+    <ClInclude Include="DxGlobalStage.h" />
+    <ClInclude Include="DxLobyStage.h" />
+    <ClInclude Include="ClientApex.h" />
+    <ClInclude Include="DxCharSham.h" />
+    <ClInclude Include="dxincommand.h" />
+    <ClInclude Include="DxParamSet.h" />
+    <ClInclude Include="DxServerInstance.h" />
+    <ClInclude Include="DxStage.h" />
+    <ClInclude Include="PSDefine.h" />
+    <ClInclude Include="SGameStageInfo.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

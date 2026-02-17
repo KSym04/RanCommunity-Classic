@@ -1,0 +1,26 @@
+/*!
+ * \file RegisterRefferalDef.h
+ *
+ * \author Juver
+ * \date 2022/06/23
+ *
+ * 
+ */
+
+#ifndef REGISTERREFFERALDEF_H_INCLUDED__
+#define REGISTERREFFERALDEF_H_INCLUDED__
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+
+enum EMREFERRAL_REGISTER_TYPE
+{
+	EMREFERRAL_REGISTER_TYPE_NONE = 0,
+	EMREFERRAL_REGISTER_TYPE_OPTIONAL = 1,
+	EMREFERRAL_REGISTER_TYPE_REQUIRED = 2,
+
+};
+
+#endif // REGISTERREFFERALDEF_H_INCLUDED__

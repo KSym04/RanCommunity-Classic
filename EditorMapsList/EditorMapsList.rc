@@ -1,0 +1,256 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\EditorMapsList.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "..//res//Icon_Tool.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EDITORMAPSLIST_DIALOG DIALOGEX 0, 0, 926, 430
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "EditorMapsList"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Load",IDC_BUTTON_FILE_LOAD,6,6,41,14
+    PUSHBUTTON      "Save",IDC_BUTTON_FILE_SAVE,48,6,41,14
+    PUSHBUTTON      "Import",IDC_BUTTON_FILE_IMPORT,91,6,41,14
+    CONTROL         "",IDC_LIST_MAP,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,24,700,381
+    PUSHBUTTON      "Add",IDC_BUTTON_MAPSLIST_ADD,7,409,40,14
+    PUSHBUTTON      "Edit",IDC_BUTTON_MAPSLIST_EDIT,48,409,40,14
+    PUSHBUTTON      "Delete",IDC_BUTTON_MAPSLIST_DELETE,89,409,40,14
+    PUSHBUTTON      "Clear",IDC_BUTTON_MAPSLIST_CLEAR,226,409,40,14
+    CONTROL         "Use",IDC_CHECK_MAP_USE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,716,31,28,10
+    EDITTEXT        IDC_EDIT_MAP_MID,765,59,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MAP_SID,806,59,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MAP_FIELD,765,45,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MAP_NAME,765,73,125,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MAP_LEVELFILE,765,87,125,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MAP_BGM,765,101,125,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MAP_LOADING,765,115,125,12,ES_AUTOHSCROLL
+    CONTROL         "PeaceZone",IDC_CHECK_MAP_PEACEZONE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,147,51,10
+    CONTROL         "Commission",IDC_CHECK_MAP_COMMISSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,158,53,10
+    CONTROL         "PKZone",IDC_CHECK_MAP_PKZONE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,169,40,10
+    CONTROL         "FreePK",IDC_CHECK_MAP_FREEPK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,180,39,10
+    CONTROL         "ItemDrop",IDC_CHECK_MAP_ITEMDROP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,191,46,10
+    CONTROL         "Move",IDC_CHECK_MAP_MOVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,202,33,10
+    CONTROL         "Restart",IDC_CHECK_MAP_RESTART,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,213,40,10
+    CONTROL         "PetActivity",IDC_CHECK_MAP_PETACTIVITY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,224,51,10
+    CONTROL         "DECExp",IDC_CHECK_MAP_DECEXP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,235,41,10
+    CONTROL         "VehicleActivity",IDC_CHECK_MAP_VEHICLEACTIVITY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,246,62,10
+    CONTROL         "ClubBattleZone",IDC_CHECK_MAP_CLUBBATTLEZONE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,257,65,10
+    CONTROL         "InstantMap",IDC_CHECK_MAP_INSTANTMAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,268,53,10
+    CONTROL         "QBoxEnable",IDC_CHECK_MAP_QBOXENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,279,55,10
+    PUSHBUTTON      "Save",IDC_BUTTON_MAP_SAVE,864,406,50,14
+    LTEXT           "Field ID",IDC_STATIC,715,47,25,8
+    LTEXT           "Map(MID/SID)",IDC_STATIC,715,61,46,8
+    LTEXT           "MapName",IDC_STATIC,715,75,32,8
+    PUSHBUTTON      "LevelFile",IDC_BUTTON_MAP_LEVELFILE,714,87,50,12
+    PUSHBUTTON      "BGM File",IDC_BUTTON_MAP_BGMFILE,714,101,50,12
+    PUSHBUTTON      "LoadingImage",IDC_BUTTON_MAP_LOADINGIMAGE,714,115,50,12
+    GROUPBOX        "MapEdit",IDC_STATIC,711,20,208,403
+    PUSHBUTTON      "Set All Field To 0",IDC_BUTTON_MAPSLIST_SETFIELD_0,642,409,65,14
+    CONTROL         "LunchBox Forbid",IDC_CHECK_MAP_LUNCHBOXFORBID,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,290,69,10
+    CONTROL         "CPReset",IDC_CHECK_MAP_CPRESET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,301,43,10
+    CONTROL         "PKMap",IDC_CHECK_MAP_PKMAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,323,37,10
+    CONTROL         "UIMap Select",IDC_CHECK_MAP_UI_MAP_SELECT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,335,58,10
+    CONTROL         "UIMap Info",IDC_CHECK_MAP_UI_MAP_INFO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,347,52,10
+    CONTROL         "Club PK Record",IDC_CHECK_MAP_CLUB_PK_RECORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,147,65,10
+    CONTROL         "Open Private Market",IDC_CHECK_MAP_OPEN_PRIVATE_MARKET,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,158,82,10
+    CONTROL         "Party Sparring",IDC_CHECK_MAP_PARTY_SPARRING,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,169,62,10
+    CONTROL         "Block Taxi",IDC_CHECK_MAP_BLOCK_TAXI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,180,47,10
+    CONTROL         "Block FriendCard",IDC_CHECK_MAP_BLOCK_FRIENDCARD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,191,69,10
+    CONTROL         "Block Recall",IDC_CHECK_MAP_BLOCK_RECALL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,202,53,10
+    CONTROL         "Block Teleport",IDC_CHECK_MAP_BLOCK_TELEPORT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,213,61,10
+    CONTROL         "Disable System Buffs",IDC_CHECK_MAP_DISABLE_SYSTEM_BUFFS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,224,83,10
+    CONTROL         "Block HP Potion",IDC_CHECK_MAP_BLOCK_HPPOTION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,235,65,10
+    PUSHBUTTON      "Copy",IDC_BUTTON_MAPSLIST_COPY,141,409,40,14
+    CONTROL         "Block Party",IDC_CHECK_MAP_BLOCK_PARTY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,246,51,10
+    CONTROL         "Force Revive",IDC_CHECK_MAP_FORCE_REVIVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,257,58,10
+    PUSHBUTTON      "Create List",IDC_BUTTON_MAPSLIST_CREATE_LIST,552,409,50,14
+    CONTROL         "Open PK",IDC_CHECK_MAP_OPEN_PK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,268,43,10
+    CONTROL         "Death Hide",IDC_CHECK_MAP_DEATH_HIDE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,279,51,10
+    CONTROL         "User Verified Map Entry",IDC_CHECK_MAP_USER_VERIFIED_MAP_ENTRY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,290,91,10
+    PUSHBUTTON      "Create From LUA",IDC_BUTTON_CREATE_FROM_LUA,311,6,60,14
+    CONTROL         "Costume Combine Restrict Movespeed",IDC_CHECK_COSTUME_COMBINE_RESTRICT_MOVESPEED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,362,139,10
+    CONTROL         "Costume Combine Restrict AttackSpeed",IDC_CHECK_COSTUME_COMBINE_RESTRICT_ATTACKSPEED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,372,143,10
+    CONTROL         "Trade Retricted",IDC_CHECK_MAP_TRADE_RESTRICTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,301,66,10
+    PUSHBUTTON      "CSV Load",IDC_BUTTON_CSV_LOAD,154,6,40,14
+    PUSHBUTTON      "CSV Save",IDC_BUTTON_CSV_SAVE,196,6,40,14
+    CONTROL         "Allow Hide Dead",IDC_CHECK_MAP_ALLOW_HIDE_DEAD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,312,67,10
+    CONTROL         "Show PK Mark",IDC_CHECK_MAP_SHOW_PK_MARK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,323,61,10
+    CONTROL         "Use AutoPotion",IDC_CHECK_MAP_USE_AUTO_POTION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,382,65,10
+    CONTROL         "Use AutoPilot",IDC_CHECK_MAP_USE_AUTO_PILOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,392,59,10
+    CONTROL         "PKMap Count",IDC_CHECK_MAP_PK_MAP_COUNT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,803,335,59,10
+    CONTROL         "CPReset Death",IDC_CHECK_MAP_CPRESET_DEATH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,312,65,10
+    CONTROL         "Use Captcha",IDC_CHECK_MAP_USE_CAPTCHA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,803,347,57,10
+    CONTROL         "AutoPotion Manual",IDC_CHECK_MAP_AUTO_POTION_MANUAL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,382,76,10
+    CONTROL         "Disable General Chat",IDC_CHECK_MAP_DISABLE_GENERAL_CHAT,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,715,404,83,10
+    CONTROL         "Refresh Skill CD when died",IDC_CHECK_MAP_RESET_SKILL_WHENDIE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,392,101,10
+                    
+    CONTROL         "Boss Tracker",IDC_CHECK_MAP_BOSS_TRACKER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,804,404,50,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "EJCode"
+            VALUE "FileDescription", "EditorMapsList"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "EditorMapsList.exe"
+            VALUE "LegalCopyright", "(c) EJCode.  All rights reserved."
+            VALUE "OriginalFilename", "EditorMapsList.exe"
+            VALUE "ProductName", "RanOnline"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_EDITORMAPSLIST_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 919
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 423
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_EDITORMAPSLIST_DIALOG AFX_DIALOG_LAYOUT 
+BEGIN
+    0x0000
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\EditorMapsList.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

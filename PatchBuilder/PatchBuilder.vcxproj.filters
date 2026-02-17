@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{3d65e74a-bd7a-4782-9aa3-014fc4b4c3e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{40cf2f30-c3f2-4cec-9a9f-c06c91618337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Helper">
+      <UniqueIdentifier>{20100bbd-84cc-4feb-b5a9-7e7714ccf385}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PatchBuilder.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\PatchBuilder.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\Icon_Tool.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PatchBuilder.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchBuilderDlg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="RPatcher.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchBuilderDlgEx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MIN_CAB_UTIL.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="CMinFtp.cpp">
+      <Filter>Source\Helper</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PatchBuilder.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchBuilderDlg.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="RPatcher.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="RPatcherData.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="MIN_CAB_UTIL.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CMinFtp.h">
+      <Filter>Source\Helper</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
