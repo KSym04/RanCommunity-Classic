@@ -320,6 +320,11 @@ HRESULT	GLPetField::MsgChangeStyle ( NET_MSG_GENERIC* nmg )
 		return E_FAIL;
 	}
 
+	// Security: bounds check wStyle and m_emTYPE before array access
+	if ( m_emTYPE >= PET_TYPE_SIZE ) return E_FAIL;
+	if ( pNetMsg->wStyle >= MAX_HAIR ) return E_FAIL;
+	if ( m_wStyle >= MAX_HAIR ) return E_FAIL;
+
 	if ( m_wColor == GLCONST_PET::sPETSTYLE[m_emTYPE].wSTYLE_COLOR[m_wStyle] )
 	{
 		m_wColor = GLCONST_PET::sPETSTYLE[m_emTYPE].wSTYLE_COLOR[pNetMsg->wStyle];
@@ -375,8 +380,11 @@ HRESULT GLPetField::MsgChangeActiveSkill_A ( NET_MSG_GENERIC* nmg )
 				strPlayerName.c_str(), pNetMsg->sSkillID.wMainID, pNetMsg->sSkillID.wSubID );
 
 			/*pet skill check, Juver, 2017/12/01 */
-			CDebugSet::ToFileWithTime( "_petcheck.txt", "[%u]%s MsgChangeActiveSkill_A pet skill change on pet not valid skill:[%u~%u]", 
-				m_pOwner->m_dwCharID, m_pOwner->m_szName, pNetMsg->sSkillID.wMainID, pNetMsg->sSkillID.wSubID );
+			if ( m_pOwner )
+			{
+				CDebugSet::ToFileWithTime( "_petcheck.txt", "[%u]%s MsgChangeActiveSkill_A pet skill change on pet not valid skill:[%u~%u]", 
+					m_pOwner->m_dwCharID, m_pOwner->m_szName, pNetMsg->sSkillID.wMainID, pNetMsg->sSkillID.wSubID );
+			}
 
 			return E_FAIL;
 		}
@@ -538,8 +546,11 @@ HRESULT GLPetField::MsgChangeActiveSkill_B ( NET_MSG_GENERIC* nmg )
 				strPlayerName.c_str(), pNetMsg->sSkillID.wMainID, pNetMsg->sSkillID.wSubID );
 
 			/*pet skill check, Juver, 2017/12/01 */
-			CDebugSet::ToFileWithTime( "_petcheck.txt", "[%u]%s MsgChangeActiveSkill_B pet skill change on pet not valid skill:[%u~%u]", 
-				m_pOwner->m_dwCharID, m_pOwner->m_szName, pNetMsg->sSkillID.wMainID, pNetMsg->sSkillID.wSubID );
+			if ( m_pOwner )
+			{
+				CDebugSet::ToFileWithTime( "_petcheck.txt", "[%u]%s MsgChangeActiveSkill_B pet skill change on pet not valid skill:[%u~%u]", 
+					m_pOwner->m_dwCharID, m_pOwner->m_szName, pNetMsg->sSkillID.wMainID, pNetMsg->sSkillID.wSubID );
+			}
 
 			return E_FAIL;
 		}
@@ -547,7 +558,10 @@ HRESULT GLPetField::MsgChangeActiveSkill_B ( NET_MSG_GENERIC* nmg )
 		/*dual pet skill, Juver, 2017/12/29 */
 		if ( !m_bDualSkill )
 		{
-			CDebugSet::ToFileWithTime( "_petcheck.txt", "[%u]%s MsgChangeActiveSkill_B attempt to change pet skill on non dual skill", m_pOwner->m_dwCharID, m_pOwner->m_szName );
+			if ( m_pOwner )
+			{
+				CDebugSet::ToFileWithTime( "_petcheck.txt", "[%u]%s MsgChangeActiveSkill_B attempt to change pet skill on non dual skill", m_pOwner->m_dwCharID, m_pOwner->m_szName );
+			}
 			return E_FAIL;
 		}
 	}
@@ -1057,6 +1071,14 @@ HRESULT GLPetField::MsgPetSkinPackItem ( NET_MSG_GENERIC* nmg )
 		
 	}
 
+	// Security: prevent OOB if rates don't sum to 100%
+	if ( i >= pHold->sPetSkinPack.vecPetSkinData.size() )
+	{
+		NetMsgFB.emFB = EMPET_PETSKINPACKOPEN_FB_FAIL;
+		GLGaeaServer::GetInstance().SENDTOCLIENT(m_pOwner->m_dwClientID,&NetMsgFB);
+		return E_FAIL;
+	}
+
 	m_sPetSkinPackData.Init();
 	m_sPetSkinPackData.bUsePetSkinPack = TRUE;
 	m_sPetSkinPackData.sMobID		   = pHold->sPetSkinPack.vecPetSkinData[i].sMobID;
@@ -1107,6 +1129,9 @@ HRESULT GLPetField::MsgPetSkinPackItem ( NET_MSG_GENERIC* nmg )
 
 void GLPetField::MsgProcess ( NET_MSG_GENERIC* nmg )
 {
+	// Security: all pet handlers require valid owner
+	if ( !m_pOwner ) return;
+
 	switch ( nmg->nType )
 	{
 	case NET_MSG_PET_REQ_GOTO:											

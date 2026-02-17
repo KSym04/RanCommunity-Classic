@@ -1,6 +1,6 @@
  tbbmalloc
 
- Timestamp is 682ede0a (Thu May 22 16:19:22 2025)
+ Timestamp is 6994b89c (Wed Feb 18 02:51:08 2026)
 
  Preferred load address is 10000000
 
@@ -19,18 +19,18 @@
  0002:00000160 00000004H .CRT$XTA                DATA
  0002:00000164 00000004H .CRT$XTZ                DATA
  0002:00000170 00002b68H .rdata                  DATA
- 0002:00002cd8 00000057H .rdata$debug            DATA
- 0002:00002d30 0000000cH .rdata$sxdata           DATA
- 0002:00002d3c 00000004H .rtc$IAA                DATA
- 0002:00002d40 00000004H .rtc$IZZ                DATA
- 0002:00002d44 00000004H .rtc$TAA                DATA
- 0002:00002d48 00000004H .rtc$TZZ                DATA
- 0002:00002d50 00000374H .xdata$x                DATA
- 0002:000030c4 00000014H .idata$2                DATA
- 0002:000030d8 00000014H .idata$3                DATA
- 0002:000030ec 00000130H .idata$4                DATA
- 0002:0000321c 0000056eH .idata$6                DATA
- 0002:00003790 000004a8H .edata                  DATA
+ 0002:00002cd8 0000005dH .rdata$debug            DATA
+ 0002:00002d40 0000000cH .rdata$sxdata           DATA
+ 0002:00002d4c 00000004H .rtc$IAA                DATA
+ 0002:00002d50 00000004H .rtc$IZZ                DATA
+ 0002:00002d54 00000004H .rtc$TAA                DATA
+ 0002:00002d58 00000004H .rtc$TZZ                DATA
+ 0002:00002d60 00000374H .xdata$x                DATA
+ 0002:000030d4 00000014H .idata$2                DATA
+ 0002:000030e8 00000014H .idata$3                DATA
+ 0002:000030fc 00000130H .idata$4                DATA
+ 0002:0000322c 0000056eH .idata$6                DATA
+ 0002:000037a0 000004a8H .edata                  DATA
  0003:00000000 00002138H .data                   DATA
  0003:00002140 00013aa4H .bss                    DATA
  0004:00000000 00000058H .rsrc$01                DATA
@@ -853,13 +853,13 @@
  0002:00002c7c       ??_C@_05PHHOCPM@1?$CDIND?$AA@ 10019c7c     LIBCMT:_x10fout_.obj
  0002:00002c84       ??_C@_06PGGFOGJG@1?$CDSNAN?$AA@ 10019c84     LIBCMT:_x10fout_.obj
  0002:00002c90       __load_config_used         10019c90     LIBCMT:loadcfg.obj
- 0002:00002d30       ___safe_se_handler_table   10019d30     <linker-defined>
- 0002:00002d3c       ___rtc_iaa                 10019d3c     LIBCMT:_initsect_.obj
- 0002:00002d40       ___rtc_izz                 10019d40     LIBCMT:_initsect_.obj
- 0002:00002d44       ___rtc_taa                 10019d44     LIBCMT:_initsect_.obj
- 0002:00002d48       ___rtc_tzz                 10019d48     LIBCMT:_initsect_.obj
- 0002:000030c4       __IMPORT_DESCRIPTOR_KERNEL32 1001a0c4     kernel32:KERNEL32.dll
- 0002:000030d8       __NULL_IMPORT_DESCRIPTOR   1001a0d8     kernel32:KERNEL32.dll
+ 0002:00002d40       ___safe_se_handler_table   10019d40     <linker-defined>
+ 0002:00002d4c       ___rtc_iaa                 10019d4c     LIBCMT:_initsect_.obj
+ 0002:00002d50       ___rtc_izz                 10019d50     LIBCMT:_initsect_.obj
+ 0002:00002d54       ___rtc_taa                 10019d54     LIBCMT:_initsect_.obj
+ 0002:00002d58       ___rtc_tzz                 10019d58     LIBCMT:_initsect_.obj
+ 0002:000030d4       __IMPORT_DESCRIPTOR_KERNEL32 1001a0d4     kernel32:KERNEL32.dll
+ 0002:000030e8       __NULL_IMPORT_DESCRIPTOR   1001a0e8     kernel32:KERNEL32.dll
  0003:00000000       __iob                      1001b000     LIBCMT:_file.obj
  0003:000003f0       ___abort_behavior          1001b3f0     LIBCMT:abort.obj
  0003:000003f4       ___security_cookie         1001b3f4     LIBCMT:gs_cookie.obj

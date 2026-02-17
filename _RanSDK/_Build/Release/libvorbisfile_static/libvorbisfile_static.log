@@ -1,18 +1,1 @@
-﻿Build started 5/22/2025 4:19:02 PM.
-     1>Project "E:\RANSource\_2k10_RanSource\RanSDK\OggVorbis\Source\libvorbisfile_static.vcxproj" on node 7 (rebuild target(s)).
-     1>InitializeBuildStatus:
-         Creating "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\libvorbisfile_static\libvorbisfile_static.unsuccessfulbuild" because "AlwaysCreate" was specified.
-       ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\include /Z7 /nologo /W3 /WX- /Ox /Oy- /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D LIBVORBISFILE_EXPORTS /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_SECURE_NO_DEPRECATE /D _CRT_NONSTDC_NO_WARNINGS /D _UNICODE /D UNICODE /Gm- /EHsc /MT /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\libvorbisfile_static\\" /Fd"E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\libvorbisfile_static\vc100.pdb" /Gd /TC /wd4244 /wd4100 /wd4267 /wd4189 /wd4305 /wd4127 /wd4706 /analyze- /errorReport:prompt lib\vorbisfile.c
-         vorbisfile.c
-       Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"E:\RANSource\_2k10_RanSource\RanSDK\_Lib\Release\libvorbisfile_static.lib" /NOLOGO E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\libvorbisfile_static\vorbisfile.obj
-         libvorbisfile_static.vcxproj -> E:\RANSource\_2k10_RanSource\RanSDK\_Lib\Release\libvorbisfile_static.lib
-       FinalizeBuildStatus:
-         Deleting file "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\libvorbisfile_static\libvorbisfile_static.unsuccessfulbuild".
-         Touching "E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\libvorbisfile_static\libvorbisfile_static.lastbuildstate".
-     1>Done Building Project "E:\RANSource\_2k10_RanSource\RanSDK\OggVorbis\Source\libvorbisfile_static.vcxproj" (rebuild target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.64
+﻿  libvorbisfile_static.vcxproj -> D:\MyRan_Community\Source_Classic\_RanSDK\_Lib\Release\libvorbisfile_static.lib

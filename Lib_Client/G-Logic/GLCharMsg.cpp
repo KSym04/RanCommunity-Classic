@@ -3451,6 +3451,9 @@ HRESULT GLChar::MsgVehicleSlotExHold( NET_MSG_GENERIC* nmg )
 	GLMSG::SNET_VEHICLE_REQ_SLOT_EX_HOLD* pNetMsg = ( GLMSG::SNET_VEHICLE_REQ_SLOT_EX_HOLD* )nmg;
 	GLMSG::SNET_VEHICLE_REQ_SLOT_EX_HOLD_FB NetMsgFB;
 
+	// Security: vehicle must be active
+	if ( !m_bVehicle ) return E_FAIL;
+
 	/* vehicle no accessory, Juver, 2018/02/14 */
 	SITEM* pitem_vehicle = GLItemMan::GetInstance().GetItem( m_sVehicle.m_sVehicleID );
 	if ( pitem_vehicle && pitem_vehicle->sVehicle.bNoAcc )	return E_FAIL;
@@ -3473,7 +3476,7 @@ HRESULT GLChar::MsgVehicleSlotExHold( NET_MSG_GENERIC* nmg )
 
 	if ( pHoldItem->sBasicOp.emItemType != ITEM_SUIT )						return E_FAIL;
 
-	if ( pHoldItem->sSuitOp.emSuit < SUIT_VEHICLE_SKIN && pHoldItem->sSuitOp.emSuit > SUIT_VEHICLE_PARTS_C )
+	if ( pHoldItem->sSuitOp.emSuit < SUIT_VEHICLE_SKIN || pHoldItem->sSuitOp.emSuit > SUIT_VEHICLE_PARTS_F )
 	{
 		// Å»°Í¿ë ¾ÆÀÌÅÛÀÌ ¾Æ´Ò¶§
 		NetMsgFB.emFB = EMVEHICLE_REQ_SLOT_EX_HOLD_FB_INVALIDITEM;
@@ -3524,6 +3527,9 @@ HRESULT GLChar::MsgVehicleHoldToSlot( NET_MSG_GENERIC* nmg )
 	GLMSG::SNET_VEHICLE_REQ_HOLD_TO_SLOT* pNetMsg = ( GLMSG::SNET_VEHICLE_REQ_HOLD_TO_SLOT* )nmg;
 	GLMSG::SNET_VEHICLE_REQ_HOLD_TO_SLOT_FB NetMsgFB;
 
+	// Security: vehicle must be active
+	if ( !m_bVehicle ) return E_FAIL;
+
 	/* vehicle no accessory, Juver, 2018/02/14 */
 	SITEM* pitem_vehicle = GLItemMan::GetInstance().GetItem( m_sVehicle.m_sVehicleID );
 	if ( pitem_vehicle && pitem_vehicle->sVehicle.bNoAcc )	return E_FAIL;
@@ -3542,7 +3548,7 @@ HRESULT GLChar::MsgVehicleHoldToSlot( NET_MSG_GENERIC* nmg )
 
 	if ( pHoldItem->sBasicOp.emItemType != ITEM_SUIT )						return E_FAIL;
 
-	if ( pHoldItem->sSuitOp.emSuit < SUIT_VEHICLE_SKIN && pHoldItem->sSuitOp.emSuit > SUIT_VEHICLE_PARTS_C )
+	if ( pHoldItem->sSuitOp.emSuit < SUIT_VEHICLE_SKIN || pHoldItem->sSuitOp.emSuit > SUIT_VEHICLE_PARTS_F )
 	{
 		// Å»°Í¿ë ¾ÆÀÌÅÛÀÌ ¾Æ´Ò¶§
 		NetMsgFB.emFB = EMVEHICLE_REQ_SLOT_EX_HOLD_FB_INVALIDITEM;
@@ -3592,6 +3598,9 @@ HRESULT GLChar::MsgVehicleSlotToHold( NET_MSG_GENERIC* nmg )
 	GLMSG::SNET_VEHICLE_REQ_SLOT_TO_HOLD* pNetMsg = ( GLMSG::SNET_VEHICLE_REQ_SLOT_TO_HOLD* )nmg;
 	GLMSG::SNET_VEHICLE_REQ_SLOT_TO_HOLD_FB NetMsgFB;
 
+	// Security: vehicle must be active
+	if ( !m_bVehicle ) return E_FAIL;
+
 	/* vehicle no accessory, Juver, 2018/02/14 */
 	SITEM* pitem_vehicle = GLItemMan::GetInstance().GetItem( m_sVehicle.m_sVehicleID );
 	if ( pitem_vehicle && pitem_vehicle->sVehicle.bNoAcc )	return E_FAIL;
@@ -3638,6 +3647,9 @@ HRESULT GLChar::MsgVehicleRemoveSlot( NET_MSG_GENERIC* nmg )
 {
 	GLMSG::SNET_VEHICLE_REQ_REMOVE_SLOTITEM* pNetMsg = ( GLMSG::SNET_VEHICLE_REQ_REMOVE_SLOTITEM* )nmg;
 	
+	// Security: vehicle must be active
+	if ( !m_bVehicle ) return E_FAIL;
+
 	/* vehicle no accessory, Juver, 2018/02/14 */
 	SITEM* pitem_vehicle = GLItemMan::GetInstance().GetItem( m_sVehicle.m_sVehicleID );
 	if ( pitem_vehicle && pitem_vehicle->sVehicle.bNoAcc )	return E_FAIL;
@@ -3686,6 +3698,9 @@ HRESULT GLChar::MsgVehicleGiveBattery( NET_MSG_GENERIC* nmg )
 
 	GLMSG::SNET_VEHICLE_REQ_GIVE_BATTERY* pNetMsg = ( GLMSG::SNET_VEHICLE_REQ_GIVE_BATTERY* ) nmg;
 	
+	// Security: vehicle must be active
+	if ( !m_bVehicle ) return E_FAIL;
+
 	GLMSG::SNET_VEHICLE_REQ_GIVE_BATTERY_FB NetMsgFB;
 	SNATIVEID sNativeID;
 
@@ -3693,6 +3708,7 @@ HRESULT GLChar::MsgVehicleGiveBattery( NET_MSG_GENERIC* nmg )
 	if ( !pInvenItem ) 
 	{
 		NetMsgFB.emFB = EMVEHICLE_REQ_GIVE_BATTERY_FB_INVALIDITEM;
+		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 		return E_FAIL;
 	}
 
@@ -3700,6 +3716,7 @@ HRESULT GLChar::MsgVehicleGiveBattery( NET_MSG_GENERIC* nmg )
 	if ( !pItem ) 
 	{
 		NetMsgFB.emFB = EMVEHICLE_REQ_GIVE_BATTERY_FB_INVALIDITEM;
+		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 		return E_FAIL;
 	}
 
@@ -3707,6 +3724,7 @@ HRESULT GLChar::MsgVehicleGiveBattery( NET_MSG_GENERIC* nmg )
 	if ( pItem->sBasicOp.emItemType != ITEM_VEHICLE )	
 	{
 		NetMsgFB.emFB = EMVEHICLE_REQ_GIVE_BATTERY_FB_INVALIDITEM;
+		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 		return E_FAIL;
 	}
 
@@ -3714,6 +3732,7 @@ HRESULT GLChar::MsgVehicleGiveBattery( NET_MSG_GENERIC* nmg )
 	if ( !pHold ) 
 	{
 		NetMsgFB.emFB = EMVEHICLE_REQ_GIVE_BATTERY_FB_INVALIDBATTERY;
+		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 		return E_FAIL;
 	}
 
@@ -3721,6 +3740,7 @@ HRESULT GLChar::MsgVehicleGiveBattery( NET_MSG_GENERIC* nmg )
 	if ( pHold->sBasicOp.emItemType != ITEM_VEHICLE_OIL )	
 	{
 		NetMsgFB.emFB = EMVEHICLE_REQ_GIVE_BATTERY_FB_INVALIDBATTERY;
+		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 		return E_FAIL;
 	}
 
@@ -3729,6 +3749,7 @@ HRESULT GLChar::MsgVehicleGiveBattery( NET_MSG_GENERIC* nmg )
 	if( pHold != pPutOnItem )
 	{
 		NetMsgFB.emFB = EMVEHICLE_REQ_GIVE_BATTERY_FB_INVALIDBATTERY;
+		GLGaeaServer::GetInstance().SENDTOCLIENT(m_dwClientID,&NetMsgFB);
 		return E_FAIL;
 	}
 

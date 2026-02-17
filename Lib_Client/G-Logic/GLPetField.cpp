@@ -207,6 +207,10 @@ HRESULT GLPetField::FrameMove( float fTime, float fElapsedTime )
 
 HRESULT GLPetField::UpdateClientState ( float fElapsedTime )
 {
+	// Security: validate owner and type bounds
+	if ( !m_pOwner ) return E_FAIL;
+	if ( m_emTYPE >= PET_TYPE_SIZE ) return E_FAIL;
+
 	m_fTIMER += fElapsedTime;
 	// 팻의 포만도 갱신
 	if ( m_fTIMER > 3600.0f/GLPeriod::REALTIME_TO_VBR )
@@ -315,6 +319,7 @@ void GLPetField::UpdateSkillDelay ( float fElapsedTime )
 void GLPetField::UpdateSkillState_A ( float fElapsedTime )
 {
 	if ( m_sActiveSkillID_A == NATIVEID_NULL () ) return;
+	if ( !m_pOwner ) return;
 	
 	if ( m_pOwner->m_sPETSKILLFACT_A.fAGE < 0.0f )
 	{
@@ -341,6 +346,7 @@ void GLPetField::UpdateSkillState_A ( float fElapsedTime )
 void GLPetField::UpdateSkillState_B ( float fElapsedTime )
 {
 	if ( m_sActiveSkillID_B == NATIVEID_NULL () ) return;
+	if ( !m_pOwner ) return;
 
 	if ( m_pOwner->m_sPETSKILLFACT_B.fAGE < 0.0f )
 	{

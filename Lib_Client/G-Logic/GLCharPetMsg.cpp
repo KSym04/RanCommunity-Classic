@@ -25,6 +25,7 @@ HRESULT GLChar::MsgReqGetRightOfItem_A ( NET_MSG_GENERIC* nmg )
 	case EMPETSKILL_GETPOTIONS: MsgGetFieldPotions_A ( nmg );	break;
 	case EMPETSKILL_GETMONEY:	MsgGetFieldMoney_A ( nmg );		break;
 	case EMPETSKILL_GETSTONE:	MsgGetFieldStone_A ( nmg );		break;
+	default: return E_FAIL;
 	};
 
 	return S_OK;
@@ -45,6 +46,7 @@ HRESULT GLChar::MsgReqGetRightOfItem_B ( NET_MSG_GENERIC* nmg )
 	case EMPETSKILL_GETPOTIONS: MsgGetFieldPotions_B ( nmg );	break;
 	case EMPETSKILL_GETMONEY:	MsgGetFieldMoney_B ( nmg );		break;
 	case EMPETSKILL_GETSTONE:	MsgGetFieldStone_B ( nmg );		break;
+	default: return E_FAIL;
 	};
 
 	return S_OK;
@@ -63,6 +65,8 @@ HRESULT GLChar::MsgGetFieldAllItem_A ( NET_MSG_GENERIC* nmg )
 
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
+
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
 
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
@@ -221,6 +225,8 @@ HRESULT GLChar::MsgGetFieldAllItem_B ( NET_MSG_GENERIC* nmg )
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
 
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
+
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
 	LANDQUADNODE* pQuadHead = NULL;
@@ -378,6 +384,8 @@ HRESULT GLChar::MsgGetFieldRareItem_A ( NET_MSG_GENERIC* nmg )
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
 
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
+
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
 	LANDQUADNODE* pQuadHead = NULL;
@@ -485,6 +493,8 @@ HRESULT GLChar::MsgGetFieldRareItem_B ( NET_MSG_GENERIC* nmg )
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
 
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
+
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
 	LANDQUADNODE* pQuadHead = NULL;
@@ -591,6 +601,8 @@ HRESULT GLChar::MsgGetFieldPotions_A ( NET_MSG_GENERIC* nmg )
 
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
+
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
 
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
@@ -700,6 +712,8 @@ HRESULT GLChar::MsgGetFieldPotions_B ( NET_MSG_GENERIC* nmg )
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
 
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
+
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
 	LANDQUADNODE* pQuadHead = NULL;
@@ -808,6 +822,8 @@ HRESULT GLChar::MsgGetFieldMoney_A ( NET_MSG_GENERIC* nmg )
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
 
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
+
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
 	LANDQUADNODE* pQuadHead = NULL;
@@ -891,6 +907,8 @@ HRESULT GLChar::MsgGetFieldMoney_B ( NET_MSG_GENERIC* nmg )
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
 
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
+
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
 	LANDQUADNODE* pQuadHead = NULL;
@@ -973,6 +991,8 @@ HRESULT GLChar::MsgGetFieldStone_A ( NET_MSG_GENERIC* nmg )
 
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
+
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
 
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );
@@ -1082,6 +1102,8 @@ HRESULT GLChar::MsgGetFieldStone_B ( NET_MSG_GENERIC* nmg )
 
 	PGLPETFIELD pMyPet = m_pGLGaeaServer->GetPET ( m_dwPetGUID );
 	if ( !pMyPet || !pMyPet->IsValid () )	return E_FAIL;
+
+	if ( !m_pLandMan || !m_pLandMan->GetLandTree() )	return E_FAIL;
 
 	int nX = int ( pMyPet->m_vPos.x );
 	int nZ = int ( pMyPet->m_vPos.z );

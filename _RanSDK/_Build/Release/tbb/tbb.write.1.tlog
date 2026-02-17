@@ -1,11 +1,13 @@
 ^..\..\src\tbb\ia32-masm\atomic_support.asm
-E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\atomic_support.obj
 ^..\..\src\tbb\ia32-masm\itsx.asm
-E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\itsx.obj
 ^..\..\src\tbb\ia32-masm\lock_byte.asm
-E:\RANSource\_2k10_RanSource\RanSDK\_Build\Release\tbb\lock_byte.obj
 ^E:\RANSource\_2k10_RanSource\RanSDK\TBB\build\vs2010\tbb.vcxproj
 E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.lib
 E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.lib
 E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.exp
 E:\RANSource\_2k10_RanSource\RanSDK\_Bin\Release\tbb.exp
+^D:\MyRan_Community\Source_Classic\_RanSDK\TBB\build\vs2010\tbb.vcxproj
+D:\MyRan_Community\Source_Classic\_RanSDK\_Bin\Release\tbb.lib
+D:\MyRan_Community\Source_Classic\_RanSDK\_Bin\Release\tbb.lib
+D:\MyRan_Community\Source_Classic\_RanSDK\_Bin\Release\tbb.exp
+D:\MyRan_Community\Source_Classic\_RanSDK\_Bin\Release\tbb.exp

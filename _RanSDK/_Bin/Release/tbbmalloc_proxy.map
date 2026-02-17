@@ -1,6 +1,6 @@
  tbbmalloc_proxy
 
- Timestamp is 682ede0b (Thu May 22 16:19:23 2025)
+ Timestamp is 6994b89f (Wed Feb 18 02:51:11 2026)
 
  Preferred load address is 10000000
 
@@ -22,8 +22,8 @@
  0002:00000174 00000004H .CRT$XTA                DATA
  0002:00000178 00000004H .CRT$XTZ                DATA
  0002:00000180 000022e0H .rdata                  DATA
- 0002:00002460 0000005dH .rdata$debug            DATA
- 0002:000024c0 000000dcH .rdata$r                DATA
+ 0002:00002460 00000063H .rdata$debug            DATA
+ 0002:000024c4 000000dcH .rdata$r                DATA
  0002:000025a0 0000000cH .rdata$sxdata           DATA
  0002:000025ac 00000004H .rtc$IAA                DATA
  0002:000025b0 00000004H .rtc$IZZ                DATA
@@ -709,18 +709,18 @@
  0002:000023e8       ??_7bad_alloc@std@@6B@     1000d3e8     proxy.obj
  0002:000023f0       ??_C@_04CFJMJGDJ@?$CF?42X?$AA@ 1000d3f0     tbb_function_replacement.obj
  0002:00002418       __load_config_used         1000d418     LIBCMT:loadcfg.obj
- 0002:000024c0       ??_R4exception@std@@6B@    1000d4c0     LIBCMT:stdexcpt.obj
- 0002:000024d4       ??_R4type_info@@6B@        1000d4d4     LIBCMT:typinfo.obj
- 0002:000024e8       ??_R3type_info@@8          1000d4e8     LIBCMT:typinfo.obj
- 0002:000024f8       ??_R2type_info@@8          1000d4f8     LIBCMT:typinfo.obj
- 0002:00002500       ??_R1A@?0A@EA@type_info@@8 1000d500     LIBCMT:typinfo.obj
- 0002:0000251c       ??_R4bad_alloc@std@@6B@    1000d51c     proxy.obj
- 0002:00002530       ??_R3bad_alloc@std@@8      1000d530     proxy.obj
- 0002:00002540       ??_R2bad_alloc@std@@8      1000d540     proxy.obj
- 0002:0000254c       ??_R1A@?0A@EA@exception@std@@8 1000d54c     proxy.obj
- 0002:00002568       ??_R3exception@std@@8      1000d568     proxy.obj
- 0002:00002578       ??_R2exception@std@@8      1000d578     proxy.obj
- 0002:00002580       ??_R1A@?0A@EA@bad_alloc@std@@8 1000d580     proxy.obj
+ 0002:000024c4       ??_R4exception@std@@6B@    1000d4c4     LIBCMT:stdexcpt.obj
+ 0002:000024d8       ??_R4type_info@@6B@        1000d4d8     LIBCMT:typinfo.obj
+ 0002:000024ec       ??_R3type_info@@8          1000d4ec     LIBCMT:typinfo.obj
+ 0002:000024fc       ??_R2type_info@@8          1000d4fc     LIBCMT:typinfo.obj
+ 0002:00002504       ??_R1A@?0A@EA@type_info@@8 1000d504     LIBCMT:typinfo.obj
+ 0002:00002520       ??_R4bad_alloc@std@@6B@    1000d520     proxy.obj
+ 0002:00002534       ??_R3bad_alloc@std@@8      1000d534     proxy.obj
+ 0002:00002544       ??_R2bad_alloc@std@@8      1000d544     proxy.obj
+ 0002:00002550       ??_R1A@?0A@EA@exception@std@@8 1000d550     proxy.obj
+ 0002:0000256c       ??_R3exception@std@@8      1000d56c     proxy.obj
+ 0002:0000257c       ??_R2exception@std@@8      1000d57c     proxy.obj
+ 0002:00002584       ??_R1A@?0A@EA@bad_alloc@std@@8 1000d584     proxy.obj
  0002:000025a0       ___safe_se_handler_table   1000d5a0     <linker-defined>
  0002:000025ac       ___rtc_iaa                 1000d5ac     LIBCMT:_initsect_.obj
  0002:000025b0       ___rtc_izz                 1000d5b0     LIBCMT:_initsect_.obj

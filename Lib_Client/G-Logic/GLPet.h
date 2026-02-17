@@ -269,7 +269,7 @@ struct GLPET
 
 
 	SITEMCUSTOM GetSlotitembySuittype ( EMSUIT emSuit );
-	void		SetSlotItem ( EMSUIT emType, SITEMCUSTOM sCustomItem ) { m_PutOnItems[(WORD)emType-(WORD)SUIT_PET_A] = sCustomItem; }
+	void		SetSlotItem ( EMSUIT emType, SITEMCUSTOM sCustomItem ) { WORD i = (WORD)emType-(WORD)SUIT_PET_A; if ( i >= PET_ACCETYPE_SIZE ) return; m_PutOnItems[i] = sCustomItem; }
 	void		ReSetSlotItem ( EMSUIT emType );
 	BOOL		CheckSlotItem ( SNATIVEID sNativeID, EMSUIT emSUIT );
     EMPIECECHAR GetPieceFromSlot ( PET_ACCESSORY_TYPE emType );

@@ -194,7 +194,9 @@ SITEMCUSTOM GLVEHICLE::GetSlotitembySuittype ( EMSUIT emSuit )
 
 void GLVEHICLE::SetSlotItem ( EMSUIT emType, SITEMCUSTOM sCustomItem)
 { 
-	m_PutOnItems[(WORD)emType-(WORD)SUIT_VEHICLE_SKIN] = sCustomItem; 
+	WORD i = (WORD)emType-(WORD)SUIT_VEHICLE_SKIN;
+	if ( i >= VEHICLE_ACCETYPE_SIZE ) return;
+	m_PutOnItems[i] = sCustomItem; 
 
 	ITEM_UPDATE();
 }

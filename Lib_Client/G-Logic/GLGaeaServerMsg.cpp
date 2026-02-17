@@ -8145,6 +8145,10 @@ HRESULT GLGaeaServer::MsgProcess(NET_MSG_GENERIC *nmg, DWORD dwClientID, DWORD d
 		PGLPETFIELD pPet = GetPET(pNetMsg->dwGUID);
 		if (pPet && pPet->GetPetID() == pNetMsg->dwPetID)
 		{
+			// Security: verify the requesting player actually owns this pet
+			PGLCHAR pOwner = GetChar(dwGaeaID);
+			if ( !pOwner || pOwner->m_dwPetGUID != pNetMsg->dwGUID )
+				break;
 			DropOutPET(pNetMsg->dwGUID, false, false);
 		}
 	}
