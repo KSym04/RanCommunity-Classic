@@ -7,54 +7,54 @@
 
 namespace ITEM
 {
-	BOOL SRANDOM_OPT::LOAD_OLD ( basestream &SFile )
+	BOOL SRANDOM_OPT::LOAD_OLD(basestream &SFile)
 	{
-		SFile.ReadBuffer ( szNAME, NAME_LEN );
+		SFile.ReadBuffer(szNAME, NAME_LEN);
 		return TRUE;
 	}
 
-	BOOL SRANDOM_OPT::LOAD ( basestream &SFile )
+	BOOL SRANDOM_OPT::LOAD(basestream &SFile)
 	{
 		DWORD ver, size;
 		SFile >> ver;
 		SFile >> size;
 
-		if ( ver == VERSION )
+		if (ver == VERSION)
 		{
 			SFile >> unknown_var_1;
-			SFile.ReadBuffer ( szNAME, NAME_LEN );
+			SFile.ReadBuffer(szNAME, NAME_LEN);
 		}
 		else
 		{
-			CDebugSet::ErrorVersion( "ITEM::SRANDOM_OPT", ver );
-			SFile.SetOffSet( SFile.GetfTell() + size );
+			CDebugSet::ErrorVersion("ITEM::SRANDOM_OPT", ver);
+			SFile.SetOffSet(SFile.GetfTell() + size);
 		}
 
 		return TRUE;
 	}
 
-	BOOL SRANDOM_OPT::SAVE ( CSerialFile &SFile )
+	BOOL SRANDOM_OPT::SAVE(CSerialFile &SFile)
 	{
 		SFile << DWORD(VERSION);
 		SFile.BeginBlock();
 		{
 			SFile << unknown_var_1;
-			SFile.WriteBuffer ( szNAME, NAME_LEN );
+			SFile.WriteBuffer(szNAME, NAME_LEN);
 		}
 		SFile.EndBlock();
 
 		return TRUE;
 	}
 
-	VOID SRANDOM_OPT::SaveCsvHead ( std::fstream &SFile )
+	VOID SRANDOM_OPT::SaveCsvHead(std::fstream &SFile)
 	{
 		SFile << "szNAME" << ",";
 		SFile << "unknown_var_1" << ",";
 	}
 
-	VOID SRANDOM_OPT::SaveCsv ( std::fstream &SFile )
+	VOID SRANDOM_OPT::SaveCsv(std::fstream &SFile)
 	{
-		if( strlen( szNAME ) < 1 )
+		if (strlen(szNAME) < 1)
 			SFile << " " << ",";
 		else
 			SFile << szNAME << ",";
@@ -62,15 +62,15 @@ namespace ITEM
 		SFile << unknown_var_1 << ",";
 	}
 
-	VOID SRANDOM_OPT::LoadCsv ( CStringArray &StrArray, int &iCsvCur )
+	VOID SRANDOM_OPT::LoadCsv(CStringArray &StrArray, int &iCsvCur)
 	{
-		memset( szNAME, 0, sizeof(char)*NAME_LEN );
+		memset(szNAME, 0, sizeof(char) * NAME_LEN);
 
-		CString random_option = StrArray[ iCsvCur++ ];
+		CString random_option = StrArray[iCsvCur++];
 
-		if( strlen( random_option ) > 1 && random_option.GetAt( 0 ) != ' ' )
-			StringCchCopy( szNAME, NAME_LEN, random_option );
+		if (strlen(random_option) > 1 && random_option.GetAt(0) != ' ')
+			StringCchCopy(szNAME, NAME_LEN, random_option);
 
-		unknown_var_1 = (bool)atoi( StrArray[ iCsvCur++ ] );
+		unknown_var_1 = (atoi(StrArray[iCsvCur++]) != 0);
 	}
 };

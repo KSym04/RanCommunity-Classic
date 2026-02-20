@@ -4265,7 +4265,7 @@ BOOL GLAgentServer::MsgGmKickUser(NET_MSG_GENERIC *nmg, DWORD dwClientID, DWORD 
 
 	if (pNetMsg->bGaeaID)
 	{
-		for (int i = 0; i < m_dwMaxClient; i++)
+		for (DWORD i = 0; i < m_dwMaxClient; i++)
 		{
 			if (i == dwGaeaID)
 				continue;
@@ -10597,11 +10597,11 @@ BOOL GLAgentServer::MsgReqGlobalRanking(NET_MSG_GENERIC *nmg, DWORD dwClientID, 
 			if (pCLUB && pCLUB->m_dwID > 0)
 			{
 				STOP_RANK_GUILD sGuild;
-				sGuild.wGuNum = pCLUB->m_dwID;
+				sGuild.wGuNum = static_cast<WORD>(pCLUB->m_dwID);
 				StringCchCopy(sGuild.szGuName, CHAR_SZNAME, pCLUB->m_szName);
 
-				sGuild.wRank = pCLUB->m_dwRank;
-				sGuild.wGuMarkVer = pCLUB->m_dwMarkVER;
+				sGuild.wRank = static_cast<WORD>(pCLUB->m_dwRank);
+				sGuild.wGuMarkVer = static_cast<WORD>(pCLUB->m_dwMarkVER);
 
 				CLUBMEMBERS_ITER pos = pCLUB->m_mapMembers.begin();
 				CLUBMEMBERS_ITER end = pCLUB->m_mapMembers.end();

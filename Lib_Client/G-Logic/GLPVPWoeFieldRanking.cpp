@@ -2,43 +2,44 @@
 #include "GLPVPWoeField.h"
 #include "GLGaeaServer.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-void GLPVPWoeField::InsertPlayerData( WOE_REGISTER_DATA* pPlayerData )
+void GLPVPWoeField::InsertPlayerData(WOE_REGISTER_DATA *pPlayerData)
 {
-	if ( !pPlayerData )			return;
-	if ( pPlayerData->dwInfoCharID == WOE_PLAYER_NULL )
+	if (!pPlayerData)
+		return;
+	if (pPlayerData->dwInfoCharID == WOE_PLAYER_NULL)
 	{
 		return;
 	}
 
-	WOE_PLAYER_DATA* pdata = PlayerDataGet( pPlayerData->dwInfoCharID );
-	if ( pdata )
+	WOE_PLAYER_DATA *pdata = PlayerDataGet(pPlayerData->dwInfoCharID);
+	if (pdata)
 	{
 		return;
 	}
-		
-	if ( pPlayerData->wInfoClass >= GLCI_NUM_8CLASS )
+
+	if (pPlayerData->wInfoClass >= GLCI_NUM_8CLASS)
 	{
 		return;
 	}
 
 	WOE_PLAYER_DATA sdata;
-	sdata.dwInfoCharID	= pPlayerData->dwInfoCharID;
-	sdata.wInfoClass	= pPlayerData->wInfoClass;
-	sdata.wInfoSchool	= pPlayerData->wInfoSchool;
-	StringCchCopy( sdata.szInfoCharName, WOE_CHARNAME_STRING_SIZE, pPlayerData->szInfoCharName );
+	sdata.dwInfoCharID = pPlayerData->dwInfoCharID;
+	sdata.wInfoClass = pPlayerData->wInfoClass;
+	sdata.wInfoSchool = pPlayerData->wInfoSchool;
+	StringCchCopy(sdata.szInfoCharName, WOE_CHARNAME_STRING_SIZE, pPlayerData->szInfoCharName);
 	m_mapGuildData.insert(std::make_pair(sdata.dwInfoCharID, sdata));
 }
 
 void GLPVPWoeField::AddWoeGuildScore(DWORD dwKillClub, DWORD dwDeathClub)
 {
-	if (!IsBattle()) return;
+	if (!IsBattle())
+		return;
 
-	SWOE_GUILD_RANK_INFO* pKillClubInfo = GetWoeGuildRankInfo(dwKillClub);
+	SWOE_GUILD_RANK_INFO *pKillClubInfo = GetWoeGuildRankInfo(dwKillClub);
 	if (pKillClubInfo)
 	{
 		pKillClubInfo->wKillNum++;
@@ -49,7 +50,7 @@ void GLPVPWoeField::AddWoeGuildScore(DWORD dwKillClub, DWORD dwDeathClub)
 		sWoeGuildRankInfo.dwClubID = dwKillClub;
 		sWoeGuildRankInfo.wKillNum++;
 
-		GLCLUB* pClub = GLGaeaServer::GetInstance().GetClubMan().GetClub(dwKillClub);
+		GLCLUB *pClub = GLGaeaServer::GetInstance().GetClubMan().GetClub(dwKillClub);
 		if (pClub)
 		{
 			StringCchCopy(sWoeGuildRankInfo.szClubName, CLUB_NAME + 1, pClub->m_szName);
@@ -64,7 +65,7 @@ void GLPVPWoeField::AddWoeGuildScore(DWORD dwKillClub, DWORD dwDeathClub)
 		m_mapWoeScore[sWoeGuildRankInfo.dwClubID] = sWoeGuildRankInfo;
 	}
 
-	SWOE_GUILD_RANK_INFO* pDeathClubInfo = GetWoeGuildRankInfo(dwDeathClub);
+	SWOE_GUILD_RANK_INFO *pDeathClubInfo = GetWoeGuildRankInfo(dwDeathClub);
 	if (pDeathClubInfo)
 	{
 		pDeathClubInfo->wDeathNum++;
@@ -75,7 +76,7 @@ void GLPVPWoeField::AddWoeGuildScore(DWORD dwKillClub, DWORD dwDeathClub)
 		sWoeGuildRankInfo.dwClubID = dwDeathClub;
 		sWoeGuildRankInfo.wDeathNum++;
 
-		GLCLUB* pClub = GLGaeaServer::GetInstance().GetClubMan().GetClub(dwDeathClub);
+		GLCLUB *pClub = GLGaeaServer::GetInstance().GetClubMan().GetClub(dwDeathClub);
 		if (pClub)
 		{
 			StringCchCopy(sWoeGuildRankInfo.szClubName, CLUB_NAME + 1, pClub->m_szName);
@@ -92,7 +93,7 @@ void GLPVPWoeField::AddWoeGuildScore(DWORD dwKillClub, DWORD dwDeathClub)
 }
 void GLPVPWoeField::UpdateGuildScore()
 {
-	WOE_GUILD_RANK_INFO_VEC	m_vecWoeGuild;
+	WOE_GUILD_RANK_INFO_VEC m_vecWoeGuild;
 	m_vecWoeGuild.reserve(m_mapWoeScore.size());
 
 	WOE_GUILD_RANK_INFO_MAP_ITER pos = m_mapWoeScore.begin();
@@ -100,7 +101,7 @@ void GLPVPWoeField::UpdateGuildScore()
 
 	for (; pos != end; pos++)
 	{
-		const SWOE_GUILD_RANK_INFO& sRankInfo = pos->second;
+		const SWOE_GUILD_RANK_INFO &sRankInfo = pos->second;
 		m_vecWoeGuild.push_back(sRankInfo);
 	}
 
@@ -114,8 +115,6 @@ void GLPVPWoeField::UpdateGuildScore()
 		m_vecWoeGuild[i].nIndex = i;
 	}
 
-	int nRanking;
-
 	for (int i = nSize - 1; i > 0; --i)
 	{
 		if (m_vecWoeGuild[i] == m_vecWoeGuild[i - 1])
@@ -124,15 +123,15 @@ void GLPVPWoeField::UpdateGuildScore()
 		}
 	}
 
+	GLMSG::SNET_WOE_GUILD_RANKING_UPDATE NetMsg;
 
-	GLMSG::SNET_WOE_GUILD_RANKING_UPDATE	NetMsg;
-
-	for (int i = 0; i < m_vecWoeGuild.size(); ++i)
+	for (int i = 0; i < static_cast<int>(m_vecWoeGuild.size()); ++i)
 	{
 		WOE_GUILD_RANK_INFO_MAP_ITER iter = m_mapWoeScore.find(m_vecWoeGuild[i].dwClubID);
-		if (iter == m_mapWoeScore.end())	continue;
+		if (iter == m_mapWoeScore.end())
+			continue;
 
-		SWOE_GUILD_RANK_INFO& sGRankInfo = iter->second;
+		SWOE_GUILD_RANK_INFO &sGRankInfo = iter->second;
 
 		{
 			sGRankInfo.wClubRanking = m_vecWoeGuild[i].wClubRanking;
@@ -149,17 +148,14 @@ void GLPVPWoeField::UpdateGuildScore()
 	if (NetMsg.wRankNum > 0)
 		GLGaeaServer::GetInstance().SENDTOCLIENT_ONMAP(m_sMap.dwID, &NetMsg);
 
-
-	GLMSG::SNET_WOE_GUILD_MYRANK_UPDATE	NetMsgMy;
+	GLMSG::SNET_WOE_GUILD_MYRANK_UPDATE NetMsgMy;
 
 	pos = m_mapWoeScore.begin();
 	end = m_mapWoeScore.end();
 
 	for (; pos != end; pos++)
 	{
-		const SWOE_GUILD_RANK_INFO& sGRankInfo = pos->second;
-		NetMsgMy.sMyWoeGuildRank.wClubRanking = sGRankInfo.dwClubID;
-		NetMsgMy.sMyWoeGuildRank.wClubRanking = sGRankInfo.dwClubID;
+		const SWOE_GUILD_RANK_INFO &sGRankInfo = pos->second;
 		NetMsgMy.sMyWoeGuildRank.wClubRanking = sGRankInfo.wClubRanking;
 		NetMsgMy.sMyWoeGuildRank.wKillNum = sGRankInfo.wKillNum;
 		NetMsgMy.sMyWoeGuildRank.wDeathNum = sGRankInfo.wDeathNum;
@@ -169,9 +165,8 @@ void GLPVPWoeField::UpdateGuildScore()
 
 		GLGaeaServer::GetInstance().SENDTOCLUBCLIENT_ONMAP(m_sMap.dwID, sGRankInfo.dwClubID, &NetMsgMy);
 	}
-
 }
-SWOE_GUILD_RANK_INFO* GLPVPWoeField::GetWoeGuildRankInfo(DWORD dwClubID)
+SWOE_GUILD_RANK_INFO *GLPVPWoeField::GetWoeGuildRankInfo(DWORD dwClubID)
 {
 	WOE_GUILD_RANK_INFO_MAP_ITER pos = m_mapWoeScore.find(dwClubID);
 	if (pos == m_mapWoeScore.end())
@@ -179,7 +174,8 @@ SWOE_GUILD_RANK_INFO* GLPVPWoeField::GetWoeGuildRankInfo(DWORD dwClubID)
 		return NULL;
 	}
 
-	return &(*pos).second;;
+	return &(*pos).second;
+	;
 }
 
 void GLPVPWoeField::UpdatePlayerScore()
@@ -192,7 +188,7 @@ void GLPVPWoeField::UpdatePlayerScore()
 
 	for (; pos != end; pos++)
 	{
-		const SWOE_PLAYER_RANK_INFO& sPlayerRankInfo = pos->second;
+		const SWOE_PLAYER_RANK_INFO &sPlayerRankInfo = pos->second;
 		m_vecWoePlayer.push_back(sPlayerRankInfo);
 	}
 
@@ -206,8 +202,6 @@ void GLPVPWoeField::UpdatePlayerScore()
 		m_vecWoePlayer[i].nIndex = i;
 	}
 
-	int nRanking;
-
 	for (int i = nSize - 1; i > 0; --i)
 	{
 		if (m_vecWoePlayer[i] == m_vecWoePlayer[i - 1])
@@ -216,15 +210,15 @@ void GLPVPWoeField::UpdatePlayerScore()
 		}
 	}
 
+	GLMSG::SNET_WOE_PLAYER_RANKING_UPDATE NetMsg;
 
-	GLMSG::SNET_WOE_PLAYER_RANKING_UPDATE	NetMsg;
-
-	for (int i = 0; i < m_vecWoePlayer.size(); ++i)
+	for (int i = 0; i < static_cast<int>(m_vecWoePlayer.size()); ++i)
 	{
 		WOE_PLAYER_RANK_INFO_MAP_ITER iter = m_mapWoePlayerScore.find(m_vecWoePlayer[i].dwCharID);
-		if (iter == m_mapWoePlayerScore.end())	continue;
+		if (iter == m_mapWoePlayerScore.end())
+			continue;
 
-		SWOE_PLAYER_RANK_INFO& sPlayerRankInfo = iter->second;
+		SWOE_PLAYER_RANK_INFO &sPlayerRankInfo = iter->second;
 		{
 			sPlayerRankInfo.wRanking = m_vecWoePlayer[i].wRanking;
 			sPlayerRankInfo.nIndex = m_vecWoePlayer[i].nIndex;
@@ -240,15 +234,14 @@ void GLPVPWoeField::UpdatePlayerScore()
 	if (NetMsg.wRankNum > 0)
 		GLGaeaServer::GetInstance().SENDTOCLIENT_ONMAP(m_sMap.dwID, &NetMsg);
 
-
-	GLMSG::SNET_WOE_PLAYER_MYRANK_UPDATE	NetMsgMy;
+	GLMSG::SNET_WOE_PLAYER_MYRANK_UPDATE NetMsgMy;
 
 	pos = m_mapWoePlayerScore.begin();
 	end = m_mapWoePlayerScore.end();
 
 	for (; pos != end; pos++)
 	{
-		const SWOE_PLAYER_RANK_INFO& sPlayerRankInfo = pos->second;
+		const SWOE_PLAYER_RANK_INFO &sPlayerRankInfo = pos->second;
 		NetMsgMy.sMySelfPlayerRank.wRanking = sPlayerRankInfo.wRanking;
 		NetMsgMy.sMySelfPlayerRank.wKillNum = sPlayerRankInfo.wKillNum;
 		NetMsgMy.sMySelfPlayerRank.wDeathNum = sPlayerRankInfo.wDeathNum;
@@ -259,9 +252,8 @@ void GLPVPWoeField::UpdatePlayerScore()
 
 		GLGaeaServer::GetInstance().SENDTOCLIENT_ONMAP(m_sMap.dwID, &NetMsgMy);
 	}
-
 }
-SWOE_PLAYER_RANK_INFO* GLPVPWoeField::GetWoePlayerRankInfo(DWORD dwCharID)
+SWOE_PLAYER_RANK_INFO *GLPVPWoeField::GetWoePlayerRankInfo(DWORD dwCharID)
 {
 	WOE_PLAYER_RANK_INFO_MAP_ITER pos = m_mapWoePlayerScore.find(dwCharID);
 	if (pos == m_mapWoePlayerScore.end())
@@ -269,13 +261,15 @@ SWOE_PLAYER_RANK_INFO* GLPVPWoeField::GetWoePlayerRankInfo(DWORD dwCharID)
 		return NULL;
 	}
 
-	return &(*pos).second;;
+	return &(*pos).second;
+	;
 }
 void GLPVPWoeField::AddWoeResuScore(DWORD dwResuScore)
 {
-	if (!IsBattle()) return;
+	if (!IsBattle())
+		return;
 
-	SWOE_RESU_PLAYER_INFO* pResuRankInfo = GetWoeResuRankInfo(dwResuScore);
+	SWOE_RESU_PLAYER_INFO *pResuRankInfo = GetWoeResuRankInfo(dwResuScore);
 	if (pResuRankInfo)
 	{
 		pResuRankInfo->wResuNum++;
@@ -293,8 +287,8 @@ void GLPVPWoeField::AddWoeResuScore(DWORD dwResuScore)
 
 			StringCchCopy(sWoeRankInfo.szName, CHAR_NAME + 1, pChar->m_szName);
 			sWoeRankInfo.szName[CHAR_NAME] = '\0';
-			sWoeRankInfo.wSchool = pChar->m_wSchool;
-			sWoeRankInfo.wClass = emIndex;
+			sWoeRankInfo.wSchool = static_cast<WORD>(pChar->m_wSchool);
+			sWoeRankInfo.wClass = static_cast<WORD>(emIndex);
 		}
 
 		m_mapWoeResuScore[sWoeRankInfo.dwCharID] = sWoeRankInfo;
@@ -310,7 +304,7 @@ void GLPVPWoeField::UpdateResuScore()
 
 	for (; pos != end; pos++)
 	{
-		const SWOE_RESU_PLAYER_INFO& sPlayerRankInfo = pos->second;
+		const SWOE_RESU_PLAYER_INFO &sPlayerRankInfo = pos->second;
 		m_vecWoeResu.push_back(sPlayerRankInfo);
 	}
 
@@ -324,8 +318,6 @@ void GLPVPWoeField::UpdateResuScore()
 		m_vecWoeResu[i].nIndex = i;
 	}
 
-	int nRanking;
-
 	for (int i = nSize - 1; i > 0; --i)
 	{
 		if (m_vecWoeResu[i] == m_vecWoeResu[i - 1])
@@ -334,15 +326,15 @@ void GLPVPWoeField::UpdateResuScore()
 		}
 	}
 
+	GLMSG::SNET_WOE_RESU_RANKING_UPDATE NetMsg;
 
-	GLMSG::SNET_WOE_RESU_RANKING_UPDATE	NetMsg;
-
-	for (int i = 0; i < m_vecWoeResu.size(); ++i)
+	for (int i = 0; i < static_cast<int>(m_vecWoeResu.size()); ++i)
 	{
 		WOE_RESU_PLAYER_INFO_MAP_ITER iter = m_mapWoeResuScore.find(m_vecWoeResu[i].dwCharID);
-		if (iter == m_mapWoeResuScore.end())	continue;
+		if (iter == m_mapWoeResuScore.end())
+			continue;
 
-		SWOE_RESU_PLAYER_INFO& sPlayerRankInfo = iter->second;
+		SWOE_RESU_PLAYER_INFO &sPlayerRankInfo = iter->second;
 
 		{
 			sPlayerRankInfo.wRanking = m_vecWoeResu[i].wRanking;
@@ -359,15 +351,14 @@ void GLPVPWoeField::UpdateResuScore()
 	if (NetMsg.wRankNum > 0)
 		GLGaeaServer::GetInstance().SENDTOCLIENT_ONMAP(m_sMap.dwID, &NetMsg);
 
-
-	GLMSG::SNET_WOE_RESU_MYRANK_UPDATE	NetMsgMy;
+	GLMSG::SNET_WOE_RESU_MYRANK_UPDATE NetMsgMy;
 
 	pos = m_mapWoeResuScore.begin();
 	end = m_mapWoeResuScore.end();
 
 	for (; pos != end; pos++)
 	{
-		const SWOE_RESU_PLAYER_INFO& sPlayerRankInfo = pos->second;
+		const SWOE_RESU_PLAYER_INFO &sPlayerRankInfo = pos->second;
 		NetMsgMy.sMySelfResuRank.wRanking = sPlayerRankInfo.wRanking;
 		NetMsgMy.sMySelfResuRank.wResuNum = sPlayerRankInfo.wResuNum;
 		NetMsgMy.sMySelfResuRank.wClass = sPlayerRankInfo.wClass;
@@ -377,7 +368,7 @@ void GLPVPWoeField::UpdateResuScore()
 		GLGaeaServer::GetInstance().SENDTOCLIENT_ONMAP(m_sMap.dwID, &NetMsgMy);
 	}
 }
-SWOE_RESU_PLAYER_INFO* GLPVPWoeField::GetWoeResuRankInfo(DWORD dwCharID)
+SWOE_RESU_PLAYER_INFO *GLPVPWoeField::GetWoeResuRankInfo(DWORD dwCharID)
 {
 	WOE_RESU_PLAYER_INFO_MAP_ITER pos = m_mapWoeResuScore.find(dwCharID);
 	if (pos == m_mapWoeResuScore.end())
@@ -385,17 +376,19 @@ SWOE_RESU_PLAYER_INFO* GLPVPWoeField::GetWoeResuRankInfo(DWORD dwCharID)
 		return NULL;
 	}
 
-	return &(*pos).second;;
+	return &(*pos).second;
+	;
 }
 
 void GLPVPWoeField::HitScore(DWORD dwCharID, WORD wHitScore)
 {
-	UpdateWoePlayerInfo(dwCharID, true, false, false);  // Only update hit count
+	UpdateWoePlayerInfo(dwCharID, true, false, false); // Only update hit count
 }
 
 void GLPVPWoeField::AddWoePlayerScore(DWORD dwKillScore, DWORD dwDeathScore)
 {
-	if (!IsBattle()) return;
+	if (!IsBattle())
+		return;
 
 	UpdateWoePlayerInfo(dwKillScore, false, true, false);
 
@@ -404,7 +397,7 @@ void GLPVPWoeField::AddWoePlayerScore(DWORD dwKillScore, DWORD dwDeathScore)
 
 void GLPVPWoeField::UpdateWoePlayerInfo(DWORD dwCharID, bool isHit, bool isKill, bool isDeath)
 {
-	SWOE_PLAYER_RANK_INFO* pPlayerInfo = GetWoePlayerRankInfo(dwCharID);
+	SWOE_PLAYER_RANK_INFO *pPlayerInfo = GetWoePlayerRankInfo(dwCharID);
 	if (pPlayerInfo)
 	{
 		// Update based on the flags
@@ -447,4 +440,3 @@ void GLPVPWoeField::UpdateWoePlayerInfo(DWORD dwCharID, bool isHit, bool isKill,
 		m_mapWoePlayerScore[sWoeRankInfo.dwCharID] = sWoeRankInfo;
 	}
 }
-

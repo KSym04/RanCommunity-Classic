@@ -7,7 +7,7 @@
 #define new DEBUG_NEW
 #endif
 
-VOID SLEVEL_REQUIRE::SaveCsvHead( std::fstream &SFile )
+VOID SLEVEL_REQUIRE::SaveCsvHead(std::fstream &SFile)
 {
 	SFile << "Entry Req bPartyMbr" << ",";
 
@@ -47,7 +47,7 @@ VOID SLEVEL_REQUIRE::SaveCsvHead( std::fstream &SFile )
 	SFile << "Entry Req unknown_var4_SID" << ",";
 }
 
-VOID SLEVEL_REQUIRE::SaveCsv( std::fstream &SFile )
+VOID SLEVEL_REQUIRE::SaveCsv(std::fstream &SFile)
 {
 	SFile << m_bPartyMbr << ",";
 
@@ -87,95 +87,95 @@ VOID SLEVEL_REQUIRE::SaveCsv( std::fstream &SFile )
 	SFile << unknown_var4.wSubID << ",";
 }
 
-VOID SLEVEL_REQUIRE::LoadCsv( CStringArray &StrArray )
+VOID SLEVEL_REQUIRE::LoadCsv(CStringArray &StrArray)
 {
 	int iCsvCur = 2;
-	m_bPartyMbr = (bool)atol( StrArray[ iCsvCur++ ] );
+	m_bPartyMbr = (atol(StrArray[iCsvCur++]) != 0);
 
-	m_signLevel = (EMCDT_SIGN)atol( StrArray[ iCsvCur++ ] );
-	m_wLevel  = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_wLevel2 = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_sItemID.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_sItemID.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_sSkillID.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_sSkillID.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
+	m_signLevel = (EMCDT_SIGN)atol(StrArray[iCsvCur++]);
+	m_wLevel = (WORD)atol(StrArray[iCsvCur++]);
+	m_wLevel2 = (WORD)atol(StrArray[iCsvCur++]);
+	m_sItemID.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	m_sItemID.wSubID = (WORD)atol(StrArray[iCsvCur++]);
+	m_sSkillID.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	m_sSkillID.wSubID = (WORD)atol(StrArray[iCsvCur++]);
 
-	m_sComQuestID.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_sComQuestID.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_sActQuestID.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	m_sActQuestID.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
+	m_sComQuestID.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	m_sComQuestID.wSubID = (WORD)atol(StrArray[iCsvCur++]);
+	m_sActQuestID.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	m_sActQuestID.wSubID = (WORD)atol(StrArray[iCsvCur++]);
 
-	m_signLiving = (EMCDT_SIGN)atol( StrArray[ iCsvCur++ ] );
-	m_nLiving	 = atol( StrArray[ iCsvCur++ ] );
-	m_signBright = (EMCDT_SIGN)atol( StrArray[ iCsvCur++ ] );
-	m_nBright = atol( StrArray[ iCsvCur++ ] );
+	m_signLiving = (EMCDT_SIGN)atol(StrArray[iCsvCur++]);
+	m_nLiving = atol(StrArray[iCsvCur++]);
+	m_signBright = (EMCDT_SIGN)atol(StrArray[iCsvCur++]);
+	m_nBright = atol(StrArray[iCsvCur++]);
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	m_signContributionPoint = (EMCDT_SIGN)atol( StrArray[ iCsvCur++ ] );
-	m_dwContributionPoint = atol( StrArray[ iCsvCur++ ] );
-	m_signActivityPoint = (EMCDT_SIGN)atol( StrArray[ iCsvCur++ ] );
-	m_dwActivityPoint = atol( StrArray[ iCsvCur++ ] );
+	m_signContributionPoint = (EMCDT_SIGN)atol(StrArray[iCsvCur++]);
+	m_dwContributionPoint = atol(StrArray[iCsvCur++]);
+	m_signActivityPoint = (EMCDT_SIGN)atol(StrArray[iCsvCur++]);
+	m_dwActivityPoint = atol(StrArray[iCsvCur++]);
 
-	m_dummy_var1 = (bool)atol( StrArray[ iCsvCur++ ] );
+	m_dummy_var1 = (atol(StrArray[iCsvCur++]) != 0);
 
-	unknown_var1.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	unknown_var1.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
-	unknown_var2.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	unknown_var2.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
-	unknown_var3.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	unknown_var3.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
-	unknown_var4.wMainID = (WORD)atol( StrArray[ iCsvCur++ ] );
-	unknown_var4.wSubID  = (WORD)atol( StrArray[ iCsvCur++ ] );
+	unknown_var1.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	unknown_var1.wSubID = (WORD)atol(StrArray[iCsvCur++]);
+	unknown_var2.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	unknown_var2.wSubID = (WORD)atol(StrArray[iCsvCur++]);
+	unknown_var3.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	unknown_var3.wSubID = (WORD)atol(StrArray[iCsvCur++]);
+	unknown_var4.wMainID = (WORD)atol(StrArray[iCsvCur++]);
+	unknown_var4.wSubID = (WORD)atol(StrArray[iCsvCur++]);
 }
 
-BOOL SLEVEL_REQUIRE::LOAD ( basestream &SFile )
+BOOL SLEVEL_REQUIRE::LOAD(basestream &SFile)
 {
 	DWORD dwVer, dwSize;
 	SFile >> dwVer;
 	SFile >> dwSize;
 
-	if ( dwVer==VERSION )
+	if (dwVer == VERSION)
 	{
-		LOAD_0202( SFile, dwSize );
+		LOAD_0202(SFile, dwSize);
 	}
-	else if ( dwVer==0x0201 )
+	else if (dwVer == 0x0201)
 	{
-		LOAD_0201( SFile, dwSize );
+		LOAD_0201(SFile, dwSize);
 	}
-	else if ( dwVer==0x0200 )
+	else if (dwVer == 0x0200)
 	{
-		LOAD_0200( SFile, dwSize );
+		LOAD_0200(SFile, dwSize);
 	}
-	else if ( dwVer==0x0105 )
+	else if (dwVer == 0x0105)
 	{
-		LOAD_0105( SFile, dwSize );
+		LOAD_0105(SFile, dwSize);
 	}
-	else if ( dwVer==0x0104 )
+	else if (dwVer == 0x0104)
 	{
-		LOAD_0104( SFile, dwSize );
+		LOAD_0104(SFile, dwSize);
 	}
-	else if ( dwVer==0x0103 )
+	else if (dwVer == 0x0103)
 	{
-		LOAD_0103( SFile, dwSize );
+		LOAD_0103(SFile, dwSize);
 	}
-	else if ( dwVer==0x0102 )
+	else if (dwVer == 0x0102)
 	{
-		LOAD_0102( SFile, dwSize );
+		LOAD_0102(SFile, dwSize);
 	}
-	else if ( dwVer==0x0101 )
+	else if (dwVer == 0x0101)
 	{
-		LOAD_0101( SFile, dwSize );
+		LOAD_0101(SFile, dwSize);
 	}
 	else
 	{
-		CDebugSet::ErrorVersion( "SLEVEL_REQUIRE::LOAD", dwVer );
-		SFile.SetOffSet ( SFile.GetfTell()+dwSize );
+		CDebugSet::ErrorVersion("SLEVEL_REQUIRE::LOAD", dwVer);
+		SFile.SetOffSet(SFile.GetfTell() + dwSize);
 	}
 
 	return TRUE;
 }
 
-void SLEVEL_REQUIRE::LOAD_0101 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0101(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
@@ -183,7 +183,8 @@ void SLEVEL_REQUIRE::LOAD_0101 ( basestream &SFile, DWORD dwSIZE )
 
 	SFile >> m_bPartyMbr;
 
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	m_wLevel2 = 0;
 	SFile >> m_sItemID.dwID;
@@ -192,18 +193,20 @@ void SLEVEL_REQUIRE::LOAD_0101 ( basestream &SFile, DWORD dwSIZE )
 	SFile >> m_sComQuestID.dwID;
 	SFile >> m_sActQuestID.dwID;
 
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
 
 	dwRead = SFile.GetfTell() - dwRead;
-	
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0101 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0101 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-void SLEVEL_REQUIRE::LOAD_0102 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0102(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
@@ -211,7 +214,8 @@ void SLEVEL_REQUIRE::LOAD_0102 ( basestream &SFile, DWORD dwSIZE )
 
 	SFile >> m_bPartyMbr;
 
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	SFile >> m_wLevel2;
 	SFile >> m_sItemID.dwID;
@@ -220,23 +224,26 @@ void SLEVEL_REQUIRE::LOAD_0102 ( basestream &SFile, DWORD dwSIZE )
 	SFile >> m_sComQuestID.dwID;
 	SFile >> m_sActQuestID.dwID;
 
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
 
 	dwRead = SFile.GetfTell() - dwRead;
-	
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0102 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0102 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-void SLEVEL_REQUIRE::LOAD_0103 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0103(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
 	DWORD dwData(0);
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	SFile >> m_wLevel2;
 
@@ -245,27 +252,30 @@ void SLEVEL_REQUIRE::LOAD_0103 ( basestream &SFile, DWORD dwSIZE )
 
 	SFile >> m_sSkillID.dwID;
 	SFile >> m_sItemID.dwID;
-	
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
-	
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
-	
+
 	SFile >> m_bPartyMbr;
 
 	dwRead = SFile.GetfTell() - dwRead;
-	
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-void SLEVEL_REQUIRE::LOAD_0104 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0104(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
 	DWORD dwData(0);
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	SFile >> m_wLevel2;
 
@@ -275,10 +285,12 @@ void SLEVEL_REQUIRE::LOAD_0104 ( basestream &SFile, DWORD dwSIZE )
 	SFile >> m_sSkillID.dwID;
 	SFile >> m_sItemID.dwID;
 
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
 
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
 
 	SFile >> m_bPartyMbr;
@@ -286,16 +298,17 @@ void SLEVEL_REQUIRE::LOAD_0104 ( basestream &SFile, DWORD dwSIZE )
 
 	dwRead = SFile.GetfTell() - dwRead;
 
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0104 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0104 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-void SLEVEL_REQUIRE::LOAD_0105 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0105(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
 	DWORD dwData(0);
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	SFile >> m_wLevel2;
 
@@ -310,10 +323,12 @@ void SLEVEL_REQUIRE::LOAD_0105 ( basestream &SFile, DWORD dwSIZE )
 	SFile >> unknown_var3.dwID;
 	SFile >> unknown_var4.dwID;
 
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
 
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
 
 	SFile >> m_bPartyMbr;
@@ -321,16 +336,17 @@ void SLEVEL_REQUIRE::LOAD_0105 ( basestream &SFile, DWORD dwSIZE )
 
 	dwRead = SFile.GetfTell() - dwRead;
 
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0105 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0105 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-void SLEVEL_REQUIRE::LOAD_0200 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0200(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
 	DWORD dwData(0);
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	SFile >> m_wLevel2;
 
@@ -340,32 +356,37 @@ void SLEVEL_REQUIRE::LOAD_0200 ( basestream &SFile, DWORD dwSIZE )
 	SFile >> m_sSkillID.dwID;
 	SFile >> m_sItemID.dwID;
 
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
 
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
 
 	SFile >> m_bPartyMbr;
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	SFile >> dwData;		m_signContributionPoint = (EMCDT_SIGN) dwData;
-	SFile >> dwData;		m_signActivityPoint = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signContributionPoint = (EMCDT_SIGN)dwData;
+	SFile >> dwData;
+	m_signActivityPoint = (EMCDT_SIGN)dwData;
 	SFile >> m_dwContributionPoint;
 	SFile >> m_dwActivityPoint;
 
 	dwRead = SFile.GetfTell() - dwRead;
 
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-void SLEVEL_REQUIRE::LOAD_0201 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0201(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
 	DWORD dwData(0);
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	SFile >> m_wLevel2;
 
@@ -375,17 +396,21 @@ void SLEVEL_REQUIRE::LOAD_0201 ( basestream &SFile, DWORD dwSIZE )
 	SFile >> m_sSkillID.dwID;
 	SFile >> m_sItemID.dwID;
 
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
 
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
 
 	SFile >> m_bPartyMbr;
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	SFile >> dwData;		m_signContributionPoint = (EMCDT_SIGN) dwData;
-	SFile >> dwData;		m_signActivityPoint = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signContributionPoint = (EMCDT_SIGN)dwData;
+	SFile >> dwData;
+	m_signActivityPoint = (EMCDT_SIGN)dwData;
 	SFile >> m_dwContributionPoint;
 	SFile >> m_dwActivityPoint;
 
@@ -393,17 +418,17 @@ void SLEVEL_REQUIRE::LOAD_0201 ( basestream &SFile, DWORD dwSIZE )
 
 	dwRead = SFile.GetfTell() - dwRead;
 
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-
-void SLEVEL_REQUIRE::LOAD_0202 ( basestream &SFile, DWORD dwSIZE )
+void SLEVEL_REQUIRE::LOAD_0202(basestream &SFile, DWORD dwSIZE)
 {
 	DWORD dwRead = SFile.GetfTell();
 
 	DWORD dwData(0);
-	SFile >> dwData;		m_signLevel = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLevel = (EMCDT_SIGN)dwData;
 	SFile >> m_wLevel;
 	SFile >> m_wLevel2;
 
@@ -413,17 +438,21 @@ void SLEVEL_REQUIRE::LOAD_0202 ( basestream &SFile, DWORD dwSIZE )
 	SFile >> m_sSkillID.dwID;
 	SFile >> m_sItemID.dwID;
 
-	SFile >> dwData;		m_signBright = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signBright = (EMCDT_SIGN)dwData;
 	SFile >> m_nBright;
 
-	SFile >> dwData;		m_signLiving = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signLiving = (EMCDT_SIGN)dwData;
 	SFile >> m_nLiving;
 
 	SFile >> m_bPartyMbr;
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	SFile >> dwData;		m_signContributionPoint = (EMCDT_SIGN) dwData;
-	SFile >> dwData;		m_signActivityPoint = (EMCDT_SIGN) dwData;
+	SFile >> dwData;
+	m_signContributionPoint = (EMCDT_SIGN)dwData;
+	SFile >> dwData;
+	m_signActivityPoint = (EMCDT_SIGN)dwData;
 	SFile >> m_dwContributionPoint;
 	SFile >> m_dwActivityPoint;
 
@@ -436,11 +465,11 @@ void SLEVEL_REQUIRE::LOAD_0202 ( basestream &SFile, DWORD dwSIZE )
 
 	dwRead = SFile.GetfTell() - dwRead;
 
-	if( dwRead != dwSIZE )
-		CDebugSet::MsgBox( "SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE );
+	if (dwRead != dwSIZE)
+		CDebugSet::MsgBox("SLEVEL_REQUIRE::LOAD_0103 Incorrect Read Size:%d Expected:%d", dwRead, dwSIZE);
 }
 
-BOOL SLEVEL_REQUIRE::SAVE ( CSerialFile &SFile )
+BOOL SLEVEL_REQUIRE::SAVE(CSerialFile &SFile)
 {
 	SFile << DWORD(VERSION);
 	SFile.BeginBlock();
@@ -481,170 +510,190 @@ BOOL SLEVEL_REQUIRE::SAVE ( CSerialFile &SFile )
 	return TRUE;
 }
 
-template<class TYPE>
-bool compare ( TYPE lvalue, EMCDT_SIGN emSign, TYPE rvalue )
+template <class TYPE>
+bool compare(TYPE lvalue, EMCDT_SIGN emSign, TYPE rvalue)
 {
-	switch ( emSign )
+	switch (emSign)
 	{
 	case EMSIGN_ALWAYS:
 		return true;
 
-	case EMSIGN_SAME:		//	=
+	case EMSIGN_SAME: //	=
 		return lvalue == rvalue;
 
-	case EMSIGN_HIGHER:		//	<
+	case EMSIGN_HIGHER: //	<
 		return lvalue < rvalue;
 
-	case EMSIGN_LOWER:		//	>
+	case EMSIGN_LOWER: //	>
 		return lvalue > rvalue;
 
-	case EMSIGN_SAMEHIGHER:	//	<=
+	case EMSIGN_SAMEHIGHER: //	<=
 		return lvalue <= rvalue;
 
-	case EMSIGN_SAMELOWER:	//	>=
+	case EMSIGN_SAMELOWER: //	>=
 		return lvalue >= rvalue;
 	};
 
 	return false;
 }
 
-EMREQFAIL SLEVEL_REQUIRE::ISCOMPLETE ( GLCHARLOGIC_SERVER * pCHARLOGIC ) const
+EMREQFAIL SLEVEL_REQUIRE::ISCOMPLETE(GLCHARLOGIC_SERVER *pCHARLOGIC) const
 {
-	//m_bPartyMbr;
+	// m_bPartyMbr;
 
 	bool bcomplete(false);
 
-	if ( m_signLevel == EMSIGN_FROMTO )
+	if (m_signLevel == EMSIGN_FROMTO)
 	{
-		if( m_wLevel  > pCHARLOGIC->m_wLevel ||	m_wLevel2 < pCHARLOGIC->m_wLevel ) return EMREQUIRE_LEVEL;
-	}else{
-		if ( ! compare ( m_wLevel, m_signLevel, pCHARLOGIC->m_wLevel ) )	return EMREQUIRE_LEVEL;
+		if (m_wLevel > pCHARLOGIC->m_wLevel || m_wLevel2 < pCHARLOGIC->m_wLevel)
+			return EMREQUIRE_LEVEL;
+	}
+	else
+	{
+		if (!compare(m_wLevel, m_signLevel, pCHARLOGIC->m_wLevel))
+			return EMREQUIRE_LEVEL;
 	}
 
-
-	if ( m_sItemID!=SNATIVEID(false) )
+	if (m_sItemID != SNATIVEID(false))
 	{
 		bcomplete = false;
-		SINVENITEM* pInvenItem = pCHARLOGIC->m_cInventory.FindItem ( m_sItemID );
-		if ( pInvenItem )
+		SINVENITEM *pInvenItem = pCHARLOGIC->m_cInventory.FindItem(m_sItemID);
+		if (pInvenItem)
 		{
 			bcomplete = true;
 		}
 		else
 		{
-			for ( int i=0; i<SLOT_TSIZE; ++i )
+			for (int i = 0; i < SLOT_TSIZE; ++i)
 			{
-				EMSLOT emSLOT = (EMSLOT) i;
-				if ( pCHARLOGIC->VALID_SLOT_ITEM(emSLOT) )
+				EMSLOT emSLOT = (EMSLOT)i;
+				if (pCHARLOGIC->VALID_SLOT_ITEM(emSLOT))
 				{
-					const SITEMCUSTOM& sITEM = pCHARLOGIC->GET_SLOT_ITEM ( emSLOT );
-					if ( sITEM.sNativeID == m_sItemID )		bcomplete = true;
+					const SITEMCUSTOM &sITEM = pCHARLOGIC->GET_SLOT_ITEM(emSLOT);
+					if (sITEM.sNativeID == m_sItemID)
+						bcomplete = true;
 					break;
 				}
 			}
 		}
 
-		if ( !bcomplete )												return EMREQUIRE_ITEM;
+		if (!bcomplete)
+			return EMREQUIRE_ITEM;
 	}
 
-	if ( m_sSkillID!=SNATIVEID(false) )
+	if (m_sSkillID != SNATIVEID(false))
 	{
-		SCHARDATA2::SKILL_MAP_ITER iter = pCHARLOGIC->m_ExpSkills.find ( m_sSkillID.dwID );
-		if ( pCHARLOGIC->m_ExpSkills.end() == iter )					return EMREQUIRE_SKILL;
+		SCHARDATA2::SKILL_MAP_ITER iter = pCHARLOGIC->m_ExpSkills.find(m_sSkillID.dwID);
+		if (pCHARLOGIC->m_ExpSkills.end() == iter)
+			return EMREQUIRE_SKILL;
 	}
 
-	if ( m_sComQuestID!=SNATIVEID(false) )
+	if (m_sComQuestID != SNATIVEID(false))
 	{
-		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindEnd ( m_sComQuestID.dwID );
-		if ( !pPROG || !pPROG->m_bCOMPLETE )							return EMREQUIRE_QUEST_COM;
+		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindEnd(m_sComQuestID.dwID);
+		if (!pPROG || !pPROG->m_bCOMPLETE)
+			return EMREQUIRE_QUEST_COM;
 	}
 
-	if ( m_sActQuestID!=SNATIVEID(false) )
+	if (m_sActQuestID != SNATIVEID(false))
 	{
-		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindProc ( m_sActQuestID.dwID );
-		if ( !pPROG )													return EMREQUIRE_QUEST_ACT;
+		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindProc(m_sActQuestID.dwID);
+		if (!pPROG)
+			return EMREQUIRE_QUEST_ACT;
 	}
 
-	if ( ! compare ( m_nLiving, m_signLiving, pCHARLOGIC->m_nLiving ) )	return EMREQUIRE_LIVING;
-	if ( ! compare ( m_nBright, m_signBright, pCHARLOGIC->m_nBright ) )	return EMREQUIRE_BRIGHT;
+	if (!compare(m_nLiving, m_signLiving, pCHARLOGIC->m_nLiving))
+		return EMREQUIRE_LIVING;
+	if (!compare(m_nBright, m_signBright, pCHARLOGIC->m_nBright))
+		return EMREQUIRE_BRIGHT;
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	if ( ! compare ( m_dwActivityPoint, m_signActivityPoint, pCHARLOGIC->m_dwActivityPoint ) )							
+	if (!compare(m_dwActivityPoint, m_signActivityPoint, pCHARLOGIC->m_dwActivityPoint))
 		return EMREQUIRE_ACTIVITY_POINT;
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	if ( ! compare ( m_dwContributionPoint, m_signContributionPoint, pCHARLOGIC->m_dwContributionPoint  ) )		
+	if (!compare(m_dwContributionPoint, m_signContributionPoint, pCHARLOGIC->m_dwContributionPoint))
 		return EMREQUIRE_CONTRIBUTION_POINT;
 
 	return EMREQUIRE_COMPLETE;
 }
 
-EMREQFAIL SLEVEL_REQUIRE::ISCOMPLETE ( GLCHARLOGIC_CLIENT * pCHARLOGIC ) const
+EMREQFAIL SLEVEL_REQUIRE::ISCOMPLETE(GLCHARLOGIC_CLIENT *pCHARLOGIC) const
 {
-	//m_bPartyMbr;
+	// m_bPartyMbr;
 
 	bool bcomplete(false);
 
-	if ( m_signLevel == EMSIGN_FROMTO )
+	if (m_signLevel == EMSIGN_FROMTO)
 	{
-		if( m_wLevel  > pCHARLOGIC->m_wLevel ||	m_wLevel2 < pCHARLOGIC->m_wLevel ) return EMREQUIRE_LEVEL;
-	}else{
-		if ( ! compare ( m_wLevel, m_signLevel, pCHARLOGIC->m_wLevel ) )	return EMREQUIRE_LEVEL;
+		if (m_wLevel > pCHARLOGIC->m_wLevel || m_wLevel2 < pCHARLOGIC->m_wLevel)
+			return EMREQUIRE_LEVEL;
+	}
+	else
+	{
+		if (!compare(m_wLevel, m_signLevel, pCHARLOGIC->m_wLevel))
+			return EMREQUIRE_LEVEL;
 	}
 
-
-	if ( m_sItemID!=SNATIVEID(false) )
+	if (m_sItemID != SNATIVEID(false))
 	{
 		bcomplete = false;
-		SINVENITEM* pInvenItem = pCHARLOGIC->m_cInventory.FindItem ( m_sItemID );
-		if ( pInvenItem )
+		SINVENITEM *pInvenItem = pCHARLOGIC->m_cInventory.FindItem(m_sItemID);
+		if (pInvenItem)
 		{
 			bcomplete = true;
 		}
 		else
 		{
-			for ( int i=0; i<SLOT_TSIZE; ++i )
+			for (int i = 0; i < SLOT_TSIZE; ++i)
 			{
-				EMSLOT emSLOT = (EMSLOT) i;
-				if ( pCHARLOGIC->VALID_SLOT_ITEM(emSLOT) )
+				EMSLOT emSLOT = (EMSLOT)i;
+				if (pCHARLOGIC->VALID_SLOT_ITEM(emSLOT))
 				{
-					const SITEMCUSTOM& sITEM = pCHARLOGIC->GET_SLOT_ITEM ( emSLOT );
-					if ( sITEM.sNativeID == m_sItemID )		bcomplete = true;
+					const SITEMCUSTOM &sITEM = pCHARLOGIC->GET_SLOT_ITEM(emSLOT);
+					if (sITEM.sNativeID == m_sItemID)
+						bcomplete = true;
 					break;
 				}
 			}
 		}
 
-		if ( !bcomplete )												return EMREQUIRE_ITEM;
+		if (!bcomplete)
+			return EMREQUIRE_ITEM;
 	}
 
-	if ( m_sSkillID!=SNATIVEID(false) )
+	if (m_sSkillID != SNATIVEID(false))
 	{
-		SCHARDATA2::SKILL_MAP_ITER iter = pCHARLOGIC->m_ExpSkills.find ( m_sSkillID.dwID );
-		if ( pCHARLOGIC->m_ExpSkills.end() == iter )					return EMREQUIRE_SKILL;
+		SCHARDATA2::SKILL_MAP_ITER iter = pCHARLOGIC->m_ExpSkills.find(m_sSkillID.dwID);
+		if (pCHARLOGIC->m_ExpSkills.end() == iter)
+			return EMREQUIRE_SKILL;
 	}
 
-	if ( m_sComQuestID!=SNATIVEID(false) )
+	if (m_sComQuestID != SNATIVEID(false))
 	{
-		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindEnd ( m_sComQuestID.dwID );
-		if ( !pPROG || !pPROG->m_bCOMPLETE )							return EMREQUIRE_QUEST_COM;
+		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindEnd(m_sComQuestID.dwID);
+		if (!pPROG || !pPROG->m_bCOMPLETE)
+			return EMREQUIRE_QUEST_COM;
 	}
 
-	if ( m_sActQuestID!=SNATIVEID(false) )
+	if (m_sActQuestID != SNATIVEID(false))
 	{
-		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindProc ( m_sActQuestID.dwID );
-		if ( !pPROG )													return EMREQUIRE_QUEST_ACT;
+		GLQUESTPROG *pPROG = pCHARLOGIC->m_cQuestPlay.FindProc(m_sActQuestID.dwID);
+		if (!pPROG)
+			return EMREQUIRE_QUEST_ACT;
 	}
 
-	if ( ! compare ( m_nLiving, m_signLiving, pCHARLOGIC->m_nLiving ) )	return EMREQUIRE_LIVING;
-	if ( ! compare ( m_nBright, m_signBright, pCHARLOGIC->m_nBright ) )	return EMREQUIRE_BRIGHT;
+	if (!compare(m_nLiving, m_signLiving, pCHARLOGIC->m_nLiving))
+		return EMREQUIRE_LIVING;
+	if (!compare(m_nBright, m_signBright, pCHARLOGIC->m_nBright))
+		return EMREQUIRE_BRIGHT;
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	if ( ! compare ( m_dwActivityPoint, m_signActivityPoint, pCHARLOGIC->m_dwActivityPoint ) )							
+	if (!compare(m_dwActivityPoint, m_signActivityPoint, pCHARLOGIC->m_dwActivityPoint))
 		return EMREQUIRE_ACTIVITY_POINT;
 
 	/* map requirement contri and activity p, Juver, 2018/02/11 */
-	if ( ! compare ( m_dwContributionPoint, m_signContributionPoint, pCHARLOGIC->m_dwContributionPoint  ) )		
+	if (!compare(m_dwContributionPoint, m_signContributionPoint, pCHARLOGIC->m_dwContributionPoint))
 		return EMREQUIRE_CONTRIBUTION_POINT;
 
 	return EMREQUIRE_COMPLETE;
@@ -653,24 +702,22 @@ EMREQFAIL SLEVEL_REQUIRE::ISCOMPLETE ( GLCHARLOGIC_CLIENT * pCHARLOGIC ) const
 namespace COMMENT
 {
 	std::string CDT_SIGN[EMSIGN_SIZE] =
-	{
-		"=",
-		">",
-		"<",
-		">=",
-		"<=",
-		"Any",
-		"~"
-	};
+		{
+			"=",
+			">",
+			"<",
+			">=",
+			"<=",
+			"Any",
+			"~"};
 
 	std::string CDT_SIGN_ID[EMSIGN_SIZE] =
-	{
-		"EMSIGN_SAME",
-		"EMSIGN_HIGHER",
-		"EMSIGN_LOWER",
-		"EMSIGN_SAMEHIGHER",
-		"EMSIGN_SAMELOWER",
-		"EMSIGN_ALWAYS",
-		"EMSIGN_FROMTO"
-	};
+		{
+			"EMSIGN_SAME",
+			"EMSIGN_HIGHER",
+			"EMSIGN_LOWER",
+			"EMSIGN_SAMEHIGHER",
+			"EMSIGN_SAMELOWER",
+			"EMSIGN_ALWAYS",
+			"EMSIGN_FROMTO"};
 };
