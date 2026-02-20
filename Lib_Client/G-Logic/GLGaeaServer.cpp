@@ -3,13 +3,13 @@
 #include "./UserTypeDefine.h"
 
 #include "Psapi.h"
-#pragma comment( lib, "Psapi.lib" )
+#pragma comment(lib, "Psapi.lib")
 
 #include "./GLGaeaServer.h"
 #include "./GLClubDeathMatch.h"
 
 /*pvp tyranny, Juver, 2017/08/25 */
-#include "./GLPVPTyrannyField.h" 
+#include "./GLPVPTyrannyField.h"
 
 /*woe Arc Development 08-06-2024*/
 #include "./GLPVPWoeField.h"
@@ -30,189 +30,236 @@
 /*dmk14 freepk*/
 #include "GLFreePK.h"
 
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-GLGaeaServer& GLGaeaServer::GetInstance()
+GLGaeaServer &GLGaeaServer::GetInstance()
 {
 	static GLGaeaServer Instance;
 	return Instance;
 }
 
-GLGaeaServer::GLGaeaServer(void) :
-	m_pd3dDevice(NULL),
-	m_pMsgServer(NULL),
-	m_pDBMan(NULL),
-	m_nServerChannel(0),
-	m_dwFieldSvrID(0),
+GLGaeaServer::GLGaeaServer(void) : m_pd3dDevice(NULL),
+								   m_pMsgServer(NULL),
+								   m_pDBMan(NULL),
+								   m_nServerChannel(0),
+								   m_dwFieldSvrID(0),
 
-	m_dwAgentSlot(0),
+								   m_dwAgentSlot(0),
 
-	m_bEmulator(false),
-	m_bUpdate(TRUE),
-	m_bGenItemHold(true),
-	//m_fMaxDelayMsgProc(0),
+								   m_bEmulator(false),
+								   m_bUpdate(TRUE),
+								   m_bGenItemHold(true),
+								   // m_fMaxDelayMsgProc(0),
 
-	m_dwMaxClient(1000),
+								   m_dwMaxClient(1000),
 
-	m_fTIMER_CLUB(0),
+								   m_fTIMER_CLUB(0),
 
-	m_bBigHead(false),
-	m_bBigHand(false),
-	m_bBrightEvent(false),
-	/*dmk14 freepk*/
-	m_sBrightEventMap(NATIVEID_NULL()),
+								   m_bBigHead(false),
+								   m_bBigHand(false),
+								   m_bBrightEvent(false),
+								   /*dmk14 freepk*/
+								   m_sBrightEventMap(NATIVEID_NULL()),
 
-	m_bReservedStop(false),
-	m_bClubBattleStarted(false),
-	m_bClubDMStarted(false),
-	m_nServiceProvider(0),
+								   m_bReservedStop(false),
+								   m_bClubBattleStarted(false),
+								   m_bClubDMStarted(false),
+								   m_nServiceProvider(0),
 
-	/*private market set, Juver, 2018/01/02 */
-	m_bAllowPrivateMarket(TRUE),
+								   /*private market set, Juver, 2018/01/02 */
+								   m_bAllowPrivateMarket(TRUE),
 
-	/*megaphone set, Juver, 2018/01/02 */
-	m_bAllowMegaPhone(TRUE),
+								   /*megaphone set, Juver, 2018/01/02 */
+								   m_bAllowMegaPhone(TRUE),
 
-	m_dwInstantMapNum(0),
-	m_dwInstantMapStuckNum(0),
+								   m_dwInstantMapNum(0),
+								   m_dwInstantMapStuckNum(0),
 
-	/* skill illusion, Juver, 2021/01/17 */
-	m_fCurrentFrameTime(0.0f),
+								   /* skill illusion, Juver, 2021/01/17 */
+								   m_fCurrentFrameTime(0.0f),
 
-	/* variable check, Juver, 2021/07/02 */
-	m_fVarCheckTimer(0.0f)
+								   /* variable check, Juver, 2021/07/02 */
+								   m_fVarCheckTimer(0.0f),
+
+								   /* Security: random token for internal DB message validation */
+								   m_dwInternalMsgToken(0)
 {
 	InitializeCriticalSection(&m_CSPCLock);
+
+	// Generate a random token that only the server knows.
+	// Forged packets from clients will not have this value.
+	srand((unsigned int)GetTickCount());
+	m_dwInternalMsgToken = ((DWORD)rand() << 16) | (DWORD)rand();
+	if (m_dwInternalMsgToken == 0)
+		m_dwInternalMsgToken = 0xA5C3E1F7; // ensure non-zero
+}
+
+void GLGaeaServer::LogSecurityEvent(DWORD dwClientID, const char *szEvent)
+{
+	// Get attacker IP via the field server's client manager.
+	const char *szIP = "unknown";
+	if (m_pMsgServer)
+	{
+		char *szRawIP = m_pMsgServer->GetClientIP(dwClientID);
+		if (szRawIP && szRawIP[0] != '\0')
+			szIP = szRawIP;
+	}
+
+	// Build log line: [SECURITY] <timestamp> ClientID=<id> IP=<ip> Event=<event>
+	SYSTEMTIME st;
+	GetLocalTime(&st);
+	char szLog[512];
+	_snprintf(szLog, sizeof(szLog),
+			  "[SECURITY] %04d-%02d-%02d %02d:%02d:%02d ClientID=%u IP=%s Event=%s\n",
+			  st.wYear, st.wMonth, st.wDay,
+			  st.wHour, st.wMinute, st.wSecond,
+			  dwClientID, szIP, szEvent ? szEvent : "");
+
+	// 1. Console output (visible to server operators in real time)
+	if (m_pConsoleMsg)
+		m_pConsoleMsg->Write("%s", szLog);
+
+	// 2. Persistent file log
+	FILE *fp = fopen("security_events.log", "a");
+	if (fp)
+	{
+		fputs(szLog, fp);
+		fclose(fp);
+	}
 }
 
 GLGaeaServer::~GLGaeaServer(void)
 {
 	DeleteCriticalSection(&m_CSPCLock);
-	
-	SAFE_DELETE_ARRAY (m_PCArray);
-	SAFE_DELETE_ARRAY (m_PETArray);
-	SAFE_DELETE_ARRAY (m_SummonArray);
+
+	SAFE_DELETE_ARRAY(m_PCArray);
+	SAFE_DELETE_ARRAY(m_PETArray);
+	SAFE_DELETE_ARRAY(m_SummonArray);
 }
 
-GLCrow* GLGaeaServer::NEW_CROW ()
+GLCrow *GLGaeaServer::NEW_CROW()
 {
 
 	EnterCriticalSection(&m_CSPCLock);
 
-	GLCrow* returnCrow = m_poolCROW.New();
+	GLCrow *returnCrow = m_poolCROW.New();
 
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return returnCrow;
 }
 
-void GLGaeaServer::RELEASE_CROW ( GLCrow* pCROW )
+void GLGaeaServer::RELEASE_CROW(GLCrow *pCROW)
 {
-	GASSERT(pCROW&&"GLGaeaServer::RELEASE_CROW()");
-	if ( !pCROW )	return;
+	GASSERT(pCROW && "GLGaeaServer::RELEASE_CROW()");
+	if (!pCROW)
+		return;
 
 	pCROW->RESET_DATA();
-	m_poolCROW.ReleaseNonInit ( pCROW );
+	m_poolCROW.ReleaseNonInit(pCROW);
 }
 
-GLMaterial* GLGaeaServer::NEW_MATERIAL ()
+GLMaterial *GLGaeaServer::NEW_MATERIAL()
 {
 
 	EnterCriticalSection(&m_CSPCLock);
 
-	GLMaterial* returnMaterial = m_poolMATERIAL.New();
+	GLMaterial *returnMaterial = m_poolMATERIAL.New();
 
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return returnMaterial;
 }
 
-void GLGaeaServer::RELEASE_MATERIAL ( GLMaterial* pMaterial )
+void GLGaeaServer::RELEASE_MATERIAL(GLMaterial *pMaterial)
 {
-	GASSERT(pMaterial&&"GLGaeaServer::RELEASE_MATERIAL()");
-	if ( !pMaterial )	return;
+	GASSERT(pMaterial && "GLGaeaServer::RELEASE_MATERIAL()");
+	if (!pMaterial)
+		return;
 
 	pMaterial->RESET_DATA();
-	m_poolMATERIAL.ReleaseNonInit ( pMaterial );
+	m_poolMATERIAL.ReleaseNonInit(pMaterial);
 }
 
-GLChar* GLGaeaServer::NEW_CHAR ()
+GLChar *GLGaeaServer::NEW_CHAR()
 {
 	EnterCriticalSection(&m_CSPCLock);
 
-	GLChar* returnChar = m_poolCHAR.New();
+	GLChar *returnChar = m_poolCHAR.New();
 
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return returnChar;
 }
 
-void GLGaeaServer::RELEASE_CHAR ( GLChar* pCHAR )
+void GLGaeaServer::RELEASE_CHAR(GLChar *pCHAR)
 {
-	GASSERT(pCHAR&&"GLGaeaServer::RELEASE_CHAR()");
-	if ( !pCHAR )	return;
+	GASSERT(pCHAR && "GLGaeaServer::RELEASE_CHAR()");
+	if (!pCHAR)
+		return;
 
 	EnterCriticalSection(&m_CSPCLock);
 
 	pCHAR->RESET_DATA();
-	m_poolCHAR.ReleaseNonInit ( pCHAR );
+	m_poolCHAR.ReleaseNonInit(pCHAR);
 
 	LeaveCriticalSection(&m_CSPCLock);
 }
 
-SFIELDCROW* GLGaeaServer::NEW_FIELDCROW ()
+SFIELDCROW *GLGaeaServer::NEW_FIELDCROW()
 {
 	EnterCriticalSection(&m_CSPCLock);
 
-	SFIELDCROW* returnCrow = m_poolFIELDCROW.New();
+	SFIELDCROW *returnCrow = m_poolFIELDCROW.New();
 
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return returnCrow;
 }
 
-void GLGaeaServer::RELEASE_FIELDCROW ( SFIELDCROW* pFIELDCROW )
+void GLGaeaServer::RELEASE_FIELDCROW(SFIELDCROW *pFIELDCROW)
 {
-	GASSERT(pFIELDCROW&&"GLGaeaServer::RELEASE_CHAR()");
-	if ( !pFIELDCROW )	return;
+	GASSERT(pFIELDCROW && "GLGaeaServer::RELEASE_CHAR()");
+	if (!pFIELDCROW)
+		return;
 
 	EnterCriticalSection(&m_CSPCLock);
 
 	pFIELDCROW->RESET();
-	m_poolFIELDCROW.ReleaseNonInit ( pFIELDCROW );
+	m_poolFIELDCROW.ReleaseNonInit(pFIELDCROW);
 
 	LeaveCriticalSection(&m_CSPCLock);
 }
 
-PGLPETFIELD GLGaeaServer::NEW_PET ()
+PGLPETFIELD GLGaeaServer::NEW_PET()
 {
 
 	EnterCriticalSection(&m_CSPCLock);
 
-	GLPetField* returnPet = m_poolPET.New();
+	GLPetField *returnPet = m_poolPET.New();
 
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return returnPet;
 }
 
-void GLGaeaServer::RELEASE_PET ( PGLPETFIELD pPet )
+void GLGaeaServer::RELEASE_PET(PGLPETFIELD pPet)
 {
-	GASSERT ( pPet && "GLGaeaServer::RELEASE_PET()" );
-	if ( !pPet ) return;
+	GASSERT(pPet && "GLGaeaServer::RELEASE_PET()");
+	if (!pPet)
+		return;
 
 	EnterCriticalSection(&m_CSPCLock);
 
-	pPet->CleanUp ();
-	m_poolPET.ReleaseNonInit ( pPet );
+	pPet->CleanUp();
+	m_poolPET.ReleaseNonInit(pPet);
 
 	LeaveCriticalSection(&m_CSPCLock);
 }
 
-PGLLANDMAN GLGaeaServer::NEW_GLLANDMAN ()
+PGLLANDMAN GLGaeaServer::NEW_GLLANDMAN()
 {
 
 	EnterCriticalSection(&m_CSPCLock);
@@ -224,81 +271,88 @@ PGLLANDMAN GLGaeaServer::NEW_GLLANDMAN ()
 	return returnGLLandMan;
 }
 
-void GLGaeaServer::RELEASE_GLLANDMAN ( PGLLANDMAN pGLLandMan )
+void GLGaeaServer::RELEASE_GLLANDMAN(PGLLANDMAN pGLLandMan)
 {
-	GASSERT ( pGLLandMan && "GLGaeaServer::RELEASE_GLLANDMAN()" );
-	if ( !pGLLandMan ) return;
+	GASSERT(pGLLandMan && "GLGaeaServer::RELEASE_GLLANDMAN()");
+	if (!pGLLandMan)
+		return;
 
 	EnterCriticalSection(&m_CSPCLock);
 
 	pGLLandMan->CleanUp();
 	pGLLandMan->ResetLandMan();
-	m_poolGLLandMan.ReleaseNonInit ( pGLLandMan );
+	m_poolGLLandMan.ReleaseNonInit(pGLLandMan);
 
 	LeaveCriticalSection(&m_CSPCLock);
 }
 
-GLLandMan* GLGaeaServer::GetRootMap ()
+GLLandMan *GLGaeaServer::GetRootMap()
 {
 	//	if ( !m_LandManList.m_pHead )	return NULL;
 
 	//	return m_LandManList.m_pHead->Data;
 
-	if( m_vecLandMan.empty() ) return NULL;
+	if (m_vecLandMan.empty())
+		return NULL;
 
 	return m_vecLandMan[0];
 }
 
-GLLandMan* GLGaeaServer::GetByMapID ( const SNATIVEID &sMapID )
+GLLandMan *GLGaeaServer::GetByMapID(const SNATIVEID &sMapID)
 {
-	GASSERT(sMapID.wMainID<MAXLANDMID);
-	GASSERT(sMapID.wSubID<MAXLANDSID);
+	GASSERT(sMapID.wMainID < MAXLANDMID);
+	GASSERT(sMapID.wSubID < MAXLANDSID);
 
-	if ( sMapID.wMainID>=MAXLANDMID )	return NULL;
-	if ( sMapID.wSubID>=MAXLANDSID )	return NULL;
+	if (sMapID.wMainID >= MAXLANDMID)
+		return NULL;
+	if (sMapID.wSubID >= MAXLANDSID)
+		return NULL;
 
 	return m_pLandMan[sMapID.wMainID][sMapID.wSubID];
 }
 
-GLLandMan* GLGaeaServer::GetInstantMapByMapID ( const SNATIVEID &sMapID )
+GLLandMan *GLGaeaServer::GetInstantMapByMapID(const SNATIVEID &sMapID)
 {
 	size_t i, size = m_vecInstantMapSrcLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
-		if( m_vecInstantMapSrcLandMan[i]->GetMapID() == sMapID ) return m_vecInstantMapSrcLandMan[i];
+		if (m_vecInstantMapSrcLandMan[i]->GetMapID() == sMapID)
+			return m_vecInstantMapSrcLandMan[i];
 	}
 	return NULL;
 }
 
-HRESULT GLGaeaServer::OneTimeSceneInit ()
+HRESULT GLGaeaServer::OneTimeSceneInit()
 {
-	m_FreePETGIDs.RemoveAll ();
+	m_FreePETGIDs.RemoveAll();
 	m_FreeSummonGIDs.RemoveAll();
 
-	for ( DWORD i=0; i<m_dwMaxClient; i++ )	m_FreePETGIDs.AddTail ( i );
-	for ( DWORD i=0; i<m_dwMaxClient; i++ )	m_FreeSummonGIDs.AddTail ( i );
+	for (DWORD i = 0; i < m_dwMaxClient; i++)
+		m_FreePETGIDs.AddTail(i);
+	for (DWORD i = 0; i < m_dwMaxClient; i++)
+		m_FreeSummonGIDs.AddTail(i);
 
-	SecureZeroMemory ( m_pLandMan, sizeof(GLLandMan*)*MAXLANDMID*MAXLANDSID );
+	SecureZeroMemory(m_pLandMan, sizeof(GLLandMan *) * MAXLANDMID * MAXLANDSID);
 
 	SAFE_DELETE_ARRAY(m_PCArray);
 	m_PCArray = new PGLCHAR[m_dwMaxClient];
-	SecureZeroMemory ( m_PCArray, sizeof(PGLCHAR)*m_dwMaxClient );
+	SecureZeroMemory(m_PCArray, sizeof(PGLCHAR) * m_dwMaxClient);
 
-	SAFE_DELETE_ARRAY (m_PETArray);
+	SAFE_DELETE_ARRAY(m_PETArray);
 	m_PETArray = new PGLPETFIELD[m_dwMaxClient];
-	SecureZeroMemory ( m_PETArray, sizeof(PGLPETFIELD)*m_dwMaxClient );
+	SecureZeroMemory(m_PETArray, sizeof(PGLPETFIELD) * m_dwMaxClient);
 
-	SAFE_DELETE_ARRAY (m_SummonArray);
+	SAFE_DELETE_ARRAY(m_SummonArray);
 	m_SummonArray = new PGLSUMMONFIELD[m_dwMaxClient];
-	SecureZeroMemory ( m_SummonArray, sizeof(PGLSUMMONFIELD)*m_dwMaxClient );
+	SecureZeroMemory(m_SummonArray, sizeof(PGLSUMMONFIELD) * m_dwMaxClient);
 
 	return S_OK;
 }
 
-HRESULT GLGaeaServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxConsoleMsg* pConsoleMsg, GLDBMan* pDBMan, int nServiceProvider, const char* szMapList, DWORD dwFieldSID, int nChannel )
+HRESULT GLGaeaServer::Create(DWORD dwMaxClient, DxMsgServer *pMsgServer, DxConsoleMsg *pConsoleMsg, GLDBMan *pDBMan, int nServiceProvider, const char *szMapList, DWORD dwFieldSID, int nChannel)
 {
 	HRESULT hr;
-	CleanUp ();
+	CleanUp();
 
 	m_bReservedStop = false;
 
@@ -313,151 +367,156 @@ HRESULT GLGaeaServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCon
 
 	//	Note : 필드 서버 ID가 무효일 경우 ( 에뮬레이터 설정. )
 	m_dwFieldSvrID = dwFieldSID;
-	if ( dwFieldSID==FIELDSERVER_MAX )
+	if (dwFieldSID == FIELDSERVER_MAX)
 	{
 		m_bEmulator = true;
 		m_dwFieldSvrID = 0;
 	}
 
-	hr = OneTimeSceneInit ();
-	if ( FAILED(hr) )	return E_FAIL;
-	
-	if ( !szMapList )
+	hr = OneTimeSceneInit();
+	if (FAILED(hr))
+		return E_FAIL;
+
+	if (!szMapList)
 	{
-		hr = LoadMapsListFile ( "mapslist.mst", NULL, FIELDSERVER_MAX );
-		if ( FAILED(hr) )	return E_FAIL;
+		hr = LoadMapsListFile("mapslist.mst", NULL, FIELDSERVER_MAX);
+		if (FAILED(hr))
+			return E_FAIL;
 	}
 	else
 	{
-		hr = LoadMapsListFile ( szMapList, NULL, FIELDSERVER_MAX );
-		if ( FAILED(hr) )	return E_FAIL;
+		hr = LoadMapsListFile(szMapList, NULL, FIELDSERVER_MAX);
+		if (FAILED(hr))
+			return E_FAIL;
 	}
 
-	GLITEMLMT::GetInstance().SetDBMan ( pDBMan );
-	GLITEMLMT::GetInstance().SetServer ( pMsgServer, dwFieldSID );
-	GLITEMLMT::GetInstance().ReadMaxKey ();
+	GLITEMLMT::GetInstance().SetDBMan(pDBMan);
+	GLITEMLMT::GetInstance().SetServer(pMsgServer, dwFieldSID);
+	GLITEMLMT::GetInstance().ReadMaxKey();
 
-	FIELDMAP_ITER iter = m_MapList.begin ();
-	FIELDMAP_ITER iter_end = m_MapList.end ();
+	FIELDMAP_ITER iter = m_MapList.begin();
+	FIELDMAP_ITER iter_end = m_MapList.end();
 
-	for ( ; iter!=iter_end; ++iter )
+	for (; iter != iter_end; ++iter)
 	{
 		SMAPNODE *pMapNode = &(*iter).second;
 
 		//	Note : 지정된 서버군에 포함되지 않는 map 은 제외 시킴.
 		//
-		if ( dwFieldSID!=FIELDSERVER_MAX && pMapNode->dwFieldSID!=dwFieldSID )		continue;
+		if (dwFieldSID != FIELDSERVER_MAX && pMapNode->dwFieldSID != dwFieldSID)
+			continue;
 
 		//	Note : 필드 서버 ID가 무효일 경우 ( 에뮬레이터 설정. )
-		if ( dwFieldSID==FIELDSERVER_MAX )
+		if (dwFieldSID == FIELDSERVER_MAX)
 		{
 			pMapNode->dwFieldSID = 0;
 		}
 
 		//	Note : LandMan 생성후 초기화.
 		//
-		GLLandMan *pNewLandMan = /*new GLLandMan;*/NEW_GLLANDMAN();
-		pNewLandMan->SetMapID ( pMapNode->sNativeID, pMapNode->bPeaceZone!=FALSE, pMapNode->bPKZone==TRUE );
+		GLLandMan *pNewLandMan = /*new GLLandMan;*/ NEW_GLLANDMAN();
+		pNewLandMan->SetMapID(pMapNode->sNativeID, pMapNode->bPeaceZone != FALSE, pMapNode->bPKZone == TRUE);
 
-		//pNewLandMan->SetEmulator ( m_bEmulator );
-		BOOL bOk = pNewLandMan->LoadFile ( pMapNode->strFile.c_str() );
-		if ( !bOk )
+		// pNewLandMan->SetEmulator ( m_bEmulator );
+		BOOL bOk = pNewLandMan->LoadFile(pMapNode->strFile.c_str());
+		if (!bOk)
 		{
-			SAFE_DELETE ( pNewLandMan );
+			SAFE_DELETE(pNewLandMan);
 
 			CString strTemp = pMapNode->strFile.c_str();
 			strTemp += " : GLLandMan::LoadFile() Load Faile.";
-			MessageBox ( NULL, strTemp, "ERROR", MB_OK );
+			MessageBox(NULL, strTemp, "ERROR", MB_OK);
 			continue;
 		}
-		if( pMapNode->bInstantMap )
+		if (pMapNode->bInstantMap)
 		{
-			m_vecInstantMapSrcLandMan.push_back( pNewLandMan );
+			m_vecInstantMapSrcLandMan.push_back(pNewLandMan);
 			continue;
 		}
 
-		hr = InsertMap ( pNewLandMan );
-		if ( SUCCEEDED(hr) )
+		hr = InsertMap(pNewLandMan);
+		if (SUCCEEDED(hr))
 		{
-			CONSOLEMSG_WRITE ( "[Add Map] %s  / [%d/%d]", pMapNode->strFile.c_str(), pMapNode->sNativeID.wMainID, pMapNode->sNativeID.wSubID );
+			CONSOLEMSG_WRITE("[Add Map] %s  / [%d/%d]", pMapNode->strFile.c_str(), pMapNode->sNativeID.wMainID, pMapNode->sNativeID.wSubID);
 		}
 	}
 
-
-	m_cPartyFieldMan.Create ( m_dwMaxClient );
+	m_cPartyFieldMan.Create(m_dwMaxClient);
 
 	//	Note : 케릭터 초기 시작 맵 과 초기 시작 Gate가 정상적으로 존제하는지 점검.
 	//
-	for ( WORD i=0; i<GLCONST_CHAR::wSCHOOLNUM; ++i )
+	for (WORD i = 0; i < GLCONST_CHAR::wSCHOOLNUM; ++i)
 	{
 		SNATIVEID nidSTARTMAP = GLCONST_CHAR::nidSTARTMAP[i];
 		DWORD dwSTARTGATE = GLCONST_CHAR::dwSTARTGATE[i];
 
-		FIELDMAP_ITER iter = m_MapList.find ( nidSTARTMAP.dwID );
-		if ( iter==m_MapList.end() )												continue;
+		FIELDMAP_ITER iter = m_MapList.find(nidSTARTMAP.dwID);
+		if (iter == m_MapList.end())
+			continue;
 
 		const SMAPNODE *pMapNode = &(*iter).second;
 		//	Note : 지정된 서버군에 포함되지 않는 map 은 제외 시킴.
-		if ( dwFieldSID!=FIELDSERVER_MAX && pMapNode->dwFieldSID!=dwFieldSID )		continue;
+		if (dwFieldSID != FIELDSERVER_MAX && pMapNode->dwFieldSID != dwFieldSID)
+			continue;
 
-		GLLandMan* pLandMan = GetByMapID ( nidSTARTMAP );
-		if ( !pLandMan )
+		GLLandMan *pLandMan = GetByMapID(nidSTARTMAP);
+		if (!pLandMan)
 		{
-			//std::strstream strStream;
-			//strStream << "Charactor's Start Map setting Error." << std::endl;
-			//strStream << "'mapslist.mst' [" << nidSTARTMAP.wMainID << "," << nidSTARTMAP.wSubID << "]";
-			//strStream << " MapID ( ID:[M,S] ) MapID Not Found." << std::ends;
+			// std::strstream strStream;
+			// strStream << "Charactor's Start Map setting Error." << std::endl;
+			// strStream << "'mapslist.mst' [" << nidSTARTMAP.wMainID << "," << nidSTARTMAP.wSubID << "]";
+			// strStream << " MapID ( ID:[M,S] ) MapID Not Found." << std::ends;
 
 			TCHAR szTemp[128] = {0};
-			_snprintf( szTemp, 128, "Charactor's Start Map setting Error.\n"
-									"'mapslist.mst' [%u],[%u] MapID ( ID:[M,S] ) MapID Not Found.",
-									nidSTARTMAP.wMainID,
-									nidSTARTMAP.wSubID );
+			_snprintf(szTemp, 128, "Charactor's Start Map setting Error.\n"
+								   "'mapslist.mst' [%u],[%u] MapID ( ID:[M,S] ) MapID Not Found.",
+					  nidSTARTMAP.wMainID,
+					  nidSTARTMAP.wSubID);
 
-			MessageBox ( NULL, szTemp, "ERROR", MB_OK|MB_ICONEXCLAMATION );
+			MessageBox(NULL, szTemp, "ERROR", MB_OK | MB_ICONEXCLAMATION);
 
-			//strStream.freeze( false );	// Note : std::strstream의 freeze. 안 하면 Leak 발생.
+			// strStream.freeze( false );	// Note : std::strstream의 freeze. 안 하면 Leak 발생.
 			continue;
 		}
 
-		DxLandGateMan* pGateMan = &pLandMan->GetLandGateMan ();
-		PDXLANDGATE pGate = pGateMan->FindLandGate ( dwSTARTGATE );
-		if ( !pGate )
+		DxLandGateMan *pGateMan = &pLandMan->GetLandGateMan();
+		PDXLANDGATE pGate = pGateMan->FindLandGate(dwSTARTGATE);
+		if (!pGate)
 		{
-			//std::strstream strStream;
-			//strStream << "Charactor Start Map GATE Not Found." << std::endl;
-			//strStream << pLandMan->GetFileName() << " Map "  << dwSTARTGATE;
-			//strStream << "GATE ID Must Check." << std::ends;
+			// std::strstream strStream;
+			// strStream << "Charactor Start Map GATE Not Found." << std::endl;
+			// strStream << pLandMan->GetFileName() << " Map "  << dwSTARTGATE;
+			// strStream << "GATE ID Must Check." << std::ends;
 
 			TCHAR szTemp[128] = {0};
-			_snprintf( szTemp, 128, "Charactor Start Map GATE Not Found.\n"
-									"%s Map %u GATE ID Must Check.",
-									pLandMan->GetFileName(),
-									dwSTARTGATE );
+			_snprintf(szTemp, 128, "Charactor Start Map GATE Not Found.\n"
+								   "%s Map %u GATE ID Must Check.",
+					  pLandMan->GetFileName(),
+					  dwSTARTGATE);
 
-			MessageBox ( NULL, szTemp, "ERROR", MB_OK );
+			MessageBox(NULL, szTemp, "ERROR", MB_OK);
 
-			//strStream.freeze( false );	// Note : std::strstream의 freeze. 안 하면 Leak 발생.
+			// strStream.freeze( false );	// Note : std::strstream의 freeze. 안 하면 Leak 발생.
 			continue;
 		}
 	}
 
-	if ( m_pDBMan )
+	if (m_pDBMan)
 	{
 		//	Note : 클럽의 정보를 db에서 읽어온다.
 		//
-		m_cClubMan.LoadFromDB ( m_pDBMan, true );
+		m_cClubMan.LoadFromDB(m_pDBMan, true);
 
 		//	Note : 선도 클럽 지역 설정.
 		//
 		VECGUID_DB vecGuidDb;
-		m_pDBMan->GetClubRegion ( vecGuidDb );
-		GLGuidanceFieldMan::GetInstance().SetState ( vecGuidDb );
+		m_pDBMan->GetClubRegion(vecGuidDb);
+		GLGuidanceFieldMan::GetInstance().SetState(vecGuidDb);
 	}
-	
+
 	SetMapState();
-	GLGuidanceFieldMan::GetInstance().SetMapState ();
-	GLClubDeathMatchFieldMan::GetInstance().SetMapState ();
+	GLGuidanceFieldMan::GetInstance().SetMapState();
+	GLClubDeathMatchFieldMan::GetInstance().SetMapState();
 
 	/*pvp tyranny, Juver, 2017/08/25 */
 	GLPVPTyrannyField::GetInstance().SetMapState();
@@ -481,24 +540,24 @@ HRESULT GLGaeaServer::Create ( DWORD dwMaxClient, DxMsgServer *pMsgServer, DxCon
 	return S_OK;
 }
 
-HRESULT GLGaeaServer::Create4Level ( LPDIRECT3DDEVICEQ pd3dDevice )
+HRESULT GLGaeaServer::Create4Level(LPDIRECT3DDEVICEQ pd3dDevice)
 {
-	CleanUp ();
+	CleanUp();
 
 	m_pd3dDevice = pd3dDevice;
 
-	OneTimeSceneInit ();
+	OneTimeSceneInit();
 
 	//	Note : LandMan 생성후 초기화.
 	//
-	GLLandMan *pNewLandMan = /*new GLLandMan;*/NEW_GLLANDMAN();
-	pNewLandMan->SetD3dDevice ( m_pd3dDevice );
-	pNewLandMan->SetMapID ( SNATIVEID(0,0), false, true );
-	pNewLandMan->SetEmulator ( true );
+	GLLandMan *pNewLandMan = /*new GLLandMan;*/ NEW_GLLANDMAN();
+	pNewLandMan->SetD3dDevice(m_pd3dDevice);
+	pNewLandMan->SetMapID(SNATIVEID(0, 0), false, true);
+	pNewLandMan->SetEmulator(true);
 
 	//	Note : 생성된 LandMan 등록.
 	//
-	InsertMap ( pNewLandMan );
+	InsertMap(pNewLandMan);
 
 	return S_OK;
 }
@@ -506,7 +565,7 @@ HRESULT GLGaeaServer::Create4Level ( LPDIRECT3DDEVICEQ pd3dDevice )
 void GLGaeaServer::SetMapState()
 {
 	size_t tSize = m_vecLandMan.size();
-	for( size_t i=0; i<tSize; ++i )
+	for (size_t i = 0; i < tSize; ++i)
 	{
 		PGLLANDMAN pLand = m_vecLandMan[i];
 
@@ -514,9 +573,9 @@ void GLGaeaServer::SetMapState()
 		pLand->m_bGuidBattleMapHall = false;
 		pLand->m_bClubDeathMatchMap = false;
 		pLand->m_bClubDeathMatchMapHall = false;
-		pLand->m_bPVPTyrannyMap = false;			/*pvp tyranny, Juver, 2017/08/25 */
-		pLand->m_bPVPSchoolWarsMap = false;			/*school wars, Juver, 2018/01/19 */
-		pLand->m_bPVPCaptureTheFlagMap = false;		/*pvp capture the flag, Juver, 2018/01/24 */
+		pLand->m_bPVPTyrannyMap = false;		/*pvp tyranny, Juver, 2017/08/25 */
+		pLand->m_bPVPSchoolWarsMap = false;		/*school wars, Juver, 2018/01/19 */
+		pLand->m_bPVPCaptureTheFlagMap = false; /*pvp capture the flag, Juver, 2018/01/24 */
 
 		/* pvp club death match, Juver, 2020/11/25 */
 		pLand->m_bPVPClubDeathMatchBattleMap = false;
@@ -524,11 +583,11 @@ void GLGaeaServer::SetMapState()
 
 		pLand->m_bPVPPBGLobbyMap = false;
 		pLand->m_bPVPPBGBattleMap = false;
-		
-		pLand->m_bPVPWoeMap = false;	/*woe Arc Development 08-06-2024*/
 
-		SMAPNODE *pMAPNODE = FindMapNode ( pLand->GetMapID() );
-		if ( pMAPNODE && pMAPNODE->bCommission )
+		pLand->m_bPVPWoeMap = false; /*woe Arc Development 08-06-2024*/
+
+		SMAPNODE *pMAPNODE = FindMapNode(pLand->GetMapID());
+		if (pMAPNODE && pMAPNODE->bCommission)
 		{
 			pLand->m_fCommissionRate = GLCONST_CHAR::fDEFAULT_COMMISSION;
 		}
@@ -536,30 +595,28 @@ void GLGaeaServer::SetMapState()
 		{
 			pLand->m_fCommissionRate = 0.0f;
 		}
-
 	}
 }
 
-
-HRESULT GLGaeaServer::InsertMap ( GLLandMan* pNewLandMan )
+HRESULT GLGaeaServer::InsertMap(GLLandMan *pNewLandMan)
 {
-	const SNATIVEID &sMapID = pNewLandMan->GetMapID ();
+	const SNATIVEID &sMapID = pNewLandMan->GetMapID();
 
-	GASSERT(sMapID.wMainID<MAXLANDMID);
-	GASSERT(sMapID.wSubID<MAXLANDSID);
+	GASSERT(sMapID.wMainID < MAXLANDMID);
+	GASSERT(sMapID.wSubID < MAXLANDSID);
 
-//	m_LandManList.ADDTAIL ( pNewLandMan );
-	m_vecLandMan.push_back( pNewLandMan );
+	//	m_LandManList.ADDTAIL ( pNewLandMan );
+	m_vecLandMan.push_back(pNewLandMan);
 	m_pLandMan[sMapID.wMainID][sMapID.wSubID] = pNewLandMan;
 
 	return S_OK;
 }
 
-HRESULT GLGaeaServer::CleanUp ()
+HRESULT GLGaeaServer::CleanUp()
 {
 	m_pMsgServer = NULL;
 
-	ClearDropObj ();
+	ClearDropObj();
 
 	/*GLLANDMANNODE* pLandManNode = m_LandManList.m_pHead;
 	for ( ; pLandManNode; pLandManNode = pLandManNode->pNext )
@@ -570,25 +627,25 @@ HRESULT GLGaeaServer::CleanUp ()
 	m_LandManList.DELALL();*/
 
 	size_t i, size = m_vecLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
-		RELEASE_GLLANDMAN( m_vecLandMan[i] );
-//		SAFE_DELETE( m_vecLandMan[i] );
+		RELEASE_GLLANDMAN(m_vecLandMan[i]);
+		//		SAFE_DELETE( m_vecLandMan[i] );
 	}
 	m_vecLandMan.clear();
 
 	size = m_vecInstantMapSrcLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
-		SAFE_DELETE( m_vecInstantMapSrcLandMan[i] );
+		SAFE_DELETE(m_vecInstantMapSrcLandMan[i]);
 	}
 	m_vecInstantMapSrcLandMan.clear();
 
 	m_pDBMan = NULL;
 
-	m_FreePETGIDs.RemoveAll ();
+	m_FreePETGIDs.RemoveAll();
 
-	m_FreeSummonGIDs.RemoveAll ();
+	m_FreeSummonGIDs.RemoveAll();
 
 	/*private market set, Juver, 2018/01/02 */
 	m_bAllowPrivateMarket = TRUE;
@@ -599,74 +656,74 @@ HRESULT GLGaeaServer::CleanUp ()
 	return S_OK;
 }
 
-PGLCHAR GLGaeaServer::CreatePC ( PCHARDATA2 pCharData, DWORD _dwClientID, DWORD _dwGaeaID, BOOL bNEW,
-								SNATIVEID *_pStartMap, DWORD _dwStartGate, D3DXVECTOR3 _vPos,
-								EMGAME_JOINTYPE emJOINTYPE,
-								DWORD dwThaiCCafeClass, __time64_t loginTime, INT nMyCCafeClass )
+PGLCHAR GLGaeaServer::CreatePC(PCHARDATA2 pCharData, DWORD _dwClientID, DWORD _dwGaeaID, BOOL bNEW,
+							   SNATIVEID *_pStartMap, DWORD _dwStartGate, D3DXVECTOR3 _vPos,
+							   EMGAME_JOINTYPE emJOINTYPE,
+							   DWORD dwThaiCCafeClass, __time64_t loginTime, INT nMyCCafeClass)
 {
 	HRESULT hr = S_OK;
-	if ( !pCharData )
+	if (!pCharData)
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR :pCharData == NULL" );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR :pCharData == NULL");
 		return NULL;
 	}
 
-	if ( _dwGaeaID>=m_dwMaxClient )
+	if (_dwGaeaID >= m_dwMaxClient)
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR : _dwGaeaID>=m_dwMaxClient  %d>%d.", _dwGaeaID, m_dwMaxClient );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR : _dwGaeaID>=m_dwMaxClient  %d>%d.", _dwGaeaID, m_dwMaxClient);
 		return NULL;
 	}
 
 	BOOL bDB(FALSE);
 	PGLCHAR pPChar = NULL;
-	GLLandMan* pLandMan = NULL;
+	GLLandMan *pLandMan = NULL;
 
-	DxLandGateMan* pGateMan = NULL;
+	DxLandGateMan *pGateMan = NULL;
 	PDXLANDGATE pGate = NULL;
-	D3DXVECTOR3 vStartPos(0,0,0);
+	D3DXVECTOR3 vStartPos(0, 0, 0);
 
 	CLIENTMAP_ITER client_iter;
 	GLCHAR_MAP_ITER name_iter;
 
 	//	Note : user id가 지금 db에 저장중인지 점검. ( logout 했지만 아직 db에 저장이 안된 상태로 있을때. )
 	//
-	bDB = FindSaveDBUserID ( pCharData->GetUserID() );
-	if ( bDB )
+	bDB = FindSaveDBUserID(pCharData->GetUserID());
+	if (bDB)
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR : logout FindSaveDBUserID == TRUE" );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR : logout FindSaveDBUserID == TRUE");
 		goto _ERROR;
 	}
 
-	if ( _dwClientID >= GLGaeaServer::GetInstance().GetMaxClient()*2 )
+	if (_dwClientID >= GLGaeaServer::GetInstance().GetMaxClient() * 2)
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR : max client id overflow! id = %d", _dwClientID );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR : max client id overflow! id = %d", _dwClientID);
 		goto _ERROR;
 	}
 
-	if ( _dwGaeaID >= GLGaeaServer::GetInstance().GetMaxClient() )
+	if (_dwGaeaID >= GLGaeaServer::GetInstance().GetMaxClient())
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR : max gaea id overflow! id = %d", _dwGaeaID );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR : max gaea id overflow! id = %d", _dwGaeaID);
 		goto _ERROR;
 	}
 
 	//	Note : 가이아 ID의 할당을 Agent 서버에서 할당하게 됨에 따라
 	//		잘못되어 가이아 ID가 반환되지 않은 상태에서 다시 사용될 가능성이 있음.
-	if ( m_PCArray[_dwGaeaID] )
+	if (m_PCArray[_dwGaeaID])
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR : m_PCArray[_dwGaeaID] exist gaeaid" );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR : m_PCArray[_dwGaeaID] exist gaeaid");
 		goto _ERROR;
 	}
 
 	//	Note : 같은 캐릭터가 이미 접속되어 있는지 검사합니다.
 	name_iter = m_PCNameMap.find(pCharData->m_szName);
-	if ( name_iter != m_PCNameMap.end() )
+	if (name_iter != m_PCNameMap.end())
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR : m_PCNameMap char name exist" );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR : m_PCNameMap char name exist");
 		goto _ERROR;
 	}
 
 	client_iter = m_PCClientIDMAP.find(_dwClientID);
-	if ( client_iter != m_PCClientIDMAP.end() )
+	if (client_iter != m_PCClientIDMAP.end())
 	{
 		//	종전 접속자를 DropOut 시킵니다.
 		DWORD dwGaeaID = (*client_iter).second;
@@ -674,44 +731,44 @@ PGLCHAR GLGaeaServer::CreatePC ( PCHARDATA2 pCharData, DWORD _dwClientID, DWORD 
 		//
 		ReserveDropOutPC(dwGaeaID);
 
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERR : m_PCClientIDMAP client id exist" );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERR : m_PCClientIDMAP client id exist");
 		goto _ERROR;
 	}
-
 
 	//	Note : 캐릭터 초기화.
 	//
 	pPChar = NEW_CHAR();
 
-	pPChar->SetGLGaeaServer( this );
+	pPChar->SetGLGaeaServer(this);
 
 	//	Note : 특정한 MapID에서 생성하고자 할 경우.
 	//
-	if ( _pStartMap )
+	if (_pStartMap)
 	{
-		pLandMan = GetByMapID ( *_pStartMap );
-		if ( pLandMan )
+		pLandMan = GetByMapID(*_pStartMap);
+		if (pLandMan)
 		{
-			pGateMan = &pLandMan->GetLandGateMan ();
+			pGateMan = &pLandMan->GetLandGateMan();
 
-			if ( _dwStartGate!=UINT_MAX )
+			if (_dwStartGate != UINT_MAX)
 			{
-				pGate = pGateMan->FindLandGate ( DWORD(_dwStartGate) );
+				pGate = pGateMan->FindLandGate(DWORD(_dwStartGate));
 
-				if ( pGate )	vStartPos = pGate->GetGenPos ( DxLandGate::GEN_RENDUM );
+				if (pGate)
+					vStartPos = pGate->GetGenPos(DxLandGate::GEN_RENDUM);
 				else
 				{
-					pGate = pGateMan->FindLandGate ( DWORD(0) );
-					if( pGate == NULL )
+					pGate = pGateMan->FindLandGate(DWORD(0));
+					if (pGate == NULL)
 					{
-						CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "ERROR: pGate = NULL, UserID %s UserLv %d Money %d", pCharData->m_szName, pCharData->m_wLevel, pCharData->m_lnMoney );
+						CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "ERROR: pGate = NULL, UserID %s UserLv %d Money %d", pCharData->m_szName, pCharData->m_wLevel, pCharData->m_lnMoney);
 
-						GetConsoleMsg()->Write( "ERROR: pGate = NULL, UserID %s UserLv %d Money %d", pCharData->m_szName, pCharData->m_wLevel, pCharData->m_lnMoney );
+						GetConsoleMsg()->Write("ERROR: pGate = NULL, UserID %s UserLv %d Money %d", pCharData->m_szName, pCharData->m_wLevel, pCharData->m_lnMoney);
 						goto _ERROR;
-
 					}
-					_dwStartGate = pGate->GetGateID ();
-					if ( pGate )	vStartPos = pGate->GetGenPos ( DxLandGate::GEN_RENDUM );
+					_dwStartGate = pGate->GetGateID();
+					if (pGate)
+						vStartPos = pGate->GetGenPos(DxLandGate::GEN_RENDUM);
 				}
 			}
 			else
@@ -723,89 +780,89 @@ PGLCHAR GLGaeaServer::CreatePC ( PCHARDATA2 pCharData, DWORD _dwClientID, DWORD 
 	}
 	else
 	{
-		pLandMan = GetByMapID ( pCharData->m_sStartMapID );
-		if ( pLandMan )
+		pLandMan = GetByMapID(pCharData->m_sStartMapID);
+		if (pLandMan)
 		{
-			pGateMan = &pLandMan->GetLandGateMan ();
-			pGate = pGateMan->FindLandGate ( DWORD(pCharData->m_dwStartGate) );
+			pGateMan = &pLandMan->GetLandGateMan();
+			pGate = pGateMan->FindLandGate(DWORD(pCharData->m_dwStartGate));
 
-			if ( pGate )	vStartPos = pGate->GetGenPos ( DxLandGate::GEN_RENDUM );
+			if (pGate)
+				vStartPos = pGate->GetGenPos(DxLandGate::GEN_RENDUM);
 			else
 			{
-				pGate = pGateMan->FindLandGate ( DWORD(0) );
-				if ( pGate )	vStartPos = pGate->GetGenPos ( DxLandGate::GEN_RENDUM );
+				pGate = pGateMan->FindLandGate(DWORD(0));
+				if (pGate)
+					vStartPos = pGate->GetGenPos(DxLandGate::GEN_RENDUM);
 			}
 		}
 	}
 
-	if ( !pLandMan || ((_dwStartGate!=UINT_MAX)&&!pGate) )
+	if (!pLandMan || ((_dwStartGate != UINT_MAX) && !pGate))
 	{
 		SNATIVEID nidSTARTMAP = GLCONST_CHAR::nidSTARTMAP[pCharData->m_wSchool];
 		DWORD dwSTARTGATE = GLCONST_CHAR::dwSTARTGATE[pCharData->m_wSchool];
 
-		pLandMan = GetByMapID ( nidSTARTMAP );
-		if ( !pLandMan )
+		pLandMan = GetByMapID(nidSTARTMAP);
+		if (!pLandMan)
 		{
-			CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "start map get failed" );
+			CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "start map get failed");
 
-			DEBUGMSG_WRITE ( "start map get failed" );
+			DEBUGMSG_WRITE("start map get failed");
 			goto _ERROR;
 		}
 
-		pGateMan = &pLandMan->GetLandGateMan ();
-		if ( !pGateMan )
+		pGateMan = &pLandMan->GetLandGateMan();
+		if (!pGateMan)
 		{
-			CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "start map get GetLandGateMan failed" );
+			CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "start map get GetLandGateMan failed");
 
-			DEBUGMSG_WRITE ("start map get GetLandGateMan failed" );
+			DEBUGMSG_WRITE("start map get GetLandGateMan failed");
 			goto _ERROR;
-
 		}
-		pGate = pGateMan->FindLandGate ( dwSTARTGATE );
-		if ( !pGate )
+		pGate = pGateMan->FindLandGate(dwSTARTGATE);
+		if (!pGate)
 		{
-			CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "start map get FindLandGate failed" );
+			CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "start map get FindLandGate failed");
 
-			DEBUGMSG_WRITE ( "start map get FindLandGate failed" );
+			DEBUGMSG_WRITE("start map get FindLandGate failed");
 
-			vStartPos = D3DXVECTOR3(0,0,0);
+			vStartPos = D3DXVECTOR3(0, 0, 0);
 		}
 		else
 		{
-			vStartPos = pGate->GetGenPos ( DxLandGate::GEN_RENDUM );
+			vStartPos = pGate->GetGenPos(DxLandGate::GEN_RENDUM);
 		}
 	}
 
 	//	Note : 캐릭터 등록.
 	//
 	pCharData->m_dwThaiCCafeClass = dwThaiCCafeClass;
-	pCharData->m_nMyCCafeClass    = nMyCCafeClass;
+	pCharData->m_nMyCCafeClass = nMyCCafeClass;
 	pCharData->m_sEventTime.Init();
 	pCharData->m_sEventTime.loginTime = loginTime;
-	hr = pPChar->CreateChar ( pLandMan, vStartPos, pCharData, m_pd3dDevice, bNEW );
-	if ( FAILED(hr) )
+	hr = pPChar->CreateChar(pLandMan, vStartPos, pCharData, m_pd3dDevice, bNEW);
+	if (FAILED(hr))
 	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "pPChar->CreateChar failed [%s]", pCharData->m_szName );
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "pPChar->CreateChar failed [%s]", pCharData->m_szName);
 
-		DEBUGMSG_WRITE ( "pPChar->CreateChar failed [%s]", pCharData->m_szName );
+		DEBUGMSG_WRITE("pPChar->CreateChar failed [%s]", pCharData->m_szName);
 
 		goto _ERROR;
 	}
-	
+
 	pPChar->m_dwClientID = _dwClientID;
 	pPChar->m_dwGaeaID = _dwGaeaID;
-	pPChar->SetPartyID ( m_cPartyFieldMan.GetPartyID ( _dwGaeaID ) );
-	
-	BOOL bOk = DropPC ( pLandMan->GetMapID(), vStartPos, pPChar );
-	if ( !bOk )
-	{
-		CDebugSet::ToFileWithTime ( "_gaea_server_create_pc.txt", "DropPC failed [%s]", pCharData->m_szName );
+	pPChar->SetPartyID(m_cPartyFieldMan.GetPartyID(_dwGaeaID));
 
-		DEBUGMSG_WRITE ( "DropPC failed [%s]", pCharData->m_szName );
+	BOOL bOk = DropPC(pLandMan->GetMapID(), vStartPos, pPChar);
+	if (!bOk)
+	{
+		CDebugSet::ToFileWithTime("_gaea_server_create_pc.txt", "DropPC failed [%s]", pCharData->m_szName);
+
+		DEBUGMSG_WRITE("DropPC failed [%s]", pCharData->m_szName);
 
 		goto _ERROR;
 	}
-
 
 #if defined(TW_PARAM) || defined(HK_PARAM) || defined(_RELEASED)
 
@@ -814,123 +871,130 @@ PGLCHAR GLGaeaServer::CreatePC ( PCHARDATA2 pCharData, DWORD _dwClientID, DWORD 
 	{
 		if( pPChar->m_wTempLevel != 0 )
 		{
-			HACKINGLOG_WRITE( "#####Different Login Level##### [%s][%s] Level %d TempLevel %d Level Gap %d", 
-				pPChar->m_szUID, pPChar->m_szName, pPChar->m_wLevel, pPChar->m_wTempLevel, pPChar->m_wLevel - pPChar->m_wTempLevel );	
+			HACKINGLOG_WRITE( "#####Different Login Level##### [%s][%s] Level %d TempLevel %d Level Gap %d",
+				pPChar->m_szUID, pPChar->m_szName, pPChar->m_wLevel, pPChar->m_wTempLevel, pPChar->m_wLevel - pPChar->m_wTempLevel );
 
 		}
 		bDifferTempValue = TRUE;
 		pPChar->m_wLevel = pPChar->m_wTempLevel;
 	}*/
 
-	if( pPChar->m_lnMoney != pPChar->m_lnTempMoney )
+	if (pPChar->m_lnMoney != pPChar->m_lnTempMoney)
 	{
 #ifdef _RELEASED
-		if( pPChar->m_lnTempMoney != 0 )
+		if (pPChar->m_lnTempMoney != 0)
 #endif
 		{
-			HACKINGLOG_WRITE( "Different Login Money!!, Account[%s], ID[%s], Money %I64d, TempMoney %I64d, Money Gap %I64d", 
-						  pPChar->m_szUID, pPChar->m_szName, pPChar->m_lnMoney, pPChar->m_lnTempMoney, pPChar->m_lnMoney - pPChar->m_lnTempMoney );							
-	
-			bDifferTempValue  = TRUE;			
+			HACKINGLOG_WRITE("Different Login Money!!, Account[%s], ID[%s], Money %I64d, TempMoney %I64d, Money Gap %I64d",
+							 pPChar->m_szUID, pPChar->m_szName, pPChar->m_lnMoney, pPChar->m_lnTempMoney, pPChar->m_lnMoney - pPChar->m_lnTempMoney);
+
+			bDifferTempValue = TRUE;
 
 			// 무조건 TempMoney를 Money 값에 넣지 않는다.
 			LONGLONG lnGap = pPChar->m_lnMoney - pPChar->m_lnTempMoney;
-			if( lnGap >= 10000 || lnGap <= -10000 )
+			if (lnGap >= 10000 || lnGap <= -10000)
 			{
-				if( pPChar->m_lnMoney > pPChar->m_lnTempMoney )
+				if (pPChar->m_lnMoney > pPChar->m_lnTempMoney)
 				{
-					pPChar->m_lnMoney = pPChar->m_lnTempMoney;			
-				}else{
-					pPChar->m_lnTempMoney = pPChar->m_lnMoney;			
+					pPChar->m_lnMoney = pPChar->m_lnTempMoney;
 				}
-			}else{
-				pPChar->m_lnMoney = pPChar->m_lnTempMoney;			
+				else
+				{
+					pPChar->m_lnTempMoney = pPChar->m_lnMoney;
+				}
+			}
+			else
+			{
+				pPChar->m_lnMoney = pPChar->m_lnTempMoney;
 			}
 		}
 #ifdef _RELEASED
-		else{			
+		else
+		{
 			pPChar->m_lnTempMoney = pPChar->m_lnMoney;
 		}
 #endif
-		
 	}
 
-	if( pPChar->m_lnStorageMoney != pPChar->m_lnTempStorageMoney )
+	if (pPChar->m_lnStorageMoney != pPChar->m_lnTempStorageMoney)
 	{
 #ifdef _RELEASED
-		if( pPChar->m_lnTempStorageMoney != 0 )
+		if (pPChar->m_lnTempStorageMoney != 0)
 #endif
 		{
-			HACKINGLOG_WRITE( "Different Login Storage Money!!, Account[%s], ID[%s], Storage Money %I64d, TempStorage Money %I64d, Storage Money Gap %I64d", 
-					pPChar->m_szUID, pPChar->m_szName, pPChar->m_lnStorageMoney, pPChar->m_lnTempStorageMoney, 
-					pPChar->m_lnStorageMoney - pPChar->m_lnTempStorageMoney );				
+			HACKINGLOG_WRITE("Different Login Storage Money!!, Account[%s], ID[%s], Storage Money %I64d, TempStorage Money %I64d, Storage Money Gap %I64d",
+							 pPChar->m_szUID, pPChar->m_szName, pPChar->m_lnStorageMoney, pPChar->m_lnTempStorageMoney,
+							 pPChar->m_lnStorageMoney - pPChar->m_lnTempStorageMoney);
 
-			bDifferTempValue		 = TRUE;
-			
+			bDifferTempValue = TRUE;
+
 			LONGLONG lnGap = pPChar->m_lnStorageMoney - pPChar->m_lnTempStorageMoney;
-			if( lnGap > 10000 || lnGap < -10000 )
+			if (lnGap > 10000 || lnGap < -10000)
 			{
-				if( pPChar->m_lnStorageMoney > pPChar->m_lnTempStorageMoney )
+				if (pPChar->m_lnStorageMoney > pPChar->m_lnTempStorageMoney)
 				{
-					pPChar->m_lnStorageMoney = pPChar->m_lnTempStorageMoney;			
-				}else{
-					pPChar->m_lnTempStorageMoney = pPChar->m_lnStorageMoney;			
+					pPChar->m_lnStorageMoney = pPChar->m_lnTempStorageMoney;
 				}
-			}else{
-				pPChar->m_lnStorageMoney = pPChar->m_lnTempStorageMoney;			
-			}	
+				else
+				{
+					pPChar->m_lnTempStorageMoney = pPChar->m_lnStorageMoney;
+				}
+			}
+			else
+			{
+				pPChar->m_lnStorageMoney = pPChar->m_lnTempStorageMoney;
+			}
 		}
 #ifdef _RELEASED
-		else{
-			pPChar->m_lnTempStorageMoney = pPChar->m_lnStorageMoney;					
+		else
+		{
+			pPChar->m_lnTempStorageMoney = pPChar->m_lnStorageMoney;
 		}
 #endif
-		
 	}
 
-	if( bDifferTempValue )
+	if (bDifferTempValue)
 	{
-		ReserveDropOutPC( pPChar->m_dwGaeaID );
+		ReserveDropOutPC(pPChar->m_dwGaeaID);
 
 		//	접속 시도자에게  메시지를 보냅니다.
 		GLMSG::SNETLOBBY_CHARJOIN_FB NetMsgFB;
 		NetMsgFB.emCharJoinFB = EMCJOIN_FB_ERROR;
-		SENDTOAGENT ( _dwClientID, &NetMsgFB );
+		SENDTOAGENT(_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
 #else
-	pPChar->m_wTempLevel		  = pPChar->m_wLevel;
-	pPChar->m_lnTempMoney		  = pPChar->m_lnMoney;
-	pPChar->m_lnTempStorageMoney  = pPChar->m_lnStorageMoney;
+	pPChar->m_wTempLevel = pPChar->m_wLevel;
+	pPChar->m_lnTempMoney = pPChar->m_lnMoney;
+	pPChar->m_lnTempStorageMoney = pPChar->m_lnStorageMoney;
 #endif
 
-
 #if defined(_RELEASED) || defined(TW_PARAM) || defined(TH_PARAM) || defined(HK_PARAM) // ***Tracing Log print
-	if ( pPChar->m_bTracingUser && pPChar->m_pLandMan )
+	if (pPChar->m_bTracingUser && pPChar->m_pLandMan)
 	{
 		NET_LOG_UPDATE_TRACINGCHAR TracingMsg;
-		TracingMsg.nUserNum  = pPChar->GetUserID();
-		StringCchCopy( TracingMsg.szAccount, USR_ID_LENGTH+1, pPChar->m_szUID );
+		TracingMsg.nUserNum = pPChar->GetUserID();
+		StringCchCopy(TracingMsg.szAccount, USR_ID_LENGTH + 1, pPChar->m_szUID);
 
 		int nPosX(0);
 		int nPosY(0);
-		pPChar->m_pLandMan->GetMapAxisInfo().Convert2MapPos ( pPChar->m_vPos.x, pPChar->m_vPos.z, nPosX, nPosY );
+		pPChar->m_pLandMan->GetMapAxisInfo().Convert2MapPos(pPChar->m_vPos.x, pPChar->m_vPos.z, nPosX, nPosY);
 
 		CString strTemp;
-		strTemp.Format( "FieldServer in!!, [%s][%s], MAP:mid[%d]sid[%d], StartPos:[%d][%d], Money:[%I64d]",
-			pPChar->m_szUID, pPChar->m_szName, pPChar->m_sMapID.wMainID, pPChar->m_sMapID.wSubID, nPosX, nPosY, pPChar->m_lnMoney );
+		strTemp.Format("FieldServer in!!, [%s][%s], MAP:mid[%d]sid[%d], StartPos:[%d][%d], Money:[%I64d]",
+					   pPChar->m_szUID, pPChar->m_szName, pPChar->m_sMapID.wMainID, pPChar->m_sMapID.wSubID, nPosX, nPosY, pPChar->m_lnMoney);
 
-		StringCchCopy( TracingMsg.szLogMsg, TRACING_LOG_SIZE, strTemp.GetString() );
+		StringCchCopy(TracingMsg.szLogMsg, TRACING_LOG_SIZE, strTemp.GetString());
 
-		SENDTOAGENT( pPChar->m_dwClientID, &TracingMsg );
+		SENDTOAGENT(pPChar->m_dwClientID, &TracingMsg);
 	}
 #endif
 
-	return pPChar;	//	케릭터 생성 성공.
+	return pPChar; //	케릭터 생성 성공.
 
 _ERROR:
-	if ( pPChar )
+	if (pPChar)
 	{
 		RELEASE_CHAR(pPChar);
 	}
@@ -938,37 +1002,37 @@ _ERROR:
 	//	접속 시도자에게  메시지를 보냅니다.
 	GLMSG::SNETLOBBY_CHARJOIN_FB NetMsgFB;
 	NetMsgFB.emCharJoinFB = EMCJOIN_FB_ERROR;
-	SENDTOAGENT ( _dwClientID, &NetMsgFB );
+	SENDTOAGENT(_dwClientID, &NetMsgFB);
 
-	return NULL;	//	케릭터 생성 실패.
+	return NULL; //	케릭터 생성 실패.
 }
 
-
-
-PGLPETFIELD GLGaeaServer::CreatePET ( PGLPET pPetData, DWORD dwOwner, DWORD dwPetID, bool bValid )
+PGLPETFIELD GLGaeaServer::CreatePET(PGLPET pPetData, DWORD dwOwner, DWORD dwPetID, bool bValid)
 {
 	// DB에서 팻정보를 가져와야 한다.
 
 	GLMSG::SNETPET_REQ_USEPETCARD_FB NetMsg;
 
-	if ( !pPetData ) return NULL;
+	if (!pPetData)
+		return NULL;
 
 	// 요청 케릭터가 유효성 체크
-	PGLCHAR pOwner = GetChar ( dwOwner );
-	if ( !pOwner ) return NULL;
+	PGLCHAR pOwner = GetChar(dwOwner);
+	if (!pOwner)
+		return NULL;
 
 	// 팻Full Check
-	if ( pPetData->IsNotEnoughFull () )
+	if (pPetData->IsNotEnoughFull())
 	{
 		NetMsg.emFB = EMPET_USECARD_FB_NOTENOUGHFULL;
-		SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsg );
+		SENDTOCLIENT(pOwner->m_dwClientID, &NetMsg);
 		return NULL;
 	}
 
-	GLLandMan* pLandMan = GetByMapID ( pOwner->m_sMapID );
-	if ( !pLandMan ) 
+	GLLandMan *pLandMan = GetByMapID(pOwner->m_sMapID);
+	if (!pLandMan)
 	{
-		SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsg );
+		SENDTOCLIENT(pOwner->m_dwClientID, &NetMsg);
 		return NULL;
 	}
 
@@ -976,22 +1040,22 @@ PGLPETFIELD GLGaeaServer::CreatePET ( PGLPET pPetData, DWORD dwOwner, DWORD dwPe
 
 	// 다른 필드서버로 넘어가지 않았다면 GLPetField 가 존재한다.
 	// 맵정보와 네비게이션만 변경해준다.
-	pPet = GetPET ( pOwner->m_dwPetGUID );
-	if ( pPet && m_bEmulator )
+	pPet = GetPET(pOwner->m_dwPetGUID);
+	if (pPet && m_bEmulator)
 	{
 		// 메모리에 존재하는 팻 제거
-		DropOutPET ( pPet->m_dwGUID, true, false );
+		DropOutPET(pPet->m_dwGUID, true, false);
 		pPet = NULL;
 	}
 
-	if ( pPet )
+	if (pPet)
 	{
-		HRESULT hr = pPet->SetPosition ( pLandMan );
-		if ( FAILED ( hr ) )
+		HRESULT hr = pPet->SetPosition(pLandMan);
+		if (FAILED(hr))
 		{
 			// 메모리에 존재하는 팻 제거
-			DropOutPET ( pPet->m_dwGUID, true, false );
-			SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsg );
+			DropOutPET(pPet->m_dwGUID, true, false);
+			SENDTOCLIENT(pOwner->m_dwClientID, &NetMsg);
 			return NULL;
 		}
 	}
@@ -999,35 +1063,36 @@ PGLPETFIELD GLGaeaServer::CreatePET ( PGLPET pPetData, DWORD dwOwner, DWORD dwPe
 	else
 	{
 		// 팻생성
-		pPet = NEW_PET ();
-		HRESULT hr = pPet->Create ( pLandMan, pOwner, pPetData );
-		if ( FAILED ( hr ) )
+		pPet = NEW_PET();
+		HRESULT hr = pPet->Create(pLandMan, pOwner, pPetData);
+		if (FAILED(hr))
 		{
 			// 생성실패 처리
-			RELEASE_PET ( pPet );
-			SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsg );
+			RELEASE_PET(pPet);
+			SENDTOCLIENT(pOwner->m_dwClientID, &NetMsg);
 			return NULL;
 		}
 
 		DWORD dwGUID = -1;
-		if ( !m_FreePETGIDs.GetHead ( dwGUID ) )		return NULL;
-		m_FreePETGIDs.DelHead ();
+		if (!m_FreePETGIDs.GetHead(dwGUID))
+			return NULL;
+		m_FreePETGIDs.DelHead();
 		pPet->m_dwGUID = dwGUID;
 
 		// 주인ID 할당
 		pOwner->m_dwPetGUID = pPet->m_dwGUID;
-		pOwner->m_dwPetID   = dwPetID;
+		pOwner->m_dwPetID = dwPetID;
 
 		// 팻의 고유ID(DB저장용) 설정
-		pPet->SetPetID ( dwPetID );
+		pPet->SetPetID(dwPetID);
 	}
 
-	if ( !DropPET ( pPet, pOwner->m_sMapID ) )
+	if (!DropPET(pPet, pOwner->m_sMapID))
 	{
 		// 생성실패 처리
-		m_FreePETGIDs.AddTail ( pPet->m_dwGUID );
-		RELEASE_PET ( pPet );
-		SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsg );
+		m_FreePETGIDs.AddTail(pPet->m_dwGUID);
+		RELEASE_PET(pPet);
+		SENDTOCLIENT(pOwner->m_dwClientID, &NetMsg);
 		return NULL;
 	}
 
@@ -1035,139 +1100,142 @@ PGLPETFIELD GLGaeaServer::CreatePET ( PGLPET pPetData, DWORD dwOwner, DWORD dwPe
 	pPet->m_pOwner = pOwner;
 
 	// 활성화 유무 설정
-	if ( bValid ) pPet->SetValid ();
-	else		  pPet->ReSetValid ();
+	if (bValid)
+		pPet->SetValid();
+	else
+		pPet->ReSetValid();
 
 	// 활성상태일때만
-	if ( pPet->IsValid () )
+	if (pPet->IsValid())
 	{
-		NetMsg.emFB				  = EMPET_USECARD_FB_OK;
-		NetMsg.m_emTYPE			  = pPet->m_emTYPE;
-		NetMsg.m_dwGUID			  = pPet->m_dwGUID;
-		NetMsg.m_sPetID			  = pPet->m_sPetID;
+		NetMsg.emFB = EMPET_USECARD_FB_OK;
+		NetMsg.m_emTYPE = pPet->m_emTYPE;
+		NetMsg.m_dwGUID = pPet->m_dwGUID;
+		NetMsg.m_sPetID = pPet->m_sPetID;
 
 		/*dual pet skill, Juver, 2017/12/27 */
-		NetMsg.m_sActiveSkillID_A	  = pPet->m_sActiveSkillID_A;
-		NetMsg.m_sActiveSkillID_B	  = pPet->m_sActiveSkillID_B;
-		NetMsg.m_bDualSkill			  = pPet->m_bDualSkill;
+		NetMsg.m_sActiveSkillID_A = pPet->m_sActiveSkillID_A;
+		NetMsg.m_sActiveSkillID_B = pPet->m_sActiveSkillID_B;
+		NetMsg.m_bDualSkill = pPet->m_bDualSkill;
 
-		NetMsg.m_dwOwner		  = pPet->m_dwOwner;
-		NetMsg.m_wStyle			  = pPet->m_wStyle;
-		NetMsg.m_wColor			  = pPet->m_wColor;
-		NetMsg.m_fWalkSpeed		  = pPet->m_fWalkSpeed;
-		NetMsg.m_fRunSpeed		  = pPet->m_fRunSpeed;
-		NetMsg.m_nFull			  = pPet->m_nFull;
-		NetMsg.m_sMapID			  = pPet->m_sMapID;
-		NetMsg.m_dwCellID		  = pPet->m_dwCellID;
-		NetMsg.m_wSkillNum		  = static_cast<WORD> (pPet->m_ExpSkills.size());
-		NetMsg.m_vPos			  = pPet->m_vPos;
-		NetMsg.m_vDir			  = pPet->m_vDir;
+		NetMsg.m_dwOwner = pPet->m_dwOwner;
+		NetMsg.m_wStyle = pPet->m_wStyle;
+		NetMsg.m_wColor = pPet->m_wColor;
+		NetMsg.m_fWalkSpeed = pPet->m_fWalkSpeed;
+		NetMsg.m_fRunSpeed = pPet->m_fRunSpeed;
+		NetMsg.m_nFull = pPet->m_nFull;
+		NetMsg.m_sMapID = pPet->m_sMapID;
+		NetMsg.m_dwCellID = pPet->m_dwCellID;
+		NetMsg.m_wSkillNum = static_cast<WORD>(pPet->m_ExpSkills.size());
+		NetMsg.m_vPos = pPet->m_vPos;
+		NetMsg.m_vDir = pPet->m_vDir;
 		NetMsg.m_sPetSkinPackData = pPet->m_sPetSkinPackData;
-		StringCchCopy ( NetMsg.m_szName, PETNAMESIZE+1, pPetData->m_szName );
+		StringCchCopy(NetMsg.m_szName, PETNAMESIZE + 1, pPetData->m_szName);
 
-		NetMsg.m_dwPetID		= dwPetID;
+		NetMsg.m_dwPetID = dwPetID;
 
 		PETSKILL_MAP_ITER iter = pPet->m_ExpSkills.begin();
 		PETSKILL_MAP_ITER iter_end = pPet->m_ExpSkills.end();
 		WORD i(0);
-		for ( ;iter != iter_end; ++iter )
+		for (; iter != iter_end; ++iter)
 		{
 			NetMsg.m_Skills[i++] = (*iter).second;
 		}
 
 		const CTime cTIME_CUR = CTime::GetCurrentTime();
 
-		for ( WORD i = 0; i < PET_ACCETYPE_SIZE; ++i )
+		for (WORD i = 0; i < PET_ACCETYPE_SIZE; ++i)
 		{
 			SITEMCUSTOM sPetItem = pPet->m_PutOnItems[i];
-			if ( sPetItem.sNativeID == NATIVEID_NULL () ) continue;
+			if (sPetItem.sNativeID == NATIVEID_NULL())
+				continue;
 
-			SITEM* pITEM = GLItemMan::GetInstance().GetItem ( sPetItem.sNativeID );
-			if ( !pITEM )	continue;
+			SITEM *pITEM = GLItemMan::GetInstance().GetItem(sPetItem.sNativeID);
+			if (!pITEM)
+				continue;
 
 			// 시한부 아이템
-			if ( pITEM->IsTIMELMT() )
+			if (pITEM->IsTIMELMT())
 			{
 				CTimeSpan cSPAN(pITEM->sDrugOp.tTIME_LMT);
 				CTime cTIME_LMT(sPetItem.tBORNTIME);
 				cTIME_LMT += cSPAN;
 
-				if ( cTIME_CUR > cTIME_LMT )
+				if (cTIME_CUR > cTIME_LMT)
 				{
 					//	시간 제한으로 아이템 삭제 로그 남김.
-					GLITEMLMT::GetInstance().ReqItemRoute ( sPetItem, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, 0 );
+					GLITEMLMT::GetInstance().ReqItemRoute(sPetItem, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, 0);
 
 					//	아이템 삭제.
-					pPet->m_PutOnItems[i] = SITEMCUSTOM ();
+					pPet->m_PutOnItems[i] = SITEMCUSTOM();
 
 					//	시간 제한으로 아이템 삭제 알림.
 					GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 					NetMsgInvenDelTimeLmt.nidITEM = sPetItem.sNativeID;
-					GLGaeaServer::GetInstance().SENDTOCLIENT(pOwner->m_dwClientID,&NetMsgInvenDelTimeLmt);
+					GLGaeaServer::GetInstance().SENDTOCLIENT(pOwner->m_dwClientID, &NetMsgInvenDelTimeLmt);
 				}
 			}
 			NetMsg.m_PutOnItems[i] = pPet->m_PutOnItems[i];
 		}
 
-		SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsg );
+		SENDTOCLIENT(pOwner->m_dwClientID, &NetMsg);
 
 		// 주변에 알림
 		GLMSG::SNETPET_CREATE_ANYPET NetMsgBrd;
-		NetMsgBrd.Data = ((GLMSG::SNETPET_DROP_PET*)pPet->ReqNetMsg_Drop ())->Data;
-		pPet->m_pOwner->SendMsgViewAround ( ( NET_MSG_GENERIC* )&NetMsgBrd );
-
-
-		
-
+		NetMsgBrd.Data = ((GLMSG::SNETPET_DROP_PET *)pPet->ReqNetMsg_Drop())->Data;
+		pPet->m_pOwner->SendMsgViewAround((NET_MSG_GENERIC *)&NetMsgBrd);
 	}
-	
-	return pPet;	
+
+	return pPet;
 }
 
-BOOL GLGaeaServer::DropPET ( PGLPETFIELD pPet, SNATIVEID sMapID )
+BOOL GLGaeaServer::DropPET(PGLPETFIELD pPet, SNATIVEID sMapID)
 {
-	if ( !pPet ) return FALSE;
+	if (!pPet)
+		return FALSE;
 
-	GLLandMan* pLandMan = GetByMapID ( sMapID );
-	if ( !pLandMan ) return FALSE;
+	GLLandMan *pLandMan = GetByMapID(sMapID);
+	if (!pLandMan)
+		return FALSE;
 
-	//dmk14 | 2-16-17 | pet array overflow control
-	if ( pPet->m_dwGUID>=m_dwMaxClient )	return FALSE;
+	// dmk14 | 2-16-17 | pet array overflow control
+	if (pPet->m_dwGUID >= m_dwMaxClient)
+		return FALSE;
 	m_PETArray[pPet->m_dwGUID] = pPet;
 
 	// 랜드에 등록
 	pPet->m_pLandMan = pLandMan;
-	pPet->m_pLandNode = pLandMan->m_GlobPETList.ADDHEAD ( pPet );
-	pLandMan->RegistPet ( pPet );
-	
+	pPet->m_pLandNode = pLandMan->m_GlobPETList.ADDHEAD(pPet);
+	pLandMan->RegistPet(pPet);
+
 	return TRUE;
 }
 
 // 이 함수는 주인이 맵을 이동하는 모든 행위에 대해서
 // 호출된다. (주인이 게임을 종료하는 경우에도 호출됨)
 // 따라서 소환여부를 고려해야 한다.
-BOOL GLGaeaServer::DropOutPET ( DWORD dwGUID, bool bLeaveFieldServer, bool bMoveMap )
+BOOL GLGaeaServer::DropOutPET(DWORD dwGUID, bool bLeaveFieldServer, bool bMoveMap)
 {
-	if ( dwGUID>=m_dwMaxClient ) 
+	if (dwGUID >= m_dwMaxClient)
 	{
-		//CDebugSet::ToLogFile ( "ERROR : dwGUID>=m_dwMaxClient PetGUID : %d dwMaxClient : %d", dwGUID, m_dwMaxClient );
+		// CDebugSet::ToLogFile ( "ERROR : dwGUID>=m_dwMaxClient PetGUID : %d dwMaxClient : %d", dwGUID, m_dwMaxClient );
 		return FALSE;
 	}
-	if ( m_PETArray[dwGUID] == NULL ) 
+	if (m_PETArray[dwGUID] == NULL)
 	{
-		//CDebugSet::ToLogFile ( "ERROR : m_PETArray[dwGUID] == NULL" );
+		// CDebugSet::ToLogFile ( "ERROR : m_PETArray[dwGUID] == NULL" );
 		return FALSE;
 	}
 
 	PGLPETFIELD pPet = m_PETArray[dwGUID];
 
 	// 활동 여부
-	bool bValid = pPet->IsValid ();
+	bool bValid = pPet->IsValid();
 
 	// 소환이 안된상태로 서버를 떠나지 않는다면
-	if ( !bValid && !bLeaveFieldServer )
+	if (!bValid && !bLeaveFieldServer)
 	{
-		//CDebugSet::ToLogFile ( "ERROR : !bValid && !bLeaveFieldServer bValid %d bLeaveFieldServer %d", bValid, bLeaveFieldServer );
+		// CDebugSet::ToLogFile ( "ERROR : !bValid && !bLeaveFieldServer bValid %d bLeaveFieldServer %d", bValid, bLeaveFieldServer );
 		return FALSE;
 	}
 
@@ -1175,110 +1243,115 @@ BOOL GLGaeaServer::DropOutPET ( DWORD dwGUID, bool bLeaveFieldServer, bool bMove
 	DWORD dwOwnerID = pPet->m_dwOwner;
 
 	// 활동중이면
-	if ( bValid )
+	if (bValid)
 	{
 		//	Note : Land 리스트에서 제거.
-		GLLandMan* pLandMan = pPet->m_pLandMan;
-		if ( pLandMan )
+		GLLandMan *pLandMan = pPet->m_pLandMan;
+		if (pLandMan)
 		{
-			pLandMan->RemovePet ( pPet );
+			pLandMan->RemovePet(pPet);
 			pPet->m_pLandMan = NULL;
 		}
 
-		pPet->ReSetValid ();
-		pPet->ReSetAllSTATE ();
-		pPet->ReSetSkillDelay ();
+		pPet->ReSetValid();
+		pPet->ReSetAllSTATE();
+		pPet->ReSetSkillDelay();
 	}
 
 	// 클라이언트 팻 사라지게 메시지 발송 (PC가 게임을 종료하면 pOwner 없을 수 있다)
-	PGLCHAR pOwner = GetChar ( dwOwnerID );
-	if ( pOwner && bValid )
+	PGLCHAR pOwner = GetChar(dwOwnerID);
+	if (pOwner && bValid)
 	{
 		// 스킬의 보조능력치 제거
 		/*dual pet skill, Juver, 2017/12/27 */
-		pOwner->m_sPETSKILLFACT_A.RESET ();
-		pOwner->m_sPETSKILLFACT_B.RESET ();
+		pOwner->m_sPETSKILLFACT_A.RESET();
+		pOwner->m_sPETSKILLFACT_B.RESET();
 
 		pOwner->m_bProtectPutOnItem = false;
 
 		GLMSG::SNETPET_REQ_UNUSEPETCARD_FB NetMsgFB;
-		NetMsgFB.dwGUID	= dwPetGUID;
+		NetMsgFB.dwGUID = dwPetGUID;
 		NetMsgFB.bMoveMap = bMoveMap;
-		SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(pOwner->m_dwClientID, &NetMsgFB);
 
 		// 주변에 알림
 		/*dual pet skill, Juver, 2017/12/27 */
 		GLMSG::SNETPET_REQ_SKILLCHANGE_A_BRD NetMsgBRD_A;
-		NetMsgBRD_A.dwGUID   = pPet->m_dwGUID;
-		NetMsgBRD_A.dwTarID  = pOwner->m_dwGaeaID;
-		NetMsgBRD_A.sSkillID = NATIVEID_NULL ();
-		pOwner->SendMsgViewAround ( ( NET_MSG_GENERIC* ) &NetMsgBRD_A );
+		NetMsgBRD_A.dwGUID = pPet->m_dwGUID;
+		NetMsgBRD_A.dwTarID = pOwner->m_dwGaeaID;
+		NetMsgBRD_A.sSkillID = NATIVEID_NULL();
+		pOwner->SendMsgViewAround((NET_MSG_GENERIC *)&NetMsgBRD_A);
 
 		/*dual pet skill, Juver, 2017/12/27 */
 		GLMSG::SNETPET_REQ_SKILLCHANGE_B_BRD NetMsgBRD_B;
-		NetMsgBRD_B.dwGUID   = pPet->m_dwGUID;
-		NetMsgBRD_B.dwTarID  = pOwner->m_dwGaeaID;
-		NetMsgBRD_B.sSkillID = NATIVEID_NULL ();
-		pOwner->SendMsgViewAround ( ( NET_MSG_GENERIC* ) &NetMsgBRD_B );
+		NetMsgBRD_B.dwGUID = pPet->m_dwGUID;
+		NetMsgBRD_B.dwTarID = pOwner->m_dwGaeaID;
+		NetMsgBRD_B.sSkillID = NATIVEID_NULL();
+		pOwner->SendMsgViewAround((NET_MSG_GENERIC *)&NetMsgBRD_B);
 	}
 
 	// 현재 필드서버를 떠나거나 게임을 완전 종료하면
-	if ( bLeaveFieldServer )
+	if (bLeaveFieldServer)
 	{
 		// 팻의 데이터 DB저장
-		CSetPetFull* pSaveDB = new CSetPetFull( pOwner->m_dwCharID, pPet->GetPetID (), pPet->m_nFull );
-		if ( m_pDBMan ) m_pDBMan->AddJob ( pSaveDB );
+		CSetPetFull *pSaveDB = new CSetPetFull(pOwner->m_dwCharID, pPet->GetPetID(), pPet->m_nFull);
+		if (m_pDBMan)
+			m_pDBMan->AddJob(pSaveDB);
 
-		CSetPetInven* pSaveInven = new CSetPetInven ( pOwner->m_dwCharID, pPet->GetPetID(), pPet );
-		if ( m_pDBMan ) m_pDBMan->AddJob ( pSaveInven );
+		CSetPetInven *pSaveInven = new CSetPetInven(pOwner->m_dwCharID, pPet->GetPetID(), pPet);
+		if (m_pDBMan)
+			m_pDBMan->AddJob(pSaveInven);
 
 		/*dual pet skill, Juver, 2017/12/27 */
-		if ( pPet->m_sActiveSkillID_A != NATIVEID_NULL() )
+		if (pPet->m_sActiveSkillID_A != NATIVEID_NULL())
 		{
-			if( pPet->m_sActiveSkillID_A.wMainID != 26 )
+			if (pPet->m_sActiveSkillID_A.wMainID != 26)
 			{
-				CDebugSet::ToLogFile( "ERR : GLGaeaServer::DropOutPET, MID = %d, SID = %d", pPet->m_sActiveSkillID_A.wMainID, pPet->m_sActiveSkillID_A.wSubID );
+				CDebugSet::ToLogFile("ERR : GLGaeaServer::DropOutPET, MID = %d, SID = %d", pPet->m_sActiveSkillID_A.wMainID, pPet->m_sActiveSkillID_A.wSubID);
 			}
 
-			PETSKILL sPetSkill( pPet->m_sActiveSkillID_A, 0 );
-			CSetPetSkill_A* pSaveSkill = new CSetPetSkill_A ( pOwner->m_dwCharID, pPet->GetPetID (), sPetSkill, true );
-			if ( m_pDBMan ) m_pDBMan->AddJob ( pSaveSkill );
+			PETSKILL sPetSkill(pPet->m_sActiveSkillID_A, 0);
+			CSetPetSkill_A *pSaveSkill = new CSetPetSkill_A(pOwner->m_dwCharID, pPet->GetPetID(), sPetSkill, true);
+			if (m_pDBMan)
+				m_pDBMan->AddJob(pSaveSkill);
 		}
 
 		/*dual pet skill, Juver, 2017/12/27 */
-		if ( pPet->m_sActiveSkillID_B != NATIVEID_NULL() )
+		if (pPet->m_sActiveSkillID_B != NATIVEID_NULL())
 		{
-			if( pPet->m_sActiveSkillID_B.wMainID != 26 )
+			if (pPet->m_sActiveSkillID_B.wMainID != 26)
 			{
-				CDebugSet::ToLogFile( "ERR : GLGaeaServer::DropOutPET, MID = %d, SID = %d", pPet->m_sActiveSkillID_B.wMainID, pPet->m_sActiveSkillID_B.wSubID );
+				CDebugSet::ToLogFile("ERR : GLGaeaServer::DropOutPET, MID = %d, SID = %d", pPet->m_sActiveSkillID_B.wMainID, pPet->m_sActiveSkillID_B.wSubID);
 			}
 
-			PETSKILL sPetSkill( pPet->m_sActiveSkillID_B, 0 );
-			CSetPetSkill_B* pSaveSkill = new CSetPetSkill_B ( pOwner->m_dwCharID, pPet->GetPetID (), sPetSkill, true );
-			if ( m_pDBMan ) m_pDBMan->AddJob ( pSaveSkill );
+			PETSKILL sPetSkill(pPet->m_sActiveSkillID_B, 0);
+			CSetPetSkill_B *pSaveSkill = new CSetPetSkill_B(pOwner->m_dwCharID, pPet->GetPetID(), sPetSkill, true);
+			if (m_pDBMan)
+				m_pDBMan->AddJob(pSaveSkill);
 		}
 
 		// 글로벌 리스트에서 제거, GUID 반환
-		RELEASE_PET ( pPet );
+		RELEASE_PET(pPet);
 		m_PETArray[dwGUID] = NULL;
-		m_FreePETGIDs.AddTail ( dwGUID );
+		m_FreePETGIDs.AddTail(dwGUID);
 	}
 
 	return TRUE;
 }
 
-HRESULT GLGaeaServer::ClearDropObj ()
+HRESULT GLGaeaServer::ClearDropObj()
 {
-	if ( m_PCArray )
+	if (m_PCArray)
 	{
 		//	Note : 플래이어 드롭 아웃 처리.
 		//
-		for ( DWORD i=0; i<m_dwMaxClient; i++ )
+		for (DWORD i = 0; i < m_dwMaxClient; i++)
 		{
-			if ( m_PCArray[i] )		ReserveDropOutPC ( i );
+			if (m_PCArray[i])
+				ReserveDropOutPC(i);
 		}
 
-		ClearReservedDropOutPC ();
+		ClearReservedDropOutPC();
 	}
 
 	//	Note : 지형 정보 제거.
@@ -1290,13 +1363,13 @@ HRESULT GLGaeaServer::ClearDropObj ()
 	}*/
 
 	size_t i, size = m_vecLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
 		m_vecLandMan[i]->ClearDropObj();
 	}
 
 	size = m_vecInstantMapSrcLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
 		m_vecInstantMapSrcLandMan[i]->ClearDropObj();
 	}
@@ -1304,48 +1377,54 @@ HRESULT GLGaeaServer::ClearDropObj ()
 	return S_OK;
 }
 
-BOOL GLGaeaServer::ValidCheckTarget ( GLLandMan* pLandMan, STARGETID &sTargetID )
+BOOL GLGaeaServer::ValidCheckTarget(GLLandMan *pLandMan, STARGETID &sTargetID)
 {
 	GASSERT(pLandMan);
 
-	if ( sTargetID.dwID == EMTARGET_NULL )		return FALSE;
+	if (sTargetID.dwID == EMTARGET_NULL)
+		return FALSE;
 
-	if ( sTargetID.emCrow == CROW_PC )
+	if (sTargetID.emCrow == CROW_PC)
 	{
-		PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar ( sTargetID.dwID );
-		if ( pChar && pChar->IsValidBody() )
+		PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar(sTargetID.dwID);
+		if (pChar && pChar->IsValidBody())
 		{
-			if ( pChar->m_pLandMan != pLandMan )		return FALSE;
+			if (pChar->m_pLandMan != pLandMan)
+				return FALSE;
 			return TRUE;
 		}
 	}
 	/* crow zone, Juver, 2018/02/21 */
-	else if ( sTargetID.emCrow == CROW_NPC || sTargetID.emCrow == CROW_MOB || sTargetID.emCrow == CROW_ZONE_NAME || sTargetID.emCrow == CROW_GATE_NAME )
+	else if (sTargetID.emCrow == CROW_NPC || sTargetID.emCrow == CROW_MOB || sTargetID.emCrow == CROW_ZONE_NAME || sTargetID.emCrow == CROW_GATE_NAME)
 	{
-		PGLCROW pCrow = pLandMan->GetCrow ( sTargetID.dwID );
-		if ( pCrow && pCrow->IsValidBody() )
+		PGLCROW pCrow = pLandMan->GetCrow(sTargetID.dwID);
+		if (pCrow && pCrow->IsValidBody())
 		{
-			if ( pCrow->m_pLandMan != pLandMan )		return FALSE;
+			if (pCrow->m_pLandMan != pLandMan)
+				return FALSE;
 			return TRUE;
 		}
 	}
-	else if ( sTargetID.emCrow == CROW_MATERIAL )
+	else if (sTargetID.emCrow == CROW_MATERIAL)
 	{
-		PGLMATERIAL pMaterial = pLandMan->GetMaterial ( sTargetID.dwID );
-		if ( pMaterial && pMaterial->IsValidBody() )
+		PGLMATERIAL pMaterial = pLandMan->GetMaterial(sTargetID.dwID);
+		if (pMaterial && pMaterial->IsValidBody())
 		{
-			if ( pMaterial->m_pLandMan != pLandMan )		return FALSE;
+			if (pMaterial->m_pLandMan != pLandMan)
+				return FALSE;
 			return TRUE;
 		}
 	}
-	else if( sTargetID.emCrow == CROW_PET )	// PetData
+	else if (sTargetID.emCrow == CROW_PET) // PetData
 	{
-	}else if ( sTargetID.emCrow == CROW_SUMMON )
+	}
+	else if (sTargetID.emCrow == CROW_SUMMON)
 	{
-		PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon( sTargetID.dwID );		
-		if ( pSummon && pSummon->IsValidBody() )
+		PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon(sTargetID.dwID);
+		if (pSummon && pSummon->IsValidBody())
 		{
-			if ( pSummon->m_pLandMan != pLandMan )		return FALSE;
+			if (pSummon->m_pLandMan != pLandMan)
+				return FALSE;
 			return TRUE;
 		}
 	}
@@ -1359,86 +1438,99 @@ BOOL GLGaeaServer::ValidCheckTarget ( GLLandMan* pLandMan, STARGETID &sTargetID 
 	return FALSE;
 }
 
-GLACTOR* GLGaeaServer::GetTarget ( const GLLandMan* pLandMan, const STARGETID &sTargetID )
+GLACTOR *GLGaeaServer::GetTarget(const GLLandMan *pLandMan, const STARGETID &sTargetID)
 {
 	GASSERT(pLandMan);
-	if ( !pLandMan )							return NULL;
-	if ( sTargetID.dwID == EMTARGET_NULL )		return NULL;
+	if (!pLandMan)
+		return NULL;
+	if (sTargetID.dwID == EMTARGET_NULL)
+		return NULL;
 
-	switch ( sTargetID.emCrow )
+	switch (sTargetID.emCrow)
 	{
 	case CROW_PC:
-		{
-			// 같은 맵에 있는 PC만 검색
-			PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar ( sTargetID.dwID );
-			if ( pChar && pChar->m_sMapID == pLandMan->GetMapID() ) return pChar;
-		}
-		break;
+	{
+		// 같은 맵에 있는 PC만 검색
+		PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar(sTargetID.dwID);
+		if (pChar && pChar->m_sMapID == pLandMan->GetMapID())
+			return pChar;
+	}
+	break;
 
 	case CROW_MOB:
 	case CROW_NPC:
-		{
-			PGLCROW pCrow = pLandMan->GetCrow ( sTargetID.dwID );
-			if ( pCrow )							return pCrow;
-		}break;
+	{
+		PGLCROW pCrow = pLandMan->GetCrow(sTargetID.dwID);
+		if (pCrow)
+			return pCrow;
+	}
+	break;
 
 		/* crow zone, Juver, 2018/02/21 */
 	case CROW_ZONE_NAME:
 	case CROW_GATE_NAME:
-		{
-			PGLCROW pCrow = pLandMan->GetCrow ( sTargetID.dwID );
-			if ( pCrow )							return pCrow;
-		}break;
+	{
+		PGLCROW pCrow = pLandMan->GetCrow(sTargetID.dwID);
+		if (pCrow)
+			return pCrow;
+	}
+	break;
 
 	case CROW_MATERIAL:
-		{
-			PGLMATERIAL pMaterial = pLandMan->GetMaterial ( sTargetID.dwID );
-			if ( pMaterial )						return pMaterial;
-		}
-		break;
+	{
+		PGLMATERIAL pMaterial = pLandMan->GetMaterial(sTargetID.dwID);
+		if (pMaterial)
+			return pMaterial;
+	}
+	break;
 	case CROW_SUMMON:
-		{
-			PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon ( sTargetID.dwID );
-			if ( pSummon )							return pSummon;
-		}
-		break;
+	{
+		PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon(sTargetID.dwID);
+		if (pSummon)
+			return pSummon;
+	}
+	break;
 
-	//case CROW_PET:	break;	// PetData
+		// case CROW_PET:	break;	// PetData
 
-	//default:	GASSERT(0&&"emCrow가 잘못된 지정자 입니다." );
+		// default:	GASSERT(0&&"emCrow가 잘못된 지정자 입니다." );
 	};
 
 	return NULL;
 }
 
-const D3DXVECTOR3& GLGaeaServer::GetTargetPos ( const GLLandMan* pLandMan, const STARGETID &sTargetID )
+const D3DXVECTOR3 &GLGaeaServer::GetTargetPos(const GLLandMan *pLandMan, const STARGETID &sTargetID)
 {
 	GASSERT(pLandMan);
 
 	//	Note : 타겟의 위치 정보를 가져옴.
-	if ( sTargetID.emCrow == CROW_PC )
+	if (sTargetID.emCrow == CROW_PC)
 	{
-		PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar ( sTargetID.dwID );
-		if ( pChar ) return pChar->GetPosition();
+		PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar(sTargetID.dwID);
+		if (pChar)
+			return pChar->GetPosition();
 	}
 	/* crow zone, Juver, 2018/02/21 */
-	else if ( sTargetID.emCrow == CROW_NPC || sTargetID.emCrow == CROW_MOB || sTargetID.emCrow == CROW_ZONE_NAME || sTargetID.emCrow == CROW_GATE_NAME ) 
+	else if (sTargetID.emCrow == CROW_NPC || sTargetID.emCrow == CROW_MOB || sTargetID.emCrow == CROW_ZONE_NAME || sTargetID.emCrow == CROW_GATE_NAME)
 	{
-		PGLCROW pCrow = pLandMan->GetCrow ( sTargetID.dwID );
-		if ( pCrow ) return pCrow->GetPosition();
+		PGLCROW pCrow = pLandMan->GetCrow(sTargetID.dwID);
+		if (pCrow)
+			return pCrow->GetPosition();
 	}
-	else if ( sTargetID.emCrow == CROW_MATERIAL )
+	else if (sTargetID.emCrow == CROW_MATERIAL)
 	{
-		PGLMATERIAL pMaterial = pLandMan->GetMaterial ( sTargetID.dwID );
-		if ( pMaterial ) return pMaterial->GetPosition();
+		PGLMATERIAL pMaterial = pLandMan->GetMaterial(sTargetID.dwID);
+		if (pMaterial)
+			return pMaterial->GetPosition();
 	}
-	else if( sTargetID.emCrow == CROW_PET )	// PetData
+	else if (sTargetID.emCrow == CROW_PET) // PetData
 	{
 	}
-	else if ( sTargetID.emCrow == CROW_SUMMON )
+	else if (sTargetID.emCrow == CROW_SUMMON)
 	{
-		PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon ( sTargetID.dwID );
-		if ( pSummon ) return pSummon->GetPosition();
+		PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon(sTargetID.dwID);
+		if (pSummon)
+			return pSummon->GetPosition();
 	}
 	/*else
 	{
@@ -1446,38 +1538,42 @@ const D3DXVECTOR3& GLGaeaServer::GetTargetPos ( const GLLandMan* pLandMan, const
 	}
 	*/
 
-	static D3DXVECTOR3 vERROR(FLT_MAX,FLT_MAX,FLT_MAX);
+	static D3DXVECTOR3 vERROR(FLT_MAX, FLT_MAX, FLT_MAX);
 	return vERROR;
 }
 
-WORD GLGaeaServer::GetTargetBodyRadius ( GLLandMan* pLandMan, STARGETID &sTargetID )
+WORD GLGaeaServer::GetTargetBodyRadius(GLLandMan *pLandMan, STARGETID &sTargetID)
 {
 	GASSERT(pLandMan);
 
 	//	Note : 타겟의 위치 정보를 가져옴.
-	if ( sTargetID.emCrow == CROW_PC )
+	if (sTargetID.emCrow == CROW_PC)
 	{
-		PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar ( sTargetID.dwID );
-		if ( pChar ) return pChar->GETBODYRADIUS();
+		PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar(sTargetID.dwID);
+		if (pChar)
+			return pChar->GETBODYRADIUS();
 	}
 	/* crow zone, Juver, 2018/02/21 */
-	else if ( sTargetID.emCrow == CROW_NPC || sTargetID.emCrow == CROW_MOB || sTargetID.emCrow == CROW_ZONE_NAME || sTargetID.emCrow == CROW_GATE_NAME )
+	else if (sTargetID.emCrow == CROW_NPC || sTargetID.emCrow == CROW_MOB || sTargetID.emCrow == CROW_ZONE_NAME || sTargetID.emCrow == CROW_GATE_NAME)
 	{
-		PGLCROW pCrow = pLandMan->GetCrow ( sTargetID.dwID );
-		if ( pCrow ) return pCrow->GETBODYRADIUS();
+		PGLCROW pCrow = pLandMan->GetCrow(sTargetID.dwID);
+		if (pCrow)
+			return pCrow->GETBODYRADIUS();
 	}
-	else if ( sTargetID.emCrow == CROW_MATERIAL )
+	else if (sTargetID.emCrow == CROW_MATERIAL)
 	{
-		PGLMATERIAL pMaterial = pLandMan->GetMaterial ( sTargetID.dwID );
-		if ( pMaterial ) return pMaterial->GetBodyRadius();
+		PGLMATERIAL pMaterial = pLandMan->GetMaterial(sTargetID.dwID);
+		if (pMaterial)
+			return pMaterial->GetBodyRadius();
 	}
-	else if( sTargetID.emCrow == CROW_PET )	// PetData
+	else if (sTargetID.emCrow == CROW_PET) // PetData
 	{
 	}
-	else if ( sTargetID.emCrow == CROW_SUMMON )
+	else if (sTargetID.emCrow == CROW_SUMMON)
 	{
-		PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon ( sTargetID.dwID );
-		if ( pSummon ) return pSummon->GETBODYRADIUS();
+		PGLSUMMONFIELD pSummon = GLGaeaServer::GetInstance().GetSummon(sTargetID.dwID);
+		if (pSummon)
+			return pSummon->GETBODYRADIUS();
 	}
 	/*else
 	{
@@ -1488,37 +1584,39 @@ WORD GLGaeaServer::GetTargetBodyRadius ( GLLandMan* pLandMan, STARGETID &sTarget
 	return WORD(0xFFFF);
 }
 
-GLARoundSlot* GLGaeaServer::GetARoundSlot ( const STARGETID &sTargetID )
+GLARoundSlot *GLGaeaServer::GetARoundSlot(const STARGETID &sTargetID)
 {
-	if ( sTargetID.emCrow==CROW_PC )
+	if (sTargetID.emCrow == CROW_PC)
 	{
 		PGLCHAR pChar = GetChar(sTargetID.dwID);
-		if ( !pChar )	return NULL;
+		if (!pChar)
+			return NULL;
 
-		return &pChar->GetARoundSlot ();
+		return &pChar->GetARoundSlot();
 	}
 
 	return NULL;
 }
 
-BOOL GLGaeaServer::DropPC ( SNATIVEID MapID, D3DXVECTOR3 vPos, PGLCHAR pPC )
+BOOL GLGaeaServer::DropPC(SNATIVEID MapID, D3DXVECTOR3 vPos, PGLCHAR pPC)
 {
-	GLLandMan* pLandMan = GetByMapID ( MapID );
-	if ( !pLandMan )	return FALSE;
+	GLLandMan *pLandMan = GetByMapID(MapID);
+	if (!pLandMan)
+		return FALSE;
 
 	//	Note : 위치로 내비게이션 초기화.
 	//
-	pPC->SetNavi ( pLandMan->GetNavi(), vPos );
+	pPC->SetNavi(pLandMan->GetNavi(), vPos);
 
 	//	Note : 관리 ID 부여.
 	//
 	pPC->m_sMapID = MapID;
 
 	m_PCArray[pPC->m_dwGaeaID] = pPC;
-	pPC->m_pGaeaNode = m_GaeaPCList.ADDHEAD ( pPC );
+	pPC->m_pGaeaNode = m_GaeaPCList.ADDHEAD(pPC);
 
 	pPC->m_pLandMan = pLandMan;
-	pPC->m_pLandNode = pLandMan->m_GlobPCList.ADDHEAD ( pPC );
+	pPC->m_pLandNode = pLandMan->m_GlobPCList.ADDHEAD(pPC);
 
 	//	Note : GLLandMan의 셀에 등록하는 작업.
 	//		GLLandMan::RegistChar(pPC) 작업이 GLGaeaServer::RequestLandIn ()이 호출될 때까지 유보.
@@ -1528,35 +1626,36 @@ BOOL GLGaeaServer::DropPC ( SNATIVEID MapID, D3DXVECTOR3 vPos, PGLCHAR pPC )
 	pPC->m_pCellNode = NULL;
 
 	//	Note : PC NAME map 에 등록.
-	GASSERT ( m_PCNameMap.find(pPC->GetCharData2().m_szName)==m_PCNameMap.end() );
-	m_PCNameMap [ std::string(pPC->GetCharData2().m_szName) ] = pPC;
+	GASSERT(m_PCNameMap.find(pPC->GetCharData2().m_szName) == m_PCNameMap.end());
+	m_PCNameMap[std::string(pPC->GetCharData2().m_szName)] = pPC;
 
 	//	Note : PC Client map 에 등록.
-	GASSERT ( m_PCClientIDMAP.find(pPC->m_dwClientID)==m_PCClientIDMAP.end() );
+	GASSERT(m_PCClientIDMAP.find(pPC->m_dwClientID) == m_PCClientIDMAP.end());
 	m_PCClientIDMAP[pPC->m_dwClientID] = pPC->m_dwGaeaID;
 
 	//	Note : CID map 에 등록.
-	GASSERT ( m_mapCHARID.find(pPC->m_dwCharID)==m_mapCHARID.end() );
+	GASSERT(m_mapCHARID.find(pPC->m_dwCharID) == m_mapCHARID.end());
 	m_mapCHARID[pPC->m_dwCharID] = pPC->m_dwGaeaID;
 
 	return TRUE;
 }
 
 /*dmk14 offline vend new code*/
-BOOL GLGaeaServer::DropOutPC ( DWORD dwGaeaPcID, bool bForce )
+BOOL GLGaeaServer::DropOutPC(DWORD dwGaeaPcID, bool bForce)
 {
-	GASSERT ( dwGaeaPcID<m_dwMaxClient );
-	
+	GASSERT(dwGaeaPcID < m_dwMaxClient);
+
 	PGLCHAR pPC = m_PCArray[dwGaeaPcID];
-	if ( !pPC )		return FALSE;
+	if (!pPC)
+		return FALSE;
 
 	//	Note : 만약 상점이 열려 있는 상태이면 상점을 닫아준다.
 	//
-	if ( pPC->m_sPMarket.IsOpen() )
+	if (pPC->m_sPMarket.IsOpen())
 	{
-		//offline vend
+		// offline vend
 		/*dmk14 offline vend new code*/
-		if ( pPC->m_sPMarket.IsPremiumMarket () && !bForce )		
+		if (pPC->m_sPMarket.IsPremiumMarket() && !bForce)
 		{
 			pPC->m_bOffVend = true;
 			return FALSE;
@@ -1564,55 +1663,56 @@ BOOL GLGaeaServer::DropOutPC ( DWORD dwGaeaPcID, bool bForce )
 
 		pPC->m_sPMarket.DoMarketClose();
 
-		GLMSG::SNETPC_PMARKET_CLOSE_BRD	NetMsgBRD;
+		GLMSG::SNETPC_PMARKET_CLOSE_BRD NetMsgBRD;
 		NetMsgBRD.dwGaeaID = pPC->m_dwGaeaID;
-		pPC->SendMsgViewAround ( (NET_MSG_GENERIC *) &NetMsgBRD );
+		pPC->SendMsgViewAround((NET_MSG_GENERIC *)&NetMsgBRD);
 	}
 
-	if ( pPC->m_sCONFTING.IsCONFRONTING() )
+	if (pPC->m_sCONFTING.IsCONFRONTING())
 	{
-		pPC->ReceiveLivingPoint ( GLCONST_CHAR::nCONFRONT_LOSS_LP );
+		pPC->ReceiveLivingPoint(GLCONST_CHAR::nCONFRONT_LOSS_LP);
 	}
 
 	/*pvp capture the flag, Juver, 2018/02/07 */
-	if ( pPC->m_pLandMan && pPC->m_pLandMan->m_bPVPCaptureTheFlagMap && pPC->m_bCaptureTheFlagHoldFlag )
+	if (pPC->m_pLandMan && pPC->m_pLandMan->m_bPVPCaptureTheFlagMap && pPC->m_bCaptureTheFlagHoldFlag)
 	{
-		GLPVPCaptureTheFlagField::GetInstance().FlagResetBase( pPC->m_dwCharID, CAPTURE_THE_FLAG_FLAG_HOLD_STATUS_LEFTBATTLE );
+		GLPVPCaptureTheFlagField::GetInstance().FlagResetBase(pPC->m_dwCharID, CAPTURE_THE_FLAG_FLAG_HOLD_STATUS_LEFTBATTLE);
 	}
 
-	pPC->ResetViewAround ();
+	pPC->ResetViewAround();
 
 	//	Note : Gaea 전역 리스트에서 제거.
 	m_PCArray[dwGaeaPcID] = NULL;
-	
-	if ( pPC->m_pGaeaNode )
-		m_GaeaPCList.DELNODE ( pPC->m_pGaeaNode );
+
+	if (pPC->m_pGaeaNode)
+		m_GaeaPCList.DELNODE(pPC->m_pGaeaNode);
 
 	//	Note : Land 리스트에서 제거.
 	GLLandMan *pLandMan = pPC->m_pLandMan;
-	if ( pLandMan )		pLandMan->RemoveChar ( pPC );
+	if (pLandMan)
+		pLandMan->RemoveChar(pPC);
 
 	//	Note : PC NAME map 에서 제거.
-	GLCHAR_MAP_ITER iterPC = m_PCNameMap.find ( std::string(pPC->GetCharData2().m_szName) );
-	GASSERT ( iterPC!=m_PCNameMap.end() );
-	m_PCNameMap.erase ( iterPC );
+	GLCHAR_MAP_ITER iterPC = m_PCNameMap.find(std::string(pPC->GetCharData2().m_szName));
+	GASSERT(iterPC != m_PCNameMap.end());
+	m_PCNameMap.erase(iterPC);
 
 	//	Note : CLIENTID map 에서 제거.
-	CLIENTMAP_ITER client_iter = m_PCClientIDMAP.find ( pPC->m_dwClientID );
-	GASSERT ( client_iter!=m_PCClientIDMAP.end() );
-	m_PCClientIDMAP.erase ( client_iter );
+	CLIENTMAP_ITER client_iter = m_PCClientIDMAP.find(pPC->m_dwClientID);
+	GASSERT(client_iter != m_PCClientIDMAP.end());
+	m_PCClientIDMAP.erase(client_iter);
 
 	//	Note : CID map 에서 제거.
-	CLIENTMAP_ITER cid_iter = m_mapCHARID.find ( pPC->m_dwCharID );
-	GASSERT ( cid_iter!=m_mapCHARID.end() );
-	m_mapCHARID.erase ( cid_iter );
+	CLIENTMAP_ITER cid_iter = m_mapCHARID.find(pPC->m_dwCharID);
+	GASSERT(cid_iter != m_mapCHARID.end());
+	m_mapCHARID.erase(cid_iter);
 
-	if ( pPC->m_dwGuild!=CLUB_NULL )
+	if (pPC->m_dwGuild != CLUB_NULL)
 	{
 		GLCLUB *pCLUB = GLGaeaServer::GetInstance().GetClubMan().GetClub(pPC->m_dwGuild);
-		if ( pCLUB )
+		if (pCLUB)
 		{
-			if ( pCLUB->m_dwMasterID == pPC->m_dwCharID && pCLUB->m_bVALID_STORAGE )
+			if (pCLUB->m_dwMasterID == pPC->m_dwCharID && pCLUB->m_bVALID_STORAGE)
 			{
 				pCLUB->RESET_STORAGE();
 			}
@@ -1625,56 +1725,57 @@ BOOL GLGaeaServer::DropOutPC ( DWORD dwGaeaPcID, bool bForce )
 	return TRUE;
 }
 
-BOOL GLGaeaServer::SaveCharDB ( DWORD dwGaeaID )
+BOOL GLGaeaServer::SaveCharDB(DWORD dwGaeaID)
 {
 	PGLCHAR pChar = GetChar(dwGaeaID);
-	if ( pChar )
+	if (pChar)
 	{
-		pChar->SavePosition ();
+		pChar->SavePosition();
 
-		if ( m_pDBMan )
+		if (m_pDBMan)
 		{
 			//	Note : 케릭터 저장 요청.
 			SetSaveDBUserID(pChar->GetUserID());
 
 			//	Note : 클럽 창고 저장 요청.
-			if ( pChar->m_dwGuild!=CLUB_NULL )
+			if (pChar->m_dwGuild != CLUB_NULL)
 			{
-				GLCLUB *pCLUB = GLGaeaServer::GetInstance().GetClubMan().GetClub ( pChar->m_dwGuild );
-				if ( pCLUB && pChar->m_dwCharID==pCLUB->m_dwMasterID )
+				GLCLUB *pCLUB = GLGaeaServer::GetInstance().GetClubMan().GetClub(pChar->m_dwGuild);
+				if (pCLUB && pChar->m_dwCharID == pCLUB->m_dwMasterID)
 				{
-					pCLUB->SAVESTORAGE2DB ();
+					pCLUB->SAVESTORAGE2DB();
 				}
 			}
 
 			//	Note : 케릭터 저장 요청.
 			CDbActSaveChar *pSaveDB = new CDbActSaveChar;
-			pSaveDB->SetInfo ( pChar->m_dwClientID, pChar->m_dwGaeaID, pChar );
-			m_pDBMan->AddJob ( pSaveDB );
+			pSaveDB->SetInfo(pChar->m_dwClientID, pChar->m_dwGaeaID, pChar);
+			m_pDBMan->AddJob(pSaveDB);
 		}
 	}
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::ReserveDropOutPC ( DWORD dwGaeaID, CDbActToAgentMsg* pDbActToAgentMsg )
+BOOL GLGaeaServer::ReserveDropOutPC(DWORD dwGaeaID, CDbActToAgentMsg *pDbActToAgentMsg)
 {
 	// * 주의
 	// pDbActToAgentMsg 의 Default 가 NULL 이다.
 	// 여기서 NULL 체크를 해버리면 캐릭터가 정상적으로 DROP 되지 않아서
 	// 서버안에 남아있게 된다.
-	if (dwGaeaID == GAEAID_NULL) return FALSE;
+	if (dwGaeaID == GAEAID_NULL)
+		return FALSE;
 
 	EnterCriticalSection(&m_CSPCLock);
 	{
 		PGLCHAR pChar = GetChar(dwGaeaID);
-		if ( pChar )
+		if (pChar)
 		{
 			DWORD dwUserID = pChar->GetUserID();
-			m_reqSaveDBUserID.insert ( dwUserID );
+			m_reqSaveDBUserID.insert(dwUserID);
 
 			//	Note : 케릭터의 db 작업을 예약에 들어감.
-			m_reqDropOutChar.push_back ( SDROPOUTINFO(dwGaeaID,dwUserID,pDbActToAgentMsg) );
+			m_reqDropOutChar.push_back(SDROPOUTINFO(dwGaeaID, dwUserID, pDbActToAgentMsg));
 		}
 	}
 	LeaveCriticalSection(&m_CSPCLock);
@@ -1682,206 +1783,219 @@ BOOL GLGaeaServer::ReserveDropOutPC ( DWORD dwGaeaID, CDbActToAgentMsg* pDbActTo
 	return TRUE;
 }
 
-BOOL GLGaeaServer::ClearReservedDropOutPC ()
+BOOL GLGaeaServer::ClearReservedDropOutPC()
 {
 	EnterCriticalSection(&m_CSPCLock);
 	{
-		VPCID_ITER iter     = m_reqDropOutChar.begin();
+		VPCID_ITER iter = m_reqDropOutChar.begin();
 		VPCID_ITER iter_end = m_reqDropOutChar.end();
-		for ( ; iter != iter_end; iter++ )
+		for (; iter != iter_end; iter++)
 		{
 			DWORD dwGaea = (*iter).m_dwGaeaID;
 			PGLCHAR pChar = GetChar(dwGaea);
 
-			if ( pChar )
+			if (pChar)
 			{
 				// PET
 				// 맵이동시 Pet 삭제
-				DropOutPET ( pChar->m_dwPetGUID, true, true );
-				
+				DropOutPET(pChar->m_dwPetGUID, true, true);
+
 				/*skill summon, Juver, 2017/10/09 */
-				for ( int i=0; i<SKILL_SUMMON_MAX_CLIENT_NUM; ++i )
-					DropOutSummon ( pChar->m_dwSummonGUID_FLD[i] );
-				
-				SaveVehicle( pChar->m_dwClientID, dwGaea, true );			
+				for (int i = 0; i < SKILL_SUMMON_MAX_CLIENT_NUM; ++i)
+					DropOutSummon(pChar->m_dwSummonGUID_FLD[i]);
+
+				SaveVehicle(pChar->m_dwClientID, dwGaea, true);
 
 				// 인던일 경우 인던 밖으로 이동한다.
-				if( pChar->m_pLandMan->IsInstantMap() )
+				if (pChar->m_pLandMan->IsInstantMap())
 				{
-					GLLandMan* pInLandMan = NULL;
-					DxLandGateMan* pInGateMan = NULL;
+					GLLandMan *pInLandMan = NULL;
+					DxLandGateMan *pInGateMan = NULL;
 					PDXLANDGATE pInGate = NULL;
-					D3DXVECTOR3 vPos(0,0,0);
+					D3DXVECTOR3 vPos(0, 0, 0);
 
-					DxLandGateMan* pOutGateMan = NULL;
-					PDXLANDGATE pOutGate = NULL;				
-					
+					DxLandGateMan *pOutGateMan = NULL;
+					PDXLANDGATE pOutGate = NULL;
+
 					pOutGateMan = &pChar->m_pLandMan->GetLandGateMan();
-					if( !pOutGateMan ) goto drop_pc;
+					if (!pOutGateMan)
+						goto drop_pc;
 
 					// 무조건 첫번째 게이트로 이동한다.
 					DWORD dwGateID = 0;
 					DWORD dwOutGateID = 0;
 					SNATIVEID sMoveMapId;
 
-					for( dwGateID = 0; dwGateID < pOutGateMan->GetNumLandGate(); dwGateID++ )
+					for (dwGateID = 0; dwGateID < pOutGateMan->GetNumLandGate(); dwGateID++)
 					{
-						pOutGate = pOutGateMan->FindLandGate ( dwGateID );
-						if( pOutGate ) break;
+						pOutGate = pOutGateMan->FindLandGate(dwGateID);
+						if (pOutGate)
+							break;
 					}
 
 					// Gate를 못 찾았을경우
-					if( !pOutGate )
+					if (!pOutGate)
 					{
-						dwOutGateID			  = GLCONST_CHAR::dwSTARTGATE[pChar->m_wSchool];
+						dwOutGateID = GLCONST_CHAR::dwSTARTGATE[pChar->m_wSchool];
 						SNATIVEID sStartMapID = GLCONST_CHAR::nidSTARTMAP[pChar->m_wSchool];
-						pInLandMan = GetByMapID ( sStartMapID );
-						if ( !pInLandMan )		goto drop_pc;
+						pInLandMan = GetByMapID(sStartMapID);
+						if (!pInLandMan)
+							goto drop_pc;
+					}
+					else
+					{
+						pInLandMan = GetByMapID(pOutGate->GetToMapID(DxLandGate::DEFAULT_GATE_OUT_INDEX));
+						if (!pInLandMan)
+							goto drop_pc;
 
-					}else{
-						pInLandMan = GetByMapID ( pOutGate->GetToMapID( DxLandGate::DEFAULT_GATE_OUT_INDEX ) );
-						if ( !pInLandMan )		goto drop_pc;
-
-						dwOutGateID = pOutGate->GetToGateID( DxLandGate::DEFAULT_GATE_OUT_INDEX );			
+						dwOutGateID = pOutGate->GetToGateID(DxLandGate::DEFAULT_GATE_OUT_INDEX);
 					}
 
 					//	Note : 목표 게이트 가져오기.					//
 
-					pInGateMan = &pInLandMan->GetLandGateMan ();
-					if ( !pInGateMan )		goto drop_pc;
-					pInGate = pInGateMan->FindLandGate ( dwOutGateID );
-					if ( !pInGate )			goto drop_pc;
+					pInGateMan = &pInLandMan->GetLandGateMan();
+					if (!pInGateMan)
+						goto drop_pc;
+					pInGate = pInGateMan->FindLandGate(dwOutGateID);
+					if (!pInGate)
+						goto drop_pc;
 
 					sMoveMapId = pInLandMan->GetMapID();
 
-					SMAPNODE *pMapNode = FindMapNode ( sMoveMapId );
-					if ( !pMapNode )		goto drop_pc;
+					SMAPNODE *pMapNode = FindMapNode(sMoveMapId);
+					if (!pMapNode)
+						goto drop_pc;
 
-					vPos = pInGate->GetGenPos ( DxLandGate::GEN_RENDUM );	
+					vPos = pInGate->GetGenPos(DxLandGate::GEN_RENDUM);
 
 					pChar->m_sMapID = sMoveMapId;
-					pChar->m_vPos   = vPos;
-
+					pChar->m_vPos = vPos;
 				}
-				
+
 				//	Note : 현제 위치 저장.
 				//
-drop_pc:
-				pChar->SavePosition ();
+			drop_pc:
+				pChar->SavePosition();
 
 				//	Note : 사망한 상태로 제거시.
 				//
-				if ( pChar->IsSTATE(EM_ACT_DIE) )
+				if (pChar->IsSTATE(EM_ACT_DIE))
 				{
 					//	Note : 부활시 경험치 감소.
-					pChar->ReBirthDecExp ();
+					pChar->ReBirthDecExp();
 
 					//	 Note : 현제 위치를 마지막 귀환 위치로 저장.
 					//
-					pChar->SaveLastCall ();
+					pChar->SaveLastCall();
 				}
 
-				if ( m_pDBMan )
+				if (m_pDBMan)
 				{
 					//	Note : 클럽 창고 저장.
-					if ( pChar->m_dwGuild!=CLUB_NULL )
+					if (pChar->m_dwGuild != CLUB_NULL)
 					{
-						GLCLUB *pCLUB = GLGaeaServer::GetInstance().GetClubMan().GetClub ( pChar->m_dwGuild );
-						if ( pCLUB && pChar->m_dwCharID==pCLUB->m_dwMasterID )
+						GLCLUB *pCLUB = GLGaeaServer::GetInstance().GetClubMan().GetClub(pChar->m_dwGuild);
+						if (pCLUB && pChar->m_dwCharID == pCLUB->m_dwMasterID)
 						{
-							pCLUB->SAVESTORAGE2DB ();
-							pCLUB->RESET_STORAGE ();
+							pCLUB->SAVESTORAGE2DB();
+							pCLUB->RESET_STORAGE();
 						}
 					}
 
 					//	Note : 케릭터 db에 저장 요청.
 					//
 					CDbActSaveChar *pSaveDB = new CDbActSaveChar;
-					pSaveDB->SetInfo ( pChar->m_dwClientID, pChar->m_dwGaeaID, pChar );
-					m_pDBMan->AddJob ( pSaveDB );
+					pSaveDB->SetInfo(pChar->m_dwClientID, pChar->m_dwGaeaID, pChar);
+					m_pDBMan->AddJob(pSaveDB);
 
 					//	Note : db 저장후 발생 메시지 요청이 있을 경우 처리.
 					//
-					if ( (*iter).m_pMsg )	m_pDBMan->AddJob ( (*iter).m_pMsg );
+					if ((*iter).m_pMsg)
+						m_pDBMan->AddJob((*iter).m_pMsg);
 				}
 
 				//	Note : 케릭터가 지워진다.
 				//
 				/*dmk14 offline vend new code*/
-				DropOutPC(dwGaea,true);
+				DropOutPC(dwGaea, true);
 			}
 			else
 			{
-				PCID_ITER miter = m_reqSaveDBUserID.find ( (*iter).m_dwUserID );
-				if ( miter!=m_reqSaveDBUserID.end() )	m_reqSaveDBUserID.erase ( miter );
+				PCID_ITER miter = m_reqSaveDBUserID.find((*iter).m_dwUserID);
+				if (miter != m_reqSaveDBUserID.end())
+					m_reqSaveDBUserID.erase(miter);
 			}
 		}
 
-		m_reqDropOutChar.clear ();
+		m_reqDropOutChar.clear();
 	}
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::FindSaveDBUserID ( DWORD dwUserID )
+BOOL GLGaeaServer::FindSaveDBUserID(DWORD dwUserID)
 {
 	BOOL bFOUND(FALSE);
 
 	EnterCriticalSection(&m_CSPCLock);
 	{
-		PCID_ITER iter = m_reqSaveDBUserID.find ( dwUserID );
-		bFOUND = ( iter!=m_reqSaveDBUserID.end() );
+		PCID_ITER iter = m_reqSaveDBUserID.find(dwUserID);
+		bFOUND = (iter != m_reqSaveDBUserID.end());
 	}
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return bFOUND;
 }
 
-void GLGaeaServer::SetSaveDBUserID ( DWORD dwUserID )
+void GLGaeaServer::SetSaveDBUserID(DWORD dwUserID)
 {
 	EnterCriticalSection(&m_CSPCLock);
 	{
-		m_reqSaveDBUserID.insert ( dwUserID );
+		m_reqSaveDBUserID.insert(dwUserID);
 	}
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return;
 }
 
-BOOL GLGaeaServer::ResetSaveDBUserID ( DWORD dwUserID )
+BOOL GLGaeaServer::ResetSaveDBUserID(DWORD dwUserID)
 {
 	EnterCriticalSection(&m_CSPCLock);
 	{
-		PCID_ITER iter = m_reqSaveDBUserID.find ( dwUserID );
-		if ( iter!=m_reqSaveDBUserID.end() )	m_reqSaveDBUserID.erase ( iter );
+		PCID_ITER iter = m_reqSaveDBUserID.find(dwUserID);
+		if (iter != m_reqSaveDBUserID.end())
+			m_reqSaveDBUserID.erase(iter);
 	}
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::RequestReBirth ( const DWORD dwGaeaID, const SNATIVEID &sNID_Map,
-								   const DWORD dwGenGate, const D3DXVECTOR3 &_vPos )
+BOOL GLGaeaServer::RequestReBirth(const DWORD dwGaeaID, const SNATIVEID &sNID_Map,
+								  const DWORD dwGenGate, const D3DXVECTOR3 &_vPos)
 {
-	PGLCHAR pPC = GetChar ( dwGaeaID );
-	if ( !pPC )								return FALSE;
+	PGLCHAR pPC = GetChar(dwGaeaID);
+	if (!pPC)
+		return FALSE;
 
-	GLLandMan* pLandMan = NULL;
-	DxLandGateMan* pGateMan = NULL;
+	GLLandMan *pLandMan = NULL;
+	DxLandGateMan *pGateMan = NULL;
 	PDXLANDGATE pGate = NULL;
 	D3DXVECTOR3 vStartPos;
 
-	pLandMan = GetByMapID ( sNID_Map );
-	if ( !pLandMan )	return FALSE;
+	pLandMan = GetByMapID(sNID_Map);
+	if (!pLandMan)
+		return FALSE;
 
-	if ( dwGenGate!=UINT_MAX )
+	if (dwGenGate != UINT_MAX)
 	{
-		pGateMan = &pLandMan->GetLandGateMan ();
-		pGate = pGateMan->FindLandGate ( dwGenGate );
-		if ( !pGate )		return FALSE;
+		pGateMan = &pLandMan->GetLandGateMan();
+		pGate = pGateMan->FindLandGate(dwGenGate);
+		if (!pGate)
+			return FALSE;
 
-		vStartPos = pGate->GetGenPos ( DxLandGate::GEN_RENDUM );
+		vStartPos = pGate->GetGenPos(DxLandGate::GEN_RENDUM);
 	}
 	else
 	{
@@ -1890,33 +2004,33 @@ BOOL GLGaeaServer::RequestReBirth ( const DWORD dwGaeaID, const SNATIVEID &sNID_
 
 	//	 Note : 현제 위치를 마지막 귀환 위치로 저장.
 	//
-	pPC->SaveLastCall ();
+	pPC->SaveLastCall();
 
 	//	Note : 자신이 본 주변 셀을 정리.
-	pPC->ResetViewAround ();
+	pPC->ResetViewAround();
 
 	//	Note : 종전 맵에 있던 관리 노드 삭제.
 	//
-	if ( pPC->m_pLandNode )
-		pPC->m_pLandMan->m_GlobPCList.DELNODE ( pPC->m_pLandNode );
+	if (pPC->m_pLandNode)
+		pPC->m_pLandMan->m_GlobPCList.DELNODE(pPC->m_pLandNode);
 
-	if ( pPC->m_pQuadNode && pPC->m_pCellNode )
-		pPC->m_pQuadNode->pData->m_PCList.DELNODE ( pPC->m_pCellNode );
+	if (pPC->m_pQuadNode && pPC->m_pCellNode)
+		pPC->m_pQuadNode->pData->m_PCList.DELNODE(pPC->m_pCellNode);
 
 	//	Note : 새로운 맵 위치로 내비게이션 초기화.
 	//
-	pPC->SetNavi ( pLandMan->GetNavi(), vStartPos );
+	pPC->SetNavi(pLandMan->GetNavi(), vStartPos);
 
 	//	Note : 새로운 관리 ID 부여.
 	//
 	pPC->m_sMapID = sNID_Map;
 
 	pPC->m_pLandMan = pLandMan;
-	pPC->m_pLandNode = pLandMan->m_GlobPCList.ADDHEAD ( pPC );
+	pPC->m_pLandNode = pLandMan->m_GlobPCList.ADDHEAD(pPC);
 
 	//	Note : GLLandMan의 셀에 등록하는 작업.
 	//
-	//RegistChar ( pPC ); --> ( GLGaeaServer::RequestLandIn ()이 호출될 때까지 유보됨. )
+	// RegistChar ( pPC ); --> ( GLGaeaServer::RequestLandIn ()이 호출될 때까지 유보됨. )
 
 	pPC->m_dwCeID = 0;
 	pPC->m_pQuadNode = NULL;
@@ -1925,83 +2039,86 @@ BOOL GLGaeaServer::RequestReBirth ( const DWORD dwGaeaID, const SNATIVEID &sNID_
 	return TRUE;
 }
 
-void GLGaeaServer::FrameMoveLandMan( float fTime, float fElapsedTime )
+void GLGaeaServer::FrameMoveLandMan(float fTime, float fElapsedTime)
 {
 	size_t i, size = m_vecLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
-		m_vecLandMan[i]->FrameMove( fTime, fElapsedTime );
+		m_vecLandMan[i]->FrameMove(fTime, fElapsedTime);
 	}
 }
 
-void GLGaeaServer::FrameMoveInstantMap( float fElapsedTime )
+void GLGaeaServer::FrameMoveInstantMap(float fElapsedTime)
 {
 	m_dwInstantMapNum = 0;
 	m_dwInstantMapStuckNum = 0;
 
 	size_t i, size = m_vecLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
 		// 인던일 경우에만 처리해야할것들
-		if( m_vecLandMan[i]->IsInstantMap() )
+		if (m_vecLandMan[i]->IsInstantMap())
 		{
-			m_dwInstantMapNum ++;
+			m_dwInstantMapNum++;
 
-			if ( m_vecLandMan[i]->IsInstantMapStuck() )
-				m_dwInstantMapStuckNum ++;
+			if (m_vecLandMan[i]->IsInstantMapStuck())
+				m_dwInstantMapStuckNum++;
 
 			// 만약 인던에 아무도 없거나 제한 시간 초과하면 삭제
-			if( m_vecLandMan[i]->IsDeleteInstantMap( fElapsedTime ) )
+			if (m_vecLandMan[i]->IsDeleteInstantMap(fElapsedTime))
 			{
-				DeleteInstantMap( i );
-//				return;					
-			}else{
-				m_vecLandMan[i]->FrameMoveInstantMap( fElapsedTime );
+				DeleteInstantMap(i);
+				//				return;
+			}
+			else
+			{
+				m_vecLandMan[i]->FrameMoveInstantMap(fElapsedTime);
 			}
 		}
 	}
 }
 
-HRESULT GLGaeaServer::FrameMove ( float fTime, float fElapsedTime )
+HRESULT GLGaeaServer::FrameMove(float fTime, float fElapsedTime)
 {
-	if ( !m_bUpdate )	return S_OK;
+	if (!m_bUpdate)
+		return S_OK;
 
 	//	Note : 제거 리스트에 등록된 케릭터 오브젝트 제거해주기.
 	//
 	PROFILE_BEGIN("ClearReservedDropOutPC()");
-	ClearReservedDropOutPC ();
+	ClearReservedDropOutPC();
 	PROFILE_END("ClearReservedDropOutPC()");
 
 	/* skill illusion, Juver, 2021/01/17 */
 	m_fCurrentFrameTime = fTime;
 
-	FrameMoveLandMan( fTime, fElapsedTime );
-	FrameMoveInstantMap( fElapsedTime );	
+	FrameMoveLandMan(fTime, fElapsedTime);
+	FrameMoveInstantMap(fElapsedTime);
 
 	/*quest map move, Juver, 2018/08/12 */
-	quest_move_frame( fTime, fElapsedTime );
+	quest_move_frame(fTime, fElapsedTime);
 
 	/*character disconnect function, EJCode, 2018/11/25 */
-	CharacterDisconnectUpdate( fElapsedTime );
+	CharacterDisconnectUpdate(fElapsedTime);
 
 	// 예약 메시지들 처리
 	ReserveMessageProcess();
 
 	// DropOut 예약 처리
-	ClearReserveDropOutPet ();
-	ClearReserveDropOutSummon ();
-	
-	m_cClubMan.FrameMoveField( fTime, fElapsedTime );
+	ClearReserveDropOutPet();
+	ClearReserveDropOutSummon();
+
+	m_cClubMan.FrameMoveField(fTime, fElapsedTime);
 
 	// 선도전 끝난직후 잔여 클럽원들 체크
-	if ( GLGuidanceFieldMan::GetInstance().IsCheckExtraGuild () )
+	if (GLGuidanceFieldMan::GetInstance().IsCheckExtraGuild())
 	{
-		GLGuidanceFieldMan::GetInstance().CheckExtraGuild ( fElapsedTime );
+		GLGuidanceFieldMan::GetInstance().CheckExtraGuild(fElapsedTime);
 	}
 
 	/* variable check, Juver, 2021/07/02 */
 	m_fVarCheckTimer += fElapsedTime;
-	if ( m_fVarCheckTimer >= VARIABLE_CHECK_TIME )
+	if (m_fVarCheckTimer >= VARIABLE_CHECK_TIME)
 	{
 		SendClientVariableCheck();
 		m_fVarCheckTimer = 0.0f;
@@ -2010,7 +2127,7 @@ HRESULT GLGaeaServer::FrameMove ( float fTime, float fElapsedTime )
 	//	Note : 제거 리스트에 등록된 케릭터 오브젝트 제거해주기.
 	//
 	PROFILE_BEGIN("ClearReservedDropOutPC()");
-	ClearReservedDropOutPC ();
+	ClearReservedDropOutPC();
 	PROFILE_END("ClearReservedDropOutPC()");
 
 	/*dmk14 freepk*/
@@ -2019,7 +2136,7 @@ HRESULT GLGaeaServer::FrameMove ( float fTime, float fElapsedTime )
 	return S_OK;
 }
 
-HRESULT GLGaeaServer::Render ( LPDIRECT3DDEVICEQ pd3dDevice, CLIPVOLUME &cv )
+HRESULT GLGaeaServer::Render(LPDIRECT3DDEVICEQ pd3dDevice, CLIPVOLUME &cv)
 {
 	/*GLLANDMANNODE* pLandManNode = m_LandManList.m_pHead;
 	for ( ; pLandManNode; pLandManNode = pLandManNode->pNext )
@@ -2028,46 +2145,46 @@ HRESULT GLGaeaServer::Render ( LPDIRECT3DDEVICEQ pd3dDevice, CLIPVOLUME &cv )
 	}*/
 
 	size_t i, size = m_vecLandMan.size();
-	for( i = 0; i < size; i++ )
+	for (i = 0; i < size; i++)
 	{
-		m_vecLandMan[i]->Render( pd3dDevice, cv );
+		m_vecLandMan[i]->Render(pd3dDevice, cv);
 	}
 
 	return S_OK;
 }
 
-void GLGaeaServer::ChangeNameMap ( PGLCHAR pChar, const char* pszOldName, const char* pszNewName )
+void GLGaeaServer::ChangeNameMap(PGLCHAR pChar, const char *pszOldName, const char *pszNewName)
 {
-	GLCHAR_MAP_ITER name_iter = m_PCNameMap.find ( pChar->GetCharData2().m_szName );
-	if ( name_iter != m_PCNameMap.end() )
+	GLCHAR_MAP_ITER name_iter = m_PCNameMap.find(pChar->GetCharData2().m_szName);
+	if (name_iter != m_PCNameMap.end())
 	{
-		m_PCNameMap.erase ( name_iter );
-		StringCchCopy ( pChar->GetCharData2().m_szName, CHAR_SZNAME, pszNewName );
+		m_PCNameMap.erase(name_iter);
+		StringCchCopy(pChar->GetCharData2().m_szName, CHAR_SZNAME, pszNewName);
 
-		m_PCNameMap [ std::string(pChar->GetCharData2().m_szName) ] = pChar;
+		m_PCNameMap[std::string(pChar->GetCharData2().m_szName)] = pChar;
 	}
 }
 
-void GLGaeaServer::ChangeNameMap ( PGLCHAR pChar, const TCHAR* pszPhoneNumber )
+void GLGaeaServer::ChangeNameMap(PGLCHAR pChar, const TCHAR *pszPhoneNumber)
 {
-	GLCHAR_MAP_ITER name_iter = m_PCNameMap.find( pChar->GetCharData2().m_szName );
-	if ( name_iter != m_PCNameMap.end() )
+	GLCHAR_MAP_ITER name_iter = m_PCNameMap.find(pChar->GetCharData2().m_szName);
+	if (name_iter != m_PCNameMap.end())
 	{
-		StringCchCopy ( pChar->GetCharData2().m_szPhoneNumber, SMS_RECEIVER, pszPhoneNumber );
+		StringCchCopy(pChar->GetCharData2().m_szPhoneNumber, SMS_RECEIVER, pszPhoneNumber);
 	}
 }
 
-BOOL GLGaeaServer::ReserveServerStop ()
+BOOL GLGaeaServer::ReserveServerStop()
 {
 	m_bReservedStop = true;
 
 	// 주변을 정리한다.
-	
-	for ( DWORD i=0; i<m_dwMaxClient; i++ )
+
+	for (DWORD i = 0; i < m_dwMaxClient; i++)
 	{
-		if ( m_PCArray[i] ) 
+		if (m_PCArray[i])
 		{
-			m_PCArray[i]->ResetViewAround ();
+			m_PCArray[i]->ResetViewAround();
 			m_PCArray[i]->SetSTATE(EM_GETVA_AFTER);
 			m_PCArray[i]->ReSetSTATE(EM_ACT_WAITING);
 		}
@@ -2080,111 +2197,113 @@ BOOL GLGaeaServer::ReserveServerStop ()
 	pLandManNode->Data->ClearExptChaObj ();
 	}*/
 	size_t size = m_vecLandMan.size();
-	for( size_t i = 0; i < size; i++ )
+	for (size_t i = 0; i < size; i++)
 	{
 		m_vecLandMan[i]->ClearExptChaObj();
 	}
 
 	size = m_vecInstantMapSrcLandMan.size();
-	for( size_t i = 0; i < size; i++ )
+	for (size_t i = 0; i < size; i++)
 	{
 		m_vecInstantMapSrcLandMan[i]->ClearExptChaObj();
 	}
 
-	//m_LandManList.DELALL();
+	// m_LandManList.DELALL();
 
 	// 클라이언트에게 서버테스트를 위한 멈춤을 알림
 	GLMSG::SNET_REQ_SERVERTEST_FB NetMsgFB;
-	SENDTOALLCLIENT ( &NetMsgFB );
+	SENDTOALLCLIENT(&NetMsgFB);
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::RequestUsePETCARD ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_USEPETCARD* pNetMsg )
+BOOL GLGaeaServer::RequestUsePETCARD(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_USEPETCARD *pNetMsg)
 {
-	if ( IsReserveServerStop () ) return FALSE;
-	
+	if (IsReserveServerStop())
+		return FALSE;
+
 	GLMSG::SNETPET_REQ_USEPETCARD_FB NetMsgFB;
 
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner )
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
 	{
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return FALSE;
 	}
 
 	/*pet fix add call delay, EJCode, 2018/11/28 */
-	if ( pNetMsg->bCheckDelay && pOwner->m_fPetUseDelay < RPARAM::pet_call_delay )
+	if (pNetMsg->bCheckDelay && pOwner->m_fPetUseDelay < RPARAM::pet_call_delay)
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_TIME_DELAY;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return FALSE;
 	}
 
 	/*skill pet off, Juver, 2018/09/07 */
-	if ( pOwner->m_skill_pet_off )
+	if (pOwner->m_skill_pet_off)
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_ACTIONLIMIT;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return FALSE;
 	}
 
 	// 맵진입가능여부 체크
-	GLLandMan* pLandMan = GetByMapID ( pOwner->m_sMapID );
-	if ( !pLandMan )					return FALSE;
-	if ( !pLandMan->IsPetActivity () )
+	GLLandMan *pLandMan = GetByMapID(pOwner->m_sMapID);
+	if (!pLandMan)
+		return FALSE;
+	if (!pLandMan->IsPetActivity())
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_INVALIDZONE;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return FALSE;
 	}
 
 	// 팻이 활성화 되어있으면
-	PGLPETFIELD pMyPet = GetPET ( pOwner->m_dwPetGUID );
+	PGLPETFIELD pMyPet = GetPET(pOwner->m_dwPetGUID);
 	// if ( pMyPet && pMyPet->IsValid () ) return FALSE;
 
-
-	SINVENITEM* pInvenItem = pOwner->m_cInventory.FindPosItem ( pNetMsg->wPosX, pNetMsg->wPosY );
-	if ( !pInvenItem )
+	SINVENITEM *pInvenItem = pOwner->m_cInventory.FindPosItem(pNetMsg->wPosX, pNetMsg->wPosY);
+	if (!pInvenItem)
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_NOITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
 	/*if( pMyPet )
-	{	
-		CDebugSet::ToLogFile ( "## MyPet Info PetGUID %d PetOwnerGUID %d CharGUID %d PetID %d OwnerPetID %d", 
+	{
+		CDebugSet::ToLogFile ( "## MyPet Info PetGUID %d PetOwnerGUID %d CharGUID %d PetID %d OwnerPetID %d",
 								pMyPet->m_dwGUID, pMyPet->m_pOwner->m_dwPetGUID, pOwner->m_dwPetGUID, pMyPet->GetPetID(), pInvenItem->sItemCustom.dwPetID  );
 	}*/
 
-	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
-	if ( !pItem )
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(pInvenItem->sItemCustom.sNativeID);
+	if (!pItem)
 	{
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
-	if ( pItem->sBasicOp.emItemType != ITEM_PET_CARD )
+	if (pItem->sBasicOp.emItemType != ITEM_PET_CARD)
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_INVALIDCARD;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
 	/*pet fix add call delay, EJCode, 2018/11/28 */
 	pOwner->m_fPetUseDelay = 0.0f;
 
-	PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData ( pItem->sPet.sPetID );
-	if ( !pCrowData )					   return E_FAIL;
+	PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData(pItem->sPet.sPetID);
+	if (!pCrowData)
+		return E_FAIL;
 
 	// 에뮬레이터 모드
-	if ( m_bEmulator )
+	if (m_bEmulator)
 	{
-		PGLPET pPet = GLCONST_PET::GetPetData ( pItem->sPet.emPetType );
-		if ( !pPet )
+		PGLPET pPet = GLCONST_PET::GetPetData(pItem->sPet.emPetType);
+		if (!pPet)
 		{
-			SENDTOCLIENT ( dwClientID, &NetMsgFB );
+			SENDTOCLIENT(dwClientID, &NetMsgFB);
 			return E_FAIL;
 		}
 
@@ -2192,44 +2311,44 @@ BOOL GLGaeaServer::RequestUsePETCARD ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 		NewPet.m_sPetID = pItem->sPet.sPetID;
 
 		// 팻을 생성해준다
-		CreatePET ( &NewPet, dwGaeaID, 0 );
+		CreatePET(&NewPet, dwGaeaID, 0);
 
 		return S_OK;
 	}
 
 	// 신규생성
-	if ( pInvenItem->sItemCustom.dwPetID == 0 )
+	if (pInvenItem->sItemCustom.dwPetID == 0)
 	{
 		// 혹시 팻이 있으면 (하나의 케릭터가 동시에 복수개의 팻을 만드는 것을 방지)
-		if ( pMyPet ) 
+		if (pMyPet)
 		{
-			if ( !DropOutPET ( pOwner->m_dwPetGUID, true, false ) )
+			if (!DropOutPET(pOwner->m_dwPetGUID, true, false))
 			{
-				CDebugSet::ToLogFile ( "ERROR : DropOutPET() in GLGaeaServer::RequestUsePETCARD(), PetGUID : %u", pOwner->m_dwPetGUID );
+				CDebugSet::ToLogFile("ERROR : DropOutPET() in GLGaeaServer::RequestUsePETCARD(), PetGUID : %u", pOwner->m_dwPetGUID);
 			}
 		}
 
-		PGLPET pPet = GLCONST_PET::GetPetData ( pItem->sPet.emPetType );
-		if ( !pPet )
+		PGLPET pPet = GLCONST_PET::GetPetData(pItem->sPet.emPetType);
+		if (!pPet)
 		{
-			SENDTOCLIENT ( dwClientID, &NetMsgFB );
+			SENDTOCLIENT(dwClientID, &NetMsgFB);
 			return E_FAIL;
 		}
 
-		CCreatePet* pDbAction = new CCreatePet ( dwClientID, 
-												 (int)pOwner->m_dwCharID, 
-												 pCrowData->GetName (),
-												 pCrowData->m_sBasic.m_emPetType,
-												 (int)pItem->sPet.sPetID.wMainID,
-												 (int)pItem->sPet.sPetID.wSubID,
-												 (int)pPet->m_wStyle,
-												 (int)pPet->m_wColor,
-												 pNetMsg->wPosX,
-												 pNetMsg->wPosY, 
-												 (int)pItem->sBasicOp.sNativeID.wMainID,
-												 (int)pItem->sBasicOp.sNativeID.wSubID);
+		CCreatePet *pDbAction = new CCreatePet(dwClientID,
+											   (int)pOwner->m_dwCharID,
+											   pCrowData->GetName(),
+											   pCrowData->m_sBasic.m_emPetType,
+											   (int)pItem->sPet.sPetID.wMainID,
+											   (int)pItem->sPet.sPetID.wSubID,
+											   (int)pPet->m_wStyle,
+											   (int)pPet->m_wColor,
+											   pNetMsg->wPosX,
+											   pNetMsg->wPosY,
+											   (int)pItem->sBasicOp.sNativeID.wMainID,
+											   (int)pItem->sBasicOp.sNativeID.wSubID);
 
-		m_pDBMan->AddJob ( pDbAction );
+		m_pDBMan->AddJob(pDbAction);
 
 		// 일단 생성중인 번호임을 알리기 위해
 		pInvenItem->sItemCustom.dwPetID = UINT_MAX;
@@ -2237,45 +2356,47 @@ BOOL GLGaeaServer::RequestUsePETCARD ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 		pOwner->m_bGetPetFromDB = true;
 	}
 	// DB에서 데이터 불러와서 팻소환
-	else 
+	else
 	{
 		// 이미 팻을 부르고 있으면
-		if ( pOwner->m_bGetPetFromDB ) return TRUE;
+		if (pOwner->m_bGetPetFromDB)
+			return TRUE;
 
-        // 팻이 정상적으로 DropOut 되지 않고 서버에 잔존하는 경우가 생겼다...(^^;;;)
-		if ( pMyPet && pMyPet->IsValid () ) DropOutPET ( pMyPet->m_dwGUID, true, false );
+		// 팻이 정상적으로 DropOut 되지 않고 서버에 잔존하는 경우가 생겼다...(^^;;;)
+		if (pMyPet && pMyPet->IsValid())
+			DropOutPET(pMyPet->m_dwGUID, true, false);
 
 		// 팻이 로직에 남아 있으면
-		if ( pMyPet && pMyPet->GetPetID () == pInvenItem->sItemCustom.dwPetID )
+		if (pMyPet && pMyPet->GetPetID() == pInvenItem->sItemCustom.dwPetID)
 		{
-			GLPET* pPet = dynamic_cast<GLPET*>(pMyPet);
-			CreatePET ( pPet, dwGaeaID, pMyPet->GetPetID () );
+			GLPET *pPet = dynamic_cast<GLPET *>(pMyPet);
+			CreatePET(pPet, dwGaeaID, pMyPet->GetPetID());
 			return TRUE;
 		}
 
 		// 로직에 남아있는 팻과 팻카드의 번호가 서로 다르면
-		if ( pMyPet && pMyPet->GetPetID () != pInvenItem->sItemCustom.dwPetID )
+		if (pMyPet && pMyPet->GetPetID() != pInvenItem->sItemCustom.dwPetID)
 		{
-			if ( !DropOutPET ( pMyPet->m_dwGUID, true, false ) )
+			if (!DropOutPET(pMyPet->m_dwGUID, true, false))
 			{
-				CDebugSet::ToLogFile ( "ERROR : DropOutPET() in GLGaeaServer::RequestUsePETCARD(), PetGUID : %u", pMyPet->m_dwGUID );
+				CDebugSet::ToLogFile("ERROR : DropOutPET() in GLGaeaServer::RequestUsePETCARD(), PetGUID : %u", pMyPet->m_dwGUID);
 			}
 		}
 
-		PGLPET pPet = GLCONST_PET::GetPetData ( pItem->sPet.emPetType );
-		if ( !pPet )
+		PGLPET pPet = GLCONST_PET::GetPetData(pItem->sPet.emPetType);
+		if (!pPet)
 		{
-			SENDTOCLIENT ( dwClientID, &NetMsgFB );
+			SENDTOCLIENT(dwClientID, &NetMsgFB);
 			return E_FAIL;
 		}
 
-		PGLPET pNewPet = new GLPET ();
-		pNewPet->ASSIGN ( *pPet );
+		PGLPET pNewPet = new GLPET();
+		pNewPet->ASSIGN(*pPet);
 
 		// DB작업 실패시 혹은 생성후 메모리 해제해줘라
-		CGetPet* pDbAction = new CGetPet ( pNewPet, pInvenItem->sItemCustom.dwPetID, dwClientID, pOwner->m_dwCharID,
-										   pNetMsg->wPosX, pNetMsg->wPosY );
-		m_pDBMan->AddJob ( pDbAction );
+		CGetPet *pDbAction = new CGetPet(pNewPet, pInvenItem->sItemCustom.dwPetID, dwClientID, pOwner->m_dwCharID,
+										 pNetMsg->wPosX, pNetMsg->wPosY);
+		m_pDBMan->AddJob(pDbAction);
 
 		pOwner->m_bGetPetFromDB = true;
 	}
@@ -2283,168 +2404,185 @@ BOOL GLGaeaServer::RequestUsePETCARD ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 	return TRUE;
 }
 
-BOOL GLGaeaServer::RequestRevivePet ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_REVIVE* pNetMsg )
+BOOL GLGaeaServer::RequestRevivePet(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_REVIVE *pNetMsg)
 {
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner ) return FALSE;
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
+		return FALSE;
 
 	// 아이템이 팻카드인지 체크
-	SINVENITEM* pInvenItem = pOwner->m_cInventory.FindPosItem ( pNetMsg->wPosX, pNetMsg->wPosY );
-	if ( !pInvenItem ) return FALSE;
-	
-	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
-	if ( !pItem )      return FALSE;
-	if ( pItem->sBasicOp.emItemType != ITEM_PET_CARD ) return FALSE;
+	SINVENITEM *pInvenItem = pOwner->m_cInventory.FindPosItem(pNetMsg->wPosX, pNetMsg->wPosY);
+	if (!pInvenItem)
+		return FALSE;
+
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(pInvenItem->sItemCustom.sNativeID);
+	if (!pItem)
+		return FALSE;
+	if (pItem->sBasicOp.emItemType != ITEM_PET_CARD)
+		return FALSE;
 
 	// 손에든 아이템이 팻부활카드인지 체크
-	const SITEMCUSTOM sHold = pOwner->GET_HOLD_ITEM ();
+	const SITEMCUSTOM sHold = pOwner->GET_HOLD_ITEM();
 
-	SITEM* pHoldItem = GLItemMan::GetInstance().GetItem ( sHold.sNativeID );
-	if ( !pHoldItem )      return FALSE;
-	
-	if ( pHoldItem->sBasicOp.emItemType != ITEM_PET_REVIVE ) return FALSE;
+	SITEM *pHoldItem = GLItemMan::GetInstance().GetItem(sHold.sNativeID);
+	if (!pHoldItem)
+		return FALSE;
+
+	if (pHoldItem->sBasicOp.emItemType != ITEM_PET_REVIVE)
+		return FALSE;
 
 	// 펫 액션 로그
-	GLITEMLMT::GetInstance().ReqPetAction( pNetMsg->dwPetID, pInvenItem->sItemCustom.sNativeID, EMPET_ACTION_REVIVE, 0 );
+	GLITEMLMT::GetInstance().ReqPetAction(pNetMsg->dwPetID, pInvenItem->sItemCustom.sNativeID, EMPET_ACTION_REVIVE, 0);
 
 	// 삭제된 팻을 부활하고 새롭게 생성하는 코드 (반드시 Full 이 100.00% 여야 함!)
-	CRestorePet* pDbActionRestore = new CRestorePet ( pNetMsg->dwPetID, 
-													  dwClientID,
-													  pOwner->m_dwCharID, 
-													  pNetMsg->wPosX, 
-													  pNetMsg->wPosY );
-	m_pDBMan->AddJob ( pDbActionRestore );
+	CRestorePet *pDbActionRestore = new CRestorePet(pNetMsg->dwPetID,
+													dwClientID,
+													pOwner->m_dwCharID,
+													pNetMsg->wPosX,
+													pNetMsg->wPosY);
+	m_pDBMan->AddJob(pDbActionRestore);
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::RevivePet ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_REVIVE_FROMDB_FB* pNetMsg )
+BOOL GLGaeaServer::RevivePet(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_REQ_REVIVE_FROMDB_FB *pNetMsg)
 {
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner ) return FALSE;
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
+		return FALSE;
 
 	// 아이템이 팻카드인지 체크
-	SINVENITEM* pInvenItem = pOwner->m_cInventory.FindPosItem ( pNetMsg->wPosX, pNetMsg->wPosY );
-	if ( !pInvenItem ) return FALSE;
-	
-	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
-	if ( !pItem )      return FALSE;
-	if ( pItem->sBasicOp.emItemType != ITEM_PET_CARD ) return FALSE;
+	SINVENITEM *pInvenItem = pOwner->m_cInventory.FindPosItem(pNetMsg->wPosX, pNetMsg->wPosY);
+	if (!pInvenItem)
+		return FALSE;
+
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(pInvenItem->sItemCustom.sNativeID);
+	if (!pItem)
+		return FALSE;
+	if (pItem->sBasicOp.emItemType != ITEM_PET_CARD)
+		return FALSE;
 
 	// 손에든 아이템이 팻부활카드인지 체크
-	const SITEMCUSTOM sHold = pOwner->GET_HOLD_ITEM ();
+	const SITEMCUSTOM sHold = pOwner->GET_HOLD_ITEM();
 
-	SITEM* pHoldItem = GLItemMan::GetInstance().GetItem ( sHold.sNativeID );
-	if ( !pHoldItem )      return FALSE;
-	
-	if ( pHoldItem->sBasicOp.emItemType != ITEM_PET_REVIVE ) return FALSE;
+	SITEM *pHoldItem = GLItemMan::GetInstance().GetItem(sHold.sNativeID);
+	if (!pHoldItem)
+		return FALSE;
+
+	if (pHoldItem->sBasicOp.emItemType != ITEM_PET_REVIVE)
+		return FALSE;
 
 	// 기존의 팻 제거
-	if ( pOwner->m_dwPetID == pInvenItem->sItemCustom.dwPetID )
+	if (pOwner->m_dwPetID == pInvenItem->sItemCustom.dwPetID)
 	{
-		DropOutPET ( pOwner->m_dwPetGUID, true, false );
+		DropOutPET(pOwner->m_dwPetGUID, true, false);
 	}
-	
-	if ( pInvenItem->sItemCustom.dwPetID != 0 )
+
+	if (pInvenItem->sItemCustom.dwPetID != 0)
 	{
-		CDeletePet* pDbAction = new CDeletePet ( pOwner->m_dwCharID, pInvenItem->sItemCustom.dwPetID );
-		if ( m_pDBMan ) m_pDBMan->AddJob ( pDbAction );
+		CDeletePet *pDbAction = new CDeletePet(pOwner->m_dwCharID, pInvenItem->sItemCustom.dwPetID);
+		if (m_pDBMan)
+			m_pDBMan->AddJob(pDbAction);
 	}
 
 	// 팻카드의 팻ID를 부활시킨 팻ID로 변경.
 	pInvenItem->sItemCustom.dwPetID = pNetMsg->dwPetID;
 
 	// 팻 부활카드 사용로그 남김
-	GLITEMLMT::GetInstance().ReqItemRoute ( sHold, ID_CHAR, 0, ID_CHAR, pOwner->m_dwCharID, EMITEM_ROUTE_DELETE, sHold.wTurnNum );
+	GLITEMLMT::GetInstance().ReqItemRoute(sHold, ID_CHAR, 0, ID_CHAR, pOwner->m_dwCharID, EMITEM_ROUTE_DELETE, sHold.wTurnNum);
 
 	// 손에든 팻부활 카드를 제거해준다.
-	pOwner->RELEASE_HOLD_ITEM ();
+	pOwner->RELEASE_HOLD_ITEM();
 
 	GLMSG::SNETPC_PUTON_RELEASE NetMsg_ReleaseHold(SLOT_HOLD);
-	GLGaeaServer::GetInstance().SENDTOCLIENT( dwClientID, &NetMsg_ReleaseHold );
+	GLGaeaServer::GetInstance().SENDTOCLIENT(dwClientID, &NetMsg_ReleaseHold);
 
 	// 팻 부활 성공을 알림
 	GLMSG::SNETPET_REQ_REVIVE_FB NetMsg;
 	NetMsg.emFB = EMPET_REQ_REVIVE_FB_OK;
 	NetMsg.dwPetID = pNetMsg->dwPetID;
-	GLGaeaServer::GetInstance().SENDTOCLIENT( dwClientID, &NetMsg );
+	GLGaeaServer::GetInstance().SENDTOCLIENT(dwClientID, &NetMsg);
 
 	// 부활된 팻카드의 정보를 알려준다.
-	PGLPET pPetInfo = new GLPET ();
+	PGLPET pPetInfo = new GLPET();
 
 	// DB작업 실패시 혹은 생성후 메모리 해제해줘라
-	CGetPet* pDbActionGetPet = new CGetPet ( pPetInfo, pNetMsg->dwPetID, dwClientID, pOwner->m_dwCharID, 
-											 pNetMsg->wPosX, pNetMsg->wPosY, false, true );
-	m_pDBMan->AddJob ( pDbActionGetPet );
+	CGetPet *pDbActionGetPet = new CGetPet(pPetInfo, pNetMsg->dwPetID, dwClientID, pOwner->m_dwCharID,
+										   pNetMsg->wPosX, pNetMsg->wPosY, false, true);
+	m_pDBMan->AddJob(pDbActionGetPet);
 
 	return TRUE;
 }
 
-void GLGaeaServer::CreatePETOnDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_CREATEPET_FROMDB_FB* pNetMsg )
+void GLGaeaServer::CreatePETOnDB(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_CREATEPET_FROMDB_FB *pNetMsg)
 {
 	GLMSG::SNETPET_REQ_USEPETCARD_FB NetMsgFB;
 
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner ) return;
-	
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
+		return;
+
 	pOwner->m_bGetPetFromDB = false;
 
-	SINVENITEM* pInvenItem = pOwner->m_cInventory.FindPosItem ( pNetMsg->wPosX, pNetMsg->wPosY );
-	if ( !pInvenItem )
+	SINVENITEM *pInvenItem = pOwner->m_cInventory.FindPosItem(pNetMsg->wPosX, pNetMsg->wPosY);
+	if (!pInvenItem)
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_NOITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	SITEM* pItem = GLItemMan::GetInstance().GetItem ( pInvenItem->sItemCustom.sNativeID );
-	if ( !pItem )
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(pInvenItem->sItemCustom.sNativeID);
+	if (!pItem)
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_FAIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	if ( pItem->sBasicOp.emItemType != ITEM_PET_CARD )
+	if (pItem->sBasicOp.emItemType != ITEM_PET_CARD)
 	{
 		NetMsgFB.emFB = EMPET_USECARD_FB_INVALIDCARD;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-
 	// 맵진입가능여부 체크
-	GLLandMan* pLandMan = GetByMapID ( pOwner->m_sMapID );
-	if ( !pLandMan )					return;
-	if ( !pLandMan->IsPetActivity () )
+	GLLandMan *pLandMan = GetByMapID(pOwner->m_sMapID);
+	if (!pLandMan)
+		return;
+	if (!pLandMan->IsPetActivity())
 	{
 		pInvenItem->sItemCustom.dwPetID = pNetMsg->dwPetID;
 
 		NetMsgFB.emFB = EMPET_USECARD_FB_INVALIDZONE;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );		
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData ( pItem->sPet.sPetID );
-	if ( !pCrowData ) return;
-	
+	PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData(pItem->sPet.sPetID);
+	if (!pCrowData)
+		return;
+
 	// 팻 아이디 설정
 	pInvenItem->sItemCustom.dwPetID = pNetMsg->dwPetID;
 
-	PGLPET pPet = GLCONST_PET::GetPetData ( pItem->sPet.emPetType );
-	if ( !pPet ) return;
+	PGLPET pPet = GLCONST_PET::GetPetData(pItem->sPet.emPetType);
+	if (!pPet)
+		return;
 
 	// 신규생성
 	GLPET NewPet;
-	NewPet.ASSIGN ( *pPet );
+	NewPet.ASSIGN(*pPet);
 	NewPet.m_emTYPE = pItem->sPet.emPetType;
 	NewPet.m_sPetID = pItem->sPet.sPetID;
 	NewPet.m_sPetCardID = pInvenItem->sItemCustom.sNativeID;
-	StringCchCopy ( NewPet.m_szName, PETNAMESIZE+1, pCrowData->GetName () );
-	PGLPETFIELD pMyPet = CreatePET ( &NewPet, dwGaeaID, pNetMsg->dwPetID );
-	if ( !pMyPet ) return;
+	StringCchCopy(NewPet.m_szName, PETNAMESIZE + 1, pCrowData->GetName());
+	PGLPETFIELD pMyPet = CreatePET(&NewPet, dwGaeaID, pNetMsg->dwPetID);
+	if (!pMyPet)
+		return;
 
-	/*	
+	/*
 	// 만약 여기서 성공하면 소유권을 생성해준다.
 	CExchangePet* pDbAction = new CExchangePet ( pOwner->m_dwCharID, pNetMsg->dwPetID );
 	m_pDBMan->AddJob ( pDbAction );
@@ -2453,589 +2591,618 @@ void GLGaeaServer::CreatePETOnDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET
 	// 팻카드의 정보도 수정해준다.
 	GLMSG::SNETPET_REQ_PETCARDINFO_FB NetMsg;
 
-	NetMsg.emTYPE				= pMyPet->m_emTYPE;
-	NetMsg.nFull				= pMyPet->m_nFull;
+	NetMsg.emTYPE = pMyPet->m_emTYPE;
+	NetMsg.nFull = pMyPet->m_nFull;
 
 	/*dual pet skill, Juver, 2017/12/27 */
-	NetMsg.sActiveSkillID_A		= pMyPet->m_sActiveSkillID_A;
-	NetMsg.sActiveSkillID_B		= pMyPet->m_sActiveSkillID_B;
-	NetMsg.bDualSkill			= pMyPet->m_bDualSkill;
+	NetMsg.sActiveSkillID_A = pMyPet->m_sActiveSkillID_A;
+	NetMsg.sActiveSkillID_B = pMyPet->m_sActiveSkillID_B;
+	NetMsg.bDualSkill = pMyPet->m_bDualSkill;
 
-	NetMsg.wSkillNum			= static_cast<WORD>(pMyPet->m_ExpSkills.size());
-	NetMsg.dwPetID				= pMyPet->m_dwPetID;
-	NetMsg.bTrade				= false;
-	StringCchCopy ( NetMsg.szName, PETNAMESIZE+1, pMyPet->m_szName );
-	
+	NetMsg.wSkillNum = static_cast<WORD>(pMyPet->m_ExpSkills.size());
+	NetMsg.dwPetID = pMyPet->m_dwPetID;
+	NetMsg.bTrade = false;
+	StringCchCopy(NetMsg.szName, PETNAMESIZE + 1, pMyPet->m_szName);
+
 	PETSKILL_MAP_ITER iter = pMyPet->m_ExpSkills.begin();
 	PETSKILL_MAP_ITER iter_end = pMyPet->m_ExpSkills.end();
 	WORD i(0);
-	for ( ;iter != iter_end; ++iter )
+	for (; iter != iter_end; ++iter)
 	{
 		NetMsg.Skills[i++] = (*iter).second;
 	}
 
-	for ( WORD i = 0; i < PET_ACCETYPE_SIZE; ++i )
+	for (WORD i = 0; i < PET_ACCETYPE_SIZE; ++i)
 	{
 		NetMsg.PutOnItems[i] = pMyPet->m_PutOnItems[i];
 	}
 
-	SENDTOCLIENT ( dwClientID, &NetMsg );
+	SENDTOCLIENT(dwClientID, &NetMsg);
 
 	// 로그에 최초생성을 남김
-	GLITEMLMT::GetInstance().ReqItemRoute ( pInvenItem->sItemCustom, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_PETCARD, 1 );
+	GLITEMLMT::GetInstance().ReqItemRoute(pInvenItem->sItemCustom, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_PETCARD, 1);
 }
 
-void GLGaeaServer::GetPETInfoFromDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_GETPET_FROMDB_FB* pNetMsg )
+void GLGaeaServer::GetPETInfoFromDB(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_GETPET_FROMDB_FB *pNetMsg)
 {
+	// Security: validate internal message token to block forged client packets.
+	DWORD dwToken = *(DWORD *)pNetMsg->m_cBUFFER;
+	if (dwToken != m_dwInternalMsgToken)
+	{
+		// Forged packet detected ? log attacker and reject without touching pPet
+		LogSecurityEvent(dwClientID, "CRIT-06: forged NET_MSG_GET_PET_FROMDB_FB ? invalid internal token");
+		return;
+	}
+
+	// Security: null pointer validation
+	if (!pNetMsg->pPet)
+	{
+		return;
+	}
+
 	// [주의]DB에서 넣어주지 않아서 pNetMsg->pPet->m_dwPetID 값은 유효하지 않다.
 
 	GLMSG::SNETPET_REQ_USEPETCARD_FB NetMsgFB;
 
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar )
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
 	{
-		SAFE_DELETE ( pNetMsg->pPet );
+		SAFE_DELETE(pNetMsg->pPet);
 		return;
 	}
 
 	// DB에 없으면 그냥 초기값으로 넘어오는 경우가 있으므로 체크해준다.
-	if ( pNetMsg->pPet->m_emTYPE == PET_TYPE_NONE )
+	if (pNetMsg->pPet->m_emTYPE == PET_TYPE_NONE)
 	{
-		SAFE_DELETE ( pNetMsg->pPet );
+		SAFE_DELETE(pNetMsg->pPet);
 		return;
 	}
 
-
 	// 팻카드 정보 발신
-	if ( pNetMsg->bTrade || pNetMsg->bCardInfo )
+	if (pNetMsg->bTrade || pNetMsg->bCardInfo)
 	{
 		GLMSG::SNETPET_REQ_PETCARDINFO_FB NetMsgFB;
 
-		NetMsgFB.emTYPE				= pNetMsg->pPet->m_emTYPE;
-		NetMsgFB.nFull				= pNetMsg->pPet->m_nFull;
+		NetMsgFB.emTYPE = pNetMsg->pPet->m_emTYPE;
+		NetMsgFB.nFull = pNetMsg->pPet->m_nFull;
 
 		/*dual pet skill, Juver, 2017/12/27 */
-		NetMsgFB.sActiveSkillID_A	= pNetMsg->pPet->m_sActiveSkillID_A;
-		NetMsgFB.sActiveSkillID_B	= pNetMsg->pPet->m_sActiveSkillID_B;
-		NetMsgFB.bDualSkill			= pNetMsg->pPet->m_bDualSkill;
+		NetMsgFB.sActiveSkillID_A = pNetMsg->pPet->m_sActiveSkillID_A;
+		NetMsgFB.sActiveSkillID_B = pNetMsg->pPet->m_sActiveSkillID_B;
+		NetMsgFB.bDualSkill = pNetMsg->pPet->m_bDualSkill;
 
-		NetMsgFB.wSkillNum			= static_cast<WORD>(pNetMsg->pPet->m_ExpSkills.size());
-		NetMsgFB.dwPetID			= pNetMsg->dwPetID;
-		NetMsgFB.bTrade				= pNetMsg->bTrade;
-		PETSKILL_MAP_ITER iter      = pNetMsg->pPet->m_ExpSkills.begin();
-		PETSKILL_MAP_ITER iter_end  = pNetMsg->pPet->m_ExpSkills.end();
-		StringCchCopy ( NetMsgFB.szName, PETNAMESIZE+1, pNetMsg->pPet->m_szName );
+		NetMsgFB.wSkillNum = static_cast<WORD>(pNetMsg->pPet->m_ExpSkills.size());
+		NetMsgFB.dwPetID = pNetMsg->dwPetID;
+		NetMsgFB.bTrade = pNetMsg->bTrade;
+		PETSKILL_MAP_ITER iter = pNetMsg->pPet->m_ExpSkills.begin();
+		PETSKILL_MAP_ITER iter_end = pNetMsg->pPet->m_ExpSkills.end();
+		StringCchCopy(NetMsgFB.szName, PETNAMESIZE + 1, pNetMsg->pPet->m_szName);
 		WORD i(0);
-		for ( ;iter != iter_end; ++iter )		  NetMsgFB.Skills[i++] = (*iter).second;
-		for ( WORD i = 0; i < PET_ACCETYPE_SIZE; ++i ) NetMsgFB.PutOnItems[i] = pNetMsg->pPet->m_PutOnItems[i];
+		for (; iter != iter_end; ++iter)
+			NetMsgFB.Skills[i++] = (*iter).second;
+		for (WORD i = 0; i < PET_ACCETYPE_SIZE; ++i)
+			NetMsgFB.PutOnItems[i] = pNetMsg->pPet->m_PutOnItems[i];
 
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 	}
 	// 팻 악세서리의 시효성 검사
-	else if ( pNetMsg->bLMTItemCheck )
+	else if (pNetMsg->bLMTItemCheck)
 	{
-		
-		if ( pChar )
+
+		if (pChar)
 		{
 			// 없앨꺼 없애고
-			pNetMsg->pPet->UpdateTimeLmtItem ( pChar );
-			
+			pNetMsg->pPet->UpdateTimeLmtItem(pChar);
+
 			// 넣어줄꺼 넣어준다.
-			for ( WORD i = 0; i < PET_ACCETYPE_SIZE; ++i )
+			for (WORD i = 0; i < PET_ACCETYPE_SIZE; ++i)
 			{
 				CItemDrop cDropItem;
 				cDropItem.sItemCustom = pNetMsg->pPet->m_PutOnItems[i];
-				if ( pChar->IsInsertToInven ( &cDropItem ) ) 
+				if (pChar->IsInsertToInven(&cDropItem))
 				{
-					pChar->InsertToInven ( &cDropItem );
+					pChar->InsertToInven(&cDropItem);
 				}
 				else
 				{
-					if ( pChar->m_pLandMan )
+					if (pChar->m_pLandMan)
 					{
-						pChar->m_pLandMan->DropItem ( pChar->m_vPos, &(cDropItem.sItemCustom), EMGROUP_ONE, pChar->m_dwGaeaID );
+						pChar->m_pLandMan->DropItem(pChar->m_vPos, &(cDropItem.sItemCustom), EMGROUP_ONE, pChar->m_dwGaeaID);
 					}
 				}
 			}
-			
-			CDeletePet* pDbAction = new CDeletePet ( pChar->m_dwCharID, pNetMsg->dwPetID );
-			if ( m_pDBMan ) m_pDBMan->AddJob ( pDbAction );
-			
+
+			CDeletePet *pDbAction = new CDeletePet(pChar->m_dwCharID, pNetMsg->dwPetID);
+			if (m_pDBMan)
+				m_pDBMan->AddJob(pDbAction);
+
 			// 팻이 삭제되면 부활정보를 클라이언트에 알려줌.
-			CGetRestorePetList *pDbAction1 = new CGetRestorePetList ( pChar->m_dwCharID, pChar->m_dwClientID );
-			if ( m_pDBMan ) m_pDBMan->AddJob ( pDbAction1 );
+			CGetRestorePetList *pDbAction1 = new CGetRestorePetList(pChar->m_dwCharID, pChar->m_dwClientID);
+			if (m_pDBMan)
+				m_pDBMan->AddJob(pDbAction1);
 		}
 	}
 	else
 	{
 
 		// 맵진입가능여부 체크
-		GLLandMan* pLandMan = GetByMapID ( pChar->m_sMapID );
-		if ( !pLandMan || !pLandMan->IsPetActivity () )
+		GLLandMan *pLandMan = GetByMapID(pChar->m_sMapID);
+		if (!pLandMan || !pLandMan->IsPetActivity())
 		{
-			SAFE_DELETE ( pNetMsg->pPet );
+			SAFE_DELETE(pNetMsg->pPet);
 			pChar->m_bGetPetFromDB = false;
 
 			NetMsgFB.emFB = EMPET_USECARD_FB_INVALIDZONE;
-			SENDTOCLIENT ( dwClientID, &NetMsgFB );					
+			SENDTOCLIENT(dwClientID, &NetMsgFB);
 			return;
 		}
 
 		// 팻을 생성해준다
-		CreatePET ( pNetMsg->pPet, dwGaeaID, pNetMsg->dwPetID );
-		if ( pChar ) pChar->m_bGetPetFromDB = false;
+		CreatePET(pNetMsg->pPet, dwGaeaID, pNetMsg->dwPetID);
+		if (pChar)
+			pChar->m_bGetPetFromDB = false;
 	}
-	
-	SAFE_DELETE ( pNetMsg->pPet );
+
+	SAFE_DELETE(pNetMsg->pPet);
 }
 
-void GLGaeaServer::GetPETInfoFromDBError( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_GETPET_FROMDB_ERROR* pNetMsg )
+void GLGaeaServer::GetPETInfoFromDBError(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPET_GETPET_FROMDB_ERROR *pNetMsg)
 {
 	GLMSG::SNETPET_REQ_USEPETCARD_FB NetMsgFB;
 
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar )
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
 	{
 		return;
 	}
 
 	// 팻카드 정보 발신
-	if ( pNetMsg->bTrade || pNetMsg->bCardInfo || pNetMsg->bLMTItemCheck )
+	if (pNetMsg->bTrade || pNetMsg->bCardInfo || pNetMsg->bLMTItemCheck)
 	{
 		return;
 	}
 
-	SINVENITEM* pInvenItem = pChar->m_cInventory.FindPosItem ( pNetMsg->wPosX, pNetMsg->wPosY );
-	if ( pInvenItem ) pInvenItem->sItemCustom.dwPetID = 0;
-	
+	SINVENITEM *pInvenItem = pChar->m_cInventory.FindPosItem(pNetMsg->wPosX, pNetMsg->wPosY);
+	if (pInvenItem)
+		pInvenItem->sItemCustom.dwPetID = 0;
+
 	pChar->m_bGetPetFromDB = false;
 
 	NetMsgFB.emFB = EMPET_USECARD_FB_NODATA;
-	SENDTOCLIENT ( dwClientID, &NetMsgFB );		
-
+	SENDTOCLIENT(dwClientID, &NetMsgFB);
 }
 
-void GLGaeaServer::ReserveMessage( DWORD dwClientID, DWORD dwGaeaID, CTime time, LPVOID nmg )
+void GLGaeaServer::ReserveMessage(DWORD dwClientID, DWORD dwGaeaID, CTime time, LPVOID nmg)
 {
 
-	NET_MSG_GENERIC* pNmg = (NET_MSG_GENERIC*) nmg;	
-	if( !pNmg ) return;
+	NET_MSG_GENERIC *pNmg = (NET_MSG_GENERIC *)nmg;
+	if (!pNmg)
+		return;
 	PGLCHAR pChar = GetChar(dwGaeaID);
-	if( !pChar ) return;
+	if (!pChar)
+		return;
 
-	DWORD dwSize = pNmg->dwSize;	
+	DWORD dwSize = pNmg->dwSize;
 
 	SReserveMSG reserveMsg;
-	reserveMsg.sendTime   = time;
+	reserveMsg.sendTime = time;
 	reserveMsg.dwClientID = dwClientID;
-	reserveMsg.dwGaeaID   = dwGaeaID;
-	memcpy( reserveMsg.sendMsg, nmg, dwSize );
+	reserveMsg.dwGaeaID = dwGaeaID;
+	memcpy(reserveMsg.sendMsg, nmg, dwSize);
 	m_listReserveMsg.push_back(reserveMsg);
 }
 
-void GLGaeaServer::ReserveMessage( DWORD dwClientID, DWORD dwGaeaID, DWORD dwLatterSec, LPVOID nmg )
+void GLGaeaServer::ReserveMessage(DWORD dwClientID, DWORD dwGaeaID, DWORD dwLatterSec, LPVOID nmg)
 {
-	NET_MSG_GENERIC* pNmg = (NET_MSG_GENERIC*) nmg;	
-	if( !pNmg ) return;
+	NET_MSG_GENERIC *pNmg = (NET_MSG_GENERIC *)nmg;
+	if (!pNmg)
+		return;
 	PGLCHAR pChar = GetChar(dwGaeaID);
-	if( !pChar ) return;
+	if (!pChar)
+		return;
 
 	DWORD dwSize = pNmg->dwSize;
 
 	SReserveMSG reserveMsg;
 	CTime curTime = CTime::GetCurrentTime();
-	CTimeSpan timeSpan( 0, 0, 0, dwLatterSec );
-	reserveMsg.sendTime	  = curTime + timeSpan;
+	CTimeSpan timeSpan(0, 0, 0, dwLatterSec);
+	reserveMsg.sendTime = curTime + timeSpan;
 	reserveMsg.dwClientID = dwClientID;
-	reserveMsg.dwGaeaID   = dwGaeaID;
-	memcpy( reserveMsg.sendMsg, nmg, dwSize );
+	reserveMsg.dwGaeaID = dwGaeaID;
+	memcpy(reserveMsg.sendMsg, nmg, dwSize);
 	m_listReserveMsg.push_back(reserveMsg);
 }
 
 void GLGaeaServer::ReserveMessageProcess()
 {
-	if( m_listReserveMsg.size() == 0 ) return;
+	if (m_listReserveMsg.size() == 0)
+		return;
 
 	RESERVEMSGLIST_ITER iter = m_listReserveMsg.begin();
 	SReserveMSG reserveMsg;
 	CTime curTime = CTime::GetCurrentTime();
-	for( ; iter != m_listReserveMsg.end(); ++iter )
+	for (; iter != m_listReserveMsg.end(); ++iter)
 	{
 		reserveMsg = *iter;
-		if( reserveMsg.sendTime == curTime || 
-			reserveMsg.sendTime < curTime )
+		if (reserveMsg.sendTime == curTime ||
+			reserveMsg.sendTime < curTime)
 		{
 			PGLCHAR pChar = GetChar(reserveMsg.dwGaeaID);
-			if( pChar && pChar->m_dwClientID == reserveMsg.dwClientID )
+			if (pChar && pChar->m_dwClientID == reserveMsg.dwClientID)
 			{
-				SENDTOCLIENT( reserveMsg.dwClientID, reserveMsg.sendMsg );
+				SENDTOCLIENT(reserveMsg.dwClientID, reserveMsg.sendMsg);
 			}
-			m_listReserveMsg.erase( iter-- );
+			m_listReserveMsg.erase(iter--);
 		}
-		
 	}
 }
 
-
-void GLGaeaServer::ClearReserveDropOutPet ()
+void GLGaeaServer::ClearReserveDropOutPet()
 {
-	if( m_reqDropOutPet.size() == 0 ) return;
+	if (m_reqDropOutPet.size() == 0)
+		return;
 
 	VPETID_ITER iter = m_reqDropOutPet.begin();
-	for ( ; iter != m_reqDropOutPet.end(); ++iter )
+	for (; iter != m_reqDropOutPet.end(); ++iter)
 	{
-		SDROPOUTPETINFO sDropoutPetInfo= *(iter);
-		DropOutPET ( sDropoutPetInfo.dwPetGuid, sDropoutPetInfo.bLeaveFieldServer, sDropoutPetInfo.bMoveMap  );
+		SDROPOUTPETINFO sDropoutPetInfo = *(iter);
+		DropOutPET(sDropoutPetInfo.dwPetGuid, sDropoutPetInfo.bLeaveFieldServer, sDropoutPetInfo.bMoveMap);
 	}
 
 	m_reqDropOutPet.clear();
 }
 
-HRESULT GLGaeaServer::CreateInstantMap( SNATIVEID sDestMapID, SNATIVEID sInstantMapID, DWORD dwGaeaID, DWORD dwPartyID )
+HRESULT GLGaeaServer::CreateInstantMap(SNATIVEID sDestMapID, SNATIVEID sInstantMapID, DWORD dwGaeaID, DWORD dwPartyID)
 {
-	int iMapNum = sInstantMapID.wSubID-1;
+	int iMapNum = sInstantMapID.wSubID - 1;
 
-	GLLandMan *pSrcLandMan = /*new GLLandMan;*/NEW_GLLANDMAN();
-	SMAPNODE  *pMapNode	  = FindMapNode ( sDestMapID );
-	GLLandMan *pDestLandMan = GetInstantMapByMapID ( sDestMapID );
+	GLLandMan *pSrcLandMan = /*new GLLandMan;*/ NEW_GLLANDMAN();
+	SMAPNODE *pMapNode = FindMapNode(sDestMapID);
+	GLLandMan *pDestLandMan = GetInstantMapByMapID(sDestMapID);
 
-	if( !pMapNode )		return E_FAIL;
-	if( !pDestLandMan ) return E_FAIL;
+	if (!pMapNode)
+		return E_FAIL;
+	if (!pDestLandMan)
+		return E_FAIL;
 
 	SMAPNODE smap_node;
 	smap_node = *pMapNode;
-	smap_node.sLEVEL_REQUIRE  = pMapNode->sLEVEL_REQUIRE;
+	smap_node.sLEVEL_REQUIRE = pMapNode->sLEVEL_REQUIRE;
 	smap_node.sLEVEL_ETC_FUNC = pMapNode->sLEVEL_ETC_FUNC;
 	smap_node.sNativeID = sInstantMapID;
-	BOOL bInsert = InsertMapList( smap_node );
-	if ( bInsert )
+	BOOL bInsert = InsertMapList(smap_node);
+	if (bInsert)
 	{
-		m_vecInstantMapId.push_back( sInstantMapID.dwID );
+		m_vecInstantMapId.push_back(sInstantMapID.dwID);
 
-
-		pSrcLandMan->SetMapID ( sInstantMapID, pMapNode->bPeaceZone!=FALSE, pMapNode->bPKZone==TRUE );
-		pSrcLandMan->SetInstantMap( TRUE, dwGaeaID, dwPartyID );
-		if( !pSrcLandMan->LoadFileForInstantMap( pSrcLandMan, pDestLandMan ) ) return E_FAIL;
+		pSrcLandMan->SetMapID(sInstantMapID, pMapNode->bPeaceZone != FALSE, pMapNode->bPKZone == TRUE);
+		pSrcLandMan->SetInstantMap(TRUE, dwGaeaID, dwPartyID);
+		if (!pSrcLandMan->LoadFileForInstantMap(pSrcLandMan, pDestLandMan))
+			return E_FAIL;
 
 		//	RELEASE_GLLANDMAN( pSrcLandMan );
 
-		InsertMap ( pSrcLandMan );
-		CDebugSet::ToFileWithTime( "instancemap.txt", "[INFO FIELD]InstanceMap insert mapslist[%d~%d]", 
-			sInstantMapID.wMainID, sInstantMapID.wSubID );
+		InsertMap(pSrcLandMan);
+		CDebugSet::ToFileWithTime("instancemap.txt", "[INFO FIELD]InstanceMap insert mapslist[%d~%d]",
+								  sInstantMapID.wMainID, sInstantMapID.wSubID);
 	}
 	else
 	{
-		CDebugSet::ToFileWithTime( "instancemap.txt", "[INFO FIELD]InstanceMap insert to mapslist failed[%d~%d]", 
-			sInstantMapID.wMainID, sInstantMapID.wSubID );
+		CDebugSet::ToFileWithTime("instancemap.txt", "[INFO FIELD]InstanceMap insert to mapslist failed[%d~%d]",
+								  sInstantMapID.wMainID, sInstantMapID.wSubID);
 		return E_FAIL;
 	}
-	
-	return S_OK;
 
+	return S_OK;
 }
 
-
-void GLGaeaServer::DeleteInstantMap( const DWORD i )
+void GLGaeaServer::DeleteInstantMap(const DWORD i)
 {
 
 	GLMSG::SNETREQ_CREATE_INSTANT_MAP_DEL NetMsg;
 
-	GLLandMan* pLanMan = m_vecLandMan[i];
-	if ( NULL == pLanMan ) return;
+	GLLandMan *pLanMan = m_vecLandMan[i];
+	if (NULL == pLanMan)
+		return;
 
-	//last check if map have pc
-	if ( pLanMan->m_GlobPCList.m_dwAmount != 0 )
+	// last check if map have pc
+	if (pLanMan->m_GlobPCList.m_dwAmount != 0)
 	{
-		CDebugSet::ToFileWithTime( "instancemap.txt", "[INFO FIELD]Delete Instant Map! Map Not Empty! Instant Map ID [%d][%d]", NetMsg.sInstantMapID.wMainID,  NetMsg.sInstantMapID.wSubID );
+		CDebugSet::ToFileWithTime("instancemap.txt", "[INFO FIELD]Delete Instant Map! Map Not Empty! Instant Map ID [%d][%d]", NetMsg.sInstantMapID.wMainID, NetMsg.sInstantMapID.wSubID);
 
-		GLCHARNODE* pCharNode = pLanMan->m_GlobPCList.m_pHead;
-		for ( ; pCharNode; pCharNode = pCharNode->pNext )
+		GLCHARNODE *pCharNode = pLanMan->m_GlobPCList.m_pHead;
+		for (; pCharNode; pCharNode = pCharNode->pNext)
 		{
 			PGLCHAR pChar = pCharNode->Data;
-			if( !pChar ) continue;
-			
-			BOOL bMove = pLanMan->MoveOutInstantMap( pChar );
-			if ( !bMove )
+			if (!pChar)
+				continue;
+
+			BOOL bMove = pLanMan->MoveOutInstantMap(pChar);
+			if (!bMove)
 			{
-				CDebugSet::ToFileWithTime( "instancemap.txt", "GLGaeaServer::DeleteInstantMap failed to moveout character[%d %s], dropping instead! [%d~%d]", 
-				pChar->m_dwCharID, pChar->m_szName, pLanMan->GetMapID().wMainID, pLanMan->GetMapID().wSubID );
-				ReserveDropOutPC( pChar->m_dwGaeaID );
+				CDebugSet::ToFileWithTime("instancemap.txt", "GLGaeaServer::DeleteInstantMap failed to moveout character[%d %s], dropping instead! [%d~%d]",
+										  pChar->m_dwCharID, pChar->m_szName, pLanMan->GetMapID().wMainID, pLanMan->GetMapID().wSubID);
+				ReserveDropOutPC(pChar->m_dwGaeaID);
 			}
 		}
 	}
 
 	SNATIVEID sMapID = pLanMan->GetMapID();
 
-
-	VEC_LANDMAN_ITER	   iter		  = std::find( m_vecLandMan.begin(), m_vecLandMan.end(), pLanMan );
-	VEC_INSTANT_MAPID_ITER MapID_iter = std::find( m_vecInstantMapId.begin(), m_vecInstantMapId.end(), sMapID.dwID );
-	if( iter == m_vecLandMan.end() ) return;
-	if( MapID_iter != m_vecInstantMapId.end()  ) m_vecInstantMapId.erase(MapID_iter);
+	VEC_LANDMAN_ITER iter = std::find(m_vecLandMan.begin(), m_vecLandMan.end(), pLanMan);
+	VEC_INSTANT_MAPID_ITER MapID_iter = std::find(m_vecInstantMapId.begin(), m_vecInstantMapId.end(), sMapID.dwID);
+	if (iter == m_vecLandMan.end())
+		return;
+	if (MapID_iter != m_vecInstantMapId.end())
+		m_vecInstantMapId.erase(MapID_iter);
 
 	m_vecLandMan.erase(iter);
 	m_pLandMan[sMapID.wMainID][sMapID.wSubID] = NULL;
 
-//	SAFE_DELETE( pLanMan );
-	RELEASE_GLLANDMAN( pLanMan );
-
-
+	//	SAFE_DELETE( pLanMan );
+	RELEASE_GLLANDMAN(pLanMan);
 
 	NetMsg.sInstantMapID = sMapID;
-	SENDTOAGENT ( (LPVOID) &NetMsg );
+	SENDTOAGENT((LPVOID)&NetMsg);
 
-	CDebugSet::ToFileWithTime( "instancemap.txt", "[INFO FIELD]Delete Instant Map! Instant Map ID [%d][%d]", 
-		NetMsg.sInstantMapID.wMainID,  NetMsg.sInstantMapID.wSubID );
+	CDebugSet::ToFileWithTime("instancemap.txt", "[INFO FIELD]Delete Instant Map! Instant Map ID [%d][%d]",
+							  NetMsg.sInstantMapID.wMainID, NetMsg.sInstantMapID.wSubID);
 
-	BOOL bErase = EraseMapList( sMapID );
-	if ( !bErase )
-		CDebugSet::ToFileWithTime( "instancemap.txt", "[INFO FIELD]InstanceMap erase to mapslist failed[%d~%d]", 
-		sMapID.wMainID, sMapID.wSubID );
+	BOOL bErase = EraseMapList(sMapID);
+	if (!bErase)
+		CDebugSet::ToFileWithTime("instancemap.txt", "[INFO FIELD]InstanceMap erase to mapslist failed[%d~%d]",
+								  sMapID.wMainID, sMapID.wSubID);
 	else
-		CDebugSet::ToFileWithTime( "instancemap.txt", "[INFO FIELD]InstanceMap erase to mapslist[%d~%d]", 
-		sMapID.wMainID, sMapID.wSubID );
+		CDebugSet::ToFileWithTime("instancemap.txt", "[INFO FIELD]InstanceMap erase to mapslist[%d~%d]",
+								  sMapID.wMainID, sMapID.wSubID);
 }
 
-BOOL GLGaeaServer::ReqActiveVehicle ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_ACTIVE_VEHICLE* pNetMsg )
+BOOL GLGaeaServer::ReqActiveVehicle(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_ACTIVE_VEHICLE *pNetMsg)
 {
-	if ( IsReserveServerStop () ) return FALSE;
-	
+	if (IsReserveServerStop())
+		return FALSE;
+
 	GLMSG::SNETPC_ACTIVE_VEHICLE_FB NetMsgFB;
 
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner )
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
 	{
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return FALSE;
 	}
 
+	// Security: rate limit vehicle mount/unmount to prevent DoS via packet flooding
+	DWORD dwNow = GetTickCount();
+	if (dwNow - pOwner->m_dwVehicleToggleTick < 3000)
+		return FALSE; // 3 second cooldown
+	pOwner->m_dwVehicleToggleTick = dwNow;
 
-	if ( !pOwner->m_sVehicle.IsActiveValue() )
+	if (!pOwner->m_sVehicle.IsActiveValue())
 	{
-//		GetConsoleMsg()->Write( "Error ReqActive Vehicle bActive : % d, bVehicle : %d, vehicleID : %d, CharID : %d"
-//								,pNetMsg->bActive, pOwner->m_bVehicle
-//								,pOwner->m_sVehicle.m_dwGUID, pOwner->m_dwCharID );
+		//		GetConsoleMsg()->Write( "Error ReqActive Vehicle bActive : % d, bVehicle : %d, vehicleID : %d, CharID : %d"
+		//								,pNetMsg->bActive, pOwner->m_bVehicle
+		//								,pOwner->m_sVehicle.m_dwGUID, pOwner->m_dwCharID );
 		return E_FAIL;
 	}
 
 	// 맵소환가능여부 체크
-	GLLandMan* pLandMan = GetByMapID ( pOwner->m_sMapID );
-	if ( !pLandMan )					return FALSE;
-	if ( !pLandMan->IsVehicleActivity () && pNetMsg->bActive )
+	GLLandMan *pLandMan = GetByMapID(pOwner->m_sMapID);
+	if (!pLandMan)
+		return FALSE;
+	if (!pLandMan->IsVehicleActivity() && pNetMsg->bActive)
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_MAP_FAIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return FALSE;
 	}
 
-	SITEMCUSTOM& sItemCostom = pOwner->m_PutOnItems[SLOT_VEHICLE];
-	if ( sItemCostom.sNativeID == NATIVEID_NULL() )
+	SITEMCUSTOM &sItemCostom = pOwner->m_PutOnItems[SLOT_VEHICLE];
+	if (sItemCostom.sNativeID == NATIVEID_NULL())
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_NO_ITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
-		
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
+
 		return E_FAIL;
 	}
 
-	SITEM* pItem = GLItemMan::GetInstance().GetItem( sItemCostom.sNativeID );
-	if ( !pItem || pItem->sBasicOp.emItemType != ITEM_VEHICLE )
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(sItemCostom.sNativeID);
+	if (!pItem || pItem->sBasicOp.emItemType != ITEM_VEHICLE)
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_NO_ITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
-		return E_FAIL;		
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
+		return E_FAIL;
 	}
 
-	if ( pOwner->m_sVehicle.IsNotEnoughFull() )
+	if (pOwner->m_sVehicle.IsNotEnoughFull())
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_NOTENOUGH_OIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
-		return E_FAIL;	
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
+		return E_FAIL;
 	}
 
-	if ( pOwner->m_sCONFTING.IsCONFRONTING() && pNetMsg->bActive )
+	if (pOwner->m_sCONFTING.IsCONFRONTING() && pNetMsg->bActive)
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_FAIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
 	/*skill vehicle off, Juver, 2018/09/07 */
 	/* skill hostile, Juver, 2020/12/16 */
-	if ( pNetMsg->bActive && ( pOwner->m_skill_vehicle_off || pOwner->m_bSkillHostile ) )
+	if (pNetMsg->bActive && (pOwner->m_skill_vehicle_off || pOwner->m_bSkillHostile))
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_FAIL_DEBUFF;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
 	// 임시 코드
-	pOwner->ActiveVehicle( pNetMsg->bActive, false );
+	pOwner->ActiveVehicle(pNetMsg->bActive, false);
 
 	return TRUE;
 }
 
-void GLGaeaServer::SetActiveVehicle ( DWORD dwClientID, DWORD dwGaeaID, bool bActive )
+void GLGaeaServer::SetActiveVehicle(DWORD dwClientID, DWORD dwGaeaID, bool bActive)
 {
-	if ( IsReserveServerStop () ) return;
-	
+	if (IsReserveServerStop())
+		return;
+
 	GLMSG::SNETPC_ACTIVE_VEHICLE_FB NetMsgFB;
 
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner )
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
 	{
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	if ( !pOwner->m_sVehicle.IsActiveValue() )
+	if (!pOwner->m_sVehicle.IsActiveValue())
 	{
 		return;
 	}
 
 	// 맵소환가능여부 체크
-	GLLandMan* pLandMan = GetByMapID ( pOwner->m_sMapID );
-	if ( !pLandMan )					return;
-	if ( !pLandMan->IsVehicleActivity () && bActive )
+	GLLandMan *pLandMan = GetByMapID(pOwner->m_sMapID);
+	if (!pLandMan)
+		return;
+	if (!pLandMan->IsVehicleActivity() && bActive)
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_MAP_FAIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	SITEMCUSTOM& sItemCostom = pOwner->m_PutOnItems[SLOT_VEHICLE];
-	if ( sItemCostom.sNativeID == NATIVEID_NULL() )
+	SITEMCUSTOM &sItemCostom = pOwner->m_PutOnItems[SLOT_VEHICLE];
+	if (sItemCostom.sNativeID == NATIVEID_NULL())
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_NO_ITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
-		
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
+
 		return;
 	}
 
-	SITEM* pItem = GLItemMan::GetInstance().GetItem( sItemCostom.sNativeID );
-	if ( !pItem || pItem->sBasicOp.emItemType != ITEM_VEHICLE )
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(sItemCostom.sNativeID);
+	if (!pItem || pItem->sBasicOp.emItemType != ITEM_VEHICLE)
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_NO_ITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
-		return;		
-	}	
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
+		return;
+	}
 
-	if ( pOwner->m_sVehicle.IsNotEnoughFull() )
+	if (pOwner->m_sVehicle.IsNotEnoughFull())
 	{
 		NetMsgFB.emFB = EMVEHICLE_SET_FB_NOTENOUGH_OIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
-		return;	
-	}
-
-	if ( pOwner->m_sCONFTING.IsCONFRONTING() && bActive )
-	{
-		NetMsgFB.emFB = EMVEHICLE_SET_FB_FAIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	pOwner->ActiveVehicle( bActive, true );
+	if (pOwner->m_sCONFTING.IsCONFRONTING() && bActive)
+	{
+		NetMsgFB.emFB = EMVEHICLE_SET_FB_FAIL;
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
+		return;
+	}
+
+	pOwner->ActiveVehicle(bActive, true);
 
 	return;
-
-
 }
 
-BOOL GLGaeaServer::ReqGetVehicle( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_GET_VEHICLE* pNetMsg )
+BOOL GLGaeaServer::ReqGetVehicle(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_GET_VEHICLE *pNetMsg)
 {
-    if ( IsReserveServerStop () ) return FALSE;
-	
+	if (IsReserveServerStop())
+		return FALSE;
+
 	GLMSG::SNETPC_GET_VEHICLE_FB NetMsgFB;
 
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner )
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
 	{
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return FALSE;
 	}
 
-	// 탈것 활성화 ( 불가능한 경우 ) 
-	if ( pOwner->m_bVehicle ) return FALSE;
+	// 탈것 활성화 ( 불가능한 경우 )
+	if (pOwner->m_bVehicle)
+		return FALSE;
 
 	// 탈것 미 장착
-	SITEMCUSTOM& sItemCustom = pOwner->m_PutOnItems[SLOT_VEHICLE];
-	if ( sItemCustom.sNativeID == NATIVEID_NULL() )
+	SITEMCUSTOM &sItemCustom = pOwner->m_PutOnItems[SLOT_VEHICLE];
+	if (sItemCustom.sNativeID == NATIVEID_NULL())
 	{
 		NetMsgFB.emFB = EMVEHICLE_GET_FB_NOITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
 	// 장착한 아이템과 요청한 아이템이 다를때
-	if ( sItemCustom.sNativeID != pNetMsg->nItemID )
+	if (sItemCustom.sNativeID != pNetMsg->nItemID)
 	{
 		NetMsgFB.emFB = EMVEHICLE_GET_FB_NOITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
-
 
 	// 요청한 아이템 미존재
-	SITEM* pItem = GLItemMan::GetInstance().GetItem ( sItemCustom.sNativeID );
-	if ( !pItem )
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(sItemCustom.sNativeID);
+	if (!pItem)
 	{
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
-	if ( pItem->sBasicOp.emItemType != ITEM_VEHICLE )
+	if (pItem->sBasicOp.emItemType != ITEM_VEHICLE)
 	{
 		NetMsgFB.emFB = EMVEHICLE_GET_FB_INVALIDITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return E_FAIL;
 	}
 
-
 	// 에뮬레이터 모드
-	if ( m_bEmulator )
+	if (m_bEmulator)
 	{
-		PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData ( pItem->sVehicle.emVehicleType );
-		if ( !pVehicle )
+		PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData(pItem->sVehicle.emVehicleType);
+		if (!pVehicle)
 		{
-			SENDTOCLIENT ( dwClientID, &NetMsgFB );
+			SENDTOCLIENT(dwClientID, &NetMsgFB);
 			return E_FAIL;
 		}
 
-
-		pOwner->m_sVehicle.ASSIGN( *pVehicle );
+		pOwner->m_sVehicle.ASSIGN(*pVehicle);
 		pOwner->m_sVehicle.m_dwOwner = pOwner->m_dwCharID;
 		pOwner->m_sVehicle.m_sVehicleID = sItemCustom.sNativeID;
 
 		/*bike color , Juver, 2017/11/13 */
-		for ( int i=0; i<BIKE_COLOR_SLOT_PART_SIZE; ++i )
+		for (int i = 0; i < BIKE_COLOR_SLOT_PART_SIZE; ++i)
 		{
-			if ( i % 2 == 0 )
+			if (i % 2 == 0)
 				pOwner->m_sVehicle.m_wColor[i] = pItem->sVehicle.wDefaultColor1;
 			else
 				pOwner->m_sVehicle.m_wColor[i] = pItem->sVehicle.wDefaultColor2;
 		}
 
-		CreateVehicle( dwClientID, dwGaeaID, sItemCustom.dwVehicleID );
+		CreateVehicle(dwClientID, dwGaeaID, sItemCustom.dwVehicleID);
 
 		return S_OK;
 	}
 
 	// 신규생성
-	if ( sItemCustom.dwVehicleID == 0 )
+	if (sItemCustom.dwVehicleID == 0)
 	{
-		PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData ( pItem->sVehicle.emVehicleType );
-		if ( !pVehicle )
+		PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData(pItem->sVehicle.emVehicleType);
+		if (!pVehicle)
 		{
-			SENDTOCLIENT ( dwClientID, &NetMsgFB );
+			SENDTOCLIENT(dwClientID, &NetMsgFB);
 			return E_FAIL;
 		}
 
-		CCreateVehicle* pDbAction = new CCreateVehicle ( dwClientID, pOwner->m_dwCharID , 
-												 pItem->GetName(),
-												 (int)pItem->sVehicle.emVehicleType,
-												 (int)sItemCustom.sNativeID.wMainID,
-												 (int)sItemCustom.sNativeID.wSubID );
+		CCreateVehicle *pDbAction = new CCreateVehicle(dwClientID, pOwner->m_dwCharID,
+													   pItem->GetName(),
+													   (int)pItem->sVehicle.emVehicleType,
+													   (int)sItemCustom.sNativeID.wMainID,
+													   (int)sItemCustom.sNativeID.wSubID);
 
-
-		m_pDBMan->AddJob ( pDbAction );
+		m_pDBMan->AddJob(pDbAction);
 
 		// 일단 생성중인 번호임을 알리기 위해
 		sItemCustom.dwVehicleID = UINT_MAX;
@@ -3043,31 +3210,32 @@ BOOL GLGaeaServer::ReqGetVehicle( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETP
 		pOwner->m_bGetVehicleFromDB = true;
 	}
 	// DB에서 탈것 정보 가져옵니다.
-	else 
+	else
 	{
 		// 이미 탈것 부르고 있으면 캔슬
-		if ( pOwner->m_bGetVehicleFromDB ) return TRUE;
+		if (pOwner->m_bGetVehicleFromDB)
+			return TRUE;
 
 		// 로직에 탈것의 정보가 같다면
-		if ( pOwner->m_sVehicle.m_dwGUID == sItemCustom.dwVehicleID )
+		if (pOwner->m_sVehicle.m_dwGUID == sItemCustom.dwVehicleID)
 		{
-			CreateVehicle ( dwClientID, dwGaeaID, sItemCustom.dwVehicleID );
+			CreateVehicle(dwClientID, dwGaeaID, sItemCustom.dwVehicleID);
 			return TRUE;
 		}
 
-		PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData ( pItem->sVehicle.emVehicleType );
-		if ( !pVehicle )
+		PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData(pItem->sVehicle.emVehicleType);
+		if (!pVehicle)
 		{
-			SENDTOCLIENT ( dwClientID, &NetMsgFB );
+			SENDTOCLIENT(dwClientID, &NetMsgFB);
 			return E_FAIL;
 		}
 
-		PGLVEHICLE pNewVehicle = new GLVEHICLE ();
-		pNewVehicle->ASSIGN ( *pVehicle );
+		PGLVEHICLE pNewVehicle = new GLVEHICLE();
+		pNewVehicle->ASSIGN(*pVehicle);
 
 		// DB작업 실패시 혹은 생성후 메모리 해제해줘라
-		CGetVehicle* pDbAction = new CGetVehicle ( pNewVehicle, sItemCustom.dwVehicleID, dwClientID,pOwner->m_dwCharID );
-		m_pDBMan->AddJob ( pDbAction );
+		CGetVehicle *pDbAction = new CGetVehicle(pNewVehicle, sItemCustom.dwVehicleID, dwClientID, pOwner->m_dwCharID);
+		m_pDBMan->AddJob(pDbAction);
 
 		pOwner->m_bGetVehicleFromDB = true;
 	}
@@ -3075,132 +3243,134 @@ BOOL GLGaeaServer::ReqGetVehicle( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETP
 	return TRUE;
 }
 
-BOOL GLGaeaServer::CreateVehicle( DWORD dwClientID, DWORD dwGaeaID, DWORD dwVehicleID )
+BOOL GLGaeaServer::CreateVehicle(DWORD dwClientID, DWORD dwGaeaID, DWORD dwVehicleID)
 {
 
 	GLMSG::SNETPC_GET_VEHICLE_FB NetMsg;
 
 	// 요청 케릭터가 유효성 체크
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner ) return FALSE;
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
+		return FALSE;
 
 	const CTime cTIME_CUR = CTime::GetCurrentTime();
 
-    // 탈것 아이템 시효성 체크 
+	// 탈것 아이템 시효성 체크
 	SITEMCUSTOM sCUSTOM = pOwner->m_PutOnItems[SLOT_VEHICLE];
-	if ( sCUSTOM.sNativeID == NATIVEID_NULL() ) return FALSE;
-	SITEM *pITEM = GLItemMan::GetInstance().GetItem ( sCUSTOM.sNativeID );
-	if ( !pITEM )	return FALSE;
+	if (sCUSTOM.sNativeID == NATIVEID_NULL())
+		return FALSE;
+	SITEM *pITEM = GLItemMan::GetInstance().GetItem(sCUSTOM.sNativeID);
+	if (!pITEM)
+		return FALSE;
 
-	if ( pITEM->IsTIMELMT() )
+	if (pITEM->IsTIMELMT())
 	{
 		CTimeSpan cSPAN(pITEM->sDrugOp.tTIME_LMT);
 		CTime cTIME_LMT(sCUSTOM.tBORNTIME);
 		cTIME_LMT += cSPAN;
 
-		if ( cTIME_CUR > cTIME_LMT )
+		if (cTIME_CUR > cTIME_LMT)
 		{
 			//	시간 제한으로 아이템 삭제 로그 남김.
-			GLITEMLMT::GetInstance().ReqItemRoute ( sCUSTOM, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, sCUSTOM.wTurnNum );
+			GLITEMLMT::GetInstance().ReqItemRoute(sCUSTOM, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, sCUSTOM.wTurnNum);
 
 			//	시간 제한으로 아이템 삭제 알림.
 			GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 			NetMsgInvenDelTimeLmt.nidITEM = sCUSTOM.sNativeID;
-			SENDTOCLIENT(dwClientID,&NetMsgInvenDelTimeLmt);
+			SENDTOCLIENT(dwClientID, &NetMsgInvenDelTimeLmt);
 
-			if ( pITEM->sBasicOp.emItemType == ITEM_VEHICLE && sCUSTOM.dwVehicleID != 0 )
+			if (pITEM->sBasicOp.emItemType == ITEM_VEHICLE && sCUSTOM.dwVehicleID != 0)
 			{
-				SaveVehicle( dwClientID, dwGaeaID, false );
+				SaveVehicle(dwClientID, dwGaeaID, false);
 
 				// 활동중이면 사라지게 해준다.
-				pOwner->m_sVehicle.UpdateTimeLmtItem ( pOwner );
+				pOwner->m_sVehicle.UpdateTimeLmtItem(pOwner);
 
 				// 넣어줄꺼 넣어준다.
-				for ( WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i )
+				for (WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i)
 				{
 					CItemDrop cDropItem;
 					cDropItem.sItemCustom = pOwner->m_sVehicle.m_PutOnItems[i];
-					if ( pOwner->IsInsertToInven ( &cDropItem ) ) pOwner->InsertToInven ( &cDropItem );
+					if (pOwner->IsInsertToInven(&cDropItem))
+						pOwner->InsertToInven(&cDropItem);
 					else
 					{
-						if ( pOwner->m_pLandMan )
+						if (pOwner->m_pLandMan)
 						{
-							pOwner->m_pLandMan->DropItem ( pOwner->m_vPos, 
-													&(cDropItem.sItemCustom), 
-													EMGROUP_ONE, 
-													dwGaeaID );
+							pOwner->m_pLandMan->DropItem(pOwner->m_vPos,
+														 &(cDropItem.sItemCustom),
+														 EMGROUP_ONE,
+														 dwGaeaID);
 						}
 					}
 				}
 
-				CDeleteVehicle* pDeleteVehicle = new CDeleteVehicle ( pOwner->m_dwClientID, pOwner->m_dwCharID, sCUSTOM.dwVehicleID );
-				GLDBMan* pDBMan = GetDBMan ();
-				if ( pDBMan ) pDBMan->AddJob ( pDeleteVehicle );
+				CDeleteVehicle *pDeleteVehicle = new CDeleteVehicle(pOwner->m_dwClientID, pOwner->m_dwCharID, sCUSTOM.dwVehicleID);
+				GLDBMan *pDBMan = GetDBMan();
+				if (pDBMan)
+					pDBMan->AddJob(pDeleteVehicle);
 			}
 
 			//	아이템 제거.
-			pOwner->RELEASE_SLOT_ITEM ( SLOT_VEHICLE );
+			pOwner->RELEASE_SLOT_ITEM(SLOT_VEHICLE);
 
 			//	[자신에게]  아이탬 제거.
 			GLMSG::SNETPC_PUTON_RELEASE NetMsg_Release(SLOT_VEHICLE);
-			SENDTOCLIENT(dwClientID,&NetMsg_Release);
+			SENDTOCLIENT(dwClientID, &NetMsg_Release);
 
 			//	Note : 주변 사람들에게 아이탬 제거.
 			GLMSG::SNETPC_PUTON_RELEASE_BRD NetMsgReleaseBrd;
 			NetMsgReleaseBrd.dwGaeaID = dwGaeaID;
 			NetMsgReleaseBrd.emSlot = SLOT_VEHICLE;
-			pOwner->SendMsgViewAround ( reinterpret_cast<NET_MSG_GENERIC*>(&NetMsgReleaseBrd) );	
-
+			pOwner->SendMsgViewAround(reinterpret_cast<NET_MSG_GENERIC *>(&NetMsgReleaseBrd));
 
 			return FALSE;
-
 		}
 	}
 
+	pOwner->m_sVehicle.SetActiveValue(true);
 
-	pOwner->m_sVehicle.SetActiveValue( true );
-
-	NetMsg.emFB			= EMVEHICLE_GET_FB_OK;
-	NetMsg.dwGUID		= pOwner->m_sVehicle.m_dwGUID;
-	NetMsg.dwOwner		= pOwner->m_sVehicle.m_dwOwner;
-	NetMsg.emTYPE		= pOwner->m_sVehicle.m_emTYPE;
-	NetMsg.nFull		= pOwner->m_sVehicle.m_nFull;
-	NetMsg.sVehicleID	= pOwner->m_sVehicle.m_sVehicleID;
-	NetMsg.bBooster		= pOwner->m_sVehicle.m_bBooster; /*vehicle booster system, Juver, 2017/08/10 */
-
+	NetMsg.emFB = EMVEHICLE_GET_FB_OK;
+	NetMsg.dwGUID = pOwner->m_sVehicle.m_dwGUID;
+	NetMsg.dwOwner = pOwner->m_sVehicle.m_dwOwner;
+	NetMsg.emTYPE = pOwner->m_sVehicle.m_emTYPE;
+	NetMsg.nFull = pOwner->m_sVehicle.m_nFull;
+	NetMsg.sVehicleID = pOwner->m_sVehicle.m_sVehicleID;
+	NetMsg.bBooster = pOwner->m_sVehicle.m_bBooster; /*vehicle booster system, Juver, 2017/08/10 */
 
 	/*bike color , Juver, 2017/11/13 */
-	for( WORD i=0; i<BIKE_COLOR_SLOT_PART_SIZE; ++i )
+	for (WORD i = 0; i < BIKE_COLOR_SLOT_PART_SIZE; ++i)
 		NetMsg.wColor[i] = pOwner->m_sVehicle.m_wColor[i];
 
-
-	for ( WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i )
+	for (WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i)
 	{
 		SITEMCUSTOM sVehicleItem = pOwner->m_sVehicle.m_PutOnItems[i];
-		if ( sVehicleItem.sNativeID == NATIVEID_NULL () ) continue;
+		if (sVehicleItem.sNativeID == NATIVEID_NULL())
+			continue;
 
-		SITEM* pITEM = GLItemMan::GetInstance().GetItem ( sVehicleItem.sNativeID );
-		if ( !pITEM )	continue;
+		SITEM *pITEM = GLItemMan::GetInstance().GetItem(sVehicleItem.sNativeID);
+		if (!pITEM)
+			continue;
 
 		// 시한부 아이템
-		if ( pITEM->IsTIMELMT() )
+		if (pITEM->IsTIMELMT())
 		{
 			CTimeSpan cSPAN(pITEM->sDrugOp.tTIME_LMT);
 			CTime cTIME_LMT(sVehicleItem.tBORNTIME);
 			cTIME_LMT += cSPAN;
 
-			if ( cTIME_CUR > cTIME_LMT )
+			if (cTIME_CUR > cTIME_LMT)
 			{
 				//	시간 제한으로 아이템 삭제 로그 남김.
-				GLITEMLMT::GetInstance().ReqItemRoute ( sVehicleItem, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, 0 );
+				GLITEMLMT::GetInstance().ReqItemRoute(sVehicleItem, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_DELETE, 0);
 
 				//	아이템 삭제.
-				pOwner->m_sVehicle.m_PutOnItems[i] = SITEMCUSTOM ();
+				pOwner->m_sVehicle.m_PutOnItems[i] = SITEMCUSTOM();
 
 				//	시간 제한으로 아이템 삭제 알림.
 				GLMSG::SNET_INVEN_DEL_ITEM_TIMELMT NetMsgInvenDelTimeLmt;
 				NetMsgInvenDelTimeLmt.nidITEM = sVehicleItem.sNativeID;
-				SENDTOCLIENT(pOwner->m_dwClientID,&NetMsgInvenDelTimeLmt);
+				SENDTOCLIENT(pOwner->m_dwClientID, &NetMsgInvenDelTimeLmt);
 			}
 		}
 		NetMsg.PutOnItems[i] = pOwner->m_sVehicle.m_PutOnItems[i];
@@ -3209,9 +3379,9 @@ BOOL GLGaeaServer::CreateVehicle( DWORD dwClientID, DWORD dwGaeaID, DWORD dwVehi
 	pOwner->m_sVehicle.ITEM_UPDATE();
 	pOwner->m_fVehicleSpeedRate = pOwner->m_sVehicle.GetSpeedRate();
 	pOwner->m_fVehicleSpeedVol = pOwner->m_sVehicle.GetSpeedVol();
-	pOwner->INIT_DATA( FALSE, FALSE );
+	pOwner->INIT_DATA(FALSE, FALSE);
 
-	SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsg );
+	SENDTOCLIENT(pOwner->m_dwClientID, &NetMsg);
 
 	// 주변에 알림
 	GLMSG::SNETPC_GET_VEHICLE_BRD NetMsgBrd;
@@ -3220,334 +3390,364 @@ BOOL GLGaeaServer::CreateVehicle( DWORD dwClientID, DWORD dwGaeaID, DWORD dwVehi
 	NetMsgBrd.dwGUID = pOwner->m_sVehicle.m_dwGUID;
 	NetMsgBrd.sVehicleID = pOwner->m_sVehicle.m_sVehicleID;
 
-	for ( int i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i )
+	for (int i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i)
 	{
 		NetMsgBrd.PutOnItems[i] = pOwner->m_sVehicle.m_PutOnItems[i];
 	}
 
 	/*bike color , Juver, 2017/11/13 */
-	for( WORD i=0; i<BIKE_COLOR_SLOT_PART_SIZE; ++i )
+	for (WORD i = 0; i < BIKE_COLOR_SLOT_PART_SIZE; ++i)
 		NetMsgBrd.wColor[i] = pOwner->m_sVehicle.m_wColor[i];
 
-	pOwner->SendMsgViewAround ( ( NET_MSG_GENERIC* )&NetMsgBrd );
-	
+	pOwner->SendMsgViewAround((NET_MSG_GENERIC *)&NetMsgBrd);
+
 	return TRUE;
 }
 
-void GLGaeaServer::CreateVehicleOnDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_CREATE_FROMDB_FB* pNetMsg )
+void GLGaeaServer::CreateVehicleOnDB(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_CREATE_FROMDB_FB *pNetMsg)
 {
 	GLMSG::SNETPC_GET_VEHICLE_FB NetMsgFB;
 
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner ) return;
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
+		return;
 
 	pOwner->m_bGetVehicleFromDB = false;
 
-	SITEMCUSTOM& sItemCustom = pOwner->m_PutOnItems[SLOT_VEHICLE];
-	if ( sItemCustom.sNativeID == NATIVEID_NULL() || 
-		 sItemCustom.sNativeID  != pNetMsg->sVehicleID )
+	SITEMCUSTOM &sItemCustom = pOwner->m_PutOnItems[SLOT_VEHICLE];
+	if (sItemCustom.sNativeID == NATIVEID_NULL() ||
+		sItemCustom.sNativeID != pNetMsg->sVehicleID)
 	{
 		NetMsgFB.emFB = EMVEHICLE_GET_FB_NOITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	SITEM* pItem = GLItemMan::GetInstance().GetItem ( sItemCustom.sNativeID );
-	if ( !pItem )
+	SITEM *pItem = GLItemMan::GetInstance().GetItem(sItemCustom.sNativeID);
+	if (!pItem)
 	{
 		NetMsgFB.emFB = EMVEHICLE_GET_FB_FAIL;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
-	if ( pItem->sBasicOp.emItemType != ITEM_VEHICLE )
+	if (pItem->sBasicOp.emItemType != ITEM_VEHICLE)
 	{
 		NetMsgFB.emFB = EMVEHICLE_GET_FB_INVALIDITEM;
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 		return;
 	}
 
 	// 탈것 아이디 설정
 	sItemCustom.dwVehicleID = pNetMsg->dwVehicleID;
 
-	PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData ( pItem->sVehicle.emVehicleType );
-	if ( !pVehicle ) return;
+	PGLVEHICLE pVehicle = GLCONST_VEHICLE::GetVehicleData(pItem->sVehicle.emVehicleType);
+	if (!pVehicle)
+		return;
 
-	pOwner->m_sVehicle.ASSIGN( *pVehicle );
+	pOwner->m_sVehicle.ASSIGN(*pVehicle);
 	pOwner->m_sVehicle.m_emTYPE = pItem->sVehicle.emVehicleType;
 	pOwner->m_sVehicle.m_dwGUID = pNetMsg->dwVehicleID;
 	pOwner->m_sVehicle.m_dwOwner = dwClientID;
-	pOwner->m_sVehicle.m_sVehicleID = pNetMsg->sVehicleID;	
-	pOwner->m_sVehicle.SetActiveValue( true );
+	pOwner->m_sVehicle.m_sVehicleID = pNetMsg->sVehicleID;
+	pOwner->m_sVehicle.SetActiveValue(true);
 
 	/*bike color , Juver, 2017/11/13 */
-	for ( int i=0; i<BIKE_COLOR_SLOT_PART_SIZE; ++i )
+	for (int i = 0; i < BIKE_COLOR_SLOT_PART_SIZE; ++i)
 	{
-		if ( i % 2 == 0 )
+		if (i % 2 == 0)
 			pOwner->m_sVehicle.m_wColor[i] = pItem->sVehicle.wDefaultColor1;
 		else
 			pOwner->m_sVehicle.m_wColor[i] = pItem->sVehicle.wDefaultColor2;
 	}
 
-
-	CreateVehicle ( dwClientID, dwGaeaID, pNetMsg->dwVehicleID );
-
+	CreateVehicle(dwClientID, dwGaeaID, pNetMsg->dwVehicleID);
 
 	// 탈것 아이템의 정보도 수정해준다.
 	GLMSG::SNET_VEHICLE_REQ_ITEM_INFO_FB NetMsg;
 
-	NetMsg.emTYPE		= pOwner->m_sVehicle.m_emTYPE;
-	NetMsg.nFull		= pOwner->m_sVehicle.m_nFull;
-	NetMsg.dwVehicleID	= pOwner->m_sVehicle.m_dwGUID;
-	NetMsg.bTrade		= false;
-	NetMsg.bBooster		= pOwner->m_sVehicle.m_bBooster; /*vehicle booster system, Juver, 2017/08/10 */
+	NetMsg.emTYPE = pOwner->m_sVehicle.m_emTYPE;
+	NetMsg.nFull = pOwner->m_sVehicle.m_nFull;
+	NetMsg.dwVehicleID = pOwner->m_sVehicle.m_dwGUID;
+	NetMsg.bTrade = false;
+	NetMsg.bBooster = pOwner->m_sVehicle.m_bBooster; /*vehicle booster system, Juver, 2017/08/10 */
 
-	for ( WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i )
+	for (WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i)
 	{
 		NetMsg.PutOnItems[i] = pOwner->m_sVehicle.m_PutOnItems[i];
 	}
 
 	/*bike color , Juver, 2017/11/13 */
-	for( WORD i=0; i<BIKE_COLOR_SLOT_PART_SIZE; ++i )
+	for (WORD i = 0; i < BIKE_COLOR_SLOT_PART_SIZE; ++i)
 		NetMsg.wColor[i] = pOwner->m_sVehicle.m_wColor[i];
 
-	SENDTOCLIENT ( dwClientID, &NetMsg );
+	SENDTOCLIENT(dwClientID, &NetMsg);
 
 	// 로그에 최초생성을 남김
-	GLITEMLMT::GetInstance().ReqItemRoute ( sItemCustom, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_VEHICLE, 1 );
+	GLITEMLMT::GetInstance().ReqItemRoute(sItemCustom, ID_CHAR, pOwner->m_dwCharID, ID_CHAR, 0, EMITEM_ROUTE_VEHICLE, 1);
 }
 
-void GLGaeaServer::GetVehicleInfoFromDB ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_GET_FROMDB_FB* pNetMsg )
+void GLGaeaServer::GetVehicleInfoFromDB(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_GET_FROMDB_FB *pNetMsg)
 {
-	// DB에 없으면 그냥 초기값으로 넘어오는 경우가 있으므로 체크해준다.
-	if ( pNetMsg->pVehicle->m_emTYPE == VEHICLE_TYPE_NONE )
+	// Security: validate internal message token to block forged client packets.
+	// This message contains a raw pointer (pVehicle) which is only valid when
+	// created by the DB thread. A forged packet would have an invalid pointer.
+	DWORD dwToken = *(DWORD *)pNetMsg->m_cBUFFER;
+	if (dwToken != m_dwInternalMsgToken)
 	{
-		SAFE_DELETE ( pNetMsg->pVehicle );
+		// Forged packet detected ? log attacker and reject without touching pVehicle
+		LogSecurityEvent(dwClientID, "CRIT-05: forged NET_MSG_VEHICLE_GET_FROMDB_FB ? invalid internal token");
 		return;
 	}
 
+	// Security: null pointer validation
+	if (!pNetMsg->pVehicle)
+	{
+		return;
+	}
 
-		// 보드 아이템 정보 발신
-	if ( pNetMsg->bCardInfo )
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+	{
+		SAFE_DELETE(pNetMsg->pVehicle);
+		return;
+	}
+
+	// DB에 없으면 그냥 초기값으로 넘어오는 경우가 있으므로 체크해준다.
+	if (pNetMsg->pVehicle->m_emTYPE == VEHICLE_TYPE_NONE)
+	{
+		SAFE_DELETE(pNetMsg->pVehicle);
+		return;
+	}
+
+	// 보드 아이템 정보 발신
+	if (pNetMsg->bCardInfo)
 	{
 
 		GLMSG::SNET_VEHICLE_REQ_ITEM_INFO_FB NetMsgFB;
 
-		NetMsgFB.emTYPE			= pNetMsg->pVehicle->m_emTYPE;
-		NetMsgFB.nFull			= pNetMsg->pVehicle->m_nFull;
-		NetMsgFB.dwVehicleID	= pNetMsg->dwVehicleNum;
-		NetMsgFB.bTrade			= pNetMsg->bTrade;
-		NetMsgFB.bBooster		= pNetMsg->pVehicle->m_bBooster; /*vehicle booster system, Juver, 2017/08/10 */
+		NetMsgFB.emTYPE = pNetMsg->pVehicle->m_emTYPE;
+		NetMsgFB.nFull = pNetMsg->pVehicle->m_nFull;
+		NetMsgFB.dwVehicleID = pNetMsg->dwVehicleNum;
+		NetMsgFB.bTrade = pNetMsg->bTrade;
+		NetMsgFB.bBooster = pNetMsg->pVehicle->m_bBooster; /*vehicle booster system, Juver, 2017/08/10 */
 
-		for ( WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i ) 
+		for (WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i)
 			NetMsgFB.PutOnItems[i] = pNetMsg->pVehicle->m_PutOnItems[i];
 
 		/*bike color , Juver, 2017/11/13 */
-		for( WORD i=0; i<BIKE_COLOR_SLOT_PART_SIZE; ++i )
+		for (WORD i = 0; i < BIKE_COLOR_SLOT_PART_SIZE; ++i)
 			NetMsgFB.wColor[i] = pNetMsg->pVehicle->m_wColor[i];
 
-		SENDTOCLIENT ( dwClientID, &NetMsgFB );
-
+		SENDTOCLIENT(dwClientID, &NetMsgFB);
 	}
 	// 보드 악세서리의 시효성 검사
-	else if ( pNetMsg->bLMTItemCheck )
+	else if (pNetMsg->bLMTItemCheck)
 	{
-		
-		PGLCHAR pChar = GetChar ( dwGaeaID );
-		if ( pChar )
+
+		PGLCHAR pChar = GetChar(dwGaeaID);
+		if (pChar)
 		{
 			pNetMsg->pVehicle->m_dwGUID = pNetMsg->dwVehicleNum;
 			// 없앨꺼 없애고
-			pNetMsg->pVehicle->UpdateTimeLmtItem ( pChar );
-			
+			pNetMsg->pVehicle->UpdateTimeLmtItem(pChar);
+
 			// 넣어줄꺼 넣어준다.
-			for ( WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i )
+			for (WORD i = 0; i < VEHICLE_ACCETYPE_SIZE; ++i)
 			{
 				CItemDrop cDropItem;
 				cDropItem.sItemCustom = pNetMsg->pVehicle->m_PutOnItems[i];
-				if ( pChar->IsInsertToInven ( &cDropItem ) ) 
+				if (pChar->IsInsertToInven(&cDropItem))
 				{
-					pChar->InsertToInven ( &cDropItem );
+					pChar->InsertToInven(&cDropItem);
 				}
 				else
 				{
-					if ( pChar->m_pLandMan )
+					if (pChar->m_pLandMan)
 					{
-						pChar->m_pLandMan->DropItem ( pChar->m_vPos, &(cDropItem.sItemCustom), EMGROUP_ONE, pChar->m_dwGaeaID );
+						pChar->m_pLandMan->DropItem(pChar->m_vPos, &(cDropItem.sItemCustom), EMGROUP_ONE, pChar->m_dwGaeaID);
 					}
 				}
 			}
-			
-			CDeleteVehicle* pDbAction = new CDeleteVehicle ( dwClientID, pChar->m_dwCharID, pNetMsg->dwVehicleNum );
-			if ( m_pDBMan ) m_pDBMan->AddJob ( pDbAction );			
-		}
 
+			CDeleteVehicle *pDbAction = new CDeleteVehicle(dwClientID, pChar->m_dwCharID, pNetMsg->dwVehicleNum);
+			if (m_pDBMan)
+				m_pDBMan->AddJob(pDbAction);
+		}
 	}
 	else
 	{
 		// 탈것을 생성해준다.
-		PGLCHAR pOwner = GetChar ( dwGaeaID );
-		if ( !pOwner ) return;
+		PGLCHAR pOwner = GetChar(dwGaeaID);
+		if (!pOwner)
+			return;
 
-		pOwner->m_sVehicle.ASSIGN( *pNetMsg->pVehicle );
-		pOwner->m_sVehicle.m_dwGUID = pNetMsg->dwVehicleNum; 
-		CreateVehicle ( dwClientID, dwGaeaID, pNetMsg->dwVehicleNum );
+		pOwner->m_sVehicle.ASSIGN(*pNetMsg->pVehicle);
+		pOwner->m_sVehicle.m_dwGUID = pNetMsg->dwVehicleNum;
+		CreateVehicle(dwClientID, dwGaeaID, pNetMsg->dwVehicleNum);
 		pOwner->m_bGetVehicleFromDB = false;
 	}
-	
-	SAFE_DELETE ( pNetMsg->pVehicle );
+
+	SAFE_DELETE(pNetMsg->pVehicle);
 }
 
-void GLGaeaServer::GetVehicleInfoFromDBError( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_GET_FROMDB_ERROR* pNetMsg )
+void GLGaeaServer::GetVehicleInfoFromDBError(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_GET_FROMDB_ERROR *pNetMsg)
 {
 
 	GLMSG::SNETPC_GET_VEHICLE_FB NetMsgFB;
 
-	PGLCHAR pOwner = GetChar ( dwGaeaID );
-	if ( !pOwner ) return;
+	PGLCHAR pOwner = GetChar(dwGaeaID);
+	if (!pOwner)
+		return;
 
-	if ( pNetMsg->bTrade || pNetMsg->bCardInfo || pNetMsg->bLMTItemCheck )
+	if (pNetMsg->bTrade || pNetMsg->bCardInfo || pNetMsg->bLMTItemCheck)
 	{
 		return;
 	}
 
-	SITEMCUSTOM& sItemCustom = pOwner->m_PutOnItems[SLOT_VEHICLE];
-	if ( sItemCustom.sNativeID != NATIVEID_NULL() ) sItemCustom.dwVehicleID = 0;
+	SITEMCUSTOM &sItemCustom = pOwner->m_PutOnItems[SLOT_VEHICLE];
+	if (sItemCustom.sNativeID != NATIVEID_NULL())
+		sItemCustom.dwVehicleID = 0;
 
-	pOwner->m_bGetVehicleFromDB = false;	
-	
+	pOwner->m_bGetVehicleFromDB = false;
+
 	NetMsgFB.emFB = EMVEHICLE_GET_FB_NODATA;
-	SENDTOCLIENT ( dwClientID, &NetMsgFB );	
+	SENDTOCLIENT(dwClientID, &NetMsgFB);
 }
 
-
-void GLGaeaServer::SaveVehicle( DWORD dwClientID, DWORD dwGaeaID, bool bLeaveFieldServer )
+void GLGaeaServer::SaveVehicle(DWORD dwClientID, DWORD dwGaeaID, bool bLeaveFieldServer)
 {
 
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar )	
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
 	{
-		GetConsoleMsg()->Write ( "pOwner is Vailed %d", dwClientID );
+		GetConsoleMsg()->Write("pOwner is Vailed %d", dwClientID);
 		return;
 	}
-	
+
 	DWORD dwVehicleGUID = pChar->m_sVehicle.m_dwGUID;
 	DWORD dwOwnerID = pChar->m_sVehicle.m_dwOwner;
 
-	if ( !pChar->m_sVehicle.IsActiveValue() )	return;
+	if (!pChar->m_sVehicle.IsActiveValue())
+		return;
 
-	if ( dwVehicleGUID <= 0 || dwOwnerID <= 0 )
+	if (dwVehicleGUID <= 0 || dwOwnerID <= 0)
 	{
-		GetConsoleMsg()->Write ( "Error Vehicle ID NULL m_putOnItem: %d, VehicleID : %d, dwOwnerID : %d, dwCharID : %d ",
-								  pChar->m_PutOnItems[SLOT_VEHICLE].sNativeID,dwVehicleGUID,dwOwnerID, pChar->m_dwCharID );
+		GetConsoleMsg()->Write("Error Vehicle ID NULL m_putOnItem: %d, VehicleID : %d, dwOwnerID : %d, dwCharID : %d ",
+							   pChar->m_PutOnItems[SLOT_VEHICLE].sNativeID, dwVehicleGUID, dwOwnerID, pChar->m_dwCharID);
 
-		pChar->m_sVehicle.SetActiveValue( false );
+		pChar->m_sVehicle.SetActiveValue(false);
 
 		return;
 	}
 
-
 	// 탈것에 타고 있다면 비활성 시켜준다.....
-	if ( pChar->m_bVehicle )
+	if (pChar->m_bVehicle)
 	{
-		pChar->ActiveVehicle( false, bLeaveFieldServer );		
-	}	
+		pChar->ActiveVehicle(false, bLeaveFieldServer);
+	}
 
 	// 보드 데이터 DB저장
-	CSetVehicleBattery* pSaveDB = new CSetVehicleBattery( dwClientID, pChar->m_dwCharID, dwVehicleGUID, pChar->m_sVehicle.m_nFull );
-	if ( m_pDBMan ) m_pDBMan->AddJob ( pSaveDB );
+	CSetVehicleBattery *pSaveDB = new CSetVehicleBattery(dwClientID, pChar->m_dwCharID, dwVehicleGUID, pChar->m_sVehicle.m_nFull);
+	if (m_pDBMan)
+		m_pDBMan->AddJob(pSaveDB);
 
-	CSetVehicleInven* pSaveInven = new CSetVehicleInven ( dwClientID, pChar->m_dwCharID, dwVehicleGUID, &pChar->m_sVehicle );
-	if ( m_pDBMan ) m_pDBMan->AddJob ( pSaveInven );		
+	CSetVehicleInven *pSaveInven = new CSetVehicleInven(dwClientID, pChar->m_dwCharID, dwVehicleGUID, &pChar->m_sVehicle);
+	if (m_pDBMan)
+		m_pDBMan->AddJob(pSaveInven);
 
 	/*bike color , Juver, 2017/11/13 */
-	CSetVehicleColor* pSaveColor = new CSetVehicleColor ( dwClientID, pChar->m_dwCharID, dwVehicleGUID, &pChar->m_sVehicle );
-	if ( m_pDBMan ) m_pDBMan->AddJob ( pSaveColor );
+	CSetVehicleColor *pSaveColor = new CSetVehicleColor(dwClientID, pChar->m_dwCharID, dwVehicleGUID, &pChar->m_sVehicle);
+	if (m_pDBMan)
+		m_pDBMan->AddJob(pSaveColor);
 
-	pChar->m_sVehicle.SetActiveValue( false );
+	pChar->m_sVehicle.SetActiveValue(false);
 
 	GLMSG::SNETPC_UNGET_VEHICLE_FB NetFB;
-	SENDTOCLIENT ( dwClientID, &NetFB );
+	SENDTOCLIENT(dwClientID, &NetFB);
 
 	GLMSG::SNETPC_UNGET_VEHICLE_BRD NetBRD;
 	NetBRD.dwGaeaID = pChar->m_dwGaeaID;
-	pChar->SendMsgViewAround ( ( NET_MSG_GENERIC* )&NetBRD );
+	pChar->SendMsgViewAround((NET_MSG_GENERIC *)&NetBRD);
 
 	return;
 }
 
-void GLGaeaServer::GetVehicleItemInfo ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_REQ_ITEM_INFO* pNetMsg )
+void GLGaeaServer::GetVehicleItemInfo(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_VEHICLE_REQ_ITEM_INFO *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return;
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return;
 
-			// 팻 생성여부 확인
-	if ( pNetMsg->dwVehicleID == 0 ) return;
+	// 팻 생성여부 확인
+	if (pNetMsg->dwVehicleID == 0)
+		return;
 
 	// 거래시 사용될 팻카드 정보이면
-	if ( pNetMsg->bTrade )
+	if (pNetMsg->bTrade)
 	{
-		PGLVEHICLE pVehicleInfo = new GLVEHICLE ();
+		PGLVEHICLE pVehicleInfo = new GLVEHICLE();
 
 		// DB작업 실패시 혹은 생성후 메모리 해제해줘라
-		CGetVehicle* pDbAction = new CGetVehicle ( pVehicleInfo, pNetMsg->dwVehicleID, dwClientID, pChar->m_dwCharID, false, false, true );
-		m_pDBMan->AddJob ( pDbAction );
+		CGetVehicle *pDbAction = new CGetVehicle(pVehicleInfo, pNetMsg->dwVehicleID, dwClientID, pChar->m_dwCharID, false, false, true);
+		m_pDBMan->AddJob(pDbAction);
 	}
 	// 인벤토리,창고에 사용될 팻카드 정보이면
 	else
 	{
-		PGLVEHICLE pVehicleInfo = new GLVEHICLE ();
+		PGLVEHICLE pVehicleInfo = new GLVEHICLE();
 
 		// DB작업 실패시 혹은 생성후 메모리 해제해줘라
-		CGetVehicle* pDbAction = new CGetVehicle ( pVehicleInfo, pNetMsg->dwVehicleID, dwClientID, pChar->m_dwCharID,  false, true );
-		m_pDBMan->AddJob ( pDbAction );
+		CGetVehicle *pDbAction = new CGetVehicle(pVehicleInfo, pNetMsg->dwVehicleID, dwClientID, pChar->m_dwCharID, false, true);
+		m_pDBMan->AddJob(pDbAction);
 	}
 }
 
-void GLGaeaServer::SetNonRebirth ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_NON_REBIRTH_REQ* pNetMsg )
+void GLGaeaServer::SetNonRebirth(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_NON_REBIRTH_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return;
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return;
 
 	pChar->m_bNon_Rebirth = pNetMsg->bNon_Rebirth;
 }
 
-void GLGaeaServer::ReqQBoxEnable ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_QBOX_OPTION_REQ_FLD* pNetMsg )
+void GLGaeaServer::ReqQBoxEnable(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_QBOX_OPTION_REQ_FLD *pNetMsg)
 {
 
 	GLMSG::SNET_QBOX_OPTION_MEMBER NetMsg;
 	NetMsg.bQBoxEnable = pNetMsg->bQBoxEnable;
 
-	GLPartyFieldMan& sPartyFieldMan = GetPartyMan();
-	GLPARTY_FIELD *pParty = sPartyFieldMan.GetParty ( pNetMsg->dwPartyID );
-	if ( pParty )
+	GLPartyFieldMan &sPartyFieldMan = GetPartyMan();
+	GLPARTY_FIELD *pParty = sPartyFieldMan.GetParty(pNetMsg->dwPartyID);
+	if (pParty)
 	{
 		pParty->m_bQBoxEnable = pNetMsg->bQBoxEnable;
-		sPartyFieldMan.SendMsgToMember ( pNetMsg->dwPartyID, (NET_MSG_GENERIC*) &NetMsg );
+		sPartyFieldMan.SendMsgToMember(pNetMsg->dwPartyID, (NET_MSG_GENERIC *)&NetMsg);
 	}
 }
 
 /*charinfoview , Juver, 2017/11/12 */
-void GLGaeaServer::SetPrivateStats ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_PRIVATE_STATS_REQ* pNetMsg )
+void GLGaeaServer::SetPrivateStats(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_PRIVATE_STATS_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return;
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return;
 
 	pChar->m_bPrivateStats = pNetMsg->bPrivateStats;
 }
 
-
-void GLGaeaServer::InsertSearchShop( DWORD dwGaeaID )
+void GLGaeaServer::InsertSearchShop(DWORD dwGaeaID)
 {
-	m_listSearchShop.push_back( dwGaeaID ); 
+	m_listSearchShop.push_back(dwGaeaID);
 }
 
-void GLGaeaServer::EraseSearchShop( DWORD dwGaeaID )
+void GLGaeaServer::EraseSearchShop(DWORD dwGaeaID)
 {
 	LISTSEARCHSHOP_ITER iter = m_listSearchShop.begin();
-	for( ; iter != m_listSearchShop.end(); ++iter )
+	for (; iter != m_listSearchShop.end(); ++iter)
 	{
-		if( *iter == dwGaeaID )
+		if (*iter == dwGaeaID)
 		{
 			m_listSearchShop.erase(iter);
 			return;
@@ -3555,12 +3755,12 @@ void GLGaeaServer::EraseSearchShop( DWORD dwGaeaID )
 	}
 }
 
-bool GLGaeaServer::FindSearchShop( DWORD dwGaeaID )
+bool GLGaeaServer::FindSearchShop(DWORD dwGaeaID)
 {
 	LISTSEARCHSHOP_ITER iter = m_listSearchShop.begin();
-	for( ; iter != m_listSearchShop.end(); ++iter )
+	for (; iter != m_listSearchShop.end(); ++iter)
 	{
-		if( *iter == dwGaeaID )
+		if (*iter == dwGaeaID)
 		{
 			return TRUE;
 		}
@@ -3568,134 +3768,135 @@ bool GLGaeaServer::FindSearchShop( DWORD dwGaeaID )
 	return FALSE;
 }
 
-
-BOOL GLGaeaServer::ReqSearchShopItem ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_PMARKET_SEARCH_ITEM* pNetMsg )
+BOOL GLGaeaServer::ReqSearchShopItem(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_PMARKET_SEARCH_ITEM *pNetMsg)
 {
 	return FALSE;
 
-	LISTSEARCHSHOP_ITER iter	 = m_listSearchShop.begin();
+	LISTSEARCHSHOP_ITER iter = m_listSearchShop.begin();
 	LISTSEARCHSHOP_ITER iter_end = m_listSearchShop.end();
 	LISTSEARCHSHOP_ITER iter_cur;
 
 	GLMSG::SNETPC_PMARKET_SEARCH_ITEM_RESULT NetResultMsg;
 
-	PGLCHAR pMyChar = GetChar ( dwGaeaID );
-	if( pMyChar == NULL ) return TRUE;	
+	PGLCHAR pMyChar = GetChar(dwGaeaID);
+	if (pMyChar == NULL)
+		return TRUE;
 
 	pMyChar->m_vecSearchResult.clear();
 
-	if( pNetMsg->sSearchData.dwReqCharClass	!= 0 && pNetMsg->sSearchData.dwSuitType	    != 0 && 
-	    pNetMsg->sSearchData.wReqLevel		!= 0 && !pNetMsg->sSearchData.sReqStats.IsZERO() &&
-		strlen(pNetMsg->sSearchData.szItemName) == 0 )
+	if (pNetMsg->sSearchData.dwReqCharClass != 0 && pNetMsg->sSearchData.dwSuitType != 0 &&
+		pNetMsg->sSearchData.wReqLevel != 0 && !pNetMsg->sSearchData.sReqStats.IsZERO() &&
+		strlen(pNetMsg->sSearchData.szItemName) == 0)
 	{
-		SENDTOCLIENT ( dwClientID, &NetResultMsg );
+		SENDTOCLIENT(dwClientID, &NetResultMsg);
 		return TRUE;
 	}
 
-
 	size_t i;
-	for( ; iter != iter_end;  )
+	for (; iter != iter_end;)
 	{
 		iter_cur = iter++;
-		PGLCHAR pChar = GetChar ( *iter_cur );
-		if( pChar == NULL || pChar->m_sPMarket.IsOpen() == FALSE || pChar->m_sMapID.wMainID != 22 || pChar->m_sMapID.wSubID != 0  ) 
+		PGLCHAR pChar = GetChar(*iter_cur);
+		if (pChar == NULL || pChar->m_sPMarket.IsOpen() == FALSE || pChar->m_sMapID.wMainID != 22 || pChar->m_sMapID.wSubID != 0)
 		{
-			m_listSearchShop.erase( iter_cur );
+			m_listSearchShop.erase(iter_cur);
 			continue;
 		}
-		
+
 		std::vector<SFINDRESULT> vecFindResult;
-		vecFindResult = pChar->m_sPMarket.FindItem( pNetMsg->sSearchData );
+		vecFindResult = pChar->m_sPMarket.FindItem(pNetMsg->sSearchData);
 
-		if( vecFindResult.size() == 0 ) continue;
+		if (vecFindResult.size() == 0)
+			continue;
 
-		for( i = 0; i < vecFindResult.size(); i++ )
+		for (i = 0; i < vecFindResult.size(); i++)
 		{
 			SSEARCHITEMRESULT searchResult;
-			searchResult.vShopPos					= pChar->m_vPos;
-			StringCbCopy( searchResult.szShopName, MAP_NAME_LENGTH, pChar->m_sPMarket.GetTitle().c_str() );
-			searchResult.nSearchItemID			    = vecFindResult[i].sSaleItemID;
-			searchResult.llPRICE					= vecFindResult[i].llPRICE;
-			pMyChar->m_vecSearchResult.push_back( searchResult );
+			searchResult.vShopPos = pChar->m_vPos;
+			StringCbCopy(searchResult.szShopName, MAP_NAME_LENGTH, pChar->m_sPMarket.GetTitle().c_str());
+			searchResult.nSearchItemID = vecFindResult[i].sSaleItemID;
+			searchResult.llPRICE = vecFindResult[i].llPRICE;
+			pMyChar->m_vecSearchResult.push_back(searchResult);
 		}
 	}
 
-
-	for( i = 0; i < pMyChar->m_vecSearchResult.size(); i++ )
+	for (i = 0; i < pMyChar->m_vecSearchResult.size(); i++)
 	{
-		if( i >= MAX_SEARCH_RESULT ) break;
-		NetResultMsg.sSearchResult[i] =  pMyChar->m_vecSearchResult[i];					
+		if (i >= MAX_SEARCH_RESULT)
+			break;
+		NetResultMsg.sSearchResult[i] = pMyChar->m_vecSearchResult[i];
 	}
 
-
 	NetResultMsg.dwSearchNum = pMyChar->m_vecSearchResult.size();
-	NetResultMsg.dwPageNum   = 0;
+	NetResultMsg.dwPageNum = 0;
 
-	SENDTOCLIENT ( dwClientID, &NetResultMsg );
+	SENDTOCLIENT(dwClientID, &NetResultMsg);
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::ReqSearchResultShopItem ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_PMARKET_SEARCH_ITEM_RESULT_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqSearchResultShopItem(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNETPC_PMARKET_SEARCH_ITEM_RESULT_REQ *pNetMsg)
 {
 	return FALSE;
 
-	PGLCHAR pMyChar = GetChar ( dwGaeaID );
-	if( pMyChar == NULL ) return TRUE;
-	if( pMyChar->m_vecSearchResult.size() == 0 ) return TRUE;
+	PGLCHAR pMyChar = GetChar(dwGaeaID);
+	if (pMyChar == NULL)
+		return TRUE;
+	if (pMyChar->m_vecSearchResult.size() == 0)
+		return TRUE;
 
 	GLMSG::SNETPC_PMARKET_SEARCH_ITEM_RESULT NetResultMsg;
-	
+
 	int i;
 	int resultNum = pNetMsg->dwPageNum * MAX_SEARCH_RESULT;
 	int iMaxCount = pMyChar->m_vecSearchResult.size() - (pNetMsg->dwPageNum * MAX_SEARCH_RESULT);
-	if( iMaxCount > MAX_SEARCH_RESULT ) iMaxCount = MAX_SEARCH_RESULT;
+	if (iMaxCount > MAX_SEARCH_RESULT)
+		iMaxCount = MAX_SEARCH_RESULT;
 
-	for( i = 0; i < iMaxCount; i++ )
+	for (i = 0; i < iMaxCount; i++)
 	{
 		NetResultMsg.sSearchResult[i] = pMyChar->m_vecSearchResult[resultNum];
 		resultNum++;
 	}
 
 	NetResultMsg.dwSearchNum = pMyChar->m_vecSearchResult.size();
-	NetResultMsg.dwPageNum   = pNetMsg->dwPageNum;
+	NetResultMsg.dwPageNum = pNetMsg->dwPageNum;
 
-	SENDTOCLIENT ( dwClientID, &NetResultMsg );
+	SENDTOCLIENT(dwClientID, &NetResultMsg);
 
 	return TRUE;
 }
 
-
-// 모든 클럽의 배틀의 현재 상황을 저장한다. ( 킬/데스를 저장한다. ) 
+// 모든 클럽의 배틀의 현재 상황을 저장한다. ( 킬/데스를 저장한다. )
 BOOL GLGaeaServer::SaveClubBattle()
 {
 	EnterCriticalSection(&m_CSPCLock);
 
 	CLUBS_ITER pos = m_cClubMan.m_mapCLUB.begin();
-	CLUBS_ITER end = m_cClubMan.m_mapCLUB.end();	
+	CLUBS_ITER end = m_cClubMan.m_mapCLUB.end();
 
-	for ( ; pos!=end; ++pos )
+	for (; pos != end; ++pos)
 	{
 		GLCLUB &cCLUB = (*pos).second;
 
-		if ( cCLUB.GetBattleNum() > 0 )
+		if (cCLUB.GetBattleNum() > 0)
 		{
 			CLUB_BATTLE_ITER pos = cCLUB.m_mapBattle.begin();
 			CLUB_BATTLE_ITER end = cCLUB.m_mapBattle.end();
-			for ( ; pos!=end; ++pos )
+			for (; pos != end; ++pos)
 			{
 				GLCLUBBATTLE &sClubBattle = (*pos).second;
 
 				//	동맹장클럽만 기록
-				if ( sClubBattle.m_bAlliance && cCLUB.m_dwID != cCLUB.m_dwAlliance )
+				if (sClubBattle.m_bAlliance && cCLUB.m_dwID != cCLUB.m_dwAlliance)
 					continue;
 
 				//	db에 저장 ( A기준, B기준 저장 )
-				CSaveClubBattle *pDbAction = new CSaveClubBattle ( cCLUB.m_dwID, 
-																   sClubBattle.m_dwCLUBID, 
-																   sClubBattle.m_wKillPointDB + sClubBattle.m_wKillPointTemp, 
-																   sClubBattle.m_wDeathPointDB + sClubBattle.m_wDeathPointTemp );
-				m_pDBMan->AddJob ( pDbAction );
+				CSaveClubBattle *pDbAction = new CSaveClubBattle(cCLUB.m_dwID,
+																 sClubBattle.m_dwCLUBID,
+																 sClubBattle.m_wKillPointDB + sClubBattle.m_wKillPointTemp,
+																 sClubBattle.m_wDeathPointDB + sClubBattle.m_wDeathPointTemp);
+				m_pDBMan->AddJob(pDbAction);
 			}
 		}
 	}
@@ -3705,145 +3906,154 @@ BOOL GLGaeaServer::SaveClubBattle()
 	return TRUE;
 }
 
-void GLGaeaServer::ClearReserveDropOutSummon ()
+void GLGaeaServer::ClearReserveDropOutSummon()
 {
-	if( m_reqDropOutSummon.size() == 0 ) return;
+	if (m_reqDropOutSummon.size() == 0)
+		return;
 
 	VSUMMONID_ITER iter = m_reqDropOutSummon.begin();
-	for ( ; iter != m_reqDropOutSummon.end(); ++iter )
+	for (; iter != m_reqDropOutSummon.end(); ++iter)
 	{
 		DWORD dwguID = *(iter);
-		DropOutSummon ( dwguID );
+		DropOutSummon(dwguID);
 	}
 
 	m_reqDropOutSummon.clear();
 }
 
-PGLSUMMONFIELD GLGaeaServer::NEW_SUMMON ()
+PGLSUMMONFIELD GLGaeaServer::NEW_SUMMON()
 {
 
 	EnterCriticalSection(&m_CSPCLock);
 
-	GLSummonField* returnSummon = m_poolSummon.New();
+	GLSummonField *returnSummon = m_poolSummon.New();
 
 	LeaveCriticalSection(&m_CSPCLock);
 
 	return returnSummon;
 }
 
-void GLGaeaServer::RELEASE_SUMMON ( PGLSUMMONFIELD pSummon )
+void GLGaeaServer::RELEASE_SUMMON(PGLSUMMONFIELD pSummon)
 {
-	GASSERT ( pSummon && "GLGaeaServer::RELEASE_SUMMON()" );
-	if ( !pSummon ) return;
+	GASSERT(pSummon && "GLGaeaServer::RELEASE_SUMMON()");
+	if (!pSummon)
+		return;
 
 	EnterCriticalSection(&m_CSPCLock);
 
-	pSummon->CleanUp ();
-	m_poolSummon.ReleaseNonInit ( pSummon );
+	pSummon->CleanUp();
+	m_poolSummon.ReleaseNonInit(pSummon);
 
 	LeaveCriticalSection(&m_CSPCLock);
 }
 
-void GLGaeaServer::DelPlayHostileClubBattle( DWORD dwClub_P, DWORD dwClub_S )
+void GLGaeaServer::DelPlayHostileClubBattle(DWORD dwClub_P, DWORD dwClub_S)
 {
-	GLCLUB *pCLUB = m_cClubMan.GetClub ( dwClub_P );
-	if ( !pCLUB )	return;
+	GLCLUB *pCLUB = m_cClubMan.GetClub(dwClub_P);
+	if (!pCLUB)
+		return;
 
 	CLUBMEMBERS_ITER pos = pCLUB->m_mapMembers.begin();
 	CLUBMEMBERS_ITER end = pCLUB->m_mapMembers.end();
-	
+
 	PGLCHAR pCHAR = NULL;
-	for ( ; pos!=end; ++pos )
+	for (; pos != end; ++pos)
 	{
-		pCHAR = GetCharID ( (*pos).first );
-		if ( !pCHAR )	
+		pCHAR = GetCharID((*pos).first);
+		if (!pCHAR)
 		{
 			continue;
 		}
 		else
 		{
-			pCHAR->DelPlayHostileClub( dwClub_S );
+			pCHAR->DelPlayHostileClub(dwClub_S);
 		}
 	}
 	return;
 }
 
-void GLGaeaServer::DelPlayHostileAllianceBattle( DWORD dwClub_P, DWORD dwClub_S )
+void GLGaeaServer::DelPlayHostileAllianceBattle(DWORD dwClub_P, DWORD dwClub_S)
 {
-	GLCLUB *pCLUB_P = m_cClubMan.GetClub ( dwClub_P );
-	if ( !pCLUB_P )	return;
+	GLCLUB *pCLUB_P = m_cClubMan.GetClub(dwClub_P);
+	if (!pCLUB_P)
+		return;
 
-	GLCLUB *pCLUB_S = m_cClubMan.GetClub ( dwClub_S );
-	if ( !pCLUB_S )	return;
+	GLCLUB *pCLUB_S = m_cClubMan.GetClub(dwClub_S);
+	if (!pCLUB_S)
+		return;
 
 	// 자신 클럽
 	CLUB_ALLIANCE_ITER pos = pCLUB_P->m_setAlliance.begin();
 	CLUB_ALLIANCE_ITER end = pCLUB_P->m_setAlliance.end();
-	for ( ; pos!=end; ++pos )
+	for (; pos != end; ++pos)
 	{
 		const GLCLUBALLIANCE &sALLIANCE_A = *pos;
-		GLCLUB *pCLUB_A = GetClubMan().GetClub ( sALLIANCE_A.m_dwID );
-		if ( !pCLUB_A ) continue;	
+		GLCLUB *pCLUB_A = GetClubMan().GetClub(sALLIANCE_A.m_dwID);
+		if (!pCLUB_A)
+			continue;
 
 		CLUB_ALLIANCE_ITER posTar = pCLUB_S->m_setAlliance.begin();
 		CLUB_ALLIANCE_ITER endTar = pCLUB_S->m_setAlliance.end();
-		for ( ; posTar!=endTar; ++posTar )
+		for (; posTar != endTar; ++posTar)
 		{
 			const GLCLUBALLIANCE &sALLIANCE_B = *pos;
-			GLCLUB *pCLUB_B = GetClubMan().GetClub ( sALLIANCE_B.m_dwID );
-			if ( !pCLUB_B ) continue;	
-			
-			DelPlayHostileClubBattle ( pCLUB_A->m_dwID, pCLUB_B->m_dwID );
+			GLCLUB *pCLUB_B = GetClubMan().GetClub(sALLIANCE_B.m_dwID);
+			if (!pCLUB_B)
+				continue;
+
+			DelPlayHostileClubBattle(pCLUB_A->m_dwID, pCLUB_B->m_dwID);
 		}
-	}	
+	}
 }
 
 /*skill summon, Juver, 2017/10/09 */
-PGLSUMMONFIELD GLGaeaServer::CreateSummon ( SUMMON_DATA_SKILL sdata, DWORD dwOwnerGaeaId )
+PGLSUMMONFIELD GLGaeaServer::CreateSummon(SUMMON_DATA_SKILL sdata, DWORD dwOwnerGaeaId)
 {
-	if ( IsReserveServerStop () ) return NULL;
+	if (IsReserveServerStop())
+		return NULL;
 
-	PGLCHAR psummon_owner = GetChar ( dwOwnerGaeaId );
-	if ( !psummon_owner )		return NULL;
+	PGLCHAR psummon_owner = GetChar(dwOwnerGaeaId);
+	if (!psummon_owner)
+		return NULL;
 
 	GLMSG::SNETPC_REQ_USE_SUMMON_FB NetMsgFB;
 
-	if ( psummon_owner->m_bVehicle )
+	if (psummon_owner->m_bVehicle)
 	{
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL_VEHICLE;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
-	PCROWDATA psummon_crow_data = GLCrowDataMan::GetInstance().GetCrowData ( sdata.sidCrow );
-	if ( !psummon_crow_data )	
+	PCROWDATA psummon_crow_data = GLCrowDataMan::GetInstance().GetCrowData(sdata.sidCrow);
+	if (!psummon_crow_data)
 	{
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL_NODATA;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
-	PGLSKILL psummon_skill_data = GLSkillMan::GetInstance().GetData( sdata.sidSkill );
-	if ( !psummon_skill_data )
+	PGLSKILL psummon_skill_data = GLSkillMan::GetInstance().GetData(sdata.sidSkill);
+	if (!psummon_skill_data)
 	{
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL_NODATA;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
-	PGLSUMMON psummon_base_data = GLCONST_SUMMON::GetSummonData ( psummon_crow_data->m_sBasic.m_emSummonType );
-	if ( !psummon_base_data )
+	PGLSUMMON psummon_base_data = GLCONST_SUMMON::GetSummonData(psummon_crow_data->m_sBasic.m_emSummonType);
+	if (!psummon_base_data)
 	{
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL_NODATA;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
 	WORD wNewIndex = psummon_owner->GetFreeSummon();
-	if ( wNewIndex >= SKILL_SUMMON_MAX_CLIENT_NUM )
+	if (wNewIndex >= SKILL_SUMMON_MAX_CLIENT_NUM)
 	{
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL_MAX;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
@@ -3854,90 +4064,104 @@ PGLSUMMONFIELD GLGaeaServer::CreateSummon ( SUMMON_DATA_SKILL sdata, DWORD dwOwn
 	BOOL bMaxedSkill = FALSE;
 	BOOL bMaxedType = FALSE;
 
-	for( int i=0; i<SKILL_SUMMON_MAX_CLIENT_NUM; ++i )
+	for (int i = 0; i < SKILL_SUMMON_MAX_CLIENT_NUM; ++i)
 	{
 		int nSummonActiveType = 0;
 		int nSummonActiveSkill = 0;
 
-		PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon( psummon_owner->m_dwSummonGUID_FLD[i] );
-		if ( !psummon_active )	continue;
-		if ( psummon_active->IsACTION( GLAT_FALLING ) )	continue;
-		if ( psummon_active->IsACTION( GLAT_DIE ) )	continue;
+		PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon(psummon_owner->m_dwSummonGUID_FLD[i]);
+		if (!psummon_active)
+			continue;
+		if (psummon_active->IsACTION(GLAT_FALLING))
+			continue;
+		if (psummon_active->IsACTION(GLAT_DIE))
+			continue;
 
-		if ( psummon_crow_data->m_sBasic.m_emSummonType == psummon_active->m_emTYPE )	nSummonActiveType ++;
-		if ( sdata.sidSkill == psummon_active->m_Summon.sidSkill )				nSummonActiveSkill ++;
+		if (psummon_crow_data->m_sBasic.m_emSummonType == psummon_active->m_emTYPE)
+			nSummonActiveType++;
+		if (sdata.sidSkill == psummon_active->m_Summon.sidSkill)
+			nSummonActiveSkill++;
 
-		if ( nSummonActiveType >= GLCONST_SUMMON::GetMaxSummon( psummon_crow_data->m_sBasic.m_emSummonType ) )		bMaxedType = TRUE;
-		if ( nSummonActiveSkill >= sdata.wMaxSummon )	bMaxedSkill = TRUE;
+		if (nSummonActiveType >= GLCONST_SUMMON::GetMaxSummon(psummon_crow_data->m_sBasic.m_emSummonType))
+			bMaxedType = TRUE;
+		if (nSummonActiveSkill >= sdata.wMaxSummon)
+			bMaxedSkill = TRUE;
 	}
 
-	if ( bMaxedType )
+	if (bMaxedType)
 	{
 		WORD wReplaceIndex = SKILL_SUMMON_MAX_CLIENT_NUM;
 		float fRemainTime = 0.0f;
-		for( int i=0; i<SKILL_SUMMON_MAX_CLIENT_NUM; ++i )
+		for (int i = 0; i < SKILL_SUMMON_MAX_CLIENT_NUM; ++i)
 		{
-			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon( psummon_owner->m_dwSummonGUID_FLD[i] );
-			if ( !psummon_active )	continue;
-			if ( psummon_active->IsSTATE( EM_SUMMONACT_WAITING ) ) continue;
-			if ( psummon_active->m_emTYPE != psummon_crow_data->m_sBasic.m_emSummonType )	continue;
+			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon(psummon_owner->m_dwSummonGUID_FLD[i]);
+			if (!psummon_active)
+				continue;
+			if (psummon_active->IsSTATE(EM_SUMMONACT_WAITING))
+				continue;
+			if (psummon_active->m_emTYPE != psummon_crow_data->m_sBasic.m_emSummonType)
+				continue;
 
-			if ( psummon_active->m_fSummonLife > fRemainTime )
+			if (psummon_active->m_fSummonLife > fRemainTime)
 			{
 				wReplaceIndex = i;
 				fRemainTime = psummon_active->m_fSummonLife;
 			}
 		}
 
-		if ( wReplaceIndex != SKILL_SUMMON_MAX_CLIENT_NUM )
+		if (wReplaceIndex != SKILL_SUMMON_MAX_CLIENT_NUM)
 		{
-			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon( psummon_owner->m_dwSummonGUID_FLD[wReplaceIndex] );
-			if ( psummon_active )	psummon_active->m_fSummonLife = psummon_active->m_Summon.fLife;
+			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon(psummon_owner->m_dwSummonGUID_FLD[wReplaceIndex]);
+			if (psummon_active)
+				psummon_active->m_fSummonLife = psummon_active->m_Summon.fLife;
 			bMaxedType = FALSE;
 		}
 	}
 
-	if ( bMaxedSkill )
+	if (bMaxedSkill)
 	{
 		WORD wReplaceIndex = SKILL_SUMMON_MAX_CLIENT_NUM;
 		float fRemainTime = 0.0f;
-		for( int i=0; i<SKILL_SUMMON_MAX_CLIENT_NUM; ++i )
+		for (int i = 0; i < SKILL_SUMMON_MAX_CLIENT_NUM; ++i)
 		{
-			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon( psummon_owner->m_dwSummonGUID_FLD[i] );
-			if ( !psummon_active )	continue;
-			if ( psummon_active->IsSTATE( EM_SUMMONACT_WAITING ) ) continue;
-			if ( psummon_active->m_Summon.sidSkill != sdata.sidSkill )	continue;
+			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon(psummon_owner->m_dwSummonGUID_FLD[i]);
+			if (!psummon_active)
+				continue;
+			if (psummon_active->IsSTATE(EM_SUMMONACT_WAITING))
+				continue;
+			if (psummon_active->m_Summon.sidSkill != sdata.sidSkill)
+				continue;
 
-			if ( psummon_active->m_fSummonLife > fRemainTime )
+			if (psummon_active->m_fSummonLife > fRemainTime)
 			{
 				wReplaceIndex = i;
 				fRemainTime = psummon_active->m_fSummonLife;
 			}
 		}
 
-		if ( wReplaceIndex != SKILL_SUMMON_MAX_CLIENT_NUM )
+		if (wReplaceIndex != SKILL_SUMMON_MAX_CLIENT_NUM)
 		{
-			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon( psummon_owner->m_dwSummonGUID_FLD[wReplaceIndex] );
-			if ( psummon_active )	psummon_active->m_fSummonLife = psummon_active->m_Summon.fLife;
+			PGLSUMMONFIELD psummon_active = GLGaeaServer::GetInstance().GetSummon(psummon_owner->m_dwSummonGUID_FLD[wReplaceIndex]);
+			if (psummon_active)
+				psummon_active->m_fSummonLife = psummon_active->m_Summon.fLife;
 			bMaxedSkill = FALSE;
 		}
 	}
 
-	if ( bMaxedType || bMaxedSkill )
+	if (bMaxedType || bMaxedSkill)
 	{
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL_MAX_SKILL;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
-	GLLandMan* pLandMan = GetByMapID ( psummon_owner->m_sMapID );
-	if ( !pLandMan ) 
+	GLLandMan *pLandMan = GetByMapID(psummon_owner->m_sMapID);
+	if (!pLandMan)
 	{
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL_INVALIDZONE;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
-
 
 	D3DXVECTOR3 vtargetpos = psummon_owner->GetPosition();
 
@@ -3945,92 +4169,95 @@ PGLSUMMONFIELD GLGaeaServer::CreateSummon ( SUMMON_DATA_SKILL sdata, DWORD dwOwn
 	starget_id.emCrow = sdata.sTarget.GETCROW();
 	starget_id.dwID = sdata.sTarget.GETID();
 
-	GLACTOR* pactor = GetTarget( pLandMan, starget_id );
-	if ( pactor )	vtargetpos = pactor->GetPosition();
+	GLACTOR *pactor = GetTarget(pLandMan, starget_id);
+	if (pactor)
+		vtargetpos = pactor->GetPosition();
 
 	GLSUMMONLOGIC_SERVER NewSummon;
-	NewSummon.ASSIGN( *psummon_base_data );
+	NewSummon.ASSIGN(*psummon_base_data);
 	NewSummon.m_sSummonID = sdata.sidCrow;
 
-	PGLSUMMONFIELD psummon_new = NEW_SUMMON ();
-	HRESULT hr = psummon_new->Create ( pLandMan, psummon_owner, &NewSummon, vtargetpos, &sdata );
-	if ( FAILED ( hr ) )
+	PGLSUMMONFIELD psummon_new = NEW_SUMMON();
+	HRESULT hr = psummon_new->Create(pLandMan, psummon_owner, &NewSummon, vtargetpos, &sdata);
+	if (FAILED(hr))
 	{
-		RELEASE_SUMMON ( psummon_new );
+		RELEASE_SUMMON(psummon_new);
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
 	DWORD dwGUID = -1;
 
-	if ( !m_FreeSummonGIDs.GetHead ( dwGUID ) )		
+	if (!m_FreeSummonGIDs.GetHead(dwGUID))
 	{
-		RELEASE_SUMMON ( psummon_new );
+		RELEASE_SUMMON(psummon_new);
 		NetMsgFB.emFB = EMUSE_SUMMON_FB_FAIL;
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
-	m_FreeSummonGIDs.DelHead ();
+	m_FreeSummonGIDs.DelHead();
 	psummon_new->m_dwGUID = dwGUID;
 	psummon_owner->m_dwSummonGUID_FLD[wNewIndex] = psummon_new->m_dwGUID;
-	psummon_new->SetArrayIndex( wNewIndex );
+	psummon_new->SetArrayIndex(wNewIndex);
 
-	if ( !DropSummon ( psummon_new, psummon_owner->m_sMapID ) )
+	if (!DropSummon(psummon_new, psummon_owner->m_sMapID))
 	{
-		m_FreeSummonGIDs.AddTail ( psummon_new->m_dwGUID );
-		RELEASE_SUMMON ( psummon_new );
-		SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+		m_FreeSummonGIDs.AddTail(psummon_new->m_dwGUID);
+		RELEASE_SUMMON(psummon_new);
+		SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 		return NULL;
 	}
 
 	psummon_new->m_pOwner = psummon_owner;
-	psummon_new->SetValid ();
+	psummon_new->SetValid();
 
-	NetMsgFB.emFB		= EMUSE_SUMMON_FB_OK;
-	NetMsgFB.emTYPE		= psummon_new->m_emTYPE;
-	NetMsgFB.dwGUID		= psummon_new->m_dwGUID;
-	NetMsgFB.sSummonID	= psummon_new->m_sSummonID;
-	NetMsgFB.dwOwner	= psummon_new->m_dwOwner;	
-	NetMsgFB.sMapID		= psummon_new->m_sMapID;
-	NetMsgFB.dwCellID	= psummon_new->m_dwCellID;
-	NetMsgFB.vPos		= psummon_new->m_vPos;
-	NetMsgFB.vDir		= psummon_new->m_vDir;
-	NetMsgFB.dwNowHP	= psummon_new->m_dwNowHP;
-	NetMsgFB.wNowMP		= psummon_new->m_wNowMP;
+	NetMsgFB.emFB = EMUSE_SUMMON_FB_OK;
+	NetMsgFB.emTYPE = psummon_new->m_emTYPE;
+	NetMsgFB.dwGUID = psummon_new->m_dwGUID;
+	NetMsgFB.sSummonID = psummon_new->m_sSummonID;
+	NetMsgFB.dwOwner = psummon_new->m_dwOwner;
+	NetMsgFB.sMapID = psummon_new->m_sMapID;
+	NetMsgFB.dwCellID = psummon_new->m_dwCellID;
+	NetMsgFB.vPos = psummon_new->m_vPos;
+	NetMsgFB.vDir = psummon_new->m_vDir;
+	NetMsgFB.dwNowHP = psummon_new->m_dwNowHP;
+	NetMsgFB.wNowMP = psummon_new->m_wNowMP;
 
 	/*skill summon, Juver, 2017/10/09 */
-	NetMsgFB.wIndex		= psummon_new->GetArrayIndex();
-	NetMsgFB.sSummon	= psummon_new->m_Summon;
+	NetMsgFB.wIndex = psummon_new->GetArrayIndex();
+	NetMsgFB.sSummon = psummon_new->m_Summon;
 
-	NetMsgFB.fRunArea			= psummon_new->m_fRunArea;
-	NetMsgFB.fWalkArea			= psummon_new->m_fWalkArea;
-	NetMsgFB.fOwnerDistance		= psummon_new->m_fOwnerDistance;
+	NetMsgFB.fRunArea = psummon_new->m_fRunArea;
+	NetMsgFB.fWalkArea = psummon_new->m_fWalkArea;
+	NetMsgFB.fOwnerDistance = psummon_new->m_fOwnerDistance;
 
-	SENDTOCLIENT ( psummon_owner->m_dwClientID, &NetMsgFB );
+	SENDTOCLIENT(psummon_owner->m_dwClientID, &NetMsgFB);
 
 	GLMSG::SNET_SUMMON_CREATE_ANYSUMMON NetMsgBrd;
-	NetMsgBrd.Data = psummon_new->ReqNetMsg_Drop ();
-	psummon_new->m_pOwner->SendMsgViewAround ( ( NET_MSG_GENERIC* )&NetMsgBrd );
+	NetMsgBrd.Data = psummon_new->ReqNetMsg_Drop();
+	psummon_new->m_pOwner->SendMsgViewAround((NET_MSG_GENERIC *)&NetMsgBrd);
 
 	return psummon_new;
 }
 
-BOOL GLGaeaServer::DropSummon ( PGLSUMMONFIELD pSummon, SNATIVEID sMapID )
+BOOL GLGaeaServer::DropSummon(PGLSUMMONFIELD pSummon, SNATIVEID sMapID)
 {
-	if ( !pSummon ) return FALSE;
+	if (!pSummon)
+		return FALSE;
 
-	GLLandMan* pLandMan = GetByMapID ( sMapID );
-	if ( !pLandMan ) return FALSE;
+	GLLandMan *pLandMan = GetByMapID(sMapID);
+	if (!pLandMan)
+		return FALSE;
 
 	// 글로벌에 등록
 	m_SummonArray[pSummon->m_dwGUID] = pSummon;
 
 	// 랜드에 등록
-	pSummon->m_pLandMan  = pLandMan;
-	pSummon->m_pLandNode = pLandMan->m_GlobSummonList.ADDHEAD ( pSummon );
-	pLandMan->RegistSummon ( pSummon );
+	pSummon->m_pLandMan = pLandMan;
+	pSummon->m_pLandNode = pLandMan->m_GlobSummonList.ADDHEAD(pSummon);
+	pLandMan->RegistSummon(pSummon);
 
 	return TRUE;
 }
@@ -4038,200 +4265,205 @@ BOOL GLGaeaServer::DropSummon ( PGLSUMMONFIELD pSummon, SNATIVEID sMapID )
 // 이 함수는 주인이 맵을 이동하는 모든 행위에 대해서
 // 호출된다. (주인이 게임을 종료하는 경우에도 호출됨)
 // 따라서 소환여부를 고려해야 한다.
-BOOL GLGaeaServer::DropOutSummon ( DWORD dwGUID )
+BOOL GLGaeaServer::DropOutSummon(DWORD dwGUID)
 {
-	if ( dwGUID>=m_dwMaxClient ) 
+	if (dwGUID >= m_dwMaxClient)
 	{
-		//CDebugSet::ToLogFile ( "ERROR : dwGUID>=m_dwMaxClient PetGUID : %d dwMaxClient : %d", dwGUID, m_dwMaxClient );
+		// CDebugSet::ToLogFile ( "ERROR : dwGUID>=m_dwMaxClient PetGUID : %d dwMaxClient : %d", dwGUID, m_dwMaxClient );
 		return FALSE;
 	}
 
-	if ( m_SummonArray[dwGUID] == NULL ) 
+	if (m_SummonArray[dwGUID] == NULL)
 	{
-		CDebugSet::ToLogFile ( "ERROR : m_SummonArray[dwGUID] == NULL" );
+		CDebugSet::ToLogFile("ERROR : m_SummonArray[dwGUID] == NULL");
 		return FALSE;
 	}
 
 	PGLSUMMONFIELD pSummon = m_SummonArray[dwGUID];
 
-	if ( !pSummon )
+	if (!pSummon)
 	{
-		CDebugSet::ToFileWithTime( "_summon.txt", "summon erase failed !pSummon id:%d", dwGUID );
+		CDebugSet::ToFileWithTime("_summon.txt", "summon erase failed !pSummon id:%d", dwGUID);
 		return FALSE;
 	}
 
 	// 활동 여부
-	bool bValid = pSummon->IsValid ();
+	bool bValid = pSummon->IsValid();
 
 	DWORD dwSummonGUID = pSummon->m_dwGUID;
-	DWORD dwOwnerID	   = pSummon->m_dwOwner;
+	DWORD dwOwnerID = pSummon->m_dwOwner;
 	DWORD dwSummonArrayIndex = pSummon->m_wArrayIndex;
 
 	// 활동중이면
-	if ( bValid )
+	if (bValid)
 	{
 		//	Note : Land 리스트에서 제거.
-		GLLandMan* pLandMan = pSummon->m_pLandMan;
-		if ( pLandMan )
+		GLLandMan *pLandMan = pSummon->m_pLandMan;
+		if (pLandMan)
 		{
-			pLandMan->RemoveSummon ( pSummon );
+			pLandMan->RemoveSummon(pSummon);
 			pSummon->m_pLandMan = NULL;
 		}
 
-		pSummon->ReSetValid ();
-		pSummon->ReSetAllSTATE ();
-//		pSummon->ReSetSkillDelay ();
+		pSummon->ReSetValid();
+		pSummon->ReSetAllSTATE();
+		//		pSummon->ReSetSkillDelay ();
 	}
 
 	// 클라이언트 팻 사라지게 메시지 발송 (PC가 게임을 종료하면 pOwner 없을 수 있다)
-	PGLCHAR pOwner = GetChar ( dwOwnerID );
-	if ( pOwner && bValid )
+	PGLCHAR pOwner = GetChar(dwOwnerID);
+	if (pOwner && bValid)
 	{
 		GLMSG::SNETPC_REQ_USE_SUMMON_DEL NetMsgFB;
-		NetMsgFB.dwGUID	= dwSummonGUID;
-		SENDTOCLIENT ( pOwner->m_dwClientID, &NetMsgFB );
-		
-		/*skill summon, Juver, 2017/10/10 */
-		pOwner->RemoveSummonBuff( dwSummonGUID );
+		NetMsgFB.dwGUID = dwSummonGUID;
+		SENDTOCLIENT(pOwner->m_dwClientID, &NetMsgFB);
 
-		if ( pOwner->m_dwSummonGUID_FLD[dwSummonArrayIndex] == dwSummonGUID )
+		/*skill summon, Juver, 2017/10/10 */
+		pOwner->RemoveSummonBuff(dwSummonGUID);
+
+		if (pOwner->m_dwSummonGUID_FLD[dwSummonArrayIndex] == dwSummonGUID)
 		{
 			pOwner->m_dwSummonGUID_FLD[dwSummonArrayIndex] = GAEAID_NULL;
 		}
 		else
 		{
 			BOOL bdeleted_summon = FALSE;
-			for ( int i=0; i<SKILL_SUMMON_MAX_CLIENT_NUM; ++i )	
+			for (int i = 0; i < SKILL_SUMMON_MAX_CLIENT_NUM; ++i)
 			{
-				if ( pOwner->m_dwSummonGUID_FLD[i] == dwSummonGUID )
+				if (pOwner->m_dwSummonGUID_FLD[i] == dwSummonGUID)
 				{
 					pOwner->m_dwSummonGUID_FLD[i] = GAEAID_NULL;
 					bdeleted_summon = TRUE;
 				}
 			}
 
-			if ( !bdeleted_summon )
+			if (!bdeleted_summon)
 			{
-				CDebugSet::ToFileWithTime( "_summon.txt", "summon lost id:%d owner:%d", dwSummonGUID, dwOwnerID );
+				CDebugSet::ToFileWithTime("_summon.txt", "summon lost id:%d owner:%d", dwSummonGUID, dwOwnerID);
 			}
-
 		}
 	}
 
 	// 현재 필드서버를 떠나거나 게임을 완전 종료하면
 
-	RELEASE_SUMMON ( pSummon );
+	RELEASE_SUMMON(pSummon);
 	m_SummonArray[dwGUID] = NULL;
-	m_FreeSummonGIDs.AddTail ( dwGUID );
-
+	m_FreeSummonGIDs.AddTail(dwGUID);
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::SaveNpcCommission( DWORD dwCharID, DWORD dwUserID, LONGLONG lnCommission )
+BOOL GLGaeaServer::SaveNpcCommission(DWORD dwCharID, DWORD dwUserID, LONGLONG lnCommission)
 {
-	if ( lnCommission <= 0 )	return FALSE;
+	if (lnCommission <= 0)
+		return FALSE;
 
-	GLChar* pChar = GLGaeaServer::GetInstance().GetCharID( dwCharID );
+	GLChar *pChar = GLGaeaServer::GetInstance().GetCharID(dwCharID);
 
-	//  캐릭터가 같은 필드에 있을경우 
-	if ( pChar ) 
+	//  캐릭터가 같은 필드에 있을경우
+	if (pChar)
 	{
-		pChar->UpdateNpcCommission( lnCommission );
+		pChar->UpdateNpcCommission(lnCommission);
 	}
 	else
 	{
-		GLMSG::SNET_INVEN_NPC_COMMISSION NetMsgAgt;	
+		GLMSG::SNET_INVEN_NPC_COMMISSION NetMsgAgt;
 		NetMsgAgt.nCHANNEL = GLGaeaServer::GetInstance().GetServerChannel();
 		NetMsgAgt.dwFieldID = GLGaeaServer::GetInstance().GetFieldSvrID();
 		NetMsgAgt.dwCharID = dwCharID;
 		NetMsgAgt.dwUserID = dwUserID;
 		NetMsgAgt.lnCommission = lnCommission;
-		GLGaeaServer::GetInstance().SENDTOAGENT( &NetMsgAgt );
+		GLGaeaServer::GetInstance().SENDTOAGENT(&NetMsgAgt);
 	}
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::SaveNpcCommissionDB( DWORD dwCharID, DWORD dwUserID, LONGLONG lnCommission )
+BOOL GLGaeaServer::SaveNpcCommissionDB(DWORD dwCharID, DWORD dwUserID, LONGLONG lnCommission)
 {
-	if ( lnCommission <= 0 )	return FALSE;
+	if (lnCommission <= 0)
+		return FALSE;
 
-	GLITEMLMT::GetInstance().ReqMoneyExc ( ID_CHAR, dwCharID, ID_USER, dwUserID, lnCommission, EMITEM_ROUTE_NPCCOME );
+	GLITEMLMT::GetInstance().ReqMoneyExc(ID_CHAR, dwCharID, ID_USER, dwUserID, lnCommission, EMITEM_ROUTE_NPCCOME);
 
-	CUpdateUserMoneyAdd* pDbAction = new CUpdateUserMoneyAdd ( dwUserID, lnCommission );
-	m_pDBMan->AddJob ( pDbAction );
+	CUpdateUserMoneyAdd *pDbAction = new CUpdateUserMoneyAdd(dwUserID, lnCommission);
+	m_pDBMan->AddJob(pDbAction);
 
 //	UserLastInfo 업데이트
-#if defined ( TW_PARAM ) || defined ( HK_PARAM ) || defined ( _RELEASED )	
-	
-	CUpdateUserLastInfoAdd* pDbActionLast = new CUpdateUserLastInfoAdd ( dwUserID, lnCommission );
-	m_pDBMan->AddJob ( pDbActionLast );
+#if defined(TW_PARAM) || defined(HK_PARAM) || defined(_RELEASED)
 
-#endif 
+	CUpdateUserLastInfoAdd *pDbActionLast = new CUpdateUserLastInfoAdd(dwUserID, lnCommission);
+	m_pDBMan->AddJob(pDbActionLast);
 
+#endif
 
 	return TRUE;
 }
 
-BOOL GLGaeaServer::ReqClubDeathMatchRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUB_DEATHMATCH_RANKING_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqClubDeathMatchRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUB_DEATHMATCH_RANKING_REQ *pNetMsg)
 {
 	// 요청 케릭터가 유효성 체크
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return FALSE;	
-	
-	if ( !pChar->m_pLandMan ) return FALSE;
-	if ( pChar->m_dwGuild == CLUB_NULL )	return FALSE;
-	if ( pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID ) return FALSE;
-	if ( !pChar->m_pLandMan->m_bClubDeathMatchMap ) return FALSE;
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return FALSE;
 
-	GLClubDeathMatch* pCDM = GLClubDeathMatchFieldMan::GetInstance().Find( pChar->m_pLandMan->m_dwClubMapID );
-	if ( !pCDM ) return FALSE;
-	if ( !pCDM->IsBattle() ) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_dwGuild == CLUB_NULL)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bClubDeathMatchMap)
+		return FALSE;
 
-	
-	
-	CDM_RANK_INFO_MAP_ITER pos = pCDM->m_mapCdmScore.find( pChar->m_dwGuild );
-	if( pos != pCDM->m_mapCdmScore.end() ) 
+	GLClubDeathMatch *pCDM = GLClubDeathMatchFieldMan::GetInstance().Find(pChar->m_pLandMan->m_dwClubMapID);
+	if (!pCDM)
+		return FALSE;
+	if (!pCDM->IsBattle())
+		return FALSE;
+
+	CDM_RANK_INFO_MAP_ITER pos = pCDM->m_mapCdmScore.find(pChar->m_dwGuild);
+	if (pos != pCDM->m_mapCdmScore.end())
 	{
 		GLMSG::SNET_CLUB_DEATHMATCH_MYRANK_UPDATE NetMsgMy;
 
 		NetMsgMy.sMyCdmRank.wClubRanking = pos->second.wClubRanking;
 		NetMsgMy.sMyCdmRank.wKillNum = pos->second.wKillNum;
 		NetMsgMy.sMyCdmRank.wDeathNum = pos->second.wDeathNum;
-		StringCchCopy( NetMsgMy.sMyCdmRank.szClubName, CLUB_NAME+1, pos->second.szClubName );
-		
-		SENDTOCLIENT( dwClientID, &NetMsgMy );
+		StringCchCopy(NetMsgMy.sMyCdmRank.szClubName, CLUB_NAME + 1, pos->second.szClubName);
+
+		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
-
 	GLMSG::SNET_CLUB_DEATHMATCH_RANKING_UPDATE NetMsg;
-	
+
 	CDM_RANK_INFO_MAP_ITER pos_begin = pCDM->m_mapCdmScore.begin();
 	CDM_RANK_INFO_MAP_ITER pos_end = pCDM->m_mapCdmScore.end();
 
-	for ( ; pos_begin != pos_end; pos_begin++ )
+	for (; pos_begin != pos_end; pos_begin++)
 	{
-		SCDM_RANK_INFO& sCdmRankInfo = pos_begin->second;
+		SCDM_RANK_INFO &sCdmRankInfo = pos_begin->second;
 		int nIndex = sCdmRankInfo.nIndex;
 
-		if ( nIndex >= 0 && nIndex < RANKING_NUM )
+		if (nIndex >= 0 && nIndex < RANKING_NUM)
 		{
 			SCDM_RANK sCdmRank = sCdmRankInfo;
-			NetMsg.ADDCLUB( sCdmRank );
+			NetMsg.ADDCLUB(sCdmRank);
 		}
-	}	
+	}
 
-	if ( NetMsg.wRankNum > 0 )	SENDTOCLIENT( dwClientID, &NetMsg );
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
 
 /*quest map move, Juver, 2018/08/12 */
-BOOL GLGaeaServer::quest_move_insert( DWORD charid, SNATIVEID mapid, DWORD posx, DWORD posy, DWORD gateid, bool startmove, DWORD questid )
+BOOL GLGaeaServer::quest_move_insert(DWORD charid, SNATIVEID mapid, DWORD posx, DWORD posy, DWORD gateid, bool startmove, DWORD questid)
 {
-	SQUEST_MAP_MOVE_MAP_ITER it = m_map_quest_move.find( charid );
-	if ( it != m_map_quest_move.end() )	return FALSE;
+	SQUEST_MAP_MOVE_MAP_ITER it = m_map_quest_move.find(charid);
+	if (it != m_map_quest_move.end())
+		return FALSE;
 
 	SQUEST_MAP_MOVE quest_move;
 	quest_move.charid = charid;
@@ -4242,37 +4474,38 @@ BOOL GLGaeaServer::quest_move_insert( DWORD charid, SNATIVEID mapid, DWORD posx,
 	quest_move.startmove = startmove;
 	quest_move.questid = questid;
 
-	m_map_quest_move.insert( std::make_pair( quest_move.charid, quest_move ) );
-	
+	m_map_quest_move.insert(std::make_pair(quest_move.charid, quest_move));
+
 	return TRUE;
 }
 
 /*quest map move, Juver, 2018/08/12 */
-void GLGaeaServer::quest_move_frame( float time, float elapsed_time )
+void GLGaeaServer::quest_move_frame(float time, float elapsed_time)
 {
 	SQUEST_MAP_MOVE_MAP_ITER it = m_map_quest_move.begin();
 	SQUEST_MAP_MOVE_MAP_ITER ite = m_map_quest_move.end();
 
-	for ( ; it != ite; it++ )
+	for (; it != ite; it++)
 	{
-		const SQUEST_MAP_MOVE& quest_move = (*it).second;
-		quest_move_process( quest_move );
+		const SQUEST_MAP_MOVE &quest_move = (*it).second;
+		quest_move_process(quest_move);
 	}
 
 	m_map_quest_move.clear();
 }
 
 /*quest map move, Juver, 2018/08/12 */
-BOOL GLGaeaServer::quest_move_process( const SQUEST_MAP_MOVE& quest_move )
+BOOL GLGaeaServer::quest_move_process(const SQUEST_MAP_MOVE &quest_move)
 {
-	GLChar* pchar = GetCharID(quest_move.charid);
-	if ( !pchar )	return FALSE;
+	GLChar *pchar = GetCharID(quest_move.charid);
+	if (!pchar)
+		return FALSE;
 
 	/*instance disable move, Juver, 2018/07/13 */
-	GLLandMan* plandman_current = GetByMapID( pchar->m_sMapID );
-	if ( plandman_current && plandman_current->IsInstantMap() )
+	GLLandMan *plandman_current = GetByMapID(pchar->m_sMapID);
+	if (plandman_current && plandman_current->IsInstantMap())
 	{
-		CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move plandman_current->IsInstantMap() questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid );
+		CDebugSet::ToFileWithTime("quest_move.txt", "[%d]%s failed to move plandman_current->IsInstantMap() questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid);
 		return FALSE;
 	}
 
@@ -4293,122 +4526,123 @@ BOOL GLGaeaServer::quest_move_process( const SQUEST_MAP_MOVE& quest_move )
 	CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move m_sTrade.Valid() questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid );
 	return FALSE;
 	}*/
-	
-	GLMapList::FIELDMAP_ITER iter = m_MapList.find ( quest_move.mapid.dwID );
-	if ( iter==m_MapList.end() )
+
+	GLMapList::FIELDMAP_ITER iter = m_MapList.find(quest_move.mapid.dwID);
+	if (iter == m_MapList.end())
 	{
-		CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move map invalid [%d/%d]  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.mapid.wMainID, quest_move.mapid.wSubID, quest_move.questid );
+		CDebugSet::ToFileWithTime("quest_move.txt", "[%d]%s failed to move map invalid [%d/%d]  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.mapid.wMainID, quest_move.mapid.wSubID, quest_move.questid);
 		return FALSE;
 	}
-	
+
 	const SMAPNODE *pMapNode = &(*iter).second;
 
 	/*instance disable move, Juver, 2018/07/13 */
-	if ( pMapNode->bInstantMap )
+	if (pMapNode->bInstantMap)
 	{
-		CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move pMapNode->bInstantMap  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid );
+		CDebugSet::ToFileWithTime("quest_move.txt", "[%d]%s failed to move pMapNode->bInstantMap  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid);
 		return FALSE;
 	}
 
-	if ( pchar->m_dwUserLvl < NSUSER_TYPE::USER_TYPE_GM3 )
+	if (pchar->m_dwUserLvl < NSUSER_TYPE::USER_TYPE_GM3)
 	{
 		EMREQFAIL emReqFail(EMREQUIRE_COMPLETE);
 		const SLEVEL_REQUIRE &sRequire = pMapNode->sLEVEL_REQUIRE;
-		emReqFail = sRequire.ISCOMPLETE ( pchar ); 
-		if ( emReqFail != EMREQUIRE_COMPLETE )
+		emReqFail = sRequire.ISCOMPLETE(pchar);
+		if (emReqFail != EMREQUIRE_COMPLETE)
 		{
-			CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move emReqFail != EMREQUIRE_COMPLETE  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid );
+			CDebugSet::ToFileWithTime("quest_move.txt", "[%d]%s failed to move emReqFail != EMREQUIRE_COMPLETE  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid);
 			return FALSE;
 		}
 
 		/*map party setting, Juver, 2018/06/29 */
-		if ( pMapNode->bBlockParty && pchar->m_dwPartyID != PARTY_NULL )
+		if (pMapNode->bBlockParty && pchar->m_dwPartyID != PARTY_NULL)
 		{
-			CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move pMapNode->bBlockParty  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid );
+			CDebugSet::ToFileWithTime("quest_move.txt", "[%d]%s failed to move pMapNode->bBlockParty  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid);
 			return FALSE;
 		}
 
 		/* map entry user verified, Juver, 2020/02/27 */
-		if ( pMapNode->bUserVerifiedMapEntry && !pchar->m_bUserFlagVerified )
+		if (pMapNode->bUserVerifiedMapEntry && !pchar->m_bUserFlagVerified)
 		{
-			CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move pMapNode->bUserVerifiedMapEntry && !pchar->m_bUserFlagVerified  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid );
+			CDebugSet::ToFileWithTime("quest_move.txt", "[%d]%s failed to move pMapNode->bUserVerifiedMapEntry && !pchar->m_bUserFlagVerified  questid:%u", pchar->m_dwCharID, pchar->m_szName, quest_move.questid);
 			return FALSE;
 		}
 	}
 
-	DropOutPET ( pchar->m_dwPetGUID, true, true );
-	//DropOutSummon ( pchar->m_dwSummonGUID, true );
-	SaveVehicle( pchar->m_dwClientID, pchar->m_dwGaeaID, true );
+	DropOutPET(pchar->m_dwPetGUID, true, true);
+	// DropOutSummon ( pchar->m_dwSummonGUID, true );
+	SaveVehicle(pchar->m_dwClientID, pchar->m_dwGaeaID, true);
 
 	/*skill summon, Juver, 2017/10/09 */
-	for ( int i=0; i<SKILL_SUMMON_MAX_CLIENT_NUM; ++i )
-		DropOutSummon ( pchar->m_dwSummonGUID_FLD[i] );
-
-
-
-
+	for (int i = 0; i < SKILL_SUMMON_MAX_CLIENT_NUM; ++i)
+		DropOutSummon(pchar->m_dwSummonGUID_FLD[i]);
 
 	SNATIVEID sMAPID = quest_move.mapid;
-	DWORD dwGATEID(UINT_MAX);	
+	DWORD dwGATEID(UINT_MAX);
 	DWORD wPOSX = USHRT_MAX;
 	DWORD wPOSY = USHRT_MAX;
 
-	if( quest_move.posx != USHRT_MAX && quest_move.posy != USHRT_MAX ) 
+	if (quest_move.posx != USHRT_MAX && quest_move.posy != USHRT_MAX)
 	{
 		wPOSX = quest_move.posx;
 		wPOSY = quest_move.posy;
-	}else if( quest_move.gateid != 0 )
+	}
+	else if (quest_move.gateid != 0)
 	{
 		dwGATEID = quest_move.gateid;
 	}
 
-	D3DXVECTOR3 vPOS(0,0,0); 
-	if( !quest_move.startmove && wPOSX != USHRT_MAX && wPOSY != USHRT_MAX )
+	D3DXVECTOR3 vPOS(0, 0, 0);
+	if (!quest_move.startmove && wPOSX != USHRT_MAX && wPOSY != USHRT_MAX)
 	{
 		GLMapAxisInfo sMapAxisInfo;
-		bool load = sMapAxisInfo.LoadFile ( pMapNode->strFile.c_str() );
-		if ( !load )
+		bool load = sMapAxisInfo.LoadFile(pMapNode->strFile.c_str());
+		if (!load)
 		{
-			CDebugSet::ToFileWithTime( "quest_move.txt", "[%d]%s failed to move sMapAxisInfo.LoadFile failed :%s questid:%u", pchar->m_dwCharID, pchar->m_szName, pMapNode->strFile.c_str(), quest_move.questid );
+			CDebugSet::ToFileWithTime("quest_move.txt", "[%d]%s failed to move sMapAxisInfo.LoadFile failed :%s questid:%u", pchar->m_dwCharID, pchar->m_szName, pMapNode->strFile.c_str(), quest_move.questid);
 			return FALSE;
 		}
 
-		sMapAxisInfo.MapPos2MiniPos ( wPOSX, wPOSY, vPOS.x, vPOS.z );
-	}else if( quest_move.startmove ){
-		dwGATEID = pchar->m_dwStartGate;	
+		sMapAxisInfo.MapPos2MiniPos(wPOSX, wPOSY, vPOS.x, vPOS.z);
+	}
+	else if (quest_move.startmove)
+	{
+		dwGATEID = pchar->m_dwStartGate;
 	}
 
-	if ( pMapNode->dwFieldSID!=m_dwFieldSvrID )
+	if (pMapNode->dwFieldSID != m_dwFieldSvrID)
 	{
 		GLMSG::SNETPC_REQ_RECALL_AG NetMsgAg;
 		NetMsgAg.sMAPID = sMAPID;
 		NetMsgAg.dwGATEID = dwGATEID;
 		NetMsgAg.vPOS = vPOS;
-		SENDTOAGENT ( pchar->m_dwClientID, &NetMsgAg );
+		SENDTOAGENT(pchar->m_dwClientID, &NetMsgAg);
 	}
 	else
 	{
-		GLMSG::SNETPC_REQ_RECALL_FB	NetMsgFB;
+		GLMSG::SNETPC_REQ_RECALL_FB NetMsgFB;
 		SNATIVEID sCurMapID = pchar->m_sMapID;
 
-		BOOL bOK = RequestInvenRecallThisSvr ( pchar, sMAPID, dwGATEID, vPOS );
-		if ( !bOK )
+		BOOL bOK = RequestInvenRecallThisSvr(pchar, sMAPID, dwGATEID, vPOS);
+		if (!bOK)
 		{
 			NetMsgFB.emFB = EMREQ_RECALL_FB_FAIL;
-			SENDTOCLIENT ( pchar->m_dwClientID, &NetMsgFB );
+			SENDTOCLIENT(pchar->m_dwClientID, &NetMsgFB);
 			return FALSE;
 		}
 
-		if ( sCurMapID != sMAPID )
+		if (sCurMapID != sMAPID)
 		{
-			for ( int i=0; i<EMBLOW_MULTI; ++i )		pchar->DISABLEBLOW ( i );
-			for ( int i=0; i<SKILLFACT_SIZE; ++i )		pchar->DISABLESKEFF ( i );
+			for (int i = 0; i < EMBLOW_MULTI; ++i)
+				pchar->DISABLEBLOW(i);
+			for (int i = 0; i < SKILLFACT_SIZE; ++i)
+				pchar->DISABLESKEFF(i);
 			pchar->DISABLEALLLANDEFF();
 
-			//pet skill bugfix
-			//reset pet when moving to another map
-			pchar->m_sPETSKILLFACT_A.RESET ();
-			pchar->m_sPETSKILLFACT_B.RESET ();
+			// pet skill bugfix
+			// reset pet when moving to another map
+			pchar->m_sPETSKILLFACT_A.RESET();
+			pchar->m_sPETSKILLFACT_B.RESET();
 		}
 
 		pchar->ResetAction();
@@ -4416,30 +4650,30 @@ BOOL GLGaeaServer::quest_move_process( const SQUEST_MAP_MOVE& quest_move )
 		NetMsgFB.emFB = EMREQ_RECALL_FB_OK;
 		NetMsgFB.sMAPID = sMAPID;
 		NetMsgFB.vPOS = pchar->m_vPos;
-		GLGaeaServer::GetInstance().SENDTOAGENT ( pchar->m_dwClientID, &NetMsgFB );
+		GLGaeaServer::GetInstance().SENDTOAGENT(pchar->m_dwClientID, &NetMsgFB);
 	}
-
 
 	return TRUE;
 }
 
 /*character disconnect function, EJCode, 2018/11/25 */
-BOOL GLGaeaServer::character_disconnect_request_char_id( DWORD char_id, float fTime /*= 0.0f*/, bool bCloseClient /*= true*/ )
+BOOL GLGaeaServer::character_disconnect_request_char_id(DWORD char_id, float fTime /*= 0.0f*/, bool bCloseClient /*= true*/)
 {
-	PGLCHAR pchar = GetCharID( char_id );
-	if( !pchar )		return FALSE;
+	PGLCHAR pchar = GetCharID(char_id);
+	if (!pchar)
+		return FALSE;
 
-	if ( fTime == 0.0f )
+	if (fTime == 0.0f)
 	{
-		if ( RPARAM::bCharacterDcLogs == 1 )
+		if (RPARAM::bCharacterDcLogs == 1)
 		{
-			CDebugSet::ToFileWithTime( "_character_disconnect.txt", "request disconnect [%u] %s", pchar->m_dwCharID, pchar->m_szName );
+			CDebugSet::ToFileWithTime("_character_disconnect.txt", "request disconnect [%u] %s", pchar->m_dwCharID, pchar->m_szName);
 		}
 
-		GLMSG::SNET_CHARACTER_DISCONNECT_FIELD_TO_AGENT net_msg_agent;	
+		GLMSG::SNET_CHARACTER_DISCONNECT_FIELD_TO_AGENT net_msg_agent;
 		net_msg_agent.char_id = pchar->m_dwCharID;
 		net_msg_agent.bCloseClient = bCloseClient;
-		SENDTOAGENT( &net_msg_agent );
+		SENDTOAGENT(&net_msg_agent);
 	}
 	else
 	{
@@ -4449,29 +4683,30 @@ BOOL GLGaeaServer::character_disconnect_request_char_id( DWORD char_id, float fT
 		sSchedule.fMaxTime = fTime;
 		sSchedule.bCloseClient = bCloseClient;
 
-		m_mapDisconnect.insert( std::make_pair( sSchedule.dwCharID, sSchedule ) );
+		m_mapDisconnect.insert(std::make_pair(sSchedule.dwCharID, sSchedule));
 	}
 
 	return TRUE;
 }
 
 /*character disconnect function, EJCode, 2018/11/25 */
-BOOL GLGaeaServer::character_disconnect_request_gaea_id( DWORD gaea_id, float fTime /*= 0.0f*/, bool bCloseClient /*= true*/ )
+BOOL GLGaeaServer::character_disconnect_request_gaea_id(DWORD gaea_id, float fTime /*= 0.0f*/, bool bCloseClient /*= true*/)
 {
-	PGLCHAR pchar = GetChar( gaea_id );
-	if( !pchar )		return FALSE;
+	PGLCHAR pchar = GetChar(gaea_id);
+	if (!pchar)
+		return FALSE;
 
-	if ( fTime == 0.0f )
+	if (fTime == 0.0f)
 	{
-		if ( RPARAM::bCharacterDcLogs == 1 )
+		if (RPARAM::bCharacterDcLogs == 1)
 		{
-			CDebugSet::ToFileWithTime( "_character_disconnect.txt", "request disconnect [%u] %s", pchar->m_dwCharID, pchar->m_szName );
+			CDebugSet::ToFileWithTime("_character_disconnect.txt", "request disconnect [%u] %s", pchar->m_dwCharID, pchar->m_szName);
 		}
 
-		GLMSG::SNET_CHARACTER_DISCONNECT_FIELD_TO_AGENT net_msg_agent;	
+		GLMSG::SNET_CHARACTER_DISCONNECT_FIELD_TO_AGENT net_msg_agent;
 		net_msg_agent.char_id = pchar->m_dwCharID;
 		net_msg_agent.bCloseClient = bCloseClient;
-		SENDTOAGENT( &net_msg_agent );
+		SENDTOAGENT(&net_msg_agent);
 	}
 	else
 	{
@@ -4481,90 +4716,97 @@ BOOL GLGaeaServer::character_disconnect_request_gaea_id( DWORD gaea_id, float fT
 		sSchedule.fMaxTime = fTime;
 		sSchedule.bCloseClient = bCloseClient;
 
-		m_mapDisconnect.insert( std::make_pair( sSchedule.dwCharID, sSchedule ) );
+		m_mapDisconnect.insert(std::make_pair(sSchedule.dwCharID, sSchedule));
 	}
 
 	return TRUE;
 }
 
 /*character disconnect function, EJCode, 2018/11/25 */
-void GLGaeaServer::CharacterDisconnectUpdate( float fElapsedTime )
+void GLGaeaServer::CharacterDisconnectUpdate(float fElapsedTime)
 {
 	SDISCONNECT_SCHEDULE_MAP_ITER it_b = m_mapDisconnect.begin();
 	SDISCONNECT_SCHEDULE_MAP_ITER it_e = m_mapDisconnect.end();
 
 	std::vector<DWORD> vecDelete;
 
-	for ( ; it_b != it_e; ++it_b )
+	for (; it_b != it_e; ++it_b)
 	{
-		SDISCONNECT_SCHEDULE& sSchedule = (*it_b).second;
+		SDISCONNECT_SCHEDULE &sSchedule = (*it_b).second;
 		sSchedule.fCurTime += fElapsedTime;
 
-		if ( sSchedule.fCurTime >= sSchedule.fMaxTime )
+		if (sSchedule.fCurTime >= sSchedule.fMaxTime)
 		{
-			PGLCHAR pChar = GetCharID( sSchedule.dwCharID );
-			if( pChar )
+			PGLCHAR pChar = GetCharID(sSchedule.dwCharID);
+			if (pChar)
 			{
-				if ( RPARAM::bCharacterDcLogs == 1 )
+				if (RPARAM::bCharacterDcLogs == 1)
 				{
-					CDebugSet::ToFileWithTime( "_character_disconnect.txt", "request disconnect [%u] %s time:%g", pChar->m_dwCharID, pChar->m_szName, sSchedule.fMaxTime );
+					CDebugSet::ToFileWithTime("_character_disconnect.txt", "request disconnect [%u] %s time:%g", pChar->m_dwCharID, pChar->m_szName, sSchedule.fMaxTime);
 				}
 
-				GLMSG::SNET_CHARACTER_DISCONNECT_FIELD_TO_AGENT NetMsgAgent;	
+				GLMSG::SNET_CHARACTER_DISCONNECT_FIELD_TO_AGENT NetMsgAgent;
 				NetMsgAgent.char_id = pChar->m_dwCharID;
 				NetMsgAgent.bCloseClient = sSchedule.bCloseClient;
-				SENDTOAGENT( &NetMsgAgent );
+				SENDTOAGENT(&NetMsgAgent);
 			}
-			
-			vecDelete.push_back( sSchedule.dwCharID );
+
+			vecDelete.push_back(sSchedule.dwCharID);
 		}
 	}
 
-	for ( UINT i=0; i<vecDelete.size(); ++i )
+	for (UINT i = 0; i < vecDelete.size(); ++i)
 	{
-		SDISCONNECT_SCHEDULE_MAP_ITER it = m_mapDisconnect.find( vecDelete[i] );
-		if ( it != m_mapDisconnect.end() )
+		SDISCONNECT_SCHEDULE_MAP_ITER it = m_mapDisconnect.find(vecDelete[i]);
+		if (it != m_mapDisconnect.end())
 		{
-			m_mapDisconnect.erase( it );
+			m_mapDisconnect.erase(it);
 		}
 	}
-
 }
 
 /* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
-void GLGaeaServer::SENDTOCLIENTPLAYERCLUB_ONMAP ( DWORD dwMapID, DWORD dwCharID, LPVOID nmg )
+void GLGaeaServer::SENDTOCLIENTPLAYERCLUB_ONMAP(DWORD dwMapID, DWORD dwCharID, LPVOID nmg)
 {
-	GLLandMan* pLandMan = GetByMapID( dwMapID );
-	if ( !pLandMan )	return;
-	if ( !m_pMsgServer )	return;
+	GLLandMan *pLandMan = GetByMapID(dwMapID);
+	if (!pLandMan)
+		return;
+	if (!m_pMsgServer)
+		return;
 
-	GLCHARNODE* pCharNode = pLandMan->m_GlobPCList.m_pHead;
-	for ( ; pCharNode; pCharNode = pCharNode->pNext )
-	{		
-		if ( pCharNode->Data->m_dwCharID == dwCharID )
-			m_pMsgServer->SendClient ( pCharNode->Data->m_dwClientID, nmg );
+	GLCHARNODE *pCharNode = pLandMan->m_GlobPCList.m_pHead;
+	for (; pCharNode; pCharNode = pCharNode->pNext)
+	{
+		if (pCharNode->Data->m_dwCharID == dwCharID)
+			m_pMsgServer->SendClient(pCharNode->Data->m_dwClientID, nmg);
 	}
 
 	return;
 }
-bool GLGaeaServer::IsBRIGHTEVENT( SNATIVEID sMap )
+bool GLGaeaServer::IsBRIGHTEVENT(SNATIVEID sMap)
 {
-	if( sMap == m_sBrightEventMap && m_bBrightEvent ) return true;
+	if (sMap == m_sBrightEventMap && m_bBrightEvent)
+		return true;
 
 	return false;
 }
 
-BOOL GLGaeaServer::ReqWoePlayerRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_PLAYER_RANKING_REQ* pNetMsg)
+BOOL GLGaeaServer::ReqWoePlayerRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_PLAYER_RANKING_REQ *pNetMsg)
 {
 	PGLCHAR pChar = GetChar(dwGaeaID);
-	if (!pChar) return FALSE;
+	if (!pChar)
+		return FALSE;
 
-	if (!pChar->m_pLandMan) return FALSE;
-	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID) return FALSE;
-	if (!pChar->m_pLandMan->m_bPVPWoeMap) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bPVPWoeMap)
+		return FALSE;
 
 	WOE_STATE emstate = GLPVPWoeField::GetInstance().m_emState;
-	if (emstate != WOE_STATE_BATTLE)	return FALSE;
+	if (emstate != WOE_STATE_BATTLE)
+		return FALSE;
 
 	WOE_PLAYER_RANK_INFO_MAP_ITER pos = GLPVPWoeField::GetInstance().m_mapWoePlayerScore.find(pChar->m_dwCharID);
 	if (pos != GLPVPWoeField::GetInstance().m_mapWoePlayerScore.end())
@@ -4581,7 +4823,6 @@ BOOL GLGaeaServer::ReqWoePlayerRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
-
 	GLMSG::SNET_WOE_PLAYER_RANKING_UPDATE NetMsg;
 
 	WOE_PLAYER_RANK_INFO_MAP_ITER pos_begin = GLPVPWoeField::GetInstance().m_mapWoePlayerScore.begin();
@@ -4589,7 +4830,7 @@ BOOL GLGaeaServer::ReqWoePlayerRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 
 	for (; pos_begin != pos_end; pos_begin++)
 	{
-		SWOE_PLAYER_RANK_INFO& sWoeRankInfo = pos_begin->second;
+		SWOE_PLAYER_RANK_INFO &sWoeRankInfo = pos_begin->second;
 		int nIndex = sWoeRankInfo.nIndex;
 
 		if (nIndex >= 0 && nIndex < RANKING_NUM)
@@ -4599,23 +4840,29 @@ BOOL GLGaeaServer::ReqWoePlayerRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 		}
 	}
 
-	if (NetMsg.wRankNum > 0)	SENDTOCLIENT(dwClientID, &NetMsg);
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
-BOOL GLGaeaServer::ReqWoeGuildRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_GUILD_RANKING_REQ* pNetMsg)
+BOOL GLGaeaServer::ReqWoeGuildRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_GUILD_RANKING_REQ *pNetMsg)
 {
 	PGLCHAR pChar = GetChar(dwGaeaID);
-	if (!pChar) return FALSE;
+	if (!pChar)
+		return FALSE;
 
-	if (!pChar->m_pLandMan) return FALSE;
-	if (pChar->m_dwGuild == CLUB_NULL)	return FALSE;
-	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID) return FALSE;
-	if (!pChar->m_pLandMan->m_bPVPWoeMap) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_dwGuild == CLUB_NULL)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bPVPWoeMap)
+		return FALSE;
 
 	WOE_STATE emstate = GLPVPWoeField::GetInstance().m_emState;
-	if (emstate != WOE_STATE_BATTLE)	return FALSE;
-
+	if (emstate != WOE_STATE_BATTLE)
+		return FALSE;
 
 	WOE_GUILD_RANK_INFO_MAP_ITER pos = GLPVPWoeField::GetInstance().m_mapWoeScore.find(pChar->m_dwGuild);
 	if (pos != GLPVPWoeField::GetInstance().m_mapWoeScore.end())
@@ -4630,7 +4877,7 @@ BOOL GLGaeaServer::ReqWoeGuildRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::S
 		StringCchCopy(NetMsgMy.sMyWoeGuildRank.szLeaderName, CHAR_SZNAME + 1, pos->second.szLeaderName);
 		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
-	
+
 	GLMSG::SNET_WOE_GUILD_RANKING_UPDATE NetMsg;
 
 	WOE_GUILD_RANK_INFO_MAP_ITER pos_begin = GLPVPWoeField::GetInstance().m_mapWoeScore.begin();
@@ -4638,7 +4885,7 @@ BOOL GLGaeaServer::ReqWoeGuildRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::S
 
 	for (; pos_begin != pos_end; pos_begin++)
 	{
-		SWOE_GUILD_RANK_INFO& sWoeRankInfo = pos_begin->second;
+		SWOE_GUILD_RANK_INFO &sWoeRankInfo = pos_begin->second;
 		int nIndex = sWoeRankInfo.nIndex;
 
 		if (nIndex >= 0 && nIndex < RANKING_NUM)
@@ -4648,21 +4895,27 @@ BOOL GLGaeaServer::ReqWoeGuildRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::S
 		}
 	}
 
-	if (NetMsg.wRankNum > 0)	SENDTOCLIENT(dwClientID, &NetMsg);
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
-BOOL GLGaeaServer::ReqWoeResuRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_RESU_RANKING_REQ* pNetMsg)
+BOOL GLGaeaServer::ReqWoeResuRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_WOE_RESU_RANKING_REQ *pNetMsg)
 {
 	PGLCHAR pChar = GetChar(dwGaeaID);
-	if (!pChar) return FALSE;
+	if (!pChar)
+		return FALSE;
 
-	if (!pChar->m_pLandMan) return FALSE;
-	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID) return FALSE;
-	if (!pChar->m_pLandMan->m_bPVPWoeMap) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bPVPWoeMap)
+		return FALSE;
 
 	WOE_STATE emstate = GLPVPWoeField::GetInstance().m_emState;
-	if (emstate != WOE_STATE_BATTLE)	return FALSE;
+	if (emstate != WOE_STATE_BATTLE)
+		return FALSE;
 
 	WOE_RESU_PLAYER_INFO_MAP_ITER pos = GLPVPWoeField::GetInstance().m_mapWoeResuScore.find(pChar->m_dwCharID);
 	if (pos != GLPVPWoeField::GetInstance().m_mapWoeResuScore.end())
@@ -4678,7 +4931,6 @@ BOOL GLGaeaServer::ReqWoeResuRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SN
 		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
-
 	GLMSG::SNET_WOE_RESU_RANKING_UPDATE NetMsg;
 
 	WOE_RESU_PLAYER_INFO_MAP_ITER pos_begin = GLPVPWoeField::GetInstance().m_mapWoeResuScore.begin();
@@ -4686,7 +4938,7 @@ BOOL GLGaeaServer::ReqWoeResuRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SN
 
 	for (; pos_begin != pos_end; pos_begin++)
 	{
-		SWOE_RESU_PLAYER_INFO& sWoeRankInfo = pos_begin->second;
+		SWOE_RESU_PLAYER_INFO &sWoeRankInfo = pos_begin->second;
 		int nIndex = sWoeRankInfo.nIndex;
 
 		if (nIndex >= 0 && nIndex < RANKING_NUM)
@@ -4696,27 +4948,35 @@ BOOL GLGaeaServer::ReqWoeResuRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SN
 		}
 	}
 
-	if (NetMsg.wRankNum > 0)	SENDTOCLIENT(dwClientID, &NetMsg);
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
 /* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
-BOOL GLGaeaServer::ReqTyrannyClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_CLUB_RANKING_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqTyrannyClubRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_CLUB_RANKING_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return FALSE;	
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return FALSE;
 
-	if ( !pChar->m_pLandMan ) return FALSE;
-	if ( pChar->m_dwGuild == CLUB_NULL )	return FALSE;
-	if ( pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID ) return FALSE;
-	if ( !pChar->m_pLandMan->m_bPVPTyrannyMap ) return FALSE;
-	if ( !GLPVPTyrannyField::GetInstance().IsBattle() ) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_dwGuild == CLUB_NULL)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bPVPTyrannyMap)
+		return FALSE;
+	if (!GLPVPTyrannyField::GetInstance().IsBattle())
+		return FALSE;
 
 	TYRANNY_STATE emstate = GLPVPTyrannyField::GetInstance().m_emState;
-	if ( emstate != TYRANNY_STATE_BATTLE )	return FALSE;
+	if (emstate != TYRANNY_STATE_BATTLE)
+		return FALSE;
 
-	TYRANNY_CLUB_RANK_INFO_MAP_ITER pos = GLPVPTyrannyField::GetInstance().m_mapTyrannyClubScore.find( pChar->m_dwGuild );
-	if( pos != GLPVPTyrannyField::GetInstance().m_mapTyrannyClubScore.end() ) 
+	TYRANNY_CLUB_RANK_INFO_MAP_ITER pos = GLPVPTyrannyField::GetInstance().m_mapTyrannyClubScore.find(pChar->m_dwGuild);
+	if (pos != GLPVPTyrannyField::GetInstance().m_mapTyrannyClubScore.end())
 	{
 		GLMSG::SNET_TYRANNY_CLUB_MYRANK_UPDATE NetMsgMy;
 
@@ -4727,9 +4987,9 @@ BOOL GLGaeaServer::ReqTyrannyClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLM
 		NetMsgMy.sMyTyrannyClubRank.dwClubID = pos->second.dwClubID;
 		NetMsgMy.sMyTyrannyClubRank.wGuNum = pos->second.wGuNum;
 		NetMsgMy.sMyTyrannyClubRank.wGuMarkVer = pos->second.wGuMarkVer;
-		StringCchCopy( NetMsgMy.sMyTyrannyClubRank.szClubName, TYRANNY_CLUB_NAME+1, pos->second.szClubName );
+		StringCchCopy(NetMsgMy.sMyTyrannyClubRank.szClubName, TYRANNY_CLUB_NAME + 1, pos->second.szClubName);
 
-		SENDTOCLIENT( dwClientID, &NetMsgMy );
+		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
 	GLMSG::SNET_TYRANNY_CLUB_RANKING_UPDATE NetMsg;
@@ -4737,43 +4997,49 @@ BOOL GLGaeaServer::ReqTyrannyClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLM
 	TYRANNY_CLUB_RANK_INFO_MAP_ITER pos_begin = GLPVPTyrannyField::GetInstance().m_mapTyrannyClubScore.begin();
 	TYRANNY_CLUB_RANK_INFO_MAP_ITER pos_end = GLPVPTyrannyField::GetInstance().m_mapTyrannyClubScore.end();
 
+	GLClubMan &cClubMan = GLGaeaServer::GetInstance().GetClubMan();
+	GLCLUB *pCLUB = cClubMan.GetClub(pos->second.dwClubID);
 
-	GLClubMan& cClubMan	= GLGaeaServer::GetInstance().GetClubMan();
-	GLCLUB* pCLUB		= cClubMan.GetClub(pos->second.dwClubID);
-
-	for ( ; pos_begin != pos_end; pos_begin++ )
+	for (; pos_begin != pos_end; pos_begin++)
 	{
-		STYRANNY_CLUB_RANK_INFO& sTyrannyClubRankInfo = pos_begin->second;
+		STYRANNY_CLUB_RANK_INFO &sTyrannyClubRankInfo = pos_begin->second;
 		int nIndex = sTyrannyClubRankInfo.nIndex;
 
-		if ( nIndex >= 0 && nIndex < TYRANNY_CLUB_RANKING_NUM )
+		if (nIndex >= 0 && nIndex < TYRANNY_CLUB_RANKING_NUM)
 		{
 			STYRANNY_CLUB_RANK sTyrannyClubRank = sTyrannyClubRankInfo;
-			NetMsg.ADDCLUB( sTyrannyClubRank );
+			NetMsg.ADDCLUB(sTyrannyClubRank);
 		}
-	}	
+	}
 
-	if ( NetMsg.wRankNum > 0 )	SENDTOCLIENT( dwClientID, &NetMsg );
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
 
 /* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
-BOOL GLGaeaServer::ReqTyrannyRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_RANKING_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqTyrannyRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_RANKING_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return FALSE;	
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return FALSE;
 
-	if ( !pChar->m_pLandMan ) return FALSE;
-	if ( pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID ) return FALSE;
-	if ( !pChar->m_pLandMan->m_bPVPTyrannyMap ) return FALSE;
-	if ( !GLPVPTyrannyField::GetInstance().IsBattle() ) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bPVPTyrannyMap)
+		return FALSE;
+	if (!GLPVPTyrannyField::GetInstance().IsBattle())
+		return FALSE;
 
 	TYRANNY_STATE emstate = GLPVPTyrannyField::GetInstance().m_emState;
-	if ( emstate != TYRANNY_STATE_BATTLE )	return FALSE;
+	if (emstate != TYRANNY_STATE_BATTLE)
+		return FALSE;
 
-	TYRANNY_RANK_INFO_MAP_ITER pos = GLPVPTyrannyField::GetInstance().m_mapTyrannyScore.find( pChar->m_dwCharID );
-	if( pos != GLPVPTyrannyField::GetInstance().m_mapTyrannyScore.end() ) 
+	TYRANNY_RANK_INFO_MAP_ITER pos = GLPVPTyrannyField::GetInstance().m_mapTyrannyScore.find(pChar->m_dwCharID);
+	if (pos != GLPVPTyrannyField::GetInstance().m_mapTyrannyScore.end())
 	{
 		GLMSG::SNET_TYRANNY_MYRANK_UPDATE NetMsgMy;
 
@@ -4786,9 +5052,9 @@ BOOL GLGaeaServer::ReqTyrannyRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 		NetMsgMy.sMyTyrannyRank.wGuNum = pos->second.wGuNum;
 		NetMsgMy.sMyTyrannyRank.wGuMarkVer = pos->second.wGuMarkVer;
 		NetMsgMy.sMyTyrannyRank.wSchoolNum = pos->second.wSchoolNum;
-		StringCchCopy( NetMsgMy.sMyTyrannyRank.szName, TYRANNY_CHAR_NAME+1, pos->second.szName );
+		StringCchCopy(NetMsgMy.sMyTyrannyRank.szName, TYRANNY_CHAR_NAME + 1, pos->second.szName);
 
-		SENDTOCLIENT( dwClientID, &NetMsgMy );
+		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
 	GLMSG::SNET_TYRANNY_RANKING_UPDATE NetMsg;
@@ -4796,41 +5062,47 @@ BOOL GLGaeaServer::ReqTyrannyRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 	TYRANNY_RANK_INFO_MAP_ITER pos_begin = GLPVPTyrannyField::GetInstance().m_mapTyrannyScore.begin();
 	TYRANNY_RANK_INFO_MAP_ITER pos_end = GLPVPTyrannyField::GetInstance().m_mapTyrannyScore.end();
 
-	GLClubMan& cClubMan	= GLGaeaServer::GetInstance().GetClubMan();
-	GLCLUB* pCLUB		= cClubMan.GetClub(pos->second.wGuNum);
+	GLClubMan &cClubMan = GLGaeaServer::GetInstance().GetClubMan();
+	GLCLUB *pCLUB = cClubMan.GetClub(pos->second.wGuNum);
 
-	for ( ; pos_begin != pos_end; pos_begin++ )
+	for (; pos_begin != pos_end; pos_begin++)
 	{
-		STYRANNY_RANK_INFO& sTyrannyRankInfo = pos_begin->second;
+		STYRANNY_RANK_INFO &sTyrannyRankInfo = pos_begin->second;
 		int nIndex = sTyrannyRankInfo.nIndex;
 
-		if ( nIndex >= 0 && nIndex < TYRANNY_RANKING_NUM )
+		if (nIndex >= 0 && nIndex < TYRANNY_RANKING_NUM)
 		{
 			STYRANNY_RANK sTyrannyRank = sTyrannyRankInfo;
-			NetMsg.ADDRANK( sTyrannyRank );
+			NetMsg.ADDRANK(sTyrannyRank);
 		}
-	}	
+	}
 
-	if ( NetMsg.wRankNum > 0 )	SENDTOCLIENT( dwClientID, &NetMsg );
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
 
 /* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
-BOOL GLGaeaServer::ReqTyrannyRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_RANKING_RESU_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqTyrannyRankingResu(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_TYRANNY_RANKING_RESU_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return FALSE;	
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return FALSE;
 
-	if ( !pChar->m_pLandMan ) return FALSE;
-	if ( pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID ) return FALSE;
-	if ( !pChar->m_pLandMan->m_bPVPTyrannyMap ) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bPVPTyrannyMap)
+		return FALSE;
 
 	TYRANNY_STATE emstate = GLPVPTyrannyField::GetInstance().m_emState;
-	if ( emstate != TYRANNY_STATE_BATTLE )	return FALSE;
+	if (emstate != TYRANNY_STATE_BATTLE)
+		return FALSE;
 
-	TYRANNY_RANK_RESU_INFO_MAP_ITER pos = GLPVPTyrannyField::GetInstance().m_mapTyrannyScoreResu.find( pChar->m_dwCharID );
-	if( pos != GLPVPTyrannyField::GetInstance().m_mapTyrannyScoreResu.end() ) 
+	TYRANNY_RANK_RESU_INFO_MAP_ITER pos = GLPVPTyrannyField::GetInstance().m_mapTyrannyScoreResu.find(pChar->m_dwCharID);
+	if (pos != GLPVPTyrannyField::GetInstance().m_mapTyrannyScoreResu.end())
 	{
 		GLMSG::SNET_TYRANNY_MYRANK_RESU_UPDATE NetMsgMy;
 
@@ -4843,9 +5115,9 @@ BOOL GLGaeaServer::ReqTyrannyRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLM
 		NetMsgMy.sMyTyrannyRankResu.wGuNum = pos->second.wGuNum;
 		NetMsgMy.sMyTyrannyRankResu.wGuMarkVer = pos->second.wGuMarkVer;
 		NetMsgMy.sMyTyrannyRankResu.wSchoolNum = pos->second.wSchoolNum;
-		StringCchCopy( NetMsgMy.sMyTyrannyRankResu.szName, TYRANNY_CHAR_NAME+1, pos->second.szName );
+		StringCchCopy(NetMsgMy.sMyTyrannyRankResu.szName, TYRANNY_CHAR_NAME + 1, pos->second.szName);
 
-		SENDTOCLIENT( dwClientID, &NetMsgMy );
+		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
 	GLMSG::SNET_TYRANNY_RANKING_RESU_UPDATE NetMsg;
@@ -4853,43 +5125,51 @@ BOOL GLGaeaServer::ReqTyrannyRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLM
 	TYRANNY_RANK_RESU_INFO_MAP_ITER pos_begin = GLPVPTyrannyField::GetInstance().m_mapTyrannyScoreResu.begin();
 	TYRANNY_RANK_RESU_INFO_MAP_ITER pos_end = GLPVPTyrannyField::GetInstance().m_mapTyrannyScoreResu.end();
 
-	GLClubMan& cClubMan	= GLGaeaServer::GetInstance().GetClubMan();
-	GLCLUB* pCLUB		= cClubMan.GetClub(pos->second.wGuNum);
+	GLClubMan &cClubMan = GLGaeaServer::GetInstance().GetClubMan();
+	GLCLUB *pCLUB = cClubMan.GetClub(pos->second.wGuNum);
 
-	for ( ; pos_begin != pos_end; pos_begin++ )
+	for (; pos_begin != pos_end; pos_begin++)
 	{
-		STYRANNY_RANK_RESU_INFO& sTyrannyRankResuInfo = pos_begin->second;
+		STYRANNY_RANK_RESU_INFO &sTyrannyRankResuInfo = pos_begin->second;
 		int nIndex = sTyrannyRankResuInfo.nIndex;
 
-		if ( nIndex >= 0 && nIndex < TYRANNY_RANKING_NUM )
+		if (nIndex >= 0 && nIndex < TYRANNY_RANKING_NUM)
 		{
 			STYRANNY_RANK_RESU sTyrannyRankResu = sTyrannyRankResuInfo;
-			NetMsg.ADDRANK( sTyrannyRankResu );
+			NetMsg.ADDRANK(sTyrannyRankResu);
 		}
-	}	
+	}
 
-	if ( NetMsg.wRankNum > 0 )	SENDTOCLIENT( dwClientID, &NetMsg );
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
 
 /* 8-03-23 Club War Ranking System - Montage */
-BOOL GLGaeaServer::ReqClubWarClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_CLUB_RANKING_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqClubWarClubRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_CLUB_RANKING_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return FALSE;	
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return FALSE;
 
-	if ( !pChar->m_pLandMan ) return FALSE;
-	if ( pChar->m_dwCharID == GAEAID_NULL )	return FALSE;
-	if ( pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID ) return FALSE;
-	if ( !pChar->m_pLandMan->m_bGuidBattleMap ) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_dwCharID == GAEAID_NULL)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bGuidBattleMap)
+		return FALSE;
 
-	GLGuidance* pGuidance = GLGuidanceFieldMan::GetInstance().Find(pChar->m_pLandMan->m_dwClubMapID);
-	if ( !pGuidance ) return FALSE;
-	if ( !pGuidance->IsBattle() ) return FALSE;
+	GLGuidance *pGuidance = GLGuidanceFieldMan::GetInstance().Find(pChar->m_pLandMan->m_dwClubMapID);
+	if (!pGuidance)
+		return FALSE;
+	if (!pGuidance->IsBattle())
+		return FALSE;
 
-	CLUBWAR_CLUB_RANK_INFO_MAP_ITER pos = pGuidance->m_mapClubWarClubScore.find( pChar->m_dwGuild );
-	if( pos != pGuidance->m_mapClubWarClubScore.end() ) 
+	CLUBWAR_CLUB_RANK_INFO_MAP_ITER pos = pGuidance->m_mapClubWarClubScore.find(pChar->m_dwGuild);
+	if (pos != pGuidance->m_mapClubWarClubScore.end())
 	{
 		GLMSG::SNET_CLUBWAR_CLUB_MYRANK_UPDATE NetMsgMy;
 
@@ -4900,9 +5180,9 @@ BOOL GLGaeaServer::ReqClubWarClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLM
 		NetMsgMy.sMyClubWarClubRank.dwClubID = pos->second.dwClubID;
 		NetMsgMy.sMyClubWarClubRank.wGuNum = pos->second.wGuNum;
 		NetMsgMy.sMyClubWarClubRank.wGuMarkVer = pos->second.wGuMarkVer;
-		StringCchCopy( NetMsgMy.sMyClubWarClubRank.szClubName, CLUBWAR_CLUB_NAME+1, pos->second.szClubName );
+		StringCchCopy(NetMsgMy.sMyClubWarClubRank.szClubName, CLUBWAR_CLUB_NAME + 1, pos->second.szClubName);
 
-		SENDTOCLIENT( dwClientID, &NetMsgMy );
+		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
 	GLMSG::SNET_CLUBWAR_CLUB_RANKING_UPDATE NetMsg;
@@ -4910,44 +5190,51 @@ BOOL GLGaeaServer::ReqClubWarClubRanking ( DWORD dwClientID, DWORD dwGaeaID, GLM
 	CLUBWAR_CLUB_RANK_INFO_MAP_ITER pos_begin = pGuidance->m_mapClubWarClubScore.begin();
 	CLUBWAR_CLUB_RANK_INFO_MAP_ITER pos_end = pGuidance->m_mapClubWarClubScore.end();
 
+	GLClubMan &cClubMan = GLGaeaServer::GetInstance().GetClubMan();
+	GLCLUB *pCLUB = cClubMan.GetClub(pos->second.dwClubID);
 
-	GLClubMan& cClubMan	= GLGaeaServer::GetInstance().GetClubMan();
-	GLCLUB* pCLUB		= cClubMan.GetClub(pos->second.dwClubID);
-
-	for ( ; pos_begin != pos_end; pos_begin++ )
+	for (; pos_begin != pos_end; pos_begin++)
 	{
-		SCLUBWAR_CLUB_RANK_INFO& sClubWarClubRankInfo = pos_begin->second;
+		SCLUBWAR_CLUB_RANK_INFO &sClubWarClubRankInfo = pos_begin->second;
 		int nIndex = sClubWarClubRankInfo.nIndex;
 
-		if ( nIndex >= 0 && nIndex < CLUBWAR_CLUB_RANKING_NUM )
+		if (nIndex >= 0 && nIndex < CLUBWAR_CLUB_RANKING_NUM)
 		{
 			SCLUBWAR_CLUB_RANK sClubWarClubRank = sClubWarClubRankInfo;
-			NetMsg.ADDCLUB( sClubWarClubRank );
+			NetMsg.ADDCLUB(sClubWarClubRank);
 		}
-	}	
+	}
 
-	if ( NetMsg.wRankNum > 0 )	SENDTOCLIENT( dwClientID, &NetMsg );
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
 
 /* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
-BOOL GLGaeaServer::ReqClubWarRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_RANKING_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqClubWarRanking(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_RANKING_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return FALSE;	
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return FALSE;
 
-	if ( !pChar->m_pLandMan ) return FALSE;
-	if ( pChar->m_dwGuild == CLUB_NULL )	return FALSE;
-	if ( pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID ) return FALSE;
-	if ( !pChar->m_pLandMan->m_bGuidBattleMap ) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_dwGuild == CLUB_NULL)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bGuidBattleMap)
+		return FALSE;
 
-	GLGuidance* pGuidance = GLGuidanceFieldMan::GetInstance().Find( pChar->m_pLandMan->m_dwClubMapID );
-	if ( !pGuidance ) return FALSE;
-	if ( !pGuidance->IsBattle() ) return FALSE;
+	GLGuidance *pGuidance = GLGuidanceFieldMan::GetInstance().Find(pChar->m_pLandMan->m_dwClubMapID);
+	if (!pGuidance)
+		return FALSE;
+	if (!pGuidance->IsBattle())
+		return FALSE;
 
-	CLUBWAR_RANK_INFO_MAP_ITER pos = pGuidance->m_mapClubWarScore.find( pChar->m_dwCharID );
-	if( pos != pGuidance->m_mapClubWarScore.end() ) 
+	CLUBWAR_RANK_INFO_MAP_ITER pos = pGuidance->m_mapClubWarScore.find(pChar->m_dwCharID);
+	if (pos != pGuidance->m_mapClubWarScore.end())
 	{
 		GLMSG::SNET_CLUBWAR_MYRANK_UPDATE NetMsgMy;
 
@@ -4960,9 +5247,9 @@ BOOL GLGaeaServer::ReqClubWarRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 		NetMsgMy.sMyClubWarRank.wGuNum = pos->second.wGuNum;
 		NetMsgMy.sMyClubWarRank.wGuMarkVer = pos->second.wGuMarkVer;
 		NetMsgMy.sMyClubWarRank.wSchoolNum = pos->second.wSchoolNum;
-		StringCchCopy( NetMsgMy.sMyClubWarRank.szName, CLUBWAR_CHAR_NAME+1, pos->second.szName );
+		StringCchCopy(NetMsgMy.sMyClubWarRank.szName, CLUBWAR_CHAR_NAME + 1, pos->second.szName);
 
-		SENDTOCLIENT( dwClientID, &NetMsgMy );
+		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
 	GLMSG::SNET_CLUBWAR_RANKING_UPDATE NetMsg;
@@ -4970,43 +5257,51 @@ BOOL GLGaeaServer::ReqClubWarRanking ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::
 	CLUBWAR_RANK_INFO_MAP_ITER pos_begin = pGuidance->m_mapClubWarScore.begin();
 	CLUBWAR_RANK_INFO_MAP_ITER pos_end = pGuidance->m_mapClubWarScore.end();
 
-	GLClubMan& cClubMan	= GLGaeaServer::GetInstance().GetClubMan();
-	GLCLUB* pCLUB		= cClubMan.GetClub(pos->second.wGuNum);
+	GLClubMan &cClubMan = GLGaeaServer::GetInstance().GetClubMan();
+	GLCLUB *pCLUB = cClubMan.GetClub(pos->second.wGuNum);
 
-	for ( ; pos_begin != pos_end; pos_begin++ )
+	for (; pos_begin != pos_end; pos_begin++)
 	{
-		SCLUBWAR_RANK_INFO& sClubWarRankInfo = pos_begin->second;
+		SCLUBWAR_RANK_INFO &sClubWarRankInfo = pos_begin->second;
 		int nIndex = sClubWarRankInfo.nIndex;
 
-		if ( nIndex >= 0 && nIndex < CLUBWAR_RANKING_NUM )
+		if (nIndex >= 0 && nIndex < CLUBWAR_RANKING_NUM)
 		{
 			SCLUBWAR_RANK sClubWarRank = sClubWarRankInfo;
-			NetMsg.ADDRANK( sClubWarRank );
+			NetMsg.ADDRANK(sClubWarRank);
 		}
-	}	
+	}
 
-	if ( NetMsg.wRankNum > 0 )	SENDTOCLIENT( dwClientID, &NetMsg );
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }
 
 /* Tyranny/Clubwar Mini Ranking, Montage 3-22-25 */
-BOOL GLGaeaServer::ReqClubWarRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_RANKING_RESU_REQ* pNetMsg )
+BOOL GLGaeaServer::ReqClubWarRankingResu(DWORD dwClientID, DWORD dwGaeaID, GLMSG::SNET_CLUBWAR_RANKING_RESU_REQ *pNetMsg)
 {
-	PGLCHAR pChar = GetChar ( dwGaeaID );
-	if ( !pChar ) return FALSE;	
+	PGLCHAR pChar = GetChar(dwGaeaID);
+	if (!pChar)
+		return FALSE;
 
-	if ( !pChar->m_pLandMan ) return FALSE;
-	if ( pChar->m_dwCharID == GAEAID_NULL )	return FALSE;
-	if ( pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID ) return FALSE;
-	if ( !pChar->m_pLandMan->m_bGuidBattleMap ) return FALSE;
+	if (!pChar->m_pLandMan)
+		return FALSE;
+	if (pChar->m_dwCharID == GAEAID_NULL)
+		return FALSE;
+	if (pChar->m_pLandMan->GetMapID().dwID != pNetMsg->dwMapID)
+		return FALSE;
+	if (!pChar->m_pLandMan->m_bGuidBattleMap)
+		return FALSE;
 
-	GLGuidance* pGuidance = GLGuidanceFieldMan::GetInstance().Find( pChar->m_pLandMan->m_dwClubMapID );
-	if ( !pGuidance ) return FALSE;
-	if ( !pGuidance->IsBattle() ) return FALSE;
+	GLGuidance *pGuidance = GLGuidanceFieldMan::GetInstance().Find(pChar->m_pLandMan->m_dwClubMapID);
+	if (!pGuidance)
+		return FALSE;
+	if (!pGuidance->IsBattle())
+		return FALSE;
 
-	CLUBWAR_RANK_RESU_INFO_MAP_ITER pos = pGuidance->m_mapClubWarScoreResu.find( pChar->m_dwCharID );
-	if( pos != pGuidance->m_mapClubWarScoreResu.end() ) 
+	CLUBWAR_RANK_RESU_INFO_MAP_ITER pos = pGuidance->m_mapClubWarScoreResu.find(pChar->m_dwCharID);
+	if (pos != pGuidance->m_mapClubWarScoreResu.end())
 	{
 		GLMSG::SNET_CLUBWAR_MYRANK_RESU_UPDATE NetMsgMy;
 
@@ -5019,9 +5314,9 @@ BOOL GLGaeaServer::ReqClubWarRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLM
 		NetMsgMy.sMyClubWarRankResu.wGuNum = pos->second.wGuNum;
 		NetMsgMy.sMyClubWarRankResu.wGuMarkVer = pos->second.wGuMarkVer;
 		NetMsgMy.sMyClubWarRankResu.wSchoolNum = pos->second.wSchoolNum;
-		StringCchCopy( NetMsgMy.sMyClubWarRankResu.szName, CLUBWAR_CHAR_NAME+1, pos->second.szName );
+		StringCchCopy(NetMsgMy.sMyClubWarRankResu.szName, CLUBWAR_CHAR_NAME + 1, pos->second.szName);
 
-		SENDTOCLIENT( dwClientID, &NetMsgMy );
+		SENDTOCLIENT(dwClientID, &NetMsgMy);
 	}
 
 	GLMSG::SNET_CLUBWAR_RANKING_RESU_UPDATE NetMsg;
@@ -5029,22 +5324,23 @@ BOOL GLGaeaServer::ReqClubWarRankingResu ( DWORD dwClientID, DWORD dwGaeaID, GLM
 	CLUBWAR_RANK_RESU_INFO_MAP_ITER pos_begin = pGuidance->m_mapClubWarScoreResu.begin();
 	CLUBWAR_RANK_RESU_INFO_MAP_ITER pos_end = pGuidance->m_mapClubWarScoreResu.end();
 
-	GLClubMan& cClubMan	= GLGaeaServer::GetInstance().GetClubMan();
-	GLCLUB* pCLUB		= cClubMan.GetClub(pos->second.wGuNum);
+	GLClubMan &cClubMan = GLGaeaServer::GetInstance().GetClubMan();
+	GLCLUB *pCLUB = cClubMan.GetClub(pos->second.wGuNum);
 
-	for ( ; pos_begin != pos_end; pos_begin++ )
+	for (; pos_begin != pos_end; pos_begin++)
 	{
-		SCLUBWAR_RANK_RESU_INFO& sClubWarRankResuInfo = pos_begin->second;
+		SCLUBWAR_RANK_RESU_INFO &sClubWarRankResuInfo = pos_begin->second;
 		int nIndex = sClubWarRankResuInfo.nIndex;
 
-		if ( nIndex >= 0 && nIndex < CLUBWAR_RANKING_NUM )
+		if (nIndex >= 0 && nIndex < CLUBWAR_RANKING_NUM)
 		{
 			SCLUBWAR_RANK_RESU sClubWarRankResu = sClubWarRankResuInfo;
-			NetMsg.ADDRANK( sClubWarRankResu );
+			NetMsg.ADDRANK(sClubWarRankResu);
 		}
-	}	
+	}
 
-	if ( NetMsg.wRankNum > 0 )	SENDTOCLIENT( dwClientID, &NetMsg );
+	if (NetMsg.wRankNum > 0)
+		SENDTOCLIENT(dwClientID, &NetMsg);
 
 	return TRUE;
 }

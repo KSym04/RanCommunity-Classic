@@ -6,434 +6,436 @@
 #endif
 
 //----------------------------------------------------------------------------------
-void SetWin_Num_int ( CDialog *pDlg, int nID, int nValue )
+void SetWin_Num_int(CDialog *pDlg, int nID, int nValue)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	str.Format ( "%d", nValue );
-	pWnd->SetWindowText ( str );
+	str.Format("%d", nValue);
+	pWnd->SetWindowText(str);
 }
 
-int GetWin_Num_int ( CDialog *pDlg, int nID )
+int GetWin_Num_int(CDialog *pDlg, int nID)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	pWnd->GetWindowText ( str );
+	pWnd->GetWindowText(str);
 
-	return atoi ( str.GetString() );
+	return atoi(str.GetString());
 }
 
-void SetWin_Num_uint ( CDialog *pDlg, int nID, unsigned int nValue )
+void SetWin_Num_uint(CDialog *pDlg, int nID, unsigned int nValue)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	str.Format ( "%u", nValue );
-	pWnd->SetWindowText ( str );
+	str.Format("%u", nValue);
+	pWnd->SetWindowText(str);
 }
 
-unsigned int GetWin_Num_uint ( CDialog *pDlg, int nID )
+unsigned int GetWin_Num_uint(CDialog *pDlg, int nID)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	pWnd->GetWindowText ( str );
+	pWnd->GetWindowText(str);
 
-	return static_cast<unsigned int> ( strtoul ( str.GetString(), NULL, 10 ) );
-}
-
-//----------------------------------------------------------------------------------
-void SetWin_Num_float ( CDialog *pDlg, int nID, float fValue )
-{
-	CString	str;
-
-	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
-
-	str.Format ( "%g", fValue );
-	pWnd->SetWindowText ( str );
-}
-
-void SetWin_Num_floatf ( CDialog *pDlg, int nID, float fValue )
-{
-	CString	str;
-
-	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
-
-	str.Format ( "%f", fValue );
-	pWnd->SetWindowText ( str );
-}
-
-float GetWin_Num_float ( CDialog *pDlg, int nID )
-{
-	CString	str;
-
-	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
-
-	pWnd->GetWindowText ( str );
-
-	return static_cast<float> ( atof ( str.GetString() ) );
+	return static_cast<unsigned int>(strtoul(str.GetString(), NULL, 10));
 }
 
 //----------------------------------------------------------------------------------
-void SetWin_Num_LONGLONG( CDialog *pDlg, int nID, LONGLONG llValue )
+void SetWin_Num_float(CDialog *pDlg, int nID, float fValue)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	str.Format ( "%I64d", llValue );
-	pWnd->SetWindowText ( str );
+	str.Format("%g", fValue);
+	pWnd->SetWindowText(str);
 }
 
-LONGLONG GetWin_Num_LONGLONG( CDialog *pDlg, int nID )
+void SetWin_Num_floatf(CDialog *pDlg, int nID, float fValue)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	pWnd->GetWindowText ( str );
-
-	return static_cast<LONGLONG> ( _strtoi64 ( str.GetString(), NULL, 10 ) );
+	str.Format("%f", fValue);
+	pWnd->SetWindowText(str);
 }
 
-void SetWin_Num_ULONGLONG( CDialog *pDlg, int nID, ULONGLONG llValue )
+float GetWin_Num_float(CDialog *pDlg, int nID)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	str.Format ( "%I64u", llValue );
-	pWnd->SetWindowText ( str );
-}
+	pWnd->GetWindowText(str);
 
-ULONGLONG GetWin_Num_ULONGLONG( CDialog *pDlg, int nID )
-{
-	CString	str;
-
-	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
-
-	pWnd->GetWindowText ( str );
-
-	return static_cast<ULONGLONG> ( _strtoui64 ( str.GetString(), NULL, 10 ) );
+	return static_cast<float>(atof(str.GetString()));
 }
 
 //----------------------------------------------------------------------------------
-void SetWin_Text ( CDialog *pDlg, int nID, const char *szText )
+void SetWin_Num_LONGLONG(CDialog *pDlg, int nID, LONGLONG llValue)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	str.Format ( "%s", szText );
-	pWnd->SetWindowText ( str );
+	str.Format("%I64d", llValue);
+	pWnd->SetWindowText(str);
 }
 
-CString GetWin_Text ( CDialog *pDlg, int nID )
+LONGLONG GetWin_Num_LONGLONG(CDialog *pDlg, int nID)
 {
-	CString	str;
+	CString str;
 
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
-	pWnd->GetWindowText ( str );
+	pWnd->GetWindowText(str);
+
+	return static_cast<LONGLONG>(_strtoi64(str.GetString(), NULL, 10));
+}
+
+void SetWin_Num_ULONGLONG(CDialog *pDlg, int nID, ULONGLONG llValue)
+{
+	CString str;
+
+	CWnd *pWnd = pDlg->GetDlgItem(nID);
+	assert(pWnd && "Control does not exist.");
+
+	str.Format("%I64u", llValue);
+	pWnd->SetWindowText(str);
+}
+
+ULONGLONG GetWin_Num_ULONGLONG(CDialog *pDlg, int nID)
+{
+	CString str;
+
+	CWnd *pWnd = pDlg->GetDlgItem(nID);
+	assert(pWnd && "Control does not exist.");
+
+	pWnd->GetWindowText(str);
+
+	return static_cast<ULONGLONG>(_strtoui64(str.GetString(), NULL, 10));
+}
+
+//----------------------------------------------------------------------------------
+void SetWin_Text(CDialog *pDlg, int nID, const char *szText)
+{
+	CString str;
+
+	CWnd *pWnd = pDlg->GetDlgItem(nID);
+	assert(pWnd && "Control does not exist.");
+
+	str.Format("%s", szText);
+	pWnd->SetWindowText(str);
+}
+
+CString GetWin_Text(CDialog *pDlg, int nID)
+{
+	CString str;
+
+	CWnd *pWnd = pDlg->GetDlgItem(nID);
+	assert(pWnd && "Control does not exist.");
+
+	pWnd->GetWindowText(str);
 
 	return str;
 }
 
 //----------------------------------------------------------------------------------
-void SetWin_Combo_Init ( CDialog *pDlg, int nID, std::string *strTexts, int nNum )
+void SetWin_Combo_Init(CDialog *pDlg, int nID, std::string *strTexts, int nNum)
 {
-	CString	str;
+	CString str;
 
-	CComboBox *pCombo = (CComboBox*) ( pDlg->GetDlgItem(nID) );
-	assert(pCombo&&"Control does not exist.");
+	CComboBox *pCombo = (CComboBox *)(pDlg->GetDlgItem(nID));
+	assert(pCombo && "Control does not exist.");
 
 	pCombo->ResetContent();
 	int nIndex = 0;
-	for ( int i=0; i<nNum; ++i )
+	for (int i = 0; i < nNum; ++i)
 	{
-		nIndex = pCombo->AddString ( strTexts[i].c_str() );
-		pCombo->SetItemData ( nIndex, i );
+		nIndex = pCombo->AddString(strTexts[i].c_str());
+		pCombo->SetItemData(nIndex, i);
 	}
 
-	pCombo->SetCurSel ( 0 );
+	pCombo->SetCurSel(0);
 }
 
-void SetWin_Combo_Del ( CDialog *pDlg, int nID, const char *szTexts )
+void SetWin_Combo_Del(CDialog *pDlg, int nID, const char *szTexts)
 {
-	CString	str;
+	CString str;
 
-	CComboBox *pCombo = (CComboBox*) pDlg->GetDlgItem(nID);
-	assert(pCombo&&"Control does not exist.");
+	CComboBox *pCombo = (CComboBox *)pDlg->GetDlgItem(nID);
+	assert(pCombo && "Control does not exist.");
 
-	int nSize = pCombo->GetCount ();
-	for ( int i=0; i<nSize; ++i )
+	int nSize = pCombo->GetCount();
+	for (int i = 0; i < nSize; ++i)
 	{
-		pCombo->GetLBText ( i, str );
+		pCombo->GetLBText(i, str);
 
-		if ( str==szTexts )
+		if (str == szTexts)
 		{
-			pCombo->DeleteString ( i );
+			pCombo->DeleteString(i);
 			return;
 		}
 	}
 
-	pCombo->SetCurSel ( LB_ERR );
+	pCombo->SetCurSel(LB_ERR);
 }
 
-bool SetWin_Combo_SelMfc ( CDialog *pDlg, int nID, CString strText )
+bool SetWin_Combo_SelMfc(CDialog *pDlg, int nID, CString strText)
 {
-	CString	str;
+	CString str;
 
-	CComboBox *pCombo = (CComboBox*) pDlg->GetDlgItem(nID);
-	assert(pCombo&&"Control does not exist.");
+	CComboBox *pCombo = (CComboBox *)pDlg->GetDlgItem(nID);
+	assert(pCombo && "Control does not exist.");
 
-	int nSize = pCombo->GetCount ();
-	for ( int i=0; i<nSize; ++i )
+	int nSize = pCombo->GetCount();
+	for (int i = 0; i < nSize; ++i)
 	{
-		pCombo->GetLBText ( i, str );
+		pCombo->GetLBText(i, str);
 
-		if ( str==strText )
+		if (str == strText)
 		{
-			pCombo->SetCurSel ( i );
+			pCombo->SetCurSel(i);
 			return true;
 		}
 	}
 
-	pCombo->SetCurSel ( LB_ERR );
+	pCombo->SetCurSel(LB_ERR);
 
 	return false;
 }
 
-bool SetWin_Combo_Sel( CDialog *pDlg, int nID, std::string strText )
-{	
+bool SetWin_Combo_Sel(CDialog *pDlg, int nID, std::string strText)
+{
 	CString str;
 	CString strTemp(strText.c_str());
 
 	str.GetLength();
 
-	CComboBox *pCombo = (CComboBox*) pDlg->GetDlgItem(nID);
-	assert(pCombo&&"Control does not exist.");
+	CComboBox *pCombo = (CComboBox *)pDlg->GetDlgItem(nID);
+	assert(pCombo && "Control does not exist.");
 
-	int nSize = pCombo->GetCount ();
-	for ( int i=0; i<nSize; ++i )
+	int nSize = pCombo->GetCount();
+	for (int i = 0; i < nSize; ++i)
 	{
-		pCombo->GetLBText ( i, str );
+		pCombo->GetLBText(i, str);
 
-		CString strTemp2( str );
+		CString strTemp2(str);
 
-		if ( !strTemp2.CompareNoCase( strTemp.GetString() ) )
+		if (!strTemp2.CompareNoCase(strTemp.GetString()))
 		{
-			pCombo->SetCurSel( i );
+			pCombo->SetCurSel(i);
 			return true;
 		}
 	}
 
-	pCombo->SetCurSel( LB_ERR );
+	pCombo->SetCurSel(LB_ERR);
 
 	return false;
 }
 
-void SetWin_Combo_Sel ( CDialog *pDlg, int nID, int nSelect )
-{
-	CString	str;
-
-	CComboBox *pCombo = (CComboBox*) pDlg->GetDlgItem(nID);
-	assert(pCombo&&"Control does not exist.");
-
-	int nSize = pCombo->GetCount ();
-	if ( nSize < nSelect )		return;
-
-	pCombo->SetCurSel ( nSelect );
-}
-
-DWORD GetWin_Combo_Sel ( CDialog *pDlg, int nID )
-{
-	CString	str;
-
-	CComboBox *pCombo = (CComboBox*) ( pDlg->GetDlgItem(nID) );
-	assert(pCombo&&"Control does not exist.");
-
-	int nIndex = pCombo->GetCurSel ();
-	assert(nIndex != LB_ERR);
-
-	return (DWORD) pCombo->GetItemData ( nIndex );
-}
-
-DWORD GetWin_Combo_Sel ( CDialog *pDlg, int nID, const char *szTexts )
-{
-	CString	str;
-
-	CComboBox *pCombo = (CComboBox*) pDlg->GetDlgItem(nID);
-	assert(pCombo&&"Control does not exist.");
-
-	int nSize = pCombo->GetCount ();
-	for ( int i=0; i<nSize; ++i )
-	{
-		pCombo->GetLBText ( i, str );
-
-		if ( str==szTexts )
-		{			
-			return pCombo->GetItemData ( i );
-		}
-	}
-
-    return -1;
-}
-
-CString GetWin_Combo_Sel_Text ( CDialog *pDlg, int nID )
+void SetWin_Combo_Sel(CDialog *pDlg, int nID, int nSelect)
 {
 	CString str;
 
-	CComboBox *pCombo = (CComboBox*) pDlg->GetDlgItem(nID);
-	assert(pCombo&&"Control does not exist.");
+	CComboBox *pCombo = (CComboBox *)pDlg->GetDlgItem(nID);
+	assert(pCombo && "Control does not exist.");
 
-	int nIndex = pCombo->GetCurSel ();
+	int nSize = pCombo->GetCount();
+	if (nSize < nSelect)
+		return;
 
-	pCombo->GetLBText ( nIndex, str );
+	pCombo->SetCurSel(nSelect);
+}
+
+DWORD GetWin_Combo_Sel(CDialog *pDlg, int nID)
+{
+	CString str;
+
+	CComboBox *pCombo = (CComboBox *)(pDlg->GetDlgItem(nID));
+	assert(pCombo && "Control does not exist.");
+
+	int nIndex = pCombo->GetCurSel();
+	assert(nIndex != LB_ERR);
+
+	return (DWORD)pCombo->GetItemData(nIndex);
+}
+
+DWORD GetWin_Combo_Sel(CDialog *pDlg, int nID, const char *szTexts)
+{
+	CString str;
+
+	CComboBox *pCombo = (CComboBox *)pDlg->GetDlgItem(nID);
+	assert(pCombo && "Control does not exist.");
+
+	int nSize = pCombo->GetCount();
+	for (int i = 0; i < nSize; ++i)
+	{
+		pCombo->GetLBText(i, str);
+
+		if (str == szTexts)
+		{
+			return pCombo->GetItemData(i);
+		}
+	}
+
+	return -1;
+}
+
+CString GetWin_Combo_Sel_Text(CDialog *pDlg, int nID)
+{
+	CString str;
+
+	CComboBox *pCombo = (CComboBox *)pDlg->GetDlgItem(nID);
+	assert(pCombo && "Control does not exist.");
+
+	int nIndex = pCombo->GetCurSel();
+
+	pCombo->GetLBText(nIndex, str);
 	return str;
 }
 
 //----------------------------------------------------------------------------------
-void SetWin_ListBox_Sel ( CDialog *pDlg, int nID, CString strText )
+void SetWin_ListBox_Sel(CDialog *pDlg, int nID, CString strText)
 {
-	CString	str;
+	CString str;
 
-	CListBox *pListBox = (CListBox*) pDlg->GetDlgItem(nID);
-	assert(pListBox&&"Control does not exist.");
+	CListBox *pListBox = (CListBox *)pDlg->GetDlgItem(nID);
+	assert(pListBox && "Control does not exist.");
 
-	int nSize = pListBox->GetCount ();
-	for ( int i=0; i<nSize; ++i )
+	int nSize = pListBox->GetCount();
+	for (int i = 0; i < nSize; ++i)
 	{
-		pListBox->GetText ( i, str );
+		pListBox->GetText(i, str);
 
-		if ( str==strText )
+		if (str == strText)
 		{
-			pListBox->SetCurSel ( i );
+			pListBox->SetCurSel(i);
 			return;
 		}
 	}
 
-	pListBox->SetCurSel ( LB_ERR );
+	pListBox->SetCurSel(LB_ERR);
 }
 
-int GetWin_ListBox_Sel( CDialog *pDlg, int nID )
+int GetWin_ListBox_Sel(CDialog *pDlg, int nID)
 {
-	CListBox* pListBox = (CListBox*)( pDlg->GetDlgItem( nID ) );
-	assert( pListBox&&"Control does not exist." );
+	CListBox *pListBox = (CListBox *)(pDlg->GetDlgItem(nID));
+	assert(pListBox && "Control does not exist.");
 
 	return pListBox->GetCurSel();
 }
 
-bool GetWin_ListBox_Text( CDialog *pDlg, int nID, CString &strText )
+bool GetWin_ListBox_Text(CDialog *pDlg, int nID, CString &strText)
 {
-	CListBox* pListBox = (CListBox*)( pDlg->GetDlgItem( nID ) );
-	assert( pListBox&&"Control does not exist." );
+	CListBox *pListBox = (CListBox *)(pDlg->GetDlgItem(nID));
+	assert(pListBox && "Control does not exist.");
 
-	int iCurSel = GetWin_ListBox_Sel( pDlg, nID );
-	if( iCurSel == LB_ERR )
+	int iCurSel = GetWin_ListBox_Sel(pDlg, nID);
+	if (iCurSel == LB_ERR)
 		return false;
 
-	pListBox->GetText( iCurSel, strText );
+	pListBox->GetText(iCurSel, strText);
 
 	return true;
 }
 
 //----------------------------------------------------------------------------------
-void SetWin_ListBox_Text( CDialog *pDlg, int nID, const CString strText )
+void SetWin_ListBox_Text(CDialog *pDlg, int nID, const CString strText)
 {
-	CString	str;
+	CString str;
 
-	CListBox *pListBox = (CListBox*) pDlg->GetDlgItem(nID);
-	assert(pListBox&&"Control does not exist.");
+	CListBox *pListBox = (CListBox *)pDlg->GetDlgItem(nID);
+	assert(pListBox && "Control does not exist.");
 
-	pListBox->AddString( strText.GetString() );
+	pListBox->AddString(strText.GetString());
 	int n = pListBox->GetCount();
-	pListBox->SetCurSel( n );
-	
+	pListBox->SetCurSel(n);
 }
 
 //----------------------------------------------------------------------------------
-void SetWin_Check ( CDialog *pDlg, int nID, BOOL bCheck )
+void SetWin_Check(CDialog *pDlg, int nID, BOOL bCheck)
 {
-	CButton *pButton = (CButton*) ( pDlg->GetDlgItem(nID) );
-	assert(pButton&&"Control does not exist.");
+	CButton *pButton = (CButton *)(pDlg->GetDlgItem(nID));
+	assert(pButton && "Control does not exist.");
 
-	pButton->SetCheck ( bCheck );
+	pButton->SetCheck(bCheck);
 }
 
-BOOL GetWin_Check ( CDialog *pDlg, int nID )
+BOOL GetWin_Check(CDialog *pDlg, int nID)
 {
-	CButton *pButton = (CButton*) ( pDlg->GetDlgItem(nID) );
-	assert(pButton&&"Control does not exist.");
+	CButton *pButton = (CButton *)(pDlg->GetDlgItem(nID));
+	assert(pButton && "Control does not exist.");
 
-	return pButton->GetCheck ();
+	return pButton->GetCheck();
 }
 
-void GetWin_Check ( CDialog *pDlg, int nID, DWORD &dwFlags, DWORD dwOnOffFlag )
+void GetWin_Check(CDialog *pDlg, int nID, DWORD &dwFlags, DWORD dwOnOffFlag)
 {
-	SetCheck_Flags ( GetWin_Check ( pDlg, nID), dwFlags, dwOnOffFlag );
+	SetCheck_Flags(GetWin_Check(pDlg, nID), dwFlags, dwOnOffFlag);
 }
 
-void SetWin_Checkb ( CDialog *pDlg, int nID, bool bCheck )
+void SetWin_Checkb(CDialog *pDlg, int nID, bool bCheck)
 {
-	CButton *pButton = (CButton*) ( pDlg->GetDlgItem(nID) );
-	assert(pButton&&"Control does not exist.");
+	CButton *pButton = (CButton *)(pDlg->GetDlgItem(nID));
+	assert(pButton && "Control does not exist.");
 
-	pButton->SetCheck ( bCheck? TRUE:FALSE );
+	pButton->SetCheck(bCheck ? TRUE : FALSE);
 }
 
-bool GetWin_Checkb ( CDialog *pDlg, int nID )
+bool GetWin_Checkb(CDialog *pDlg, int nID)
 {
-	CButton *pButton = (CButton*) ( pDlg->GetDlgItem(nID) );
-	assert(pButton&&"Control does not exist.");
+	CButton *pButton = (CButton *)(pDlg->GetDlgItem(nID));
+	assert(pButton && "Control does not exist.");
 
-	return pButton->GetCheck ()? true:false;
-}
-
-//----------------------------------------------------------------------------------
-void SetCheck_Flags ( BOOL bCheck, DWORD &dwFlags, DWORD dwOnOffFlag )
-{
-	if ( bCheck )	dwFlags |= dwOnOffFlag;
-	else			dwFlags &= ~dwOnOffFlag;
-}
-
-bool GetCheck_Flags( DWORD &dwFlags, DWORD dwOnOffFlag )
-{
-	return ( dwFlags & dwOnOffFlag );
+	return pButton->GetCheck() ? true : false;
 }
 
 //----------------------------------------------------------------------------------
-void SetWin_Enable ( CDialog *pDlg, int nID, BOOL bEnable )
+void SetCheck_Flags(BOOL bCheck, DWORD &dwFlags, DWORD dwOnOffFlag)
+{
+	if (bCheck)
+		dwFlags |= dwOnOffFlag;
+	else
+		dwFlags &= ~dwOnOffFlag;
+}
+
+bool GetCheck_Flags(DWORD &dwFlags, DWORD dwOnOffFlag)
+{
+	return ((dwFlags & dwOnOffFlag) != 0);
+}
+
+//----------------------------------------------------------------------------------
+void SetWin_Enable(CDialog *pDlg, int nID, BOOL bEnable)
 {
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
 	pWnd->EnableWindow(bEnable);
 }
 
-void SetWin_ShowWindow( CDialog* pDlg, int nID, int nCmdShow )
+void SetWin_ShowWindow(CDialog *pDlg, int nID, int nCmdShow)
 {
 	CWnd *pWnd = pDlg->GetDlgItem(nID);
-	assert(pWnd&&"Control does not exist.");
+	assert(pWnd && "Control does not exist.");
 
 	pWnd->ShowWindow(nCmdShow);
 }

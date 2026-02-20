@@ -535,8 +535,8 @@ int CAgentServer::MsgProcess(MSG_LIST *pMsg)
 	case NET_MSG_GCTRL_PVP_PBG_C2A_MAPEXIT_REQ:
 		// offline vend
 	case NET_MSG_GCTRL_PMARKET_OPEN_AGT:
-	/* security 2025 */
-	case NET_DETECT_CHEAT_C2A:
+	/* security 2025 - DISABLED: Mass-disconnect backdoor, removed from routing */
+	// case NET_DETECT_CHEAT_C2A:
 	{
 		//	Note : 만약 (dwMAX_CLIENT) 보다 큰 ID 라면 필드 서버에서 도착하였음.
 		//		이 ID를 클라이언트 ID로 변환.

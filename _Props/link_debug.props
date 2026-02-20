@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile />
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;DbgHelp.Lib;version.lib;../_Library/ggsrvlib.lib;../_Library/ijl15.lib;../../RanSDK/DirectX/Lib/dsound.lib;../../RanSDK/DirectX/Lib/dinput8.lib;../../RanSDK/DirectX/Lib/dxerr.lib;../../RanSDK/DirectX/Lib/d3dx9.lib;../../RanSDK/DirectX/Lib/d3d9.lib;../../RanSDK/DirectX/Lib/d3dxof.lib;../../RanSDK/DirectX/Lib/dxguid.lib;../../RanSDK/ETC/lib32/fci.lib;../../RanSDK/ETC/lib32/fdi.lib;../../RanSDK/_Bin/Debug/BugTrap.lib;../../RanSDK/_Lib/Debug/libogg_static.lib;../../RanSDK/_Lib/Debug/libvorbis_static.lib;../../RanSDK/_Lib/Debug/libvorbisfile_static.lib;../../RanSDK/_Lib/Debug/lzolib.lib;../../RanSDK/_Lib/Debug/zlibstatic.lib;../../RanSDK/_Lib/Debug/luaplus.lib;../../RanSDK/_Lib/Debug/libcpuid.lib;../../RanSDK/_Lib/Debug/freetype.lib;../../RanSDK/HackShield/Lib/Multithreaded/AntiCrack/AntiCpXSvr.lib;../../RanSDK/HackShield/Lib/Multithreaded/HShield/HShield.lib;../../RanSDK/HackShield/Lib/Multithreaded/Update/HSUpChk.lib;../../RanSDK/HackShield/Lib/Multithreaded/UserUtil/HsUserUtil.lib;../../RanSDK/Boost/Lib32/libboost_filesystem-vc100-mt-sgd-x32-1_70.lib;../../RanSDK/Boost/Lib32/libboost_chrono-vc100-mt-sgd-x32-1_70.lib;../../RanSDK/CV/Lib/COFF/VirtualizerSDK32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;DbgHelp.Lib;version.lib;../_Library/ggsrvlib.lib;../_Library/ijl15.lib;../_RanSDK/DirectX/Lib/dsound.lib;../_RanSDK/DirectX/Lib/dinput8.lib;../_RanSDK/DirectX/Lib/dxerr.lib;../_RanSDK/DirectX/Lib/d3dx9.lib;../_RanSDK/DirectX/Lib/d3d9.lib;../_RanSDK/DirectX/Lib/d3dxof.lib;../_RanSDK/DirectX/Lib/dxguid.lib;../_RanSDK/ETC/lib32/fci.lib;../_RanSDK/ETC/lib32/fdi.lib;../_RanSDK/_Bin/Debug/BugTrap.lib;../_RanSDK/_Lib/Debug/libogg_static.lib;../_RanSDK/_Lib/Debug/libvorbis_static.lib;../_RanSDK/_Lib/Debug/libvorbisfile_static.lib;../_RanSDK/_Lib/Debug/lzolib.lib;../_RanSDK/_Lib/Debug/zlibstatic.lib;../_RanSDK/_Lib/Debug/luaplus.lib;../_RanSDK/_Lib/Debug/libcpuid.lib;../_RanSDK/_Lib/Debug/freetype.lib;../_RanSDK/HackShield/Lib/Multithreaded/AntiCrack/AntiCpXSvr.lib;../_RanSDK/HackShield/Lib/Multithreaded/HShield/HShield.lib;../_RanSDK/HackShield/Lib/Multithreaded/Update/HSUpChk.lib;../_RanSDK/HackShield/Lib/Multithreaded/UserUtil/HsUserUtil.lib;../_RanSDK/Boost/Lib32/libboost_filesystem-vc100-mt-sgd-x32-1_70.lib;../_RanSDK/Boost/Lib32/libboost_chrono-vc100-mt-sgd-x32-1_70.lib;../_RanSDK/CV/Lib/COFF/VirtualizerSDK32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libci.lib;libc.lib;libcmt.lib;MSVCRT.LIB;MSVCRTD.LIB;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>

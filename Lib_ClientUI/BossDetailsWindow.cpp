@@ -27,206 +27,192 @@
 #define new DEBUG_NEW
 #endif
 
-
-CBossDetailsWindow::CBossDetailsWindow ()
-	: m_pListTextBox(NULL)
-	, m_pListScrollBar(NULL)
-	, m_pTextPage(NULL)
-	, m_pTextInfoLevel(NULL)
-	, m_pTextInfoHP(NULL)
-	, m_pTextInfoAvoid(NULL)
-	, m_pTextInfoAttack(NULL)
-	, m_pTextInfoGold(NULL)
-	, m_nSelectIndexType(-1)
-	, m_nSlotNumber(0)
-	, m_fClickTimer(10.0f)
-	, m_pRender(NULL) // MOB RENDER
-	, m_pMobNameText(NULL)
-	, m_pButtonLeft(NULL)
-	, m_pButtonRight(NULL) // END RENDER
+CBossDetailsWindow::CBossDetailsWindow()
+	: m_pListTextBox(NULL), m_pListScrollBar(NULL), m_pTextPage(NULL), m_pTextInfoLevel(NULL), m_pTextInfoHP(NULL), m_pTextInfoAvoid(NULL), m_pTextInfoAttack(NULL), m_pTextInfoGold(NULL), m_nSelectIndexType(-1), m_nSlotNumber(0), m_fClickTimer(10.0f), m_pRender(NULL) // MOB RENDER
+	  ,
+	  m_pMobNameText(NULL), m_pButtonLeft(NULL), m_pButtonRight(NULL) // END RENDER
 {
-	for( int i=0; i<BOSS_LIST_MAX_SLOT; ++i )
+	for (int i = 0; i < BOSS_LIST_MAX_SLOT; ++i)
 		m_pBossListSlot[i] = NULL;
 
-	SecureZeroMemory ( m_pRewardItems, sizeof( m_pRewardItems ) );
+	SecureZeroMemory(m_pRewardItems, sizeof(m_pRewardItems));
 }
 
-CBossDetailsWindow::~CBossDetailsWindow ()
+CBossDetailsWindow::~CBossDetailsWindow()
 {
-	
+
 	m_RewardItemMap.clear();
 	m_UniqueRewardItemSet.clear();
 }
 
-void CBossDetailsWindow::CreateSubControl ()
+void CBossDetailsWindow::CreateSubControl()
 {
 
-	CD3DFontPar* pFont9 = DxFontMan::GetInstance().LoadDxFont ( _DEFAULT_FONT, 9, _DEFAULT_FONT_SHADOW_FLAG );
-	CD3DFontPar* pFont10 = DxFontMan::GetInstance().LoadDxFont ( _DEFAULT_FONT, 10, _DEFAULT_FONT_SHADOW_FLAG || _DEFAULT_FONT_SHADOW_FLAG ); // Locations
+	CD3DFontPar *pFont9 = DxFontMan::GetInstance().LoadDxFont(_DEFAULT_FONT, 9, _DEFAULT_FONT_SHADOW_FLAG);
+	CD3DFontPar *pFont10 = DxFontMan::GetInstance().LoadDxFont(_DEFAULT_FONT, 10, _DEFAULT_FONT_SHADOW_FLAG || _DEFAULT_FONT_SHADOW_FLAG); // Locations
 
-	//Window Result Black LineBox
-	CBasicLineBox* pBasicLineBoxBlackResultParty = new CBasicLineBox;
-	pBasicLineBoxBlackResultParty->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxBlackResultParty->CreateBaseBoxQuestList ( "BOSS_DETAILS_BLACK_BODY_RESULT_WINDOW_LINE" );
-	RegisterControl ( pBasicLineBoxBlackResultParty );
-	//Locations Black LineBox
-	CBasicLineBox* pBasicLineBoxBlackLocations = new CBasicLineBox;
-	pBasicLineBoxBlackLocations->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxBlackLocations->CreateBaseBoxQuestList ( "PARTY_SEARCH_BLACK_BODY_LOCATIONS_WINDOW_LINE" );
-	RegisterControl ( pBasicLineBoxBlackLocations );
-	//MOB NAME LINEBOX
-	CBasicLineBox* pBasicLineBoxBlackMobName = new CBasicLineBox;
-	pBasicLineBoxBlackMobName->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxBlackMobName->CreateBaseBoxQuestList ( "MOB_NAME_LINE_BOX_RENDER_JX" );
-	RegisterControl ( pBasicLineBoxBlackMobName );
-	//MOB NAME WHITE BORDER LINEBOX
-	CBasicLineBox* pBasicLineBoxWhiteMobName = new CBasicLineBox;
-	pBasicLineBoxWhiteMobName->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxWhiteMobName->CreateBaseBoxOuterBlankWhite ( "MOB_NAME_WHITE_LINE_BOX_RENDER_JX" );
-	RegisterControl ( pBasicLineBoxWhiteMobName );
-	//MOB RENDER LINEBOX
-	CBasicLineBox* pBasicLineBoxBlackMobRender = new CBasicLineBox;
-	pBasicLineBoxBlackMobRender->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxBlackMobRender->CreateBaseBoxQuestList ( "MOB_RENDER_LINE_BOX_RENDER_JX" );
-	RegisterControl ( pBasicLineBoxBlackMobRender );
-	//MOB RENDER WHITE BORDER LINEBOX
-	CBasicLineBox* pBasicLineBoxWhiteMobRender = new CBasicLineBox;
-	pBasicLineBoxWhiteMobRender->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxWhiteMobRender->CreateBaseBoxOuterBlankWhite ( "MOB_RENDER_WHITE_LINE_BOX_RENDER_JX" );
-	RegisterControl ( pBasicLineBoxWhiteMobRender );
-	//Locations White LineBox
-	CBasicLineBox* pBasicLineBoxWhiteLocations = new CBasicLineBox;
-	pBasicLineBoxWhiteLocations->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxWhiteLocations->CreateBaseBoxOuterBlankWhite ( "BOSS_DETAILS_WHITE_BODY_LOCATIONS_WINDOW_LINE" );
-	RegisterControl ( pBasicLineBoxWhiteLocations );
-	//Map Category White LineBox
-	CBasicLineBox* pBasicLineBoxWhiteMapList = new CBasicLineBox;
-	pBasicLineBoxWhiteMapList->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxWhiteMapList->CreateBaseBoxOuterBlankWhite ( "PARTY_SEARCH_WHITE_BODY_MAPLIST_WINDOW_LINE" );
-	RegisterControl ( pBasicLineBoxWhiteMapList );
-	//Search Button White LineBox
-	CBasicLineBox* pBasicLineBoxWhiteSearchButton = new CBasicLineBox;
-	pBasicLineBoxWhiteSearchButton->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxWhiteSearchButton->CreateBaseBoxOuterBlankWhite ( "PARTY_SEARCH_WHITE_BODY_SEARCH_BUTTON_WINDOW_LINE" );
-	RegisterControl ( pBasicLineBoxWhiteSearchButton );
-	//Window Result White LineBox
-	CBasicLineBox* pBasicLineBoxWhiteResultParty = new CBasicLineBox;
-	pBasicLineBoxWhiteResultParty->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxWhiteResultParty->CreateBaseBoxOuterBlankWhite ( "BOSS_DETAILS_WHITE_BODY_RESULT_WINDOW_LINE" );
-	RegisterControl ( pBasicLineBoxWhiteResultParty );
-	//Prev - Next White LineBox
-	CBasicLineBox* pBasicLineBoxWhitePrevNext = new CBasicLineBox;
-	pBasicLineBoxWhitePrevNext->CreateSub ( this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pBasicLineBoxWhitePrevNext->CreateBaseBoxOuterBlankWhite ( "PARTY_SEARCH_WHITE_BODY_PREVNEXT_WINDOW_LINE" );
-	RegisterControl ( pBasicLineBoxWhitePrevNext );
+	// Window Result Black LineBox
+	CBasicLineBox *pBasicLineBoxBlackResultParty = new CBasicLineBox;
+	pBasicLineBoxBlackResultParty->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxBlackResultParty->CreateBaseBoxQuestList("BOSS_DETAILS_BLACK_BODY_RESULT_WINDOW_LINE");
+	RegisterControl(pBasicLineBoxBlackResultParty);
+	// Locations Black LineBox
+	CBasicLineBox *pBasicLineBoxBlackLocations = new CBasicLineBox;
+	pBasicLineBoxBlackLocations->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxBlackLocations->CreateBaseBoxQuestList("PARTY_SEARCH_BLACK_BODY_LOCATIONS_WINDOW_LINE");
+	RegisterControl(pBasicLineBoxBlackLocations);
+	// MOB NAME LINEBOX
+	CBasicLineBox *pBasicLineBoxBlackMobName = new CBasicLineBox;
+	pBasicLineBoxBlackMobName->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxBlackMobName->CreateBaseBoxQuestList("MOB_NAME_LINE_BOX_RENDER_JX");
+	RegisterControl(pBasicLineBoxBlackMobName);
+	// MOB NAME WHITE BORDER LINEBOX
+	CBasicLineBox *pBasicLineBoxWhiteMobName = new CBasicLineBox;
+	pBasicLineBoxWhiteMobName->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxWhiteMobName->CreateBaseBoxOuterBlankWhite("MOB_NAME_WHITE_LINE_BOX_RENDER_JX");
+	RegisterControl(pBasicLineBoxWhiteMobName);
+	// MOB RENDER LINEBOX
+	CBasicLineBox *pBasicLineBoxBlackMobRender = new CBasicLineBox;
+	pBasicLineBoxBlackMobRender->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxBlackMobRender->CreateBaseBoxQuestList("MOB_RENDER_LINE_BOX_RENDER_JX");
+	RegisterControl(pBasicLineBoxBlackMobRender);
+	// MOB RENDER WHITE BORDER LINEBOX
+	CBasicLineBox *pBasicLineBoxWhiteMobRender = new CBasicLineBox;
+	pBasicLineBoxWhiteMobRender->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxWhiteMobRender->CreateBaseBoxOuterBlankWhite("MOB_RENDER_WHITE_LINE_BOX_RENDER_JX");
+	RegisterControl(pBasicLineBoxWhiteMobRender);
+	// Locations White LineBox
+	CBasicLineBox *pBasicLineBoxWhiteLocations = new CBasicLineBox;
+	pBasicLineBoxWhiteLocations->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxWhiteLocations->CreateBaseBoxOuterBlankWhite("BOSS_DETAILS_WHITE_BODY_LOCATIONS_WINDOW_LINE");
+	RegisterControl(pBasicLineBoxWhiteLocations);
+	// Map Category White LineBox
+	CBasicLineBox *pBasicLineBoxWhiteMapList = new CBasicLineBox;
+	pBasicLineBoxWhiteMapList->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxWhiteMapList->CreateBaseBoxOuterBlankWhite("PARTY_SEARCH_WHITE_BODY_MAPLIST_WINDOW_LINE");
+	RegisterControl(pBasicLineBoxWhiteMapList);
+	// Search Button White LineBox
+	CBasicLineBox *pBasicLineBoxWhiteSearchButton = new CBasicLineBox;
+	pBasicLineBoxWhiteSearchButton->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxWhiteSearchButton->CreateBaseBoxOuterBlankWhite("PARTY_SEARCH_WHITE_BODY_SEARCH_BUTTON_WINDOW_LINE");
+	RegisterControl(pBasicLineBoxWhiteSearchButton);
+	// Window Result White LineBox
+	CBasicLineBox *pBasicLineBoxWhiteResultParty = new CBasicLineBox;
+	pBasicLineBoxWhiteResultParty->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxWhiteResultParty->CreateBaseBoxOuterBlankWhite("BOSS_DETAILS_WHITE_BODY_RESULT_WINDOW_LINE");
+	RegisterControl(pBasicLineBoxWhiteResultParty);
+	// Prev - Next White LineBox
+	CBasicLineBox *pBasicLineBoxWhitePrevNext = new CBasicLineBox;
+	pBasicLineBoxWhitePrevNext->CreateSub(this, "BASIC_LINE_BOX_QUEST_LIST", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pBasicLineBoxWhitePrevNext->CreateBaseBoxOuterBlankWhite("PARTY_SEARCH_WHITE_BODY_PREVNEXT_WINDOW_LINE");
+	RegisterControl(pBasicLineBoxWhitePrevNext);
 
-	CBasicTextBox* pTextStaticDrop = new CBasicTextBox;
-	pTextStaticDrop->CreateSub ( this, "BOSS_DETAILS_DROP_STATIC_TEXT" );
-	pTextStaticDrop->SetFont ( pFont10 );
-	pTextStaticDrop->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pTextStaticDrop->SetText( "LOOTS" );
-	RegisterControl ( pTextStaticDrop );
+	CBasicTextBox *pTextStaticDrop = new CBasicTextBox;
+	pTextStaticDrop->CreateSub(this, "BOSS_DETAILS_DROP_STATIC_TEXT");
+	pTextStaticDrop->SetFont(pFont10);
+	pTextStaticDrop->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pTextStaticDrop->SetText("LOOTS");
+	RegisterControl(pTextStaticDrop);
 
-	CBasicTextBox* pTextStaticInfo = new CBasicTextBox;
-	pTextStaticInfo->CreateSub ( this, "BOSS_DETAILS_INFO_STATIC_TEXT" );
-	pTextStaticInfo->SetFont ( pFont10 );
-	pTextStaticInfo->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pTextStaticInfo->SetText( "BOSS INFORMATION" );
-	RegisterControl ( pTextStaticInfo );
+	CBasicTextBox *pTextStaticInfo = new CBasicTextBox;
+	pTextStaticInfo->CreateSub(this, "BOSS_DETAILS_INFO_STATIC_TEXT");
+	pTextStaticInfo->SetFont(pFont10);
+	pTextStaticInfo->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pTextStaticInfo->SetText("BOSS INFORMATION");
+	RegisterControl(pTextStaticInfo);
 
-	//Locations White LineBox
-	CBasicLineBox* pLineForItems = new CBasicLineBox;
-	pLineForItems->CreateSub ( this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pLineForItems->CreateBaseBoxOuterBlankWhite ( "BOSS_DETAILS_WHITE_BODY_ITEMS_WINDOW_LINE" );
-	RegisterControl ( pLineForItems );
+	// Locations White LineBox
+	CBasicLineBox *pLineForItems = new CBasicLineBox;
+	pLineForItems->CreateSub(this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pLineForItems->CreateBaseBoxOuterBlankWhite("BOSS_DETAILS_WHITE_BODY_ITEMS_WINDOW_LINE");
+	RegisterControl(pLineForItems);
 
-	//Locations White LineBox
-	CBasicLineBox* pLineBoxForStaticDrop = new CBasicLineBox;
-	pLineBoxForStaticDrop->CreateSub ( this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pLineBoxForStaticDrop->CreateBaseBoxOuterBlankWhite ( "BOSS_DETAILS_WHITE_TITLE_ITEMS_WINDOW_LINE" );
-	RegisterControl ( pLineBoxForStaticDrop );
+	// Locations White LineBox
+	CBasicLineBox *pLineBoxForStaticDrop = new CBasicLineBox;
+	pLineBoxForStaticDrop->CreateSub(this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pLineBoxForStaticDrop->CreateBaseBoxOuterBlankWhite("BOSS_DETAILS_WHITE_TITLE_ITEMS_WINDOW_LINE");
+	RegisterControl(pLineBoxForStaticDrop);
 
-	//Locations White LineBox
-	CBasicLineBox* pLineBodyBossInfo = new CBasicLineBox;
-	pLineBodyBossInfo->CreateSub ( this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pLineBodyBossInfo->CreateBaseBoxOuterBlankWhite ( "BOSS_DETAILS_WHITE_BODY_INFO_WINDOW_LINE" );
-	RegisterControl ( pLineBodyBossInfo );
+	// Locations White LineBox
+	CBasicLineBox *pLineBodyBossInfo = new CBasicLineBox;
+	pLineBodyBossInfo->CreateSub(this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pLineBodyBossInfo->CreateBaseBoxOuterBlankWhite("BOSS_DETAILS_WHITE_BODY_INFO_WINDOW_LINE");
+	RegisterControl(pLineBodyBossInfo);
 
-	//Locations White LineBox
-	CBasicLineBox* pLineTitleInformation = new CBasicLineBox;
-	pLineTitleInformation->CreateSub ( this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	pLineTitleInformation->CreateBaseBoxOuterBlankWhite ( "BOSS_DETAILS_WHITE_TITLE_INFO_WINDOW_LINE" );
-	RegisterControl ( pLineTitleInformation );
+	// Locations White LineBox
+	CBasicLineBox *pLineTitleInformation = new CBasicLineBox;
+	pLineTitleInformation->CreateSub(this, "BASIC_LINE_BOX_BODY_OUTER_BLANK_WHITE", UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	pLineTitleInformation->CreateBaseBoxOuterBlankWhite("BOSS_DETAILS_WHITE_TITLE_INFO_WINDOW_LINE");
+	RegisterControl(pLineTitleInformation);
 
-	for (int v=0; v < REWARD_V_LINE_COUNT; ++v)
+	for (int v = 0; v < REWARD_V_LINE_COUNT; ++v)
 	{
-		for (int h=0; h < REWARD_H_LINE_COUNT; ++h)
+		for (int h = 0; h < REWARD_H_LINE_COUNT; ++h)
 		{
-			int index = v*REWARD_H_LINE_COUNT + h;  
+			int index = v * REWARD_H_LINE_COUNT + h;
 			CString strFormat;
 			strFormat.Format("MAP_WINDOW_INFO_TAP_MONSTER_REWARD%d", index + 1);
-			m_pRewardItems[v][h] = CreateItemImage(strFormat.GetString(),REWARD_ITEM1 + index );
+			m_pRewardItems[v][h] = CreateItemImage(strFormat.GetString(), REWARD_ITEM1 + index);
 		}
 	}
 
 	std::string strSlot[BOSS_LIST_MAX_SLOT] =
-	{
-		"BOSS_LIST_SLOT_NODE_00",
-		"BOSS_LIST_SLOT_NODE_01",
-		"BOSS_LIST_SLOT_NODE_02",
-		"BOSS_LIST_SLOT_NODE_03",
-		"BOSS_LIST_SLOT_NODE_04",
-		"BOSS_LIST_SLOT_NODE_05",
-		"BOSS_LIST_SLOT_NODE_06",
-		"BOSS_LIST_SLOT_NODE_07",
-	};
+		{
+			"BOSS_LIST_SLOT_NODE_00",
+			"BOSS_LIST_SLOT_NODE_01",
+			"BOSS_LIST_SLOT_NODE_02",
+			"BOSS_LIST_SLOT_NODE_03",
+			"BOSS_LIST_SLOT_NODE_04",
+			"BOSS_LIST_SLOT_NODE_05",
+			"BOSS_LIST_SLOT_NODE_06",
+			"BOSS_LIST_SLOT_NODE_07",
+		};
 
-	for( int i=0; i<BOSS_LIST_MAX_SLOT; ++i )
+	for (int i = 0; i < BOSS_LIST_MAX_SLOT; ++i)
 	{
 		m_pBossListSlot[i] = new CBossListSlot;
-		m_pBossListSlot[i]->CreateSub ( this, strSlot[i].c_str(), UI_FLAG_DEFAULT, BOSS_DETAILS_SLOT1 + i );
-		m_pBossListSlot[i]->CreateSubControl ();
-		m_pBossListSlot[i]->SetVisibleSingle ( TRUE );
-		RegisterControl ( m_pBossListSlot[i] );
+		m_pBossListSlot[i]->CreateSub(this, strSlot[i].c_str(), UI_FLAG_DEFAULT, BOSS_DETAILS_SLOT1 + i);
+		m_pBossListSlot[i]->CreateSubControl();
+		m_pBossListSlot[i]->SetVisibleSingle(TRUE);
+		RegisterControl(m_pBossListSlot[i]);
 	}
 
-
 	m_pTextPage = new CBasicTextBox;
-	m_pTextPage->CreateSub ( this, "PARTY_SEARCH_ALLMAP_TEXT" );
-	m_pTextPage->SetFont ( pFont10 );
-	m_pTextPage->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	m_pTextPage->SetText( "Location" );
-	RegisterControl ( m_pTextPage );
+	m_pTextPage->CreateSub(this, "PARTY_SEARCH_ALLMAP_TEXT");
+	m_pTextPage->SetFont(pFont10);
+	m_pTextPage->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	m_pTextPage->SetText("Location");
+	RegisterControl(m_pTextPage);
 
 	m_pTextInfoLevel = new CBasicTextBox;
-	m_pTextInfoLevel->CreateSub ( this, "BOSS_DETAILS_INFO_STATIC_LEVEL" );
-	m_pTextInfoLevel->SetFont ( pFont9 );
-	m_pTextInfoLevel->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	RegisterControl ( m_pTextInfoLevel );
+	m_pTextInfoLevel->CreateSub(this, "BOSS_DETAILS_INFO_STATIC_LEVEL");
+	m_pTextInfoLevel->SetFont(pFont9);
+	m_pTextInfoLevel->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	RegisterControl(m_pTextInfoLevel);
 
 	m_pTextInfoHP = new CBasicTextBox;
-	m_pTextInfoHP->CreateSub ( this, "BOSS_DETAILS_INFO_STATIC_HP" );
-	m_pTextInfoHP->SetFont ( pFont9 );
-	m_pTextInfoHP->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	RegisterControl ( m_pTextInfoHP );
+	m_pTextInfoHP->CreateSub(this, "BOSS_DETAILS_INFO_STATIC_HP");
+	m_pTextInfoHP->SetFont(pFont9);
+	m_pTextInfoHP->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	RegisterControl(m_pTextInfoHP);
 
 	m_pTextInfoAttack = new CBasicTextBox;
-	m_pTextInfoAttack->CreateSub ( this, "BOSS_DETAILS_INFO_STATIC_ATTACK" );
-	m_pTextInfoAttack->SetFont ( pFont9 );
-	m_pTextInfoAttack->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	RegisterControl ( m_pTextInfoAttack );
+	m_pTextInfoAttack->CreateSub(this, "BOSS_DETAILS_INFO_STATIC_ATTACK");
+	m_pTextInfoAttack->SetFont(pFont9);
+	m_pTextInfoAttack->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	RegisterControl(m_pTextInfoAttack);
 
 	m_pTextInfoAvoid = new CBasicTextBox;
-	m_pTextInfoAvoid->CreateSub ( this, "BOSS_DETAILS_INFO_STATIC_AVOID" );
-	m_pTextInfoAvoid->SetFont ( pFont9 );
-	m_pTextInfoAvoid->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	RegisterControl ( m_pTextInfoAvoid );
+	m_pTextInfoAvoid->CreateSub(this, "BOSS_DETAILS_INFO_STATIC_AVOID");
+	m_pTextInfoAvoid->SetFont(pFont9);
+	m_pTextInfoAvoid->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	RegisterControl(m_pTextInfoAvoid);
 
 	m_pTextInfoGold = new CBasicTextBox;
-	m_pTextInfoGold->CreateSub ( this, "BOSS_DETAILS_INFO_STATIC_GOLD" );
-	m_pTextInfoGold->SetFont ( pFont9 );
-	m_pTextInfoGold->SetTextAlign ( UI_FLAG_XSIZE | UI_FLAG_YSIZE );
-	RegisterControl ( m_pTextInfoGold );
+	m_pTextInfoGold->CreateSub(this, "BOSS_DETAILS_INFO_STATIC_GOLD");
+	m_pTextInfoGold->SetFont(pFont9);
+	m_pTextInfoGold->SetTextAlign(UI_FLAG_XSIZE | UI_FLAG_YSIZE);
+	RegisterControl(m_pTextInfoGold);
 
 	/* MOB RENDER*/
 	m_pRender = new CMobPreviewWindowRender;
@@ -256,20 +242,20 @@ void CBossDetailsWindow::CreateSubControl ()
 
 	/* RENDER END */
 	m_pListTextBox = new CBasicTextBoxEx;
-	m_pListTextBox->CreateSub ( this, "PARTY_SEARCH_CATEGORY_TEXT", UI_FLAG_DEFAULT, BOSS_DETAILS_MAP_LIST );
-	m_pListTextBox->SetFont ( pFont9 );		
-	m_pListTextBox->SetLineInterval ( 3.0f );
-	m_pListTextBox->SetSensitive ( true );
-	m_pListTextBox->SetLimitLine ( 10000 );
-	RegisterControl ( m_pListTextBox );
+	m_pListTextBox->CreateSub(this, "PARTY_SEARCH_CATEGORY_TEXT", UI_FLAG_DEFAULT, BOSS_DETAILS_MAP_LIST);
+	m_pListTextBox->SetFont(pFont9);
+	m_pListTextBox->SetLineInterval(3.0f);
+	m_pListTextBox->SetSensitive(true);
+	m_pListTextBox->SetLimitLine(10000);
+	RegisterControl(m_pListTextBox);
 
-	int nTotalLine = m_pListTextBox->GetVisibleLine ();
+	int nTotalLine = m_pListTextBox->GetVisibleLine();
 
 	m_pListScrollBar = new CBasicScrollBarEx;
-	m_pListScrollBar->CreateSub ( this, "BASIC_SCROLLBAR", UI_FLAG_RIGHT | UI_FLAG_YSIZE, BOSS_DETAILS_SCROLL );
-	m_pListScrollBar->CreateBaseScrollBar ( "PARTY_SEARCH_LOCATION_CATEGORY_SCROLL" );
-	m_pListScrollBar->GetThumbFrame()->SetState ( 1, nTotalLine );
-	RegisterControl ( m_pListScrollBar );
+	m_pListScrollBar->CreateSub(this, "BASIC_SCROLLBAR", UI_FLAG_RIGHT | UI_FLAG_YSIZE, BOSS_DETAILS_SCROLL);
+	m_pListScrollBar->CreateBaseScrollBar("PARTY_SEARCH_LOCATION_CATEGORY_SCROLL");
+	m_pListScrollBar->GetThumbFrame()->SetState(1, nTotalLine);
+	RegisterControl(m_pListScrollBar);
 
 	/*m_pTextPage = new CBasicTextBox;
 	m_pTextPage->CreateSub ( this, "PARTY_SEARCH_PAGE_NUM_TEXT" );
@@ -279,88 +265,93 @@ void CBossDetailsWindow::CreateSubControl ()
 	RegisterControl ( m_pTextPage );*/
 
 	LOAD_MAP_LIST();
-
 }
 
-void CBossDetailsWindow::Update ( int x, int y, BYTE LB, BYTE MB, BYTE RB, int nScroll, float fElapsedTime, BOOL bFirstControl )
+void CBossDetailsWindow::Update(int x, int y, BYTE LB, BYTE MB, BYTE RB, int nScroll, float fElapsedTime, BOOL bFirstControl)
 {
-	m_pListTextBox->SetUseOverColor ( FALSE );
-	if ( m_pListTextBox->GetCount () && 0 <= m_nSelectIndexType )
-		m_pListTextBox->SetUseTextColor ( m_nSelectIndexType, FALSE );
-	
-	CUIWindowEx::Update ( x, y, LB, MB, RB, nScroll, fElapsedTime, bFirstControl );
+	m_pListTextBox->SetUseOverColor(FALSE);
+	if (m_pListTextBox->GetCount() && 0 <= m_nSelectIndexType)
+		m_pListTextBox->SetUseTextColor(m_nSelectIndexType, FALSE);
+
+	CUIWindowEx::Update(x, y, LB, MB, RB, nScroll, fElapsedTime, bFirstControl);
 
 	if (m_fClickTimer > 0.0f)
 	{
-		m_fClickTimer-=fElapsedTime;
+		m_fClickTimer -= fElapsedTime;
 	}
 
-	if ( m_pListTextBox->GetCount () && 0 <= m_nSelectIndexType )
+	if (m_pListTextBox->GetCount() && 0 <= m_nSelectIndexType)
 	{
-		m_pListTextBox->SetUseTextColor ( m_nSelectIndexType, TRUE );
-		m_pListTextBox->SetTextColor ( m_nSelectIndexType, NS_UITEXTCOLOR::ORANGE );
+		m_pListTextBox->SetUseTextColor(m_nSelectIndexType, TRUE);
+		m_pListTextBox->SetTextColor(m_nSelectIndexType, NS_UITEXTCOLOR::ORANGE);
 	}
 
-	CBasicScrollThumbFrame* const pThumbFrame = m_pListScrollBar->GetThumbFrame ();
+	CBasicScrollThumbFrame *const pThumbFrame = m_pListScrollBar->GetThumbFrame();
 
-	const int nTotalLine = m_pListTextBox->GetTotalLine ();
-	const int nLinePerOneView = m_pListTextBox->GetVisibleLine ();
+	const int nTotalLine = m_pListTextBox->GetTotalLine();
+	const int nLinePerOneView = m_pListTextBox->GetVisibleLine();
 
-	pThumbFrame->SetState ( nTotalLine, nLinePerOneView );
+	pThumbFrame->SetState(nTotalLine, nLinePerOneView);
 
-	if ( nLinePerOneView < nTotalLine )
+	if (nLinePerOneView < nTotalLine)
 	{
 		const int nMovableLine = nTotalLine - nLinePerOneView;
-		float fPercent = pThumbFrame->GetPercent ();
+		float fPercent = pThumbFrame->GetPercent();
 		int nPos = (int)floor(fPercent * nMovableLine);
-		m_pListTextBox->SetCurLine ( nPos );			
+		m_pListTextBox->SetCurLine(nPos);
 	}
 }
 
-void CBossDetailsWindow::TranslateUIMessage ( UIGUID ControlID, DWORD dwMsg )
+void CBossDetailsWindow::TranslateUIMessage(UIGUID ControlID, DWORD dwMsg)
 {
-	CUIWindowEx::TranslateUIMessage ( ControlID, dwMsg );
+	CUIWindowEx::TranslateUIMessage(ControlID, dwMsg);
 
-	switch( ControlID )
+	switch (ControlID)
 	{
 	/* RENDER HERE*/
 	case BUTTON_RIGHT:
 	{
 		if (CHECK_MOUSE_IN_LBDOWNLIKE(dwMsg))
 		{
-			if (m_pRender)	m_pRender->m_vRot.x += 0.1f;
+			if (m_pRender)
+				m_pRender->m_vRot.x += 0.1f;
 		}
-	}break;
+	}
+	break;
 	case BUTTON_LEFT:
 	{
 		if (CHECK_MOUSE_IN_LBDOWNLIKE(dwMsg))
 		{
-			if (m_pRender)	m_pRender->m_vRot.x -= 0.1f;
+			if (m_pRender)
+				m_pRender->m_vRot.x -= 0.1f;
 		}
-	}break;
+	}
+	break;
 	/*RENDER END*/
 	case BOSS_DETAILS_MAP_LIST:
+	{
+		if (CHECK_MOUSE_IN(dwMsg))
 		{
-			if ( CHECK_MOUSE_IN ( dwMsg ) )
+			int nIndex = m_pListTextBox->GetSelectPos();
+
+			if (nIndex == m_nSelectIndexType)
+				return;
+			if (m_pListTextBox->GetCount() <= nIndex || nIndex < 0)
+				return;
+
+			if (UIMSG_LB_UP & dwMsg)
 			{
-				int nIndex = m_pListTextBox->GetSelectPos ();
-
-				if (nIndex == m_nSelectIndexType) return;
-				if ( m_pListTextBox->GetCount () <= nIndex || nIndex < 0  ) return ;
-
-				if ( UIMSG_LB_UP & dwMsg )
-				{
-					DWORD dwType = m_pListTextBox->GetTextData ( nIndex );
-					m_nSelectIndexType = nIndex;
-					SelectMapRequest(dwType);
-					m_fClickTimer = 10.0f;
-				}
-
-				m_pListTextBox->SetUseOverColor ( TRUE );
-				m_pListTextBox->SetOverColor ( nIndex, NS_UITEXTCOLOR::ORANGE );
+				DWORD dwType = m_pListTextBox->GetTextData(nIndex);
+				m_nSelectIndexType = nIndex;
+				SelectMapRequest(dwType);
+				m_fClickTimer = 10.0f;
 			}
+
+			m_pListTextBox->SetUseOverColor(TRUE);
+			m_pListTextBox->SetOverColor(nIndex, NS_UITEXTCOLOR::ORANGE);
 		}
-		break;
+	}
+	break;
 	case BOSS_DETAILS_SLOT1:
 	case BOSS_DETAILS_SLOT2:
 	case BOSS_DETAILS_SLOT3:
@@ -387,33 +378,34 @@ void CBossDetailsWindow::TranslateUIMessage ( UIGUID ControlID, DWORD dwMsg )
 						}
 						else
 						{
-                        // Handle the case where the slot is empty (optional)
-                        // Example: Show a message or ignore the click
+							// Handle the case where the slot is empty (optional)
+							// Example: Show a message or ignore the click
 						}
 					}
 				}
 			}
 		}
-	} break;
+	}
+	break;
 	};
 
-	for (int v=0; v < REWARD_V_LINE_COUNT; ++v)
+	for (int v = 0; v < REWARD_V_LINE_COUNT; ++v)
 	{
-		for (int h=0; h < REWARD_H_LINE_COUNT; ++h)
+		for (int h = 0; h < REWARD_H_LINE_COUNT; ++h)
 		{
-			if( m_pRewardItems[v][h]->GetWndID() == ControlID )
+			if (m_pRewardItems[v][h]->GetWndID() == ControlID)
 			{
-				if( CHECK_MOUSE_IN(dwMsg) )
+				if (CHECK_MOUSE_IN(dwMsg))
 				{
-					SITEM* pItem = GLItemMan::GetInstance().GetItem( m_pRewardItems[v][h]->GetItemID() );
-					if ( pItem )
+					SITEM *pItem = GLItemMan::GetInstance().GetItem(m_pRewardItems[v][h]->GetItemID());
+					if (pItem)
 					{
 						SITEMCUSTOM sItemCustom;
 						sItemCustom.sNativeID = pItem->sBasicOp.sNativeID;
-						sItemCustom.cDAMAGE = pItem->sBasicOp.wGradeAttack;
-						sItemCustom.cDEFENSE = pItem->sBasicOp.wGradeDefense;
+						sItemCustom.cDAMAGE = static_cast<BYTE>(pItem->sBasicOp.wGradeAttack);
+						sItemCustom.cDEFENSE = static_cast<BYTE>(pItem->sBasicOp.wGradeDefense);
 						sItemCustom.wTurnNum = pItem->sDrugOp.wPileNum;
-						CInnerInterface::GetInstance().SHOW_ITEM_INFO( sItemCustom, FALSE, FALSE, FALSE, 0, 0 );
+						CInnerInterface::GetInstance().SHOW_ITEM_INFO(sItemCustom, FALSE, FALSE, FALSE, 0, 0);
 					}
 				}
 			}
@@ -421,41 +413,41 @@ void CBossDetailsWindow::TranslateUIMessage ( UIGUID ControlID, DWORD dwMsg )
 	}
 }
 
-void CBossDetailsWindow::SelectMapRequest(DWORD dwType) 
+void CBossDetailsWindow::SelectMapRequest(DWORD dwType)
 {
-	GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList ();
-	GLMapList::FIELDMAP_ITER iter = MapsList.find ( dwType );
+	GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList();
+	GLMapList::FIELDMAP_ITER iter = MapsList.find(dwType);
 
 	m_nSlotNumber = 0;
 
-	for( int i=0; i<BOSS_LIST_MAX_SLOT; ++i )
+	for (int i = 0; i < BOSS_LIST_MAX_SLOT; ++i)
 		m_pBossListSlot[i]->ItemReset();
 
+	ResetItems();
 
-	ResetItems ();
-
-	for (int v=0; v < REWARD_V_LINE_COUNT; ++v)
+	for (int v = 0; v < REWARD_V_LINE_COUNT; ++v)
 	{
-		for (int h=0; h < REWARD_H_LINE_COUNT; ++h)
+		for (int h = 0; h < REWARD_H_LINE_COUNT; ++h)
 		{
 			m_pRewardItems[v][h]->ResetItem();
 			m_pRewardItems[v][h]->SetVisibleSingle(FALSE);
 		}
 	}
 
-
 	const SMAPNODE *pMapNode = &(*iter).second;
 	GLGaeaClient::GetInstance().GetCharacter()->ReqBossDetails(0, pMapNode->sNativeID, NATIVEID_NULL());
 }
 
-void CBossDetailsWindow::SetVisibleSingle ( BOOL bVisible )
+void CBossDetailsWindow::SetVisibleSingle(BOOL bVisible)
 {
-	CUIWindowEx::SetVisibleSingle( bVisible );
+	CUIWindowEx::SetVisibleSingle(bVisible);
 
-	if( bVisible )
+	if (bVisible)
 	{
-	}else{
-		ClearRender(); //RENDER HERE
+	}
+	else
+	{
+		ClearRender(); // RENDER HERE
 	}
 }
 
@@ -467,17 +459,19 @@ void CBossDetailsWindow::ClearRender()
 
 void CBossDetailsWindow::StartPreviewMob(SNATIVEID sMobID)
 {
-	GLCharacter* pCharacter = GLGaeaClient::GetInstance().GetCharacter();
-	if (!pCharacter)		return;
+	GLCharacter *pCharacter = GLGaeaClient::GetInstance().GetCharacter();
+	if (!pCharacter)
+		return;
 
-	if (!m_pRender)	return;
+	if (!m_pRender)
+		return;
 	//////////////////////////////////////////////////////////////////////////////
 	//--load & insert drop item list
-	//m_pMobDBItemList->Reset();
+	// m_pMobDBItemList->Reset();
 
 	/////////////////////////////////////////////////
 	//--version 1, each map code to each crow in every map
-	SCROWDATA* pCROW = GLCrowDataMan::GetInstance().GetCrowData(sMobID);
+	SCROWDATA *pCROW = GLCrowDataMan::GetInstance().GetCrowData(sMobID);
 
 	if (pCROW)
 	{
@@ -493,106 +487,110 @@ void CBossDetailsWindow::StartPreviewMob(SNATIVEID sMobID)
 
 void CBossDetailsWindow::LOAD_MAP_LIST()
 {
-	GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList ();
+	GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList();
 	GLMapList::FIELDMAP_ITER iter_start = MapsList.begin();
 	GLMapList::FIELDMAP_ITER iter_end = MapsList.end();
 
-	for( ; iter_start != iter_end; ++iter_start )
+	for (; iter_start != iter_end; ++iter_start)
 	{
 		const SMAPNODE *pMapNode = &(*iter_start).second;
-		if ( pMapNode )
+		if (pMapNode)
 		{
-			if ( pMapNode->bBossMap )
+			if (pMapNode->bBossMap)
 			{
 				SMAPDATA_LIST sMAP;
 				sMAP.sMAPID = pMapNode->sNativeID;
 				sMAP.strNAME = pMapNode->strMapName.c_str();
 
-				int nIndex = m_pListTextBox->AddText ( pMapNode->strMapName.c_str(), NS_UITEXTCOLOR::WHITE );
-				m_pListTextBox->SetTextData ( nIndex, sMAP.sMAPID.dwID );
+				int nIndex = m_pListTextBox->AddText(pMapNode->strMapName.c_str(), NS_UITEXTCOLOR::WHITE);
+				m_pListTextBox->SetTextData(nIndex, sMAP.sMAPID.dwID);
 			}
-		}	
+		}
 	}
 }
 
-void CBossDetailsWindow::SetSlotItem ( SNATIVEID sMobID, float fTimer, BOOL isAlive ) 
+void CBossDetailsWindow::SetSlotItem(SNATIVEID sMobID, float fTimer, BOOL isAlive)
 {
-	if (m_nSlotNumber >= BOSS_LIST_MAX_SLOT) return;
+	if (m_nSlotNumber >= BOSS_LIST_MAX_SLOT)
+		return;
 
-	if( m_pBossListSlot[m_nSlotNumber] )
+	if (m_pBossListSlot[m_nSlotNumber])
 	{
-		PCROWDATA pCROW = GLCrowDataMan::GetInstance().GetCrowData( sMobID );
-		if(pCROW)
+		PCROWDATA pCROW = GLCrowDataMan::GetInstance().GetCrowData(sMobID);
+		if (pCROW)
 		{
-			m_pBossListSlot[m_nSlotNumber]->ItemSet( pCROW->GetName(), fTimer, isAlive );
-			m_pBossListSlot[m_nSlotNumber]->SetMobID( sMobID );
+			m_pBossListSlot[m_nSlotNumber]->ItemSet(pCROW->GetName(), fTimer, isAlive);
+			m_pBossListSlot[m_nSlotNumber]->SetMobID(sMobID);
 			m_nSlotNumber++;
 		}
 	}
 }
 
-void CBossDetailsWindow::GetDropItem (SNATIVEID sMobID)
+void CBossDetailsWindow::GetDropItem(SNATIVEID sMobID)
 {
-	SCROWDATA* pCROW = GLCrowDataMan::GetInstance().GetCrowData ( sMobID );
-	if ( pCROW )
+	SCROWDATA *pCROW = GLCrowDataMan::GetInstance().GetCrowData(sMobID);
+	if (pCROW)
 	{
-		SetBossInformation( pCROW );
-		MOB_DROP_SPECID_MAP_ITER iter_MDSID = pCROW->m_mapMobDropSpecID.begin ();
-		MOB_DROP_SPECID_MAP_ITER iter_MDSID_end = pCROW->m_mapMobDropSpecID.end ();
-		
-		for( ; iter_MDSID != iter_MDSID_end; ++iter_MDSID )
+		SetBossInformation(pCROW);
+		MOB_DROP_SPECID_MAP_ITER iter_MDSID = pCROW->m_mapMobDropSpecID.begin();
+		MOB_DROP_SPECID_MAP_ITER iter_MDSID_end = pCROW->m_mapMobDropSpecID.end();
+
+		for (; iter_MDSID != iter_MDSID_end; ++iter_MDSID)
 		{
 			ITEMDBDROP_RANGE sRANGE;
-			sRANGE = GLItemMan::GetInstance().m_mapItemDBDropKey.equal_range ( iter_MDSID->second );
-			
+			sRANGE = GLItemMan::GetInstance().m_mapItemDBDropKey.equal_range(iter_MDSID->second);
+
 			ITEMDBDROP_KEYMAP_ITER iter_RANGE = sRANGE.first;
 			ITEMDBDROP_KEYMAP_ITER iter_RANGE_end = sRANGE.second;
-			
-			for ( ; iter_RANGE != iter_RANGE_end; ++iter_RANGE )
+
+			for (; iter_RANGE != iter_RANGE_end; ++iter_RANGE)
 			{
-				SITEM* pItem = GLItemMan::GetInstance().GetItem( iter_RANGE->second.sItemID );
-				if( !pItem )						continue;
+				SITEM *pItem = GLItemMan::GetInstance().GetItem(iter_RANGE->second.sItemID);
+				if (!pItem)
+					continue;
 
-				REWARDITEM_MAP_ITER it = m_RewardItemMap.find( iter_RANGE->second.sItemID.dwID );
-				if( it != m_RewardItemMap.end() )	continue;
-				
-				m_RewardItemMap.insert( std::make_pair( pItem->sBasicOp.sNativeID.dwID, pItem->sBasicOp.sNativeID ) );
+				REWARDITEM_MAP_ITER it = m_RewardItemMap.find(iter_RANGE->second.sItemID.dwID);
+				if (it != m_RewardItemMap.end())
+					continue;
+
+				m_RewardItemMap.insert(std::make_pair(pItem->sBasicOp.sNativeID.dwID, pItem->sBasicOp.sNativeID));
 			}
-		}			
+		}
 	}
 
-	for( REWARDITEM_MAP_ITER iter = m_RewardItemMap.begin();
-		iter != m_RewardItemMap.end(); ++iter )
+	for (REWARDITEM_MAP_ITER iter = m_RewardItemMap.begin();
+		 iter != m_RewardItemMap.end(); ++iter)
 	{
-		const SNATIVEID& sID = (*iter).second;
-		m_UniqueRewardItemSet.insert( sID.dwID );
+		const SNATIVEID &sID = (*iter).second;
+		m_UniqueRewardItemSet.insert(sID.dwID);
 	}
 
-	for (int v=0; v < REWARD_V_LINE_COUNT; ++v)
+	for (int v = 0; v < REWARD_V_LINE_COUNT; ++v)
 	{
-		for (int h=0; h < REWARD_H_LINE_COUNT; ++h)
+		for (int h = 0; h < REWARD_H_LINE_COUNT; ++h)
 		{
-			size_t index = (v)*REWARD_H_LINE_COUNT + h;  
-			if( index >= m_UniqueRewardItemSet.size())
+			size_t index = (v)*REWARD_H_LINE_COUNT + h;
+			if (index >= m_UniqueRewardItemSet.size())
 			{
 				m_pRewardItems[v][h]->SetVisibleSingle(FALSE);
 				continue;
 			}
-			
+
 			std::set<DWORD>::iterator it = m_UniqueRewardItemSet.begin();
-			std::advance(it,index); 
+			std::advance(it, index);
 
-			SITEM* pItem = GLItemMan::GetInstance().GetItem( SNATIVEID(*it) );
-			if( !pItem )	continue;
+			SITEM *pItem = GLItemMan::GetInstance().GetItem(SNATIVEID(*it));
+			if (!pItem)
+				continue;
 
-			m_pRewardItems[v][h]->SetItem( pItem->sBasicOp.sICONID, pItem->GetInventoryFile(), pItem->sBasicOp.sNativeID );		
+			m_pRewardItems[v][h]->SetItem(pItem->sBasicOp.sICONID, pItem->GetInventoryFile(), pItem->sBasicOp.sNativeID);
 			m_pRewardItems[v][h]->SetVisibleSingle(TRUE);
 		}
 	}
 }
-void CBossDetailsWindow::SetBossInformation( SCROWDATA* pCROW )
+void CBossDetailsWindow::SetBossInformation(SCROWDATA *pCROW)
 {
-	if( m_pTextInfoLevel )
+	if (m_pTextInfoLevel)
 	{
 		CString level;
 		level.Format("Level: %d", pCROW->m_wLevel);
@@ -600,7 +598,7 @@ void CBossDetailsWindow::SetBossInformation( SCROWDATA* pCROW )
 		m_pTextInfoLevel->SetText(level);
 	}
 
-	if( m_pTextInfoHP )
+	if (m_pTextInfoHP)
 	{
 		CString hp;
 		hp.Format("HP: %d", pCROW->m_dwHP);
@@ -608,7 +606,7 @@ void CBossDetailsWindow::SetBossInformation( SCROWDATA* pCROW )
 		m_pTextInfoHP->SetText(hp);
 	}
 
-	if ( m_pTextInfoAttack )
+	if (m_pTextInfoAttack)
 	{
 		CString attack;
 		attack.Format("Attack: %d ~ %d", pCROW->m_sCrowAttack->sDamage.wLow, pCROW->m_sCrowAttack->sDamage.wHigh);
@@ -616,7 +614,7 @@ void CBossDetailsWindow::SetBossInformation( SCROWDATA* pCROW )
 		m_pTextInfoAttack->SetText(attack);
 	}
 
-	if ( m_pTextInfoAvoid )
+	if (m_pTextInfoAvoid)
 	{
 		CString avoid;
 		avoid.Format("Avoid: %d", pCROW->m_wAvoidRate);
@@ -624,7 +622,7 @@ void CBossDetailsWindow::SetBossInformation( SCROWDATA* pCROW )
 		m_pTextInfoAvoid->SetText(avoid);
 	}
 
-	if ( m_pTextInfoGold )
+	if (m_pTextInfoGold)
 	{
 		CString gold;
 		gold.Format("Gold: %d", pCROW->m_sGenerate.m_dwGenMoney);
@@ -632,42 +630,42 @@ void CBossDetailsWindow::SetBossInformation( SCROWDATA* pCROW )
 		m_pTextInfoGold->SetText(gold);
 	}
 }
-void CBossDetailsWindow::ResetItems () 
+void CBossDetailsWindow::ResetItems()
 {
 	m_RewardItemMap.clear();
 	m_UniqueRewardItemSet.clear();
 
-	if( m_pTextInfoLevel )
+	if (m_pTextInfoLevel)
 	{
 		m_pTextInfoLevel->ClearText();
 	}
 
-	if( m_pTextInfoHP )
+	if (m_pTextInfoHP)
 	{
 		m_pTextInfoHP->ClearText();
 	}
 
-	if ( m_pTextInfoAttack )
+	if (m_pTextInfoAttack)
 	{
 		m_pTextInfoAttack->ClearText();
 	}
 
-	if ( m_pTextInfoAvoid )
+	if (m_pTextInfoAvoid)
 	{
 		m_pTextInfoAvoid->ClearText();
 	}
 
-	if ( m_pTextInfoGold )
+	if (m_pTextInfoGold)
 	{
 		m_pTextInfoGold->ClearText();
 	}
 }
-CItemImage*	CBossDetailsWindow::CreateItemImage ( const char* szControl, UIGUID ControlID )
+CItemImage *CBossDetailsWindow::CreateItemImage(const char *szControl, UIGUID ControlID)
 {
-	CItemImage* pItemImage = new CItemImage;
-	pItemImage->CreateSub ( this, szControl, UI_FLAG_DEFAULT, ControlID );
-	pItemImage->CreateSubControl ();
-	RegisterControl ( pItemImage );
+	CItemImage *pItemImage = new CItemImage;
+	pItemImage->CreateSub(this, szControl, UI_FLAG_DEFAULT, ControlID);
+	pItemImage->CreateSubControl();
+	RegisterControl(pItemImage);
 
 	return pItemImage;
 }

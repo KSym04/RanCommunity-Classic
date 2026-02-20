@@ -7053,39 +7053,18 @@ BOOL GLAgentServer::MsgWoeKillAgent(NET_MSG_GENERIC *nmg)
 	return TRUE;
 }
 
-/* security 2025 */
+/* security 2025 - DISABLED: This handler was weaponized for mass-disconnect attacks.
+   It accepts dwCharID from packet data (not authenticated sender), allowing ANY player
+   to kick+ban ANY other player via WPE packet injection. Permanently disabled. */
 BOOL GLAgentServer::MsgDetectCheat(NET_MSG_GENERIC *nmg, DWORD dwClientID, DWORD dwGaeaID)
 {
-	GLMSG::SNET_DETECT_CHEAT_C2A *netmsg = (GLMSG::SNET_DETECT_CHEAT_C2A *)nmg;
-
-	PGLCHARAG mychar = GetCharID(netmsg->dwCharID);
-	if (!mychar)
-		return FALSE;
-
-	GLMSG::SNET_DETECT_CHEAT_A2C toclient;
-	StringCchCopy(toclient.szName, CHAR_SZNAME, mychar->m_szName);
-	SENDTOALLCLIENT(&toclient);
-
-	// execute disconnection server side
-	GLMSG::SNET_GM_KICK_USER_PROC_FLD NetMsgFld;
-	NetMsgFld.dwID = mychar->m_dwCharID;
-	SENDTOALLCHANNEL(&NetMsgFld);
-
-	GLMSG::SNET_GM_KICK_USER_PROC NetMsgProc;
-	SENDTOCLIENT(mychar->m_dwClientID, &NetMsgProc);
-
-	ReserveDropOutPC(mychar->m_dwGaeaID);
-
-	// Banning Execution
-	CSetCheaterBanned *pDbAction = new CSetCheaterBanned(mychar->m_dwUserID);
-	if (pDbAction)
-	{
-		GLDBMan *execute = GetDBMan();
-		if (execute)
-			execute->AddJob(pDbAction);
-	}
-
-	return TRUE;
+	// SECURITY FIX: Entire function disabled - was mass-disconnect backdoor
+	// The packet-supplied dwCharID was used instead of authenticated dwGaeaID,
+	// allowing attackers to target and ban arbitrary players
+	CDebugSet::ToFileWithTime("_security_cheat_detect.txt",
+							  "BLOCKED MsgDetectCheat exploit attempt from ClientID: %u, GaeaID: %u",
+							  dwClientID, dwGaeaID);
+	return FALSE;
 }
 
 HRESULT GLAgentServer::MsgProcess(NET_MSG_GENERIC *nmg, DWORD dwClientID, DWORD dwGaeaID)
@@ -7094,10 +7073,10 @@ HRESULT GLAgentServer::MsgProcess(NET_MSG_GENERIC *nmg, DWORD dwClientID, DWORD 
 	{
 	default:
 		break;
-	/* security 2025 */
-	case NET_DETECT_CHEAT_C2A:
-		MsgDetectCheat(nmg, dwClientID, dwGaeaID);
-		break;
+	/* security 2025 - DISABLED: Mass-disconnect backdoor, see MsgDetectCheat() */
+	// case NET_DETECT_CHEAT_C2A:
+	//	MsgDetectCheat(nmg, dwClientID, dwGaeaID);
+	//	break;
 
 	/////////////////////////////////////////////////////////////////////////////
 	/*woe Arc Development 08-06-2024*/

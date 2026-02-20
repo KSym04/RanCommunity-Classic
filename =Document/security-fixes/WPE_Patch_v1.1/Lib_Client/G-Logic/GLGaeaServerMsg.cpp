@@ -8147,7 +8147,7 @@ HRESULT GLGaeaServer::MsgProcess(NET_MSG_GENERIC *nmg, DWORD dwClientID, DWORD d
 		{
 			// Security: verify the requesting player actually owns this pet
 			PGLCHAR pOwner = GetChar(dwGaeaID);
-			if (!pOwner || pOwner->m_dwPetGUID != pNetMsg->dwGUID)
+			if ( !pOwner || pOwner->m_dwPetGUID != pNetMsg->dwGUID )
 			{
 				GLGaeaServer::GetInstance().LogSecurityEvent(dwClientID, "CRIT-04: NET_MSG_PET_REQ_UNUSECARD ? pet GUID ownership mismatch");
 				break;

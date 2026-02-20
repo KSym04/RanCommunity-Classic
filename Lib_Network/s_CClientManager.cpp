@@ -5,10 +5,10 @@
 // 2002.05.30 jgkim Create
 // 2003.02.12 jgkim Message buffering
 //
-// Copyright(c) Mincoms. All rights reserved.                 
-// 
-// * Note 
-// 
+// Copyright(c) Mincoms. All rights reserved.
+//
+// * Note
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -22,44 +22,46 @@
 
 CClientManager::CClientManager(
 	int nMaxClient,
-	COverlapped* pSendIOCP,
-	COverlapped* pRecvIOCP,
+	COverlapped *pSendIOCP,
+	COverlapped *pRecvIOCP,
 	HANDLE hIOServer)
-	: m_pClient(NULL)
-	, m_nMaxClient(nMaxClient)
-	, m_hIOServer(hIOServer)
-	//, m_pSendIOCP(NULL)
-	//, m_pRecvIOCP(NULL)
-	, m_pSendIOCP(pSendIOCP)
-	, m_pRecvIOCP(pRecvIOCP)
-	, m_dwInPacketCount(0) //< 수신된 총 패킷 갯수
-	, m_dwInPacketSize(0) //< 수신된 총 패킷 사이즈
-	, m_dwOutPacketCount(0) //< 송신한 총 패킷 갯수
-	, m_dwOutPacketSize(0) //< 송신한 총 패킷 사이즈
-	, m_dwOutCompressCount(0) //< 송신한 총 압축 패킷 갯수
-	, m_dwOutCompressSize(0) //< 송신한 총 압축 패킷 크기
-	//, m_wClientIPMax(0) //iplimit
-	//, m_llDenyNum(0) //iplimit
+	: m_pClient(NULL), m_nMaxClient(nMaxClient), m_hIOServer(hIOServer)
+	  //, m_pSendIOCP(NULL)
+	  //, m_pRecvIOCP(NULL)
+	  ,
+	  m_pSendIOCP(pSendIOCP), m_pRecvIOCP(pRecvIOCP), m_dwInPacketCount(0) //< 수신된 총 패킷 갯수
+	  ,
+	  m_dwInPacketSize(0) //< 수신된 총 패킷 사이즈
+	  ,
+	  m_dwOutPacketCount(0) //< 송신한 총 패킷 갯수
+	  ,
+	  m_dwOutPacketSize(0) //< 송신한 총 패킷 사이즈
+	  ,
+	  m_dwOutCompressCount(0) //< 송신한 총 압축 패킷 갯수
+	  ,
+	  m_dwOutCompressSize(0) //< 송신한 총 압축 패킷 크기
+							 //, m_wClientIPMax(0) //iplimit
+							 //, m_llDenyNum(0) //iplimit
 {
-	//m_pRecvIOCP = new COverlapped(m_nMaxClient);
-	//m_pSendIOCP = new COverlapped(m_nMaxClient * 3);
+	// m_pRecvIOCP = new COverlapped(m_nMaxClient);
+	// m_pSendIOCP = new COverlapped(m_nMaxClient * 3);
 
-	srand((unsigned) time(NULL));
+	srand((unsigned)time(NULL));
 	m_pClient = new CNetUser[m_nMaxClient];
 
-	for ( int i=NET_RESERVED_SLOT; i<m_nMaxClient; ++i )	
+	for (int i = NET_RESERVED_SLOT; i < m_nMaxClient; ++i)
 	{
 		m_deqSleepCID.push_back(i);
 		m_mapSleepCID[i] = TRUE;
 	}
 
-	m_vecSleepCID.reserve( m_nMaxClient );
+	m_vecSleepCID.reserve(m_nMaxClient);
 
 	m_vecConnectIP.clear();
 
-	//iplimit
-	//m_mapClientIP.clear();
-	//m_setExcludeIP.clear();
+	// iplimit
+	// m_mapClientIP.clear();
+	// m_setExcludeIP.clear();
 }
 
 CClientManager::~CClientManager()
@@ -67,54 +69,52 @@ CClientManager::~CClientManager()
 	// close all client socket
 	// CloseAllClient();
 	// Memory Free Client information
-	if ( m_pClient != NULL )
-	{	
+	if (m_pClient != NULL)
+	{
 		LockOn();
 		SAFE_DELETE_ARRAY(m_pClient);
 		LockOff();
 	}
 
+	// SAFE_DELETE( m_pRecvIOCP );
+	// SAFE_DELETE( m_pSendIOCP );
 
-	//SAFE_DELETE( m_pRecvIOCP );
-	//SAFE_DELETE( m_pSendIOCP );
-
-	//iplimit
-	//m_mapClientIP.clear();
-	//m_setExcludeIP.clear();
+	// iplimit
+	// m_mapClientIP.clear();
+	// m_setExcludeIP.clear();
 }
 
 CRYPT_KEY CClientManager::GetNewCryptKey()
 {
 	CRYPT_KEY ck;
-	// ck.nKeyDirection	= rand() % 2 + 1; // Direction Left or Right	
-	// ck.nKey				= rand() % 5 + 2; // Shift amount	
+	// ck.nKeyDirection	= rand() % 2 + 1; // Direction Left or Right
+	// ck.nKey				= rand() % 5 + 2; // Shift amount
 
-	ck.nKeyDirection	= 1; // Direction Left or Right	
-	ck.nKey				= 1; // Shift amount
+	ck.nKeyDirection = 1; // Direction Left or Right
+	ck.nKey = 1;		  // Shift amount
 	return ck;
 }
 
-bool CClientManager::IsAccountPass (DWORD dwClient) // 계정 인증(login) 통과하였는지 점검.
+bool CClientManager::IsAccountPass(DWORD dwClient) // 계정 인증(login) 통과하였는지 점검.
 {
 	return m_pClient[dwClient].IsAccountPass();
 }
 
-void CClientManager::SetAccountPass (DWORD dwClient, bool bPASS) // 계정 인증(login) 통과 설정.
+void CClientManager::SetAccountPass(DWORD dwClient, bool bPASS) // 계정 인증(login) 통과 설정.
 {
 	m_pClient[dwClient].SetAccountPass(bPASS);
 }
 
-
 CRYPT_KEY CClientManager::GetCryptKey(DWORD dwClient)
 {
-	//assert(dwClient<(DWORD)m_nMaxClient);
+	// assert(dwClient<(DWORD)m_nMaxClient);
 
 	return m_pClient[dwClient].GetCryptKey();
 }
 
 void CClientManager::SetCryptKey(DWORD dwClient, CRYPT_KEY ck)
 {
-	//assert(dwClient<(DWORD)m_nMaxClient);
+	// assert(dwClient<(DWORD)m_nMaxClient);
 
 	m_pClient[dwClient].SetCryptKey(ck);
 }
@@ -138,86 +138,86 @@ bool CClientManager::IsOffline(DWORD dwClient)
 
 // GetFreeClientID
 // Return the free client slot
-int	CClientManager::GetFreeClientID(int nType)
-{	
+int CClientManager::GetFreeClientID(int nType)
+{
 	LockOn();
 	if (m_deqSleepCID.empty())
-	{		
+	{
 		LockOff();
 		// Reached Max Client Error 메세지를 호출하기전 m_vecSleepCID queue의 상태를 체크
 		ResetPreSleepCID();
 		return NET_ERROR;
 	}
 	else
-	{		
+	{
 		int nClient = m_deqSleepCID.front();
-		m_deqSleepCID.pop_front();		
+		m_deqSleepCID.pop_front();
 		// assert ( !m_pClient[nClient].IsOnline() );
-		m_mapSleepCID.erase( m_mapSleepCID.find(nClient) );
-		m_pClient[nClient].SetOnLine();	
+		m_mapSleepCID.erase(m_mapSleepCID.find(nClient));
+		m_pClient[nClient].SetOnLine();
 
 		LockOff();
-		return nClient;		
+		return nClient;
 	}
 }
 
 //	Note : 같은 아이피의 접속을 체크한다.
 //
 
-//TODO:
-bool CClientManager::ClientCheck( DWORD dwClient )
+// TODO:
+bool CClientManager::ClientCheck(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetUserNum() < 0 && m_pClient[dwClient].GetBlocked();
 }
 
-WORD CClientManager::IPCount(char *pszIP, DWORD dwClient )
+WORD CClientManager::IPCount(char *pszIP, DWORD dwClient)
 {
 	LockOn();
 	UINT i, iSameIPCount = 0;
-	for( i = 0; i < m_vecConnectIP.size(); i++ )
+	for (i = 0; i < m_vecConnectIP.size(); i++)
 	{
-		if( pszIP == m_vecConnectIP[i] )
+		if (pszIP == m_vecConnectIP[i])
 		{
 			iSameIPCount++;
 		}
 	}
-	//CConsoleMessage::GetInstance()->Write( _T( "IPCount %s[%d]"), pszIP,iSameIPCount );
-	//if( iSameIPCount >= 50 )	CConsoleMessage::GetInstance()->Write( _T( "IPCheck Connect Same IP %s(%d)"), pszIP, iSameIPCount );
+	// CConsoleMessage::GetInstance()->Write( _T( "IPCount %s[%d]"), pszIP,iSameIPCount );
+	// if( iSameIPCount >= 50 )	CConsoleMessage::GetInstance()->Write( _T( "IPCheck Connect Same IP %s(%d)"), pszIP, iSameIPCount );
 
 	LockOff();
 
 	return (WORD)iSameIPCount;
 }
 
-
 void CClientManager::ConnectIPCheck(char *pszIP)
 {
 	LockOn();
 	UINT i, iSameIPCount = 0;
-	for( i = 0; i < m_vecConnectIP.size(); i++ )
+	for (i = 0; i < m_vecConnectIP.size(); i++)
 	{
-		if( pszIP == m_vecConnectIP[i] )
+		if (pszIP == m_vecConnectIP[i])
 		{
 			iSameIPCount++;
 		}
 	}
 
-	if( iSameIPCount >= 10 )
+	if (iSameIPCount >= 10)
 	{
-		//CConsoleMessage::GetInstance()->Write( _T( "ERROR:Connect Same IP %s"), pszIP );
-		for( i = 0; i < m_vecConnectIP.size(); i++ )
+		// CConsoleMessage::GetInstance()->Write( _T( "ERROR:Connect Same IP %s"), pszIP );
+		for (i = 0; i < m_vecConnectIP.size(); i++)
 		{
-			if( pszIP == m_vecConnectIP[i] )
+			if (pszIP == m_vecConnectIP[i])
 			{
-				m_vecConnectIP.erase( m_vecConnectIP.begin() + i );
+				m_vecConnectIP.erase(m_vecConnectIP.begin() + i);
 				i--;
 			}
 		}
 	}
-	else{
+	else
+	{
 		m_vecConnectIP.push_back(pszIP);
-		if( m_vecConnectIP.size() > 30 )
-			m_vecConnectIP.erase( m_vecConnectIP.begin() );
+		if (m_vecConnectIP.size() > 30)
+			m_vecConnectIP.erase(m_vecConnectIP.begin());
 	}
 	LockOff();
 }
@@ -229,24 +229,28 @@ void CClientManager::ResetPreSleepCID()
 	LockOn();
 	int nTemp = -1;
 	size_t vecSize = m_vecSleepCID.size();
-	for ( size_t i = 0; i < vecSize; ++i )
+	for (size_t i = 0; i < vecSize; ++i)
 	{
-		if (nTemp != m_vecSleepCID[i] )
+		if (nTemp != m_vecSleepCID[i])
 		{
-			if( m_mapSleepCID.count(m_vecSleepCID[i]) == 0 )
+			if (m_mapSleepCID.count(m_vecSleepCID[i]) == 0)
 			{
 				m_deqSleepCID.push_back(m_vecSleepCID[i]);
-				m_mapSleepCID.insert( std::make_pair( m_vecSleepCID[i], TRUE ) );
+				m_mapSleepCID.insert(std::make_pair(m_vecSleepCID[i], TRUE));
 
 				nTemp = m_vecSleepCID[i];
-			}else{
-				//CConsoleMessage::GetInstance()->Write( _T( "ERROR:Already CloseClient %d"), m_vecSleepCID[i] );
 			}
-		}else{
-			CConsoleMessage::GetInstance()->Write( _T( "INFO:ResetPreSleepCID Error SleepCID %d" ), m_vecSleepCID[i] );
+			else
+			{
+				// CConsoleMessage::GetInstance()->Write( _T( "ERROR:Already CloseClient %d"), m_vecSleepCID[i] );
+			}
+		}
+		else
+		{
+			CConsoleMessage::GetInstance()->Write(_T( "INFO:ResetPreSleepCID Error SleepCID %d" ), m_vecSleepCID[i]);
 		}
 	}
-	m_vecSleepCID.clear();	
+	m_vecSleepCID.clear();
 	LockOff();
 }
 
@@ -261,20 +265,21 @@ int CClientManager::SetAcceptedClient(DWORD dwClient, SOCKET sSocket)
 {
 	int nRetCode = 0;
 
-	CNetUser* pData = (CNetUser*) (m_pClient+dwClient);
-	
-	if (pData == NULL)	return NET_ERROR;
+	CNetUser *pData = (CNetUser *)(m_pClient + dwClient);
+
+	if (pData == NULL)
+		return NET_ERROR;
 
 	if (pData->SetAcceptedClient(sSocket) == NET_OK)
 	{
-		//iplimit
-		//IPAddClient( pData->GetIP(), dwClient ); 
+		// iplimit
+		// IPAddClient( pData->GetIP(), dwClient );
 
 		CConsoleMessage::GetInstance()->WriteConsole(
 			_T("(Client ID:%d) (%s:%d)"),
 			dwClient,
 			pData->GetIP(),
-			pData->GetPort() );
+			pData->GetPort());
 		return NET_OK;
 	}
 	else
@@ -283,7 +288,7 @@ int CClientManager::SetAcceptedClient(DWORD dwClient, SOCKET sSocket)
 			_T("Accept Client Failed (Client ID:%d) (%s:%d)"),
 			dwClient,
 			pData->GetIP(),
-			pData->GetPort() );
+			pData->GetPort());
 		return NET_ERROR;
 	}
 }
@@ -295,14 +300,15 @@ void CClientManager::ClientsCheck()
 	int i = 0;
 	nMaxClient = m_nMaxClient;
 
-	for ( i = NET_RESERVED_SLOT; i<nMaxClient; ++i)
+	for (i = NET_RESERVED_SLOT; i < nMaxClient; ++i)
 	{
-		if ( !IsOnline((DWORD)i) )  continue;
-		if ( !ClientCheck ( (DWORD)i )  ) continue;
-		
+		if (!IsOnline((DWORD)i))
+			continue;
+		if (!ClientCheck((DWORD)i))
+			continue;
+
 		int nResult = CloseClient(i);
-		//CConsoleMessage::GetInstance()->Write( _T("CClientManager:ClientsCheck Closeclient %d nResult %d"), i, nResult );
-		
+		// CConsoleMessage::GetInstance()->Write( _T("CClientManager:ClientsCheck Closeclient %d nResult %d"), i, nResult );
 	}
 	LockOff();
 }
@@ -313,16 +319,15 @@ void CClientManager::CloseAllClient()
 	int i = 0;
 	nMaxClient = m_nMaxClient;
 
-	for (i=0; i<nMaxClient; i++)
+	for (i = 0; i < nMaxClient; i++)
 	{
 		CloseClient(i);
 	}
 }
 
-
 //! CloseClient
-//! Close client socket 
-//bool CClientManager::CloseClient(
+//! Close client socket
+// bool CClientManager::CloseClient(
 //	DWORD dwClient )
 //{
 //	int nResult = 0;
@@ -333,36 +338,36 @@ void CClientManager::CloseAllClient()
 //		{
 //			LockOn();
 //			m_vecSleepCID.push_back( dwClient );
-//			LockOff();			
+//			LockOff();
 //		}
 //
 //		return true;
 //	}
 //
 //	return false;
-//}
+// }
 
 //! CloseClient
-//! Close client socket 
+//! Close client socket
 int CClientManager::CloseClient(DWORD dwClient, bool bOnlineCheck)
-{	
+{
 	int nResult = 0;
 
 	LockOn();
-	if ( m_pClient[dwClient].IsOnline() || bOnlineCheck == FALSE )
+	if (m_pClient[dwClient].IsOnline() || bOnlineCheck == FALSE)
 	{
-		//iplimit
-		//IPRemoveClient( m_pClient[dwClient].GetIP(), dwClient );
+		// iplimit
+		// IPRemoveClient( m_pClient[dwClient].GetIP(), dwClient );
 		DWORD dwChaNum = m_pClient[dwClient].GetChaNum();
-		m_mapChaNum.erase( dwChaNum );
+		m_mapChaNum.erase(dwChaNum);
 
 		// 연결을 끊는다.
 		nResult = m_pClient[dwClient].CloseClient();
 
 		// 클라이언트 번호를 유휴슬롯에 집어 넣는다.
-		if ( dwClient >= NET_RESERVED_SLOT )
+		if (dwClient >= NET_RESERVED_SLOT)
 		{
-			m_vecSleepCID.push_back( dwClient );
+			m_vecSleepCID.push_back(dwClient);
 		}
 	}
 	LockOff();
@@ -370,7 +375,7 @@ int CClientManager::CloseClient(DWORD dwClient, bool bOnlineCheck)
 	return nResult;
 }
 
-int CClientManager::ReleaseClientID( DWORD dwClient )
+int CClientManager::ReleaseClientID(DWORD dwClient)
 {
 	LockOn();
 	if (dwClient >= NET_RESERVED_SLOT)
@@ -395,9 +400,9 @@ void CClientManager::Reset(DWORD dwClient)
 }
 
 //! Return current client number
-int	CClientManager::GetCurrentClientNumber(void)
+int CClientManager::GetCurrentClientNumber(void)
 {
-	return m_nMaxClient - (int) m_deqSleepCID.size();
+	return m_nMaxClient - (int)m_deqSleepCID.size();
 }
 
 int CClientManager::GetNetMode(DWORD dwClient)
@@ -410,7 +415,7 @@ void CClientManager::SetNetMode(DWORD dwClient, int nMode)
 	m_pClient[dwClient].SetNetMode(nMode);
 }
 
-char* CClientManager::GetClientIP(DWORD dwClient)
+char *CClientManager::GetClientIP(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetIP();
 }
@@ -420,9 +425,9 @@ USHORT CClientManager::GetClientPort(DWORD dwClient)
 	return m_pClient[dwClient].GetPort();
 }
 
-int	CClientManager::addRcvMsg(DWORD dwClient, 
-	                          void* pMsg, 
-				              DWORD dwSize)
+int CClientManager::addRcvMsg(DWORD dwClient,
+							  void *pMsg,
+							  DWORD dwSize)
 {
 	ASSERT(pMsg);
 	// 수신받은 크기 및 카운터 기록
@@ -431,11 +436,11 @@ int	CClientManager::addRcvMsg(DWORD dwClient,
 	return m_pClient[dwClient].addRcvMsg(pMsg, dwSize);
 }
 
-void* CClientManager::getRcvMsg(DWORD dwClient,bool bClient,bool& bBlocked)
+void *CClientManager::getRcvMsg(DWORD dwClient, bool bClient, bool &bBlocked)
 {
 	bool m_bBlocked(false);
-	NET_MSG_GENERIC* pNmg = NULL;
-	pNmg = (NET_MSG_GENERIC*) m_pClient[dwClient].getRcvMsg(bClient,m_bBlocked);
+	NET_MSG_GENERIC *pNmg = NULL;
+	pNmg = (NET_MSG_GENERIC *)m_pClient[dwClient].getRcvMsg(bClient, m_bBlocked);
 	bBlocked = m_bBlocked;
 	return pNmg;
 }
@@ -459,10 +464,10 @@ void CClientManager::CloseSocket(DWORD dwClient)
 void CClientManager::SendClientFinal()
 {
 	DWORD dwSendSize = 0;
-	for (DWORD dwClient=0; dwClient < (DWORD) m_nMaxClient; ++dwClient)
+	for (DWORD dwClient = 0; dwClient < (DWORD)m_nMaxClient; ++dwClient)
 	{
 		dwSendSize = m_pClient[dwClient].getSendSize();
-		if (dwSendSize > 0) 
+		if (dwSendSize > 0)
 		{
 			// 압축된 데이터 전송
 			m_dwOutCompressCount++;
@@ -472,46 +477,47 @@ void CClientManager::SendClientFinal()
 	}
 }
 
-int	CClientManager::SendClient(DWORD dwClient, LPVOID pBuffer)
+int CClientManager::SendClient(DWORD dwClient, LPVOID pBuffer)
 {
-	if (NULL == pBuffer)	return NET_ERROR;
-	
-	NET_MSG_GENERIC* pNmg = (NET_MSG_GENERIC*) pBuffer;	
+	if (NULL == pBuffer)
+		return NET_ERROR;
+
+	NET_MSG_GENERIC *pNmg = (NET_MSG_GENERIC *)pBuffer;
 
 	DWORD dwSendSize = pNmg->dwSize;
 	m_dwOutPacketCount++;
 	m_dwOutPacketSize += dwSendSize;
 
 	int nResult = m_pClient[dwClient].addSendMsg(pNmg, dwSendSize);
-	
-	switch (nResult) 
+
+	switch (nResult)
 	{
 	case CSendMsgBuffer::BUFFER_ERROR:
 		return NET_ERROR;
 		break;
 
-	case CSendMsgBuffer::BUFFER_ADDED:		
+	case CSendMsgBuffer::BUFFER_ADDED:
 		break;
 
 	case CSendMsgBuffer::BUFFER_SEND:
 		dwSendSize = m_pClient[dwClient].getSendSize();
-		if (dwSendSize > 0) 
+		if (dwSendSize > 0)
 		{
 			// 압축된 데이터 전송
 			m_dwOutCompressCount++;
 			m_dwOutCompressSize += dwSendSize;
-			SendClient2(dwClient, m_pClient[dwClient].getSendBuffer());			
+			SendClient2(dwClient, m_pClient[dwClient].getSendBuffer());
 		}
 		break;
 
-	case CSendMsgBuffer::BUFFER_SEND_ADD:		
-		dwSendSize = m_pClient[dwClient].getSendSize();		
-		if (dwSendSize > 0) 
+	case CSendMsgBuffer::BUFFER_SEND_ADD:
+		dwSendSize = m_pClient[dwClient].getSendSize();
+		if (dwSendSize > 0)
 		{
 			// 압축된 데이터 전송
 			m_dwOutCompressCount++;
 			m_dwOutCompressSize += dwSendSize;
-			SendClient2(dwClient, m_pClient[dwClient].getSendBuffer());			
+			SendClient2(dwClient, m_pClient[dwClient].getSendBuffer());
 			m_pClient[dwClient].addSendMsg(pBuffer, pNmg->dwSize);
 		}
 		break;
@@ -524,61 +530,61 @@ int	CClientManager::SendClient(DWORD dwClient, LPVOID pBuffer)
 	return NET_OK;
 }
 
-int	CClientManager::SendClient2(DWORD dwClient, LPVOID pBuffer)
+int CClientManager::SendClient2(DWORD dwClient, LPVOID pBuffer)
 {
 	if (pBuffer == NULL)
 	{
 		CConsoleMessage::GetInstance()->Write(
-			_T("ERROR:SendClient pBuffer NULL") );
+			_T("ERROR:SendClient pBuffer NULL"));
 		return NET_ERROR;
 	}
 
-	LPPER_IO_OPERATION_DATA pIoWrite   = NULL;
-	NET_MSG_GENERIC*		pNmg       = NULL;
-	DWORD					dwSndBytes = 0;
+	LPPER_IO_OPERATION_DATA pIoWrite = NULL;
+	NET_MSG_GENERIC *pNmg = NULL;
+	DWORD dwSndBytes = 0;
 
 	assert(pBuffer);
-	pNmg = (NET_MSG_GENERIC*) pBuffer;		
+	pNmg = (NET_MSG_GENERIC *)pBuffer;
 	dwSndBytes = pNmg->dwSize;
 	if (dwSndBytes > NET_DATA_BUFSIZE)
 	{
 		CConsoleMessage::GetInstance()->Write(
-			_T("ERROR:SendClient dwSndBytes > NET_DATA_BUFSIZE") );
+			_T("ERROR:SendClient dwSndBytes > NET_DATA_BUFSIZE"));
 		return NET_ERROR;
 	}
 	else
 	{
-		pIoWrite = (LPPER_IO_OPERATION_DATA) GetFreeOverIO(NET_SEND_POSTED);
-		
+		pIoWrite = (LPPER_IO_OPERATION_DATA)GetFreeOverIO(NET_SEND_POSTED);
+
 		if (pIoWrite == NULL)
 		{
 			return NET_ERROR;
 		}
 		else
 		{
-			//incSendCount( dwClient );
-			CopyMemory( pIoWrite->Buffer, pNmg, dwSndBytes );
-			pIoWrite->dwTotalBytes	= dwSndBytes;
-			return SendClient2( dwClient, pIoWrite, dwSndBytes );
+			// incSendCount( dwClient );
+			CopyMemory(pIoWrite->Buffer, pNmg, dwSndBytes);
+			pIoWrite->dwTotalBytes = dwSndBytes;
+			return SendClient2(dwClient, pIoWrite, dwSndBytes);
 		}
 	}
 }
 
 int CClientManager::SendClient2(
-	DWORD dwClient, 
-	LPPER_IO_OPERATION_DATA PerIoData, 
-	DWORD dwSize )
+	DWORD dwClient,
+	LPPER_IO_OPERATION_DATA PerIoData,
+	DWORD dwSize)
 {
 	// MSG_OOB
 	// MSG_DONTROUTE
 	// MSG_PARTIAL
-	INT		nRetCode  = 0;
-	DWORD	dwFlags   = 0;
-	DWORD	dwSndSize = dwSize;
+	INT nRetCode = 0;
+	DWORD dwFlags = 0;
+	DWORD dwSndSize = dwSize;
 
 	PerIoData->OperationType = NET_SEND_POSTED;
-	PerIoData->DataBuf.len   = (u_long) dwSize;
-	
+	PerIoData->DataBuf.len = (u_long)dwSize;
+
 	SOCKET sSocket = GetSocket(dwClient);
 	if (sSocket == INVALID_SOCKET)
 	{
@@ -588,28 +594,28 @@ int CClientManager::SendClient2(
 	}
 
 	nRetCode = ::WSASend(sSocket,
-					     &(PerIoData->DataBuf),
-					     1,
-					     &dwSndSize,
-					     dwFlags,
-					     &(PerIoData->Overlapped),
-					     NULL);
-	if (nRetCode == SOCKET_ERROR) 
+						 &(PerIoData->DataBuf),
+						 1,
+						 &dwSndSize,
+						 dwFlags,
+						 &(PerIoData->Overlapped),
+						 NULL);
+	if (nRetCode == SOCKET_ERROR)
 	{
 		nRetCode = ::WSAGetLastError();
 		// WSA_IO_PENDING is not error.
 		// IOCP 의 경우 성공/실패 결과가 나중에 통보되기 때문에
 		// 리턴코드가 WSA_IO_PENDING 인 경우 에러가 아니다.
-		// 이 뜻은 나중에 결과가 통보되고 현재는 결과를 보류하겠다는 뜻이다.		
-		if (nRetCode != WSA_IO_PENDING) 
+		// 이 뜻은 나중에 결과가 통보되고 현재는 결과를 보류하겠다는 뜻이다.
+		if (nRetCode != WSA_IO_PENDING)
 		{
 			// 현재는 WSA_IO_PENDING 이외의 에러시에는 연결을 종료시켜버린다.
 			::PostQueuedCompletionStatus(
 				m_hIOServer,
 				0,
 				dwClient,
-				&(PerIoData->Overlapped) );
-			//Disable or remove Console message for less anti flood msg
+				&(PerIoData->Overlapped));
+			// Disable or remove Console message for less anti flood msg
 			/*CConsoleMessage::GetInstance()->Write(
 				_T("ERROR:CClientManager::SendClient Client(%d)ERR(%d)"),
 				dwClient,
@@ -623,54 +629,54 @@ int CClientManager::SendClient2(
 }
 
 // Agent 서버에서의 Client 와의 통신 슬롯
-DWORD CClientManager::GetSlotAgentClient(DWORD dwClient) 
+DWORD CClientManager::GetSlotAgentClient(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetSlotAgentClient();
 }
 
 // Agent 서버에서의 Field 서버와의 통신 슬롯
-DWORD CClientManager::GetSlotAgentField (DWORD dwClient)
+DWORD CClientManager::GetSlotAgentField(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetSlotAgentField();
 }
 
 // Field 서버에서의 Agent 서버와의 통신 슬롯
-DWORD CClientManager::GetSlotFieldAgent (DWORD dwClient) 
+DWORD CClientManager::GetSlotFieldAgent(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetSlotFieldAgent();
 }
 
 // Field 서버에서의 Client 와의 통신 슬롯
-DWORD CClientManager::GetSlotFieldClient(DWORD dwClient) 
+DWORD CClientManager::GetSlotFieldClient(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetSlotFieldClient();
 }
 
 // Agent 서버에서의 Client 와의 통신 슬롯
-void CClientManager::SetSlotAgentClient(DWORD dwClient, DWORD dwSlot) 
+void CClientManager::SetSlotAgentClient(DWORD dwClient, DWORD dwSlot)
 {
 	m_pClient[dwClient].SetSlotAgentClient(dwSlot);
 }
 
 // Agent 서버에서의 Field 서버와의 통신 슬롯
-void CClientManager::SetSlotAgentField (DWORD dwClient, DWORD dwSlot) 
+void CClientManager::SetSlotAgentField(DWORD dwClient, DWORD dwSlot)
 {
 	m_pClient[dwClient].SetSlotAgentField(dwSlot);
 }
 
 // Field 서버에서의 Agent 서버와의 통신 슬롯
-void CClientManager::SetSlotFieldAgent (DWORD dwClient, DWORD dwSlot) 
+void CClientManager::SetSlotFieldAgent(DWORD dwClient, DWORD dwSlot)
 {
 	m_pClient[dwClient].SetSlotFieldAgent(dwSlot);
 }
 
 // Field 서버에서의 Client 와의 통신 슬롯
-void CClientManager::SetSlotFieldClient(DWORD dwClient, DWORD dwSlot) 
+void CClientManager::SetSlotFieldClient(DWORD dwClient, DWORD dwSlot)
 {
 	m_pClient[dwClient].SetSlotFieldClient(dwSlot);
 }
 
-void CClientManager::SetSlotType(DWORD dwClient, DWORD dwType)	
+void CClientManager::SetSlotType(DWORD dwClient, DWORD dwType)
 {
 	m_pClient[dwClient].SetSlotType(dwType);
 }
@@ -710,32 +716,32 @@ bool CClientManager::CheckHeartBeat(DWORD dwClient)
 	return m_pClient[dwClient].CheckHeartBeat();
 }
 
-void CClientManager::GspSetUserID( DWORD dwClient, const TCHAR* szGspUserID )
+void CClientManager::GspSetUserID(DWORD dwClient, const TCHAR *szGspUserID)
 {
-	m_pClient[dwClient].GspSetUserID( szGspUserID );
+	m_pClient[dwClient].GspSetUserID(szGspUserID);
 }
 
-TCHAR* CClientManager::GspGetUserID( DWORD dwClient )
+TCHAR *CClientManager::GspGetUserID(DWORD dwClient)
 {
 	return m_pClient[dwClient].GspGetUserID();
 }
 
-void CClientManager::SetUserID( DWORD dwClient, const TCHAR* szUserID )
-{	
-	m_pClient[dwClient].SetUserID( szUserID );
+void CClientManager::SetUserID(DWORD dwClient, const TCHAR *szUserID)
+{
+	m_pClient[dwClient].SetUserID(szUserID);
 }
 
-TCHAR* CClientManager::GetUserID( DWORD dwClient )
+TCHAR *CClientManager::GetUserID(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetUserID();
 }
 
-void CClientManager::SetClientValid (DWORD dwClient) // 계정 인증(login) 통과 설정.
+void CClientManager::SetClientValid(DWORD dwClient) // 계정 인증(login) 통과 설정.
 {
 	m_pClient[dwClient].SetClientValid();
 }
 
-bool CClientManager::GetValidClient (DWORD dwClient) // 계정 인증(login) 통과 설정.
+bool CClientManager::GetValidClient(DWORD dwClient) // 계정 인증(login) 통과 설정.
 {
 	return m_pClient[dwClient].GetValidClient();
 }
@@ -788,19 +794,22 @@ INT CClientManager::GetLoginTime(DWORD dwClient)
 	CTime crtTime;
 	crtTime = CTime::GetCurrentTime();
 	CTimeSpan ts = crtTime - m_pClient[dwClient].GetLoginTime();
-	return (INT) ts.GetTotalMinutes();
+	return (INT)ts.GetTotalMinutes();
 }
 
 CTime CClientManager::GetLoginTimeEx(DWORD dwClient)
 {
-	return m_pClient[dwClient].GetLoginTime();	    
+	return m_pClient[dwClient].GetLoginTime();
 }
 
-int CClientManager::GetUserNum(DWORD dwClient) 
+int CClientManager::GetUserNum(DWORD dwClient)
 {
-	if ( dwClient >= (DWORD)m_nMaxClient ) {
+	if (dwClient >= (DWORD)m_nMaxClient)
+	{
 		return -1;
-	} else {
+	}
+	else
+	{
 		return m_pClient[dwClient].GetUserNum();
 	}
 }
@@ -810,9 +819,6 @@ DWORD CClientManager::GetGaeaID(DWORD dwClient)
 	return m_pClient[dwClient].GetGaeaID();
 }
 
-
-
-
 // 접속자가 플레이 중인지를 알려준다.
 bool CClientManager::IsGaming(DWORD dwClient)
 {
@@ -820,10 +826,10 @@ bool CClientManager::IsGaming(DWORD dwClient)
 	// 온라인 상태이고 가이아 ID 가 있으면 게임중이다
 	if (m_pClient[dwClient].IsOnline() && m_pClient[dwClient].GetGaeaID() != GAEAID_NULL && m_pClient[dwClient].GetSlotType() == NET_SLOT_CLIENT)
 		return true;
-/*
-	if (m_pClient[dwClient].IsOnline() && m_pClient[dwClient].GetGaeaID() != GAEAID_NULL )
-		return true;
-*/
+	/*
+		if (m_pClient[dwClient].IsOnline() && m_pClient[dwClient].GetGaeaID() != GAEAID_NULL )
+			return true;
+	*/
 	else
 		return false;
 }
@@ -833,7 +839,7 @@ DWORD CClientManager::GetClientID(DWORD dwChaNum)
 	MAP_CHANUM_ITER iter = m_mapChaNum.find(dwChaNum);
 	if (iter == m_mapChaNum.end())
 		return CLIENTID_NULL;
-	
+
 	DWORD dwClient = iter->second;
 
 	if (!IsClientSlot(dwClient))
@@ -842,16 +848,18 @@ DWORD CClientManager::GetClientID(DWORD dwChaNum)
 
 		return CLIENTID_NULL;
 	}
+
+	return dwClient;
 }
 
 void CClientManager::SetChaNum(DWORD dwClient, int nChaNum)
 {
 	m_pClient[dwClient].SetChaNum(nChaNum);
-	
-	m_mapChaNum[nChaNum] = dwClient;	//mjeon.AF
+
+	m_mapChaNum[nChaNum] = dwClient; // mjeon.AF
 }
 
-int	CClientManager::GetChaNum(DWORD dwClient)
+int CClientManager::GetChaNum(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetChaNum();
 }
@@ -867,22 +875,22 @@ int CClientManager::GetUserType(DWORD dwClient)
 }
 
 /*dmk14 ingame web*/
-void CClientManager::SetPremiumPoints( DWORD dwClient, DWORD dwPoints )
+void CClientManager::SetPremiumPoints(DWORD dwClient, DWORD dwPoints)
 {
 	m_pClient[dwClient].SetPremiumPoints(dwPoints);
 }
 
-DWORD CClientManager::GetPremiumPoints( DWORD dwClient )
+DWORD CClientManager::GetPremiumPoints(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetPremiumPoints();
 }
 
-void CClientManager::SetCombatPoints( DWORD dwClient, DWORD dwPoints )
+void CClientManager::SetCombatPoints(DWORD dwClient, DWORD dwPoints)
 {
 	m_pClient[dwClient].SetCombatPoints(dwPoints);
 }
 
-DWORD CClientManager::GetCombatPoints( DWORD dwClient )
+DWORD CClientManager::GetCombatPoints(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetCombatPoints();
 }
@@ -908,12 +916,12 @@ WORD CClientManager::GetChaTestRemain(DWORD dwClient)
 
 __time64_t CClientManager::GetPremiumDate(DWORD dwClient)
 {
-    return m_pClient[dwClient].GetPremiumDate();
+	return m_pClient[dwClient].GetPremiumDate();
 }
 
 void CClientManager::SetPremiumDate(DWORD dwClient, __time64_t tTime)
 {
-    m_pClient[dwClient].SetPremiumDate(tTime);
+	m_pClient[dwClient].SetPremiumDate(tTime);
 }
 
 __time64_t CClientManager::GetChatBlockDate(DWORD dwClient)
@@ -923,7 +931,7 @@ __time64_t CClientManager::GetChatBlockDate(DWORD dwClient)
 
 void CClientManager::SetChatBlockDate(DWORD dwClient, __time64_t tTime)
 {
-    m_pClient[dwClient].SetChatBlockDate(tTime);
+	m_pClient[dwClient].SetChatBlockDate(tTime);
 }
 
 void CClientManager::SetChannel(DWORD dwClient, int nChannel)
@@ -941,7 +949,7 @@ bool CClientManager::nProtectSetAuthQuery(DWORD dwClient)
 {
 	return m_pClient[dwClient].nProtectSetAuthQuery();
 }
-    	
+
 //! nProtect GameGuard 인증용 쿼리 가져오기
 GG_AUTH_DATA CClientManager::nProtectGetAuthQuery(DWORD dwClient)
 {
@@ -949,13 +957,13 @@ GG_AUTH_DATA CClientManager::nProtectGetAuthQuery(DWORD dwClient)
 }
 
 //! nProtect GameGuard 인증 응답 가져오기
-GG_AUTH_DATA CClientManager::nProtectGetAuthAnswer( DWORD dwClient )
+GG_AUTH_DATA CClientManager::nProtectGetAuthAnswer(DWORD dwClient)
 {
 	return m_pClient[dwClient].nProtectGetAuthAnswer();
 }
 
 //! nProtect GameGuard 인증 응답 설정
-void CClientManager::nProtectSetAuthAnswer(DWORD dwClient, GG_AUTH_DATA& ggad)
+void CClientManager::nProtectSetAuthAnswer(DWORD dwClient, GG_AUTH_DATA &ggad)
 {
 	return m_pClient[dwClient].nProtectSetAuthAnswer(ggad);
 }
@@ -984,7 +992,7 @@ int CClientManager::GetRandomPassNumber(DWORD dwClient)
 
 LPPER_IO_OPERATION_DATA CClientManager::GetFreeOverIO(int nType)
 {
-    if (NET_SEND_POSTED == nType)
+	if (NET_SEND_POSTED == nType)
 	{
 		return m_pSendIOCP->GetFreeOverIO(nType);
 	}
@@ -994,9 +1002,10 @@ LPPER_IO_OPERATION_DATA CClientManager::GetFreeOverIO(int nType)
 	}
 }
 
-void CClientManager::ReleaseOperationData(PER_IO_OPERATION_DATA* pData)
+void CClientManager::ReleaseOperationData(PER_IO_OPERATION_DATA *pData)
 {
-	if (pData == NULL) return;
+	if (pData == NULL)
+		return;
 
 	if (NET_SEND_POSTED == pData->OperationType)
 	{
@@ -1011,58 +1020,58 @@ void CClientManager::ReleaseOperationData(PER_IO_OPERATION_DATA* pData)
 //! 모든 패킷 카운터를 초기화 한다.
 void CClientManager::resetPacketCount()
 {
-	m_dwInPacketCount    = 0;
-	m_dwInPacketSize     = 0;	
-	m_dwOutPacketCount   = 0;
-	m_dwOutPacketSize    = 0;
+	m_dwInPacketCount = 0;
+	m_dwInPacketSize = 0;
+	m_dwOutPacketCount = 0;
+	m_dwOutPacketSize = 0;
 	m_dwOutCompressCount = 0;
-	m_dwOutCompressSize  = 0;
+	m_dwOutCompressSize = 0;
 }
 
 // 극강부 남자 생성 갯수를 설정한다.
-void CClientManager::SetExtremeCreateM( DWORD dwClient, int nExtremeM )
-{	
-	m_pClient[dwClient].SetExtremeCreateM( nExtremeM );
+void CClientManager::SetExtremeCreateM(DWORD dwClient, int nExtremeM)
+{
+	m_pClient[dwClient].SetExtremeCreateM(nExtremeM);
 }
 
 // 극강부 여자 생성 갯수를 설정한다.
-void CClientManager::SetExtremeCreateW( DWORD dwClient, int nExtremeW )
-{	
-	m_pClient[dwClient].SetExtremeCreateW( nExtremeW );
+void CClientManager::SetExtremeCreateW(DWORD dwClient, int nExtremeW)
+{
+	m_pClient[dwClient].SetExtremeCreateW(nExtremeW);
 }
 
 // 극강부 남자 생성 갯수를 가져온다.
-int CClientManager::GetExtremeM( DWORD dwClient )
+int CClientManager::GetExtremeM(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetExtremeM();
 }
 
 // 극강부 여자 생성 갯수를 가져온다.
-int CClientManager::GetExtremeW( DWORD dwClient )
+int CClientManager::GetExtremeW(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetExtremeW();
 }
 
 // 극강부 남자 생성 가능을 설정한다.
-void CClientManager::SetExtremeCheckM( DWORD dwClient, int nExtremeCheckM )
+void CClientManager::SetExtremeCheckM(DWORD dwClient, int nExtremeCheckM)
 {
-	m_pClient[dwClient].SetExtremeCheckM( nExtremeCheckM );
+	m_pClient[dwClient].SetExtremeCheckM(nExtremeCheckM);
 }
 
 // 극강부 여자 생성 가능을 설정한다.
-void CClientManager::SetExtremeCheckW( DWORD dwClient, int nExtremeCheckW )
+void CClientManager::SetExtremeCheckW(DWORD dwClient, int nExtremeCheckW)
 {
-	m_pClient[dwClient].SetExtremeCheckW( nExtremeCheckW );
+	m_pClient[dwClient].SetExtremeCheckW(nExtremeCheckW);
 }
 
 // 극강부 남자 생성 가능을 가져온다.
-int CClientManager::GetExtremeCheckM( DWORD dwClient )
+int CClientManager::GetExtremeCheckM(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetExtremeCheckM();
 }
 
 // 극강부 여자 생성 가능을 가져온다.
-int CClientManager::GetExtremeCheckW( DWORD dwClient )
+int CClientManager::GetExtremeCheckW(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetExtremeCheckW();
 }
@@ -1070,16 +1079,15 @@ int CClientManager::GetExtremeCheckW( DWORD dwClient )
 // 성별 변경 카드에 따른 DB에서 연산된 극강부 생성 조건 저장
 
 // DB에 연산된 극강부 남자 생성 갯수를 설정한다.
-void CClientManager::SetExtremeCreateDBM( DWORD dwClient, int nExtremeDBM )
+void CClientManager::SetExtremeCreateDBM(DWORD dwClient, int nExtremeDBM)
 {
-	m_pClient[dwClient].SetExtremeCreateDBM( nExtremeDBM );
+	m_pClient[dwClient].SetExtremeCreateDBM(nExtremeDBM);
 }
 
 // DB에 연산된 극강부 여자 생성 갯수를 설정한다.
-void CClientManager::SetExtremeCreateDBW( DWORD dwClient, int nExtremeDBW )
+void CClientManager::SetExtremeCreateDBW(DWORD dwClient, int nExtremeDBW)
 {
-	m_pClient[dwClient].SetExtremeCreateDBW( nExtremeDBW );
-	
+	m_pClient[dwClient].SetExtremeCreateDBW(nExtremeDBW);
 }
 
 // DB에 연산된 극강부 남자 생성 갯수를 가져온다.
@@ -1095,114 +1103,114 @@ int CClientManager::GetExtremeDBW(DWORD dwClient)
 }
 
 //// 연결할 필드 서버의 정보를 설정한다
-//void CClientManager::SetConnectionFieldInfo( DWORD dwClient, DWORD dwGaeaID, NET_MSG_GENERIC* nmg )
+// void CClientManager::SetConnectionFieldInfo( DWORD dwClient, DWORD dwGaeaID, NET_MSG_GENERIC* nmg )
 //{
 //	m_pClient[dwClient].SetConnectionFieldInfo( dwGaeaID, nmg );
-//}
-//	
+// }
+//
 //// 연결할 필드 서버의 정보를 사용했으면 초기화한다.
-//void CClientManager::ResetConnectionFieldInfo( DWORD dwClient)
+// void CClientManager::ResetConnectionFieldInfo( DWORD dwClient)
 //{
 //	m_pClient[dwClient].ResetConnectionFieldInfo();
-//}
+// }
 //
 //// 연결할 필드서버로 갈 클라이언트의 GaeaID를 가져온다.
-//DWORD CClientManager::GetClientGaeaID( DWORD dwClient )
+// DWORD CClientManager::GetClientGaeaID( DWORD dwClient )
 //{
 //	return m_pClient[dwClient].GetClientGaeaID();
-//}
+// }
 //
 //// 메세지를 저장해 뒀다가 가져온다.
-//NET_MSG_GENERIC * CClientManager::GetNetMsg( DWORD dwClient )
+// NET_MSG_GENERIC * CClientManager::GetNetMsg( DWORD dwClient )
 //{
 //	return m_pClient[dwClient].GetNetMsg();
-//}
+// }
 
 // 태국 User Class Type을 설정한다.
-void CClientManager::SetThaiClass( DWORD dwClient, int nThaiCC_Class )
+void CClientManager::SetThaiClass(DWORD dwClient, int nThaiCC_Class)
 {
-	m_pClient[dwClient].SetThaiClass( nThaiCC_Class );
+	m_pClient[dwClient].SetThaiClass(nThaiCC_Class);
 }
 
 // 태국 User Class Type을 가져온다.
-int CClientManager::GetThaiClass( DWORD dwClient )
+int CClientManager::GetThaiClass(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetThaiClass();
 }
 
 // 말레이시아 PC방 이벤트
 // 말레이시아 User Class Type을 설정한다.
-void CClientManager::SetMyClass( DWORD dwClient, int nMyCC_Class )
+void CClientManager::SetMyClass(DWORD dwClient, int nMyCC_Class)
 {
-	m_pClient[dwClient].SetMyClass( nMyCC_Class );
+	m_pClient[dwClient].SetMyClass(nMyCC_Class);
 }
 
 // 말레이시아 User Class Type을 가져온다.
-int CClientManager::GetMyClass( DWORD dwClient )
+int CClientManager::GetMyClass(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetMyClass();
 }
 
 // 중국 GameTime을 세팅해 둔다.
-void CClientManager::SetChinaGameTime( DWORD dwClient, int nChinaGameTime )
+void CClientManager::SetChinaGameTime(DWORD dwClient, int nChinaGameTime)
 {
-	m_pClient[dwClient].SetChinaGameTime( nChinaGameTime );
+	m_pClient[dwClient].SetChinaGameTime(nChinaGameTime);
 }
 
 // 중국 GameTime을 가지고 온다.
-int CClientManager::GetChinaGameTime( DWORD dwClient )
+int CClientManager::GetChinaGameTime(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetChinaGameTime();
 }
 
 // 중국 OfflineTime을 세팅해 둔다.
-void CClientManager::SetChinaOfflineTime( DWORD dwClient, int nChinaOfflineTime )
+void CClientManager::SetChinaOfflineTime(DWORD dwClient, int nChinaOfflineTime)
 {
-	m_pClient[dwClient].SetChinaOfflineTime( nChinaOfflineTime );
+	m_pClient[dwClient].SetChinaOfflineTime(nChinaOfflineTime);
 }
 
 // 중국 OfflineTime을 가지고 온다.
-int CClientManager::GetChinaOfflineTime( DWORD dwClient )
+int CClientManager::GetChinaOfflineTime(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetChinaOfflineTime();
 }
 
 // 중국 LastLoginDate를 세팅하고 가지고 온다.
-void CClientManager::SetLastLoginDate( DWORD dwClient, __time64_t tTime )
+void CClientManager::SetLastLoginDate(DWORD dwClient, __time64_t tTime)
 {
-	m_pClient[dwClient].SetLastLoginDate( tTime );
+	m_pClient[dwClient].SetLastLoginDate(tTime);
 }
 
-__time64_t CClientManager::GetLastLoginDate( DWORD dwClient )
+__time64_t CClientManager::GetLastLoginDate(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetLastLoginDate();
 }
 
 // 중국 UserAge를 설정해 둔다.
-void CClientManager::SetChinaUserAge( DWORD dwClient, int nChinaUserAge )
+void CClientManager::SetChinaUserAge(DWORD dwClient, int nChinaUserAge)
 {
-	m_pClient[dwClient].SetChinaUserAge( nChinaUserAge );
+	m_pClient[dwClient].SetChinaUserAge(nChinaUserAge);
 }
 
 // 중국 UserAge를 가지고 온다.
-int CClientManager::GetChinaUserAge( DWORD dwClient )
+int CClientManager::GetChinaUserAge(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetChinaUserAge();
 }
 
-void CClientManager::SetVTGameTime( DWORD dwClient, int nVTGameTime )
+void CClientManager::SetVTGameTime(DWORD dwClient, int nVTGameTime)
 {
-	m_pClient[dwClient].SetVTGameTime( nVTGameTime );
+	m_pClient[dwClient].SetVTGameTime(nVTGameTime);
 }
 
 // 베트남 GameTime을 가지고 온다.
-int CClientManager::GetVTGameTime( DWORD dwClient )
+int CClientManager::GetVTGameTime(DWORD dwClient)
 {
 	return m_pClient[dwClient].GetVTGameTime();
 }
 
 /* user flag verified, Juver, 2020/02/25 */
-void CClientManager::SetUserFlagVerified(DWORD dwClient, bool bUserFlagVerified )
+void CClientManager::SetUserFlagVerified(DWORD dwClient, bool bUserFlagVerified)
 {
 	m_pClient[dwClient].SetUserFlagVerified(bUserFlagVerified);
 }
@@ -1214,7 +1222,7 @@ bool CClientManager::GetUserFlagVerified(DWORD dwClient)
 }
 
 /* user flag restricted, Juver, 2020/04/20 */
-void CClientManager::SetUserFlagRestricted(DWORD dwClient, bool bUserFlagRestricted )
+void CClientManager::SetUserFlagRestricted(DWORD dwClient, bool bUserFlagRestricted)
 {
 	m_pClient[dwClient].SetUserFlagRestricted(bUserFlagRestricted);
 }
@@ -1226,7 +1234,7 @@ bool CClientManager::GetUserFlagRestricted(DWORD dwClient)
 }
 
 /* HWID watchlist, Juver, 2020/05/05 */
-void CClientManager::SetUserFlagHWIDWatchList(DWORD dwClient, bool bUserFlagHWIDWatchList )
+void CClientManager::SetUserFlagHWIDWatchList(DWORD dwClient, bool bUserFlagHWIDWatchList)
 {
 	m_pClient[dwClient].SetUserFlagHWIDWatchList(bUserFlagHWIDWatchList);
 }
@@ -1298,7 +1306,7 @@ void CClientManager::releaseIO(
 	DWORD dwClient,
 	PER_IO_OPERATION_DATA* pData )
 {
-    if (pData == NULL) return;
+	if (pData == NULL) return;
 
 	if (NET_SEND_POSTED == pData->OperationType)
 	{
@@ -1327,8 +1335,8 @@ void CClientManager::releaseRecvIO(
 }
 */
 
-//iplimit
-//void CClientManager::IPSetClientMax( WORD _wMAX )
+// iplimit
+// void CClientManager::IPSetClientMax( WORD _wMAX )
 //{
 //	m_wClientIPMax = _wMAX;
 //	if ( m_wClientIPMax == 0 ){
@@ -1337,9 +1345,9 @@ void CClientManager::releaseRecvIO(
 //	else{
 //		CConsoleMessage::GetInstance()->Write( _T( "IPLimit Max client per ip :%d"), m_wClientIPMax );
 //	}
-//}
+// }
 //
-//BOOL CClientManager::IPAllowConnect( SOCKET _s )
+// BOOL CClientManager::IPAllowConnect( SOCKET _s )
 //{
 //	if ( m_wClientIPMax == 0 )
 //		return TRUE;
@@ -1354,9 +1362,9 @@ void CClientManager::releaseRecvIO(
 //	::StringCchCopy(szIp, MAX_IP_LENGTH+1, ::inet_ntoa(sAddrIn.sin_addr));
 //
 //	return IPAllowConnect( szIp );
-//}
+// }
 //
-//BOOL CClientManager::IPAllowConnect( std::string _strIP )
+// BOOL CClientManager::IPAllowConnect( std::string _strIP )
 //{
 //	if ( _strIP.empty() )
 //		return TRUE;
@@ -1390,9 +1398,9 @@ void CClientManager::releaseRecvIO(
 //
 //	LockOff();
 //	return TRUE;
-//}
+// }
 //
-//void CClientManager::IPAddClient( std::string _strIP, DWORD _dwClientID )
+// void CClientManager::IPAddClient( std::string _strIP, DWORD _dwClientID )
 //{
 //	if ( _strIP.empty() )
 //		return;
@@ -1419,9 +1427,9 @@ void CClientManager::releaseRecvIO(
 //	}
 //
 //	LockOff();
-//}
+// }
 //
-//void CClientManager::IPRemoveClient( std::string _strIP, DWORD _dwClientID )
+// void CClientManager::IPRemoveClient( std::string _strIP, DWORD _dwClientID )
 //{
 //	if ( _strIP.empty() )
 //		return;
@@ -1440,17 +1448,17 @@ void CClientManager::releaseRecvIO(
 //	if ( iterip != m_mapClientIP.end() ){
 //		SET_CLIENTID &setClientID = (*iterip).second;
 //
-//		SET_CLIENTID_ITER iterclient = setClientID.find( _dwClientID ); 
+//		SET_CLIENTID_ITER iterclient = setClientID.find( _dwClientID );
 //		if ( iterclient != setClientID.end() ){
 //			setClientID.erase( iterclient );
 //			IPDoCheck( _strIP );
-//		}	
+//		}
 //	}
 //
 //	LockOff();
-//}
+// }
 //
-//void CClientManager::IPRemove( std::string _strIP )
+// void CClientManager::IPRemove( std::string _strIP )
 //{
 //	if ( _strIP.empty() )
 //		return;
@@ -1469,9 +1477,9 @@ void CClientManager::releaseRecvIO(
 //	}
 //
 //	LockOff();
-//}
+// }
 //
-//BOOL CClientManager::IPExcluded( std::string _strIP )
+// BOOL CClientManager::IPExcluded( std::string _strIP )
 //{
 //	if ( _strIP.empty() )
 //		return FALSE;
@@ -1480,15 +1488,15 @@ void CClientManager::releaseRecvIO(
 //		return FALSE;
 //	}
 //
-//	SET_CLIENTIP_ITER iterip = m_setExcludeIP.find( _strIP ); 
+//	SET_CLIENTIP_ITER iterip = m_setExcludeIP.find( _strIP );
 //	if ( iterip != m_setExcludeIP.end() ){
 //		return TRUE;
 //	}
 //
 //	return FALSE;
-//}
+// }
 //
-//void CClientManager::IPDoCheck( std::string _strIP )
+// void CClientManager::IPDoCheck( std::string _strIP )
 //{
 //	if ( _strIP.empty() )
 //		return;
@@ -1500,9 +1508,9 @@ void CClientManager::releaseRecvIO(
 //			m_mapClientIP.erase( iterip );
 //		}
 //	}
-//}
+// }
 //
-//void CClientManager::IPAddExcluded( std::string _strIP )
+// void CClientManager::IPAddExcluded( std::string _strIP )
 //{
 //	if ( _strIP.empty() )
 //		return;
@@ -1514,37 +1522,37 @@ void CClientManager::releaseRecvIO(
 //		m_mapClientIP.erase( iterip );
 //	}
 //
-//	SET_CLIENTIP_ITER iterexcluded = m_setExcludeIP.find( _strIP ); 
+//	SET_CLIENTIP_ITER iterexcluded = m_setExcludeIP.find( _strIP );
 //	if ( iterexcluded == m_setExcludeIP.end() ){
 //		m_setExcludeIP.insert( _strIP );
 //		CConsoleMessage::GetInstance()->Write(_T("IPLimit exclude add IP:%s"), _strIP.c_str() );
 //	}
 //
 //	LockOff();
-//}
+// }
 //
-//void CClientManager::IPRemoveExcluded( std::string _strIP )
+// void CClientManager::IPRemoveExcluded( std::string _strIP )
 //{
 //	if ( _strIP.empty() )
 //		return;
 //
 //	LockOn();
 //
-//	SET_CLIENTIP_ITER iterip = m_setExcludeIP.find( _strIP ); 
+//	SET_CLIENTIP_ITER iterip = m_setExcludeIP.find( _strIP );
 //	if ( iterip != m_setExcludeIP.end() ){
 //		m_setExcludeIP.erase( iterip );
 //		CConsoleMessage::GetInstance()->Write(_T("IPLimit exclude remove IP:%s"), _strIP.c_str() );
 //	}
 //
 //	LockOff();
-//}
+// }
 //
-//DWORD CClientManager::IPGetCount()
+// DWORD CClientManager::IPGetCount()
 //{
 //	return (DWORD)m_mapClientIP.size();
-//}
+// }
 //
-//DWORD CClientManager::IPGetTotalClient()
+// DWORD CClientManager::IPGetTotalClient()
 //{
 //	if ( m_mapClientIP.empty() )
 //		return 0;
@@ -1559,23 +1567,23 @@ void CClientManager::releaseRecvIO(
 //	}
 //
 //	return dwTOTALSIZE;
-//}
+// }
 //
-//DWORD CClientManager::IPGetExcludedCount()
+// DWORD CClientManager::IPGetExcludedCount()
 //{
 //	return (DWORD)m_setExcludeIP.size();
-//}
+// }
 //
-//void CClientManager::IPClear()
+// void CClientManager::IPClear()
 //{
 //	LockOn();
 //	m_mapClientIP.clear();
 //	m_llDenyNum = 0;
 //	CConsoleMessage::GetInstance()->Write(_T("IPLimit clear all IP"));
 //	LockOff();
-//}
+// }
 //
-//ULONGLONG CClientManager::IPGetDenyNum()
+// ULONGLONG CClientManager::IPGetDenyNum()
 //{
 //	return m_llDenyNum;
-//}
+// }

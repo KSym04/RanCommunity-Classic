@@ -299,7 +299,7 @@ void *CRcvMsgBuffer::getOneMsg(bool bClient)
 	NET_MSG_GENERIC *pNmg = (NET_MSG_GENERIC *)m_pRcvBuffer;
 
 	// packet crash fix
-	if (m_nRcvSize < sizeof(NET_MSG_GENERIC) || m_nRcvSize < pNmg->dwSize)
+	if (m_nRcvSize < static_cast<int>(sizeof(NET_MSG_GENERIC)) || static_cast<DWORD>(m_nRcvSize) < pNmg->dwSize)
 		return NULL;
 
 	int nOneMsgSize = pNmg->dwSize;

@@ -1,73 +1,79 @@
 
-//DoubleBuffering.cpp Source File
+// DoubleBuffering.cpp Source File
 
 #include "stdafx.h"
 #include "DoubleBuffering.h"
 #include <cassert>
 #include <exception>
+#include <limits>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-
-CDoubleBuffering::CDoubleBuffering(std::ifstream& in, char* pcBuff, int iSize, int iDataLen) : m_rin(in),
-	m_iDataLen(iDataLen), m_bEOF(false), m_iSize(iSize), m_iSize2(iSize >> 1), m_pcBuff(pcBuff)
+CDoubleBuffering::CDoubleBuffering(std::ifstream &in, char *pcBuff, int iSize, int iDataLen) : m_rin(in),
+																							   m_iDataLen(iDataLen), m_bEOF(false), m_iSize(iSize), m_iSize2(iSize >> 1), m_pcBuff(pcBuff)
 {
-	//m_iSize should be even
-	if(m_iSize%2 != 0)
+	// m_iSize should be even
+	if (m_iSize % 2 != 0)
 		throw std::runtime_error("CDoubleBuffering: m_iSize should be Even Number!");
-	//Check file
-	if(!in.is_open() || in.bad())
+	// Check file
+	if (!in.is_open() || in.bad())
 		throw std::runtime_error("CDoubleBuffering: Referenced File not Opened or in Bad State!");
-	//Check construction data
-	if(m_iDataLen<1 || m_iSize2<m_iDataLen)
+	// Check construction data
+	if (m_iDataLen < 1 || m_iSize2 < m_iDataLen)
 		throw std::runtime_error("CDoubleBuffering: Illegal Construction Data!");
 	in.read(m_pcBuff, m_iSize2);
-	m_iEnd = m_rin.gcount();
+	std::streamsize nRead = m_rin.gcount();
+	if (nRead > static_cast<std::streamsize>((std::numeric_limits<int>::max)()))
+		throw std::runtime_error("CDoubleBuffering: Read size overflow!");
+	m_iEnd = static_cast<int>(nRead);
 	m_iCurPos = 0;
 	m_iBuf = 0;
 }
 
-int CDoubleBuffering::GetData(char* pszDataBuf, int iDataLen)
+int CDoubleBuffering::GetData(char *pszDataBuf, int iDataLen)
 {
-	if(-1 == iDataLen)
+	if (-1 == iDataLen)
 		iDataLen = m_iDataLen;
-	if(iDataLen<1 || m_iSize2<iDataLen)
+	if (iDataLen < 1 || m_iSize2 < iDataLen)
 		throw std::runtime_error("CDoubleBuffering::GetData(): Illegal iDataLen!");
-	if(true == m_bEOF)
+	if (true == m_bEOF)
 		return 0;
-	//Estimate the next position
+	// Estimate the next position
 	int iCurPos = m_iCurPos + iDataLen;
-	if(0 == m_iBuf) //First Buffer
+	if (0 == m_iBuf) // First Buffer
 	{
-		if(iCurPos >= m_iEnd)
+		if (iCurPos >= m_iEnd)
 		{
-			//Read the next buffer
-			if(m_rin.eof())
+			// Read the next buffer
+			if (m_rin.eof())
 			{
 				m_bEOF = true;
-				//Take everything remained
-				int iRead = m_iEnd-m_iCurPos;
-				memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iRead);
+				// Take everything remained
+				int iRead = m_iEnd - m_iCurPos;
+				memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iRead);
 				return iRead;
 			}
 			else
 			{
-				m_rin.read(m_pcBuff+m_iEnd, m_iSize2);
-				m_iEnd += m_rin.gcount();
-				if(iCurPos > m_iEnd) //Still greater, then EOF attained
+				m_rin.read(m_pcBuff + m_iEnd, m_iSize2);
+				std::streamsize nRead = m_rin.gcount();
+				if (nRead > static_cast<std::streamsize>((std::numeric_limits<int>::max)()))
+					throw std::runtime_error("CDoubleBuffering::GetData(): Read size overflow!");
+				m_iEnd += static_cast<int>(nRead);
+				if (iCurPos > m_iEnd) // Still greater, then EOF attained
 				{
 					assert(m_rin.eof());
 					m_bEOF = true;
-					//Take everything remained
-					int iRead = m_iEnd-m_iCurPos;
-					memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iRead);
+					// Take everything remained
+					int iRead = m_iEnd - m_iCurPos;
+					memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iRead);
 					return iRead;
 				}
 				else
 				{
-					memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iDataLen);
+					memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iDataLen);
 					m_iCurPos = iCurPos;
 					assert(m_iCurPos >= m_iSize2);
 					m_iBuf = 1;
@@ -77,44 +83,47 @@ int CDoubleBuffering::GetData(char* pszDataBuf, int iDataLen)
 		}
 		else
 		{
-			memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iDataLen);
+			memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iDataLen);
 			m_iCurPos = iCurPos;
 			return iDataLen;
 		}
 	}
-	else //1 == m_iBuf, Second Buffer
+	else // 1 == m_iBuf, Second Buffer
 	{
-		if(iCurPos >= m_iEnd)
+		if (iCurPos >= m_iEnd)
 		{
-			//Read the next buffer
-			if(m_rin.eof())
+			// Read the next buffer
+			if (m_rin.eof())
 			{
 				m_bEOF = true;
-				//Take everything remained
-				int iRead = m_iEnd-m_iCurPos;
-				memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iRead);
+				// Take everything remained
+				int iRead = m_iEnd - m_iCurPos;
+				memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iRead);
 				return iRead;
 			}
 			else
 			{
 				m_rin.read(m_pcBuff, m_iSize2);
-				m_iEnd = m_rin.gcount();
+				std::streamsize nRead = m_rin.gcount();
+				if (nRead > static_cast<std::streamsize>((std::numeric_limits<int>::max)()))
+					throw std::runtime_error("CDoubleBuffering::GetData(): Read size overflow!");
+				m_iEnd = static_cast<int>(nRead);
 				iCurPos %= m_iSize;
-				if(iCurPos > m_iEnd) //Still greater, then EOF attained
+				if (iCurPos > m_iEnd) // Still greater, then EOF attained
 				{
 					assert(m_rin.eof());
 					m_bEOF = true;
-					//Take everything remained
-					int iRead = m_iSize-m_iCurPos;
-					memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iRead);
-					memcpy(pszDataBuf+iRead, m_pcBuff, m_iEnd);
+					// Take everything remained
+					int iRead = m_iSize - m_iCurPos;
+					memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iRead);
+					memcpy(pszDataBuf + iRead, m_pcBuff, m_iEnd);
 					return iRead + m_iEnd;
 				}
 				else
 				{
-					int iRead = m_iSize-m_iCurPos;
-					memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iRead);
-					memcpy(pszDataBuf+iRead, m_pcBuff, iDataLen-iRead);
+					int iRead = m_iSize - m_iCurPos;
+					memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iRead);
+					memcpy(pszDataBuf + iRead, m_pcBuff, iDataLen - iRead);
 					m_iCurPos = iCurPos;
 					assert(m_iCurPos < m_iSize2);
 					m_iBuf = 0;
@@ -124,10 +133,9 @@ int CDoubleBuffering::GetData(char* pszDataBuf, int iDataLen)
 		}
 		else
 		{
-			memcpy(pszDataBuf, m_pcBuff+m_iCurPos, iDataLen);
+			memcpy(pszDataBuf, m_pcBuff + m_iCurPos, iDataLen);
 			m_iCurPos = iCurPos;
 			return iDataLen;
 		}
 	}
 }
-

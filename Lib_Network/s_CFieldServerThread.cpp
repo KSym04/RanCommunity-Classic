@@ -1,5 +1,5 @@
 #include "stdafx.h"
-//#include "./DbExecuter.h"
+// #include "./DbExecuter.h"
 
 #include "./s_CFieldServer.h"
 #include "./s_CIPFilter.h"
@@ -14,29 +14,28 @@
 #define fRESERVATIONTIME 0.0f
 #endif
 
-
 int CFieldServer::ListenProc(void)
 {
 	__try
 	{
 		TRACE(_T("in s_CFieldServerThread.cpp  CFieldServer::ListenProc\n"));
-	
+
 		LPPER_IO_OPERATION_DATA IOData = NULL;
-		HANDLE	hRetCode       = NULL;		
-		DWORD	dwRecvNumBytes = 0;
-		DWORD	Flags          = 0;		
-		int		nClientNumber  = 0;
-		DWORD   dwClient       = 0;
-		int		nRetCode       = 0;
-		SOCKET	Accept;
+		HANDLE hRetCode = NULL;
+		DWORD dwRecvNumBytes = 0;
+		DWORD Flags = 0;
+		int nClientNumber = 0;
+		DWORD dwClient = 0;
+		int nRetCode = 0;
+		SOCKET Accept;
 
 		while (m_bIsRunning)
 		{
-			Accept = ::WSAAccept( m_sServer, NULL, NULL, NULL, 0 );
-			if ( Accept == INVALID_SOCKET )
+			Accept = ::WSAAccept(m_sServer, NULL, NULL, NULL, 0);
+			if (Accept == INVALID_SOCKET)
 			{
 				nRetCode = ::WSAGetLastError();
-				CConsoleMessage::GetInstance()->Write( _T("ERROR:WSAAccept %d"), nRetCode );
+				CConsoleMessage::GetInstance()->Write(_T("ERROR:WSAAccept %d"), nRetCode);
 				if (nRetCode == WSAENOTSOCK || nRetCode == WSAEINTR)
 				{
 					break;
@@ -47,22 +46,22 @@ int CFieldServer::ListenProc(void)
 				}
 			}
 
-			sockaddr_in	sAddrInZ;
+			sockaddr_in sAddrInZ;
 			int nSizeZ = sizeof(sockaddr_in);
-			char szIpZ[MAX_IP_LENGTH + 1] = { 0 };
+			char szIpZ[MAX_IP_LENGTH + 1] = {0};
 
-			::getpeername(Accept, (sockaddr*)&sAddrInZ, &nSizeZ);
+			::getpeername(Accept, (sockaddr *)&sAddrInZ, &nSizeZ);
 			::StringCchCopy(szIpZ, MAX_IP_LENGTH + 1, ::inet_ntoa(sAddrInZ.sin_addr));
 
 			if (SenseiBLOCKER()->IsBlocked(szIpZ))
-			if ( m_IPFilter.IsIPBlocked( Accept ) )
-			{
-				::shutdown(Accept, SB_BOTH);
-				::closesocket(Accept);
-				continue;
-			}
+				if (m_IPFilter.IsIPBlocked(Accept))
+				{
+					::shutdown(Accept, SB_BOTH);
+					::closesocket(Accept);
+					continue;
+				}
 
-			if ( strcmp ( szIpZ, m_szAddress ) != 0 )
+			if (strcmp(szIpZ, m_szAddress) != 0)
 			{
 				if (SenseiBLOCKER()->IsAntiFlood())
 				{
@@ -78,7 +77,7 @@ int CFieldServer::ListenProc(void)
 
 					case EMSTATUS_BAN:
 					{
-						for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < m_nMaxClient; dwClient++)
+						for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < static_cast<DWORD>(m_nMaxClient); dwClient++)
 						{
 							if (strcmp(m_pClientManager->GetClientIP(dwClient), szIpZ) == 0)
 								CloseClient(dwClient);
@@ -95,16 +94,16 @@ int CFieldServer::ListenProc(void)
 				}
 			}
 
-			if ( CIPFilter::GetInstance()->IsIPBlocked( Accept ) )
-			/*dmk14 whitelist*/
-			if ( !m_IPFilter.IsWhiteList( Accept ) )
-			{
-				::shutdown(Accept, SB_BOTH);
-				::closesocket(Accept);
-				continue;
-			}
+			if (CIPFilter::GetInstance()->IsIPBlocked(Accept))
+				/*dmk14 whitelist*/
+				if (!m_IPFilter.IsWhiteList(Accept))
+				{
+					::shutdown(Accept, SB_BOTH);
+					::closesocket(Accept);
+					continue;
+				}
 
-			//iplimit
+			// iplimit
 			/*if ( !m_pClientManager->IPAllowConnect( Accept ) )
 			{
 				::shutdown(Accept, SB_BOTH);
@@ -115,55 +114,57 @@ int CFieldServer::ListenProc(void)
 			///////////////////////////////////////////////////////////////////////
 			// Create per-handle data information structure to associate with the socket
 			nClientNumber = m_pClientManager->GetFreeClientID(); // Get free client slot number
-			if (nClientNumber == NET_ERROR) 
+			if (nClientNumber == NET_ERROR)
 			{
 				/*
-				LINGER      lingerStruct;     
-				lingerStruct.l_onoff  = 1;  
+				LINGER      lingerStruct;
+				lingerStruct.l_onoff  = 1;
 				lingerStruct.l_linger = 5;
-				nRetCode = ::setsockopt(Accept, 
-										SOL_SOCKET, 
-										SO_LINGER, 
-										(char *) &lingerStruct, 
+				nRetCode = ::setsockopt(Accept,
+										SOL_SOCKET,
+										SO_LINGER,
+										(char *) &lingerStruct,
 										sizeof(lingerStruct));
 				*/
-				//CConsoleMessage::GetInstance()->Write(_T("INFO:Reached Max Client Number"));
+				// CConsoleMessage::GetInstance()->Write(_T("INFO:Reached Max Client Number"));
 				//::shutdown(Accept, SB_BOTH);
 				::closesocket(Accept);
 				continue;
 			}
-			
-			dwClient = (DWORD) nClientNumber;
+
+			dwClient = (DWORD)nClientNumber;
 
 			// Set client information
 			// 클라이언트의 ip, port, 접속시간을 기록함.
-			if ( m_pClientManager->SetAcceptedClient(dwClient, Accept) == NET_ERROR )
+			if (m_pClientManager->SetAcceptedClient(dwClient, Accept) == NET_ERROR)
 			{
-				m_pClientManager->ReleaseClientID( dwClient );
-				//CloseClient( dwClient );
+				m_pClientManager->ReleaseClientID(dwClient);
+				// CloseClient( dwClient );
 				//::shutdown(Accept, SB_BOTH);
-				//int nRetCode = ::closesocket(Accept);
-				//if (nRetCode == SOCKET_ERROR)
+				// int nRetCode = ::closesocket(Accept);
+				// if (nRetCode == SOCKET_ERROR)
 				//{
 				//	nRetCode = ::WSAGetLastError();
 				//	CConsoleMessage::GetInstance()->Write(
 				//		                               _T("CNetUser::SetAcceptedClient closesocket %d"),
 				//		                               nRetCode);
-				//}
-				//m_pClientManager->ReleaseClientID( dwClient );
+				// }
+				// m_pClientManager->ReleaseClientID( dwClient );
 
-				//offline vend
+				// offline vend
 				bool bOfflineVend = false;
-				PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar( m_pClientManager->GetGaeaID(dwClient) );
-				if( pChar )	bOfflineVend = pChar->m_bOffVend;
-				if( !bOfflineVend ) m_pClientManager->ReleaseClientID( dwClient );
+				PGLCHAR pChar = GLGaeaServer::GetInstance().GetChar(m_pClientManager->GetGaeaID(dwClient));
+				if (pChar)
+					bOfflineVend = pChar->m_bOffVend;
+				if (!bOfflineVend)
+					m_pClientManager->ReleaseClientID(dwClient);
 
 				continue;
 			}
-			
+
 			// Block 된 주소라면
 			// 연결을 종료시킨다.
-			//if ( SERVER_UTIL::CAddressChecker::GetInstance()->isBlock( m_pClientManager->GetClientIP(dwClient), timeGetTime() ) == true )
+			// if ( SERVER_UTIL::CAddressChecker::GetInstance()->isBlock( m_pClientManager->GetClientIP(dwClient), timeGetTime() ) == true )
 			//{
 			//	CloseClient(dwClient);
 			//	continue;
@@ -171,68 +172,69 @@ int CFieldServer::ListenProc(void)
 
 			// Associate the accepted socket with the completion port
 			hRetCode = ::CreateIoCompletionPort(
-							(HANDLE) Accept, 
-							m_hIOServer, 
-							(DWORD) nClientNumber, 
-							0 );
+				(HANDLE)Accept,
+				m_hIOServer,
+				(DWORD)nClientNumber,
+				0);
 
-			if (hRetCode == NULL) 
+			if (hRetCode == NULL)
 			{
 				CConsoleMessage::GetInstance()->Write(_T("CreateIoCompletionPort Error"));
 				CloseClient(dwClient);
 				continue;
 			}
 
-			//if( !m_pClientManager->IsOnline( NET_RESERVED_SESSION ) )
+			// if( !m_pClientManager->IsOnline( NET_RESERVED_SESSION ) )
 			//{
 			//	SessionConnectSndSvrInfo();
+			// }
+
+			// if( m_pClientManager->IsOnline( NET_RESERVED_SESSION ) )
+			//{
+			//  세션서버에 현재 접속자수 전송
+			SessionSndSvrCurState();
 			//}
 
-			//if( m_pClientManager->IsOnline( NET_RESERVED_SESSION ) )
-			//{
-				// 세션서버에 현재 접속자수 전송
-				SessionSndSvrCurState();
-			//}
-			
 			// Start processing I/O on ther accepted socket
 			// First WSARecv, TCP/IP Send 8 bytes (ignored byte)
 			// Client 버전 정보를 받는다.
-			dwRecvNumBytes = sizeof( NET_MSG_GENERIC );
-	        
-			//IOData = getRecvIO( nClientNumber );
-			IOData = (LPPER_IO_OPERATION_DATA) GetFreeOverIO(NET_RECV_POSTED);
+			dwRecvNumBytes = sizeof(NET_MSG_GENERIC);
+
+			// IOData = getRecvIO( nClientNumber );
+			IOData = (LPPER_IO_OPERATION_DATA)GetFreeOverIO(NET_RECV_POSTED);
 
 			if (IOData == NULL)
 			{
-				CloseClient( (DWORD) nClientNumber );
+				CloseClient((DWORD)nClientNumber);
 				continue;
 			}
-			IOData->dwRcvBytes		= 0;
-			IOData->dwTotalBytes	= dwRecvNumBytes;
+			IOData->dwRcvBytes = 0;
+			IOData->dwTotalBytes = dwRecvNumBytes;
 			// Head receive mode
-			m_pClientManager->SetNetMode( (DWORD) nClientNumber, NET_PACKET_HEAD );
-			
+			m_pClientManager->SetNetMode((DWORD)nClientNumber, NET_PACKET_HEAD);
+
 			// Agent 서버와 통신에는 암호화 제거
-			//if (!m_pClientManager->IsAgentSlot(nClientNumber))
+			// if (!m_pClientManager->IsAgentSlot(nClientNumber))
 			//	MsgSndCryptKey(nClientNumber); // Send crypt key
-					
+
 			::WSARecv(
 				Accept,
-				&(IOData->DataBuf), 
+				&(IOData->DataBuf),
 				1,
 				&dwRecvNumBytes,
-				&Flags ,
+				&Flags,
 				&(IOData->Overlapped),
-				NULL );
+				NULL);
 
-			if( !m_bUseEventThread ) Sleep( 0 );
+			if (!m_bUseEventThread)
+				Sleep(0);
 		}
 		// ServerAcceptThread Running End
 		CConsoleMessage::GetInstance()->Write(_T("ListenProc End"));
 	}
-	__except(RecordExceptionInfo(GetExceptionInformation(), 
-	/* No rollback if field server bugtrap -Marckies */
-				_T("s_CFieldServerThread.cpp at ListenProc(void)")))
+	__except (RecordExceptionInfo(GetExceptionInformation(),
+								  /* No rollback if field server bugtrap -Marckies */
+								  _T("s_CFieldServerThread.cpp at ListenProc(void)")))
 	{
 		// Do nothing here - RecordExceptionInfo() has already done
 		// everything that is needed. Actually this code won't even
@@ -241,12 +243,12 @@ int CFieldServer::ListenProc(void)
 		CloseAllClient(); // after catching exception force close all client to automatically save their info.
 		CConsoleMessage::GetInstance()->Write(_T("Executed CloseAllClient Listen"));
 	}
-	return 0;	
+	return 0;
 }
 
 namespace PROFILE
 {
-	void DumpOutputToNon ();
+	void DumpOutputToNon();
 };
 
 int CFieldServer::Update()
@@ -257,22 +259,22 @@ int CFieldServer::Update()
 	{
 		TRACE(_T("in s_CFieldServerThread.cpp  CFieldServer::UpdateProc\n"));
 
-		DWORD dwMaxClient       = 0;
+		DWORD dwMaxClient = 0;
 
-		DWORD dwTimeTemp		= timeGetTime();
-		DWORD dwTimeS           = timeGetTime();
-		DWORD dwFPSUdateTime		= /*3000*/FPS_UPDATE_TIME;
+		DWORD dwTimeTemp = timeGetTime();
+		DWORD dwTimeS = timeGetTime();
+		DWORD dwFPSUdateTime = /*3000*/ FPS_UPDATE_TIME;
 
 		m_dwHeartBeatStart1 = dwTimeS;
 		m_dwHeartBeatStart2 = dwTimeS;
-		m_dwHeartBeatTime   = dwTimeS;
-		m_dwFrameTime		= dwTimeS;
-		m_bUpdateEnd		= false;
+		m_dwHeartBeatTime = dwTimeS;
+		m_dwFrameTime = dwTimeS;
+		m_bUpdateEnd = false;
 
-		m_dwFrameCount		= 0;
+		m_dwFrameCount = 0;
 
 		float fOldAppTime = 0, fAppTime = 0, fElapsTime = 0;
-		fOldAppTime = DXUtil_Timer ( TIMER_GETAPPTIME );
+		fOldAppTime = DXUtil_Timer(TIMER_GETAPPTIME);
 
 		// Event 방식의 Thread를 위한 변수
 		DWORD dwNewWaitTime = 0;
@@ -292,39 +294,43 @@ int CFieldServer::Update()
 
 		while (m_bIsRunning)
 		{
-			if( m_bUseEventThread )	
+			if (m_bUseEventThread)
 			{
 				dwNewTime = ::GetTickCount();
 				dwUpdateFrameTime = dwNewTime - m_dwUpdateOldTime;
 				m_dwUpdateOldTime = dwNewTime;
 
 				// 경과시간 체크
-				int nUpdateElspTime = (int) (m_dwUpdateWaitTime - dwUpdateFrameTime );
-				if ( 0 >= nUpdateElspTime ) 
+				int nUpdateElspTime = (int)(m_dwUpdateWaitTime - dwUpdateFrameTime);
+				if (0 >= nUpdateElspTime)
 				{
 					dwNewWaitTime = 0;
-				} else {
+				}
+				else
+				{
 					dwNewWaitTime = nUpdateElspTime;
 				}
-				dwReturn = ::WaitForSingleObject( m_hUpdateQuitEvent, dwNewWaitTime );
+				dwReturn = ::WaitForSingleObject(m_hUpdateQuitEvent, dwNewWaitTime);
 
-				if ( WAIT_OBJECT_0 == dwReturn )
+				if (WAIT_OBJECT_0 == dwReturn)
 				{
 					break;
-				}else if ( WAIT_TIMEOUT != dwReturn )
+				}
+				else if (WAIT_TIMEOUT != dwReturn)
 				{
 					continue;
 				}
-			}else{
+			}
+			else
+			{
 				// 현재 시간을 얻어옴
-				fCurrentTime = DXUtil_Timer( TIMER_GETAPPTIME );
-
+				fCurrentTime = DXUtil_Timer(TIMER_GETAPPTIME);
 
 				// 다음 랜더링 될 시점을 구함
-				fTimeDelta = fBeforeTime+0.001f;
+				fTimeDelta = fBeforeTime + 0.001f;
 
 				// 만약 현재가 첫 프레임이나 timeGetTime()이 랜더링될 시점의 시간보다 크면 랜더링
-				if( fBeforeTime == 0.0f || fCurrentTime >= fTimeDelta )	
+				if (fBeforeTime == 0.0f || fCurrentTime >= fTimeDelta)
 				{
 					// 메인루프 처리
 					// 현재 시간을 g_BeforeTime에 넣음
@@ -342,22 +348,21 @@ int CFieldServer::Update()
 
 			///////////////////////////////////////////////////////////////////////
 			// 유휴 클라이언트 ID 정리.
-			m_pClientManager->ResetPreSleepCID ();
+			m_pClientManager->ResetPreSleepCID();
 
-			
 			PROFILE_BEGIN("Messge Queue");
 
 			///////////////////////////////////////////////////////////////////////
 			// 받은 메시지들을 처리한다.
 			RecvMsgProcess();
 			PROFILE_END("Messge Queue");
-			
 
 			PROFILE_BEGIN("DxFieldInstance::FrameMove");
-			{				
+			{
 				// Update Gaea Server
 				HRESULT hr = DxFieldInstance::FrameMove();
-				if ( hr!=S_FALSE ) m_dwFrameCount++;
+				if (hr != S_FALSE)
+					m_dwFrameCount++;
 			}
 			PROFILE_END("DxFieldInstance::FrameMove");
 
@@ -372,11 +377,11 @@ int CFieldServer::Update()
 
 			///////////////////////////////////////////////////////////////////////
 			// 하트비트 체크를 한다.
-			FieldSrvHeartBeatCheck( dwFPSUdateTime );
+			FieldSrvHeartBeatCheck(dwFPSUdateTime);
 
 			///////////////////////////////////////////////////////////////////////
 			// 현재 서버의 상태를 프린트 한다.
-			PrintDebugMsg( dwFPSUdateTime );
+			PrintDebugMsg(dwFPSUdateTime);
 
 			DWORD dwCurCheckTime = timeGetTime();
 
@@ -390,7 +395,7 @@ int CFieldServer::Update()
 					{
 						SenseiBLOCKER()->SetClientCheck(!SenseiBLOCKER()->IsClientCheck());
 
-						for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < m_nMaxClient; dwClient++)
+						for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < static_cast<DWORD>(m_nMaxClient); dwClient++)
 						{
 							if (m_pClientManager->IsOnline(dwClient) &&
 								m_pClientManager->GetSlotType(dwClient) == NET_SLOT_CLIENT &&
@@ -401,10 +406,10 @@ int CFieldServer::Update()
 								NetClientCheck.SOLVE();
 
 								NET_CLIENT_CHECK NetClientCheck2;
-								NetClientCheck2.nVar1	= NetClientCheck.nVar1;
-								NetClientCheck2.nVar2	= NetClientCheck.nVar2;
-								NetClientCheck2.nVar3	= NetClientCheck.nVar3;
-								NetClientCheck2.nServer	= NET_STATE_FIELD;
+								NetClientCheck2.nVar1 = NetClientCheck.nVar1;
+								NetClientCheck2.nVar2 = NetClientCheck.nVar2;
+								NetClientCheck2.nVar3 = NetClientCheck.nVar3;
+								NetClientCheck2.nServer = NET_STATE_FIELD;
 
 								m_pClientManager->ResetClientCheck(dwClient);
 								m_pClientManager->SetClientResult(dwClient, NetClientCheck.nResult);
@@ -416,7 +421,7 @@ int CFieldServer::Update()
 					{
 						SenseiBLOCKER()->SetClientCheck(!SenseiBLOCKER()->IsClientCheck());
 
-						for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < m_nMaxClient; dwClient++)
+						for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < static_cast<DWORD>(m_nMaxClient); dwClient++)
 						{
 							if (m_pClientManager->IsOnline(dwClient) && !m_pClientManager->IsClientCheck(dwClient))
 							{
@@ -427,7 +432,7 @@ int CFieldServer::Update()
 					}
 
 					int nSlotSize = 0;
-					for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < m_nMaxClient; dwClient++)
+					for (DWORD dwClient = NET_RESERVED_SLOT + 1; dwClient < static_cast<DWORD>(m_nMaxClient); dwClient++)
 						if (m_pClientManager->IsOnline(dwClient))
 							nSlotSize++;
 
@@ -435,19 +440,17 @@ int CFieldServer::Update()
 				}
 			}
 
-			fAppTime    = DXUtil_Timer ( TIMER_GETAPPTIME ); //	현재 시간.
-			fElapsTime  = fAppTime - fOldAppTime;			 //	메시지 처리 최대 지연 시간.
-			fOldAppTime = fAppTime;							 //	이전시간 저장.
+			fAppTime = DXUtil_Timer(TIMER_GETAPPTIME); //	현재 시간.
+			fElapsTime = fAppTime - fOldAppTime;	   //	메시지 처리 최대 지연 시간.
+			fOldAppTime = fAppTime;					   //	이전시간 저장.
 
-			
-
-			if ( m_bReservationServerStop )
+			if (m_bReservationServerStop)
 			{
 				m_fReservationtime += fElapsTime;
 
-				if ( m_fReservationtime > fRESERVATIONTIME )
+				if (m_fReservationtime > fRESERVATIONTIME)
 				{
-					PostMessage( m_hWnd, WM_FINALCLEANUPFINISH, 0, 0 );
+					PostMessage(m_hWnd, WM_FINALCLEANUPFINISH, 0, 0);
 					m_bReservationServerStop = false;
 				}
 			}
@@ -457,9 +460,9 @@ int CFieldServer::Update()
 		// UpdateThread 종료
 		EndUpdateThread();
 	}
-	__except(RecordExceptionInfo(GetExceptionInformation(), 
-		/* No rollback if field server bugtrap -Marckies */
-		_T("s_CFieldServerThread.cpp at Update()")))
+	__except (RecordExceptionInfo(GetExceptionInformation(),
+								  /* No rollback if field server bugtrap -Marckies */
+								  _T("s_CFieldServerThread.cpp at Update()")))
 	{
 		// Do nothing here - RecordExceptionInfo() has already done
 		// everything that is needed. Actually this code won't even
@@ -484,41 +487,41 @@ int CFieldServer::WorkProc()
 	{
 		TRACE(_T("in s_CFieldServerThread.cpp  CFieldServer::WorkProc\n"));
 
-		PER_IO_OPERATION_DATA* pPerIoData = NULL;
-		DWORD dwSndBytes                  = 0;
-		DWORD dwRcvBytes                  = 0;
-		DWORD dwByteTrans                 = 0;
-		DWORD dwFlags                     = 0;
-		DWORD dwClient                    = -1;
-		int	  nRetCode                    = 0;
-		DWORD nLastError                  = 0;
-		
+		PER_IO_OPERATION_DATA *pPerIoData = NULL;
+		DWORD dwSndBytes = 0;
+		DWORD dwRcvBytes = 0;
+		DWORD dwByteTrans = 0;
+		DWORD dwFlags = 0;
+		DWORD dwClient = -1;
+		int nRetCode = 0;
+		DWORD nLastError = 0;
+
 		DWORD dwMaxClient = m_pClientManager->GetMaxClient();
-		NET_MSG_GENERIC* pNmg = NULL;
+		NET_MSG_GENERIC *pNmg = NULL;
 
 		while (m_bIsRunning)
 		{
 			// Wait for I/O to complete on any socket
 			nRetCode = GetQueuedCompletionStatus(m_hIOServer,
 												 &dwByteTrans,
-												 (LPDWORD) &dwClient,
-												 (LPOVERLAPPED *) &pPerIoData,
+												 (LPDWORD)&dwClient,
+												 (LPOVERLAPPED *)&pPerIoData,
 												 INFINITE);
-			
+
 			// 서버를 종료하기 위해서 종료처리 루틴을 호출했을때...
 			if (dwClient == m_dwCompKey && pPerIoData == NULL && dwByteTrans == 0)
-			{				
+			{
 				break;
 			}
-			
+
 			// Illegal Message Skip, 잘못된 메시지
 			if ((dwClient < 0) || (dwClient >= dwMaxClient))
 			{
-				//CConsoleMessage::GetInstance()->Write(_T("WorkProc case 1 %d"), dwClient);
+				// CConsoleMessage::GetInstance()->Write(_T("WorkProc case 1 %d"), dwClient);
 				ReleaseOperationData(pPerIoData);
 				continue;
 			}
-			
+
 			/*
 			if (nRetCode == 0)
 			{
@@ -531,19 +534,19 @@ int CFieldServer::WorkProc()
 				{
 					m_pIOCP->Release(pPerIoData);
 					CConsoleMessage::GetInstance()->Write(C_MSG_FILE_CONSOLE, _T("WorkProc case 3 %d"), dwClient);
-					CloseClient(dwClient);				
+					CloseClient(dwClient);
 					continue;
 				}
 			}
 			else // (nRetCode != 0)
 			{
 				if (pPerIoData == NULL) // 클라이언트가 강제 종료했을때...
-				{ 
-					// PostQueuedCompletionStatus post an I/O packet with 
+				{
+					// PostQueuedCompletionStatus post an I/O packet with
 					// a NULL CompletionKey (or if we get one for any reason).
 					// It is time to exit.
 					CConsoleMessage::GetInstance()->Write(C_MSG_FILE_CONSOLE, _T("WorkProc case 4 %d"), dwClient);
-					CloseClient(dwClient);					
+					CloseClient(dwClient);
 					continue;
 				}
 			}
@@ -552,8 +555,8 @@ int CFieldServer::WorkProc()
 			{
 				// 64 번 에러이면 무조건 종료
 				nLastError = GetLastError();
-				//releaseIO( dwClient, pPerIoData );
-				CloseClient( dwClient );
+				// releaseIO( dwClient, pPerIoData );
+				CloseClient(dwClient);
 				ReleaseOperationData(pPerIoData);
 				continue;
 			}
@@ -564,11 +567,10 @@ int CFieldServer::WorkProc()
 				continue;
 			}
 
-			
 			/*
 			// 클라이언트쪽에서 정상적으로 socket 을 close 했을때...
 			if (dwByteTrans == 0 &&
-				(pPerIoData->OperationType == NET_RECV_POSTED || 
+				(pPerIoData->OperationType == NET_RECV_POSTED ||
 				pPerIoData->OperationType == NET_SEND_POSTED))
 			{
 				// Client Closed. Bytes Transferred 0
@@ -581,8 +583,8 @@ int CFieldServer::WorkProc()
 
 			if (dwByteTrans == 0) // 정상종료
 			{
-				//releaseIO( dwClient, pPerIoData );
-				CloseClient( dwClient );
+				// releaseIO( dwClient, pPerIoData );
+				CloseClient(dwClient);
 				ReleaseOperationData(pPerIoData);
 				continue;
 			}
@@ -590,92 +592,98 @@ int CFieldServer::WorkProc()
 			switch (pPerIoData->OperationType)
 			{
 			// 읽기 완료 통보일때...
-			case NET_RECV_POSTED :
-				{
-					// Insert to client recv buffer
-					m_pClientManager->addRcvMsg(dwClient, pPerIoData->Buffer, dwByteTrans);
-					 
-					bool bBlocked(false);
-					while (true) {
-						pNmg = (NET_MSG_GENERIC*) m_pClientManager->getRcvMsg(dwClient,dwClient<NET_RESERVED_SLOT ? FALSE : TRUE,bBlocked);
-						if ( bBlocked ) 
-						{
-							CloseClient( dwClient );
-							break;
-						}
-						if (NULL == pNmg || 0 == dwClient) {
-							break;
-						} else {
-							m_pRecvMsgManager->MsgQueueInsert(dwClient, pNmg, pNmg->dwSize);
-						}
-					}
-					//releaseRecvIO( dwClient, pPerIoData ); // OverlappedIO 메모리 반환
-					ReleaseOperationData(pPerIoData); // OverlappedIO 메모리 반환
-					
-					dwRcvBytes = sizeof(NET_MSG_GENERIC);
-					//pPerIoData = getRecvIO( dwClient );
-					pPerIoData = (LPPER_IO_OPERATION_DATA) GetFreeOverIO(NET_RECV_POSTED);
+			case NET_RECV_POSTED:
+			{
+				// Insert to client recv buffer
+				m_pClientManager->addRcvMsg(dwClient, pPerIoData->Buffer, dwByteTrans);
 
-					if (pPerIoData == NULL) continue;
-					
-					// WSARecv 요청
-					nRetCode = ::WSARecv(
-									m_pClientManager->GetSocket(dwClient),
-									&(pPerIoData->DataBuf), 
-									1, 
-									&dwRcvBytes,
-									&dwFlags,
-									&(pPerIoData->Overlapped),
-									NULL );
-					
-					if ((nRetCode == SOCKET_ERROR) && ((nLastError=WSAGetLastError()) != WSA_IO_PENDING))
+				bool bBlocked(false);
+				while (true)
+				{
+					pNmg = (NET_MSG_GENERIC *)m_pClientManager->getRcvMsg(dwClient, dwClient < NET_RESERVED_SLOT ? FALSE : TRUE, bBlocked);
+					if (bBlocked)
 					{
-						//releaseRecvIO( dwClient, pPerIoData );
-						ReleaseOperationData(pPerIoData);
 						CloseClient(dwClient);
-                        //Disable or remove console msg.
-                        //Anti Flood - Eduj Kun
+						break;
+					}
+					if (NULL == pNmg || 0 == dwClient)
+					{
+						break;
+					}
+					else
+					{
+						m_pRecvMsgManager->MsgQueueInsert(dwClient, pNmg, pNmg->dwSize);
 					}
 				}
-				break;
+				// releaseRecvIO( dwClient, pPerIoData ); // OverlappedIO 메모리 반환
+				ReleaseOperationData(pPerIoData); // OverlappedIO 메모리 반환
+
+				dwRcvBytes = sizeof(NET_MSG_GENERIC);
+				// pPerIoData = getRecvIO( dwClient );
+				pPerIoData = (LPPER_IO_OPERATION_DATA)GetFreeOverIO(NET_RECV_POSTED);
+
+				if (pPerIoData == NULL)
+					continue;
+
+				// WSARecv 요청
+				nRetCode = ::WSARecv(
+					m_pClientManager->GetSocket(dwClient),
+					&(pPerIoData->DataBuf),
+					1,
+					&dwRcvBytes,
+					&dwFlags,
+					&(pPerIoData->Overlapped),
+					NULL);
+
+				if ((nRetCode == SOCKET_ERROR) && ((nLastError = WSAGetLastError()) != WSA_IO_PENDING))
+				{
+					// releaseRecvIO( dwClient, pPerIoData );
+					ReleaseOperationData(pPerIoData);
+					CloseClient(dwClient);
+					// Disable or remove console msg.
+					// Anti Flood - Eduj Kun
+				}
+			}
+			break;
 			// 쓰기 완료 통보 일때...
-			case NET_SEND_POSTED :
-				dwSndBytes = dwByteTrans + pPerIoData->dwSndBytes; // 총 보낸 바이트수				
-				if (dwSndBytes >= pPerIoData->dwTotalBytes) // 쓰기 완료됨
-				{	
-					//releaseSendIO( dwClient, pPerIoData );
+			case NET_SEND_POSTED:
+				dwSndBytes = dwByteTrans + pPerIoData->dwSndBytes; // 총 보낸 바이트수
+				if (dwSndBytes >= pPerIoData->dwTotalBytes)		   // 쓰기 완료됨
+				{
+					// releaseSendIO( dwClient, pPerIoData );
 					ReleaseOperationData(pPerIoData);
 				}
 				else // 쓰기 완료되지 않음 남은 바이트를 전송
 				{
-					//CConsoleMessage::GetInstance()->Write("ERROR:WorkProc Write Incompleted");
-					
-					pPerIoData->dwSndBytes  = dwSndBytes; // 보낸 바이트수 업데이트					
-					pPerIoData->DataBuf.buf = pPerIoData->Buffer + dwSndBytes; // 보내야할 데이타 포인터 업데이트					
-					dwSndBytes              = pPerIoData->dwTotalBytes - dwSndBytes; // 보내야할 바이트수 업데이트					
-					pPerIoData->DataBuf.len = (u_long) dwSndBytes; // 버퍼길이 업데이트
-					// 전송요청					
+					// CConsoleMessage::GetInstance()->Write("ERROR:WorkProc Write Incompleted");
+
+					pPerIoData->dwSndBytes = dwSndBytes;					   // 보낸 바이트수 업데이트
+					pPerIoData->DataBuf.buf = pPerIoData->Buffer + dwSndBytes; // 보내야할 데이타 포인터 업데이트
+					dwSndBytes = pPerIoData->dwTotalBytes - dwSndBytes;		   // 보내야할 바이트수 업데이트
+					pPerIoData->DataBuf.len = (u_long)dwSndBytes;			   // 버퍼길이 업데이트
+					// 전송요청
 					nRetCode = m_pClientManager->SendClient2(dwClient, pPerIoData, dwSndBytes);
 					if (nRetCode == NET_ERROR)
 					{
 						CloseClient(dwClient);
-						//CConsoleMessage::GetInstance()->Write(_T("WorkProc case 9 %d"), dwClient);
+						// CConsoleMessage::GetInstance()->Write(_T("WorkProc case 9 %d"), dwClient);
 					}
 				}
 				break;
-			default :
+			default:
 				CloseClient(dwClient);
-				//CConsoleMessage::GetInstance()->Write(_T("WorkProc case 10 %d"), dwClient);
+				// CConsoleMessage::GetInstance()->Write(_T("WorkProc case 10 %d"), dwClient);
 				break;
-			}	
-			if( !m_bUseEventThread ) Sleep( 0 );
+			}
+			if (!m_bUseEventThread)
+				Sleep(0);
 		}
 		// ServerWorkerThread Running End
-		//CConsoleMessage::GetInstance()->Write("WorkProc End");
+		// CConsoleMessage::GetInstance()->Write("WorkProc End");
 	}
-	__except(RecordExceptionInfo(GetExceptionInformation(), 
-		/* No rollback if field server bugtrap -Marckies */
-				_T("s_CFieldServerThread.cpp at WorkProc()")))
+	__except (RecordExceptionInfo(GetExceptionInformation(),
+								  /* No rollback if field server bugtrap -Marckies */
+								  _T("s_CFieldServerThread.cpp at WorkProc()")))
 	{
 		// Do nothing here - RecordExceptionInfo() has already done
 		// everything that is needed. Actually this code won't even
@@ -694,19 +702,19 @@ int CFieldServer::DatabaseProc()
 	{
 		TRACE(_T("in s_CFieldServerThread.cpp CFieldServer::DatabaseProc\n"));
 		while (m_bIsRunning)
-		{	
+		{
 			CDbExecuter::GetInstance()->ExecuteJob();
-			if( m_bUseEventThread )	Sleep( 0 );
+			if (m_bUseEventThread)
+				Sleep(0);
 		}
 
 		TRACE("CFieldServer::DatabaseProc() End \n");
 		CConsoleMessage::GetInstance()->Write("== Database Theread stooped");
 		return NET_OK;
-		
 	}
-	__except(RecordExceptionInfo(GetExceptionInformation(), 
-		/* No rollback if field server bugtrap -Marckies */
-				_T("s_CFieldServerThread.cpp at DatabaseProc()")))
+	__except (RecordExceptionInfo(GetExceptionInformation(),
+								  /* No rollback if field server bugtrap -Marckies */
+								  _T("s_CFieldServerThread.cpp at DatabaseProc()")))
 	{
 		// Do nothing here - RecordExceptionInfo() has already done
 		// everything that is needed. Actually this code won't even
@@ -723,19 +731,19 @@ int CFieldServer::LogDatabaseProc()
 	{
 		TRACE(_T("in s_CFieldServerThread.cpp CFieldServer::LogDatabaseProc\n"));
 		while (m_bIsRunning)
-		{	
+		{
 			CLogDbExecuter::GetInstance()->ExecuteJob();
-			if( !m_bUseEventThread ) Sleep( 0 );
+			if (!m_bUseEventThread)
+				Sleep(0);
 		}
 
 		TRACE("CFieldServer::LogDatabaseProc() End \n");
 		CConsoleMessage::GetInstance()->Write("== Log Database Theread stopped");
 		return NET_OK;
-		
 	}
-	__except(RecordExceptionInfo(GetExceptionInformation(), 
-		/* No rollback if field server bugtrap -Marckies */
-				_T("s_CFieldServerThread.cpp at LogDatabaseProc()")))
+	__except (RecordExceptionInfo(GetExceptionInformation(),
+								  /* No rollback if field server bugtrap -Marckies */
+								  _T("s_CFieldServerThread.cpp at LogDatabaseProc()")))
 	{
 		// Do nothing here - RecordExceptionInfo() has already done
 		// everything that is needed. Actually this code won't even
@@ -754,7 +762,7 @@ int CFieldServer::UserDatabaseProc()
 	{
 		TRACE(_T("in s_CFieldServerThread.cpp CFieldServer::UserDatabaseProc\n"));
 		while (m_bIsRunning)
-		{	
+		{
 			CUserDbExecuter::GetInstance()->ExecuteJob();
 			Sleep( 1 );
 		}
@@ -762,9 +770,9 @@ int CFieldServer::UserDatabaseProc()
 		TRACE("CFieldServer::UserDatabaseProc() End \n");
 		CConsoleMessage::GetInstance()->Write("== User Database Theread stopped");
 		return NET_OK;
-		
+
 	}
-	__except(RecordExceptionInfo(GetExceptionInformation(), 
+	__except(RecordExceptionInfo(GetExceptionInformation(),
 				_T("s_CFieldServerThread.cpp")))
 	{
 		// Do nothing here - RecordExceptionInfo() has already done
