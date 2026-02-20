@@ -14,10 +14,9 @@
 #define new DEBUG_NEW
 #endif
 
-
-GLAwardTitleClient& GLAwardTitleClient::GetInstance ()
+GLAwardTitleClient &GLAwardTitleClient::GetInstance()
 {
-	static  GLAwardTitleClient Instance;
+	static GLAwardTitleClient Instance;
 	return Instance;
 }
 
@@ -38,7 +37,8 @@ void GLAwardTitleClient::Clear()
 
 void GLAwardTitleClient::RequestData()
 {
-	if ( m_bReqData )	return;
+	if (m_bReqData)
+		return;
 
 	m_bReqData = true;
 
@@ -46,27 +46,22 @@ void GLAwardTitleClient::RequestData()
 	NETSEND(&NetMsg);
 }
 
-HRESULT GLAwardTitleClient::MsgProcess ( NET_MSG_GENERIC* nmg )
+HRESULT GLAwardTitleClient::MsgProcess(NET_MSG_GENERIC *nmg)
 {
-	if ( !nmg )	return E_FAIL;
-
-	switch ( nmg->nType )
-	{
-	default:
-		CDebugSet::ToListView ( "GLAwardTitleClient::MsgProcessFrame() not classified message : TYPE[%d]", nmg->nType );
-		break;
-	}
+	if (!nmg)
+		return E_FAIL;
+	CDebugSet::ToListView("GLAwardTitleClient::MsgProcessFrame() not classified message : TYPE[%d]", nmg->nType);
 
 	return S_OK;
 }
 
-const TCHAR* GLAwardTitleClient::GetTitle( DWORD dwID, EMAWARD_TITLE_TYPE emType )
+const TCHAR *GLAwardTitleClient::GetTitle(DWORD dwID, EMAWARD_TITLE_TYPE emType)
 {
-	MAP_AWARD_TITLE_DATA_ITER it =  m_mapAwardTitle.find( dwID );
-	if ( it != m_mapAwardTitle.end() )
+	MAP_AWARD_TITLE_DATA_ITER it = m_mapAwardTitle.find(dwID);
+	if (it != m_mapAwardTitle.end())
 	{
-		const SAWARD_TITLE_DATA& sData = (*it).second;
-		if ( sData.emType == emType )
+		const SAWARD_TITLE_DATA &sData = (*it).second;
+		if (sData.emType == emType)
 		{
 			return &sData.szTitle[0];
 		}
@@ -74,4 +69,3 @@ const TCHAR* GLAwardTitleClient::GetTitle( DWORD dwID, EMAWARD_TITLE_TYPE emType
 
 	return NULL;
 }
-
