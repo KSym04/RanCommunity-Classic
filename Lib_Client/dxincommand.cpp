@@ -27,8 +27,7 @@
 #define new DEBUG_NEW
 #endif
 
-//extern BOOL g_bFRAME_LIMIT;
-
+// extern BOOL g_bFRAME_LIMIT;
 
 namespace dxincommand
 {
@@ -40,250 +39,261 @@ namespace dxincommand
 	bool bDISP_CONSOLE = true;
 #endif
 
-	CString BOOL2STR ( bool bOn )
+	CString BOOL2STR(bool bOn)
 	{
 		return bOn ? "ON" : "OFF";
 	}
 
 	/*item link, Juver, 2017/07/31 */
-	bool command ( const char* szcommand, SITEMLINK* pItemLink ) 
+	bool command(const char *szcommand, SITEMLINK *pItemLink)
 	{
-		if ( szcommand==NULL || szcommand[0]==NULL )	return false;
-		if ( szcommand[0]!='/' && szcommand[0]!='&' )	return false;
+		if (szcommand == NULL || szcommand[0] == NULL)
+			return false;
+		if (szcommand[0] != '/' && szcommand[0] != '&')
+			return false;
 
 		STRUTIL::StateSaver saver;
 
-		STRUTIL::RegisterSeparator ( "\t" );
-		STRUTIL::RegisterSeparator ( " " );
-		STRUTIL::RegisterSeparator ( "," );
-		STRUTIL::RegisterMatchingDelimiters( '"', '"' );
+		STRUTIL::RegisterSeparator("\t");
+		STRUTIL::RegisterSeparator(" ");
+		STRUTIL::RegisterSeparator(",");
+		STRUTIL::RegisterMatchingDelimiters('"', '"');
 
 		CString strLINE(szcommand);
-	
-		CStringArray strArray ;
-		STRUTIL::StringSeparate ( strLINE, strArray );
-		if ( strArray.GetSize()==0 )					return true;
 
-		CDebugSet::ToListView ( strLINE );
+		CStringArray strArray;
+		STRUTIL::StringSeparate(strLINE, strArray);
+		if (strArray.GetSize() == 0)
+			return true;
+
+		CDebugSet::ToListView(strLINE);
 
 		CString strCOMMAND = strArray.GetAt(0);
 
 		//	Note : 제스쳐.
-		int nMOTION = CEmoticon::GetInstance().GetEmoticonOfMotion ( strCOMMAND.GetString() );
-		if ( nMOTION!=UINT_MAX )
+		int nMOTION = CEmoticon::GetInstance().GetEmoticonOfMotion(strCOMMAND.GetString());
+		if (nMOTION != UINT_MAX)
 		{
-			bool bACTION = GLGaeaClient::GetInstance().GetCharacter()->ReqGESTURE ( nMOTION, true );
-			if ( bACTION )								return true;
+			bool bACTION = GLGaeaClient::GetInstance().GetCharacter()->ReqGESTURE(nMOTION, true);
+			if (bACTION)
+				return true;
 		}
 
-		if ( strCOMMAND=="/?" )
+		if (strCOMMAND == "/?")
 		{
-			LISTEMOTICON& listEMOTICON = CEmoticon::GetInstance().GetEmoticon();
+			LISTEMOTICON &listEMOTICON = CEmoticon::GetInstance().GetEmoticon();
 			LISTEMOTICON_ITER pos = listEMOTICON.begin();
 			LISTEMOTICON_ITER end = listEMOTICON.end();
 
-			for ( ; pos!=end; ++pos )
+			for (; pos != end; ++pos)
 			{
 				SEMOTICON &sEMOTICON = (*pos);
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s", sEMOTICON.strMotion.c_str() );
+				CInnerInterface::GetInstance().PrintConsoleText("%s", sEMOTICON.strMotion.c_str());
 			}
 
 			return true;
 		}
 
-	
-		if( strCOMMAND =="/pow")
+		if (strCOMMAND == "/pow")
 		{
-			if(strArray.GetSize() != 2)	
+			if (strArray.GetSize() != 2)
 				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			SCHARSTATS sStats;
-			sStats.wPow = static_cast<WORD>( atoi( strPARAM_01.GetString() ));
-			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern( sStats, TRUE );
+			sStats.wPow = static_cast<WORD>(atoi(strPARAM_01.GetString()));
+			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern(sStats, TRUE);
 			return true;
 		}
 
-		if( strCOMMAND =="/dex")
+		if (strCOMMAND == "/dex")
 		{
-			if(strArray.GetSize() != 2)		
+			if (strArray.GetSize() != 2)
 				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			SCHARSTATS sStats;
-			sStats.wDex = static_cast<WORD>( atoi( strPARAM_01.GetString() ));
-			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern( sStats, TRUE  );
+			sStats.wDex = static_cast<WORD>(atoi(strPARAM_01.GetString()));
+			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern(sStats, TRUE);
 			return true;
 		}
 
-		if( strCOMMAND =="/int")
+		if (strCOMMAND == "/int")
 		{
-			if(strArray.GetSize() != 2)		
+			if (strArray.GetSize() != 2)
 				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			SCHARSTATS sStats;
-			sStats.wSpi = static_cast<WORD>( atoi( strPARAM_01.GetString() ));
-			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern( sStats, TRUE  );
+			sStats.wSpi = static_cast<WORD>(atoi(strPARAM_01.GetString()));
+			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern(sStats, TRUE);
 			return true;
 		}
 
-		if( strCOMMAND =="/stm")
+		if (strCOMMAND == "/stm")
 		{
-			if(strArray.GetSize() != 2)		
+			if (strArray.GetSize() != 2)
 				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			SCHARSTATS sStats;
-			sStats.wSta = static_cast<WORD>( atoi( strPARAM_01.GetString() ));
-			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern( sStats, TRUE  );
+			sStats.wSta = static_cast<WORD>(atoi(strPARAM_01.GetString()));
+			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern(sStats, TRUE);
 			return true;
 		}
 
-		if( strCOMMAND =="/vit")
+		if (strCOMMAND == "/vit")
 		{
-			if(strArray.GetSize() != 2)		
+			if (strArray.GetSize() != 2)
 				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			SCHARSTATS sStats;
-			sStats.wStr = static_cast<WORD>( atoi( strPARAM_01.GetString() ));
-			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern( sStats, TRUE  );
+			sStats.wStr = static_cast<WORD>(atoi(strPARAM_01.GetString()));
+			GLGaeaClient::GetInstance().GetCharacter()->ReqStatsUpModern(sStats, TRUE);
 			return true;
 		}
-
 
 		//	Note : GM 명령.
 		DWORD dwUSERLVL = GLGaeaClient::GetInstance().GetCharacter()->m_dwUserLvl;
 
-		if ( dwUSERLVL == NSUSER_TYPE::USER_TYPE_MASTER )
+		if (dwUSERLVL == NSUSER_TYPE::USER_TYPE_MASTER)
 		{
-			if ( szcommand[0]=='&' )
+			if (szcommand[0] == '&')
 			{
-				int nLEN = (int) strlen(szcommand) - 1;
-				if ( nLEN==0 )								return true;
+				int nLEN = (int)strlen(szcommand) - 1;
+				if (nLEN == 0)
+					return true;
 
-				if ( nLEN > CHAT_MSG_SIZE )	 nLEN = CHAT_MSG_SIZE;
+				if (nLEN > CHAT_MSG_SIZE)
+					nLEN = CHAT_MSG_SIZE;
 
-				NET_CHAT NetMsg;	
-				NetMsg.nmg.nType	= NET_MSG_CHAT;
-				NetMsg.emType		= CHAT_TYPE_GLOBAL;
-				::StringCchCopyN ( NetMsg.szChatMsg, CHAT_MSG_SIZE, szcommand+1, nLEN );
+				NET_CHAT NetMsg;
+				NetMsg.nmg.nType = NET_MSG_CHAT;
+				NetMsg.emType = CHAT_TYPE_GLOBAL;
+				::StringCchCopyN(NetMsg.szChatMsg, CHAT_MSG_SIZE, szcommand + 1, nLEN);
 
 				/*item link, Juver, 2017/07/31 */
-				if ( pItemLink )
+				if (pItemLink)
 					NetMsg.sItemLink = *pItemLink;
 
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 
 				return true;
 			}
-			else if ( strCOMMAND=="/move2gate" || strCOMMAND=="/m2g" )
+			else if (strCOMMAND == "/move2gate" || strCOMMAND == "/m2g")
 			{
-				if ( strArray.GetSize() != 2 )			return true;
+				if (strArray.GetSize() != 2)
+					return true;
 				CString strPARAM_01 = strArray.GetAt(1);
 
-				DWORD dwGATE = (DWORD) atoi ( strPARAM_01.GetString() );
+				DWORD dwGATE = (DWORD)atoi(strPARAM_01.GetString());
 
 				PLANDMANCLIENT pLand = GLGaeaClient::GetInstance().GetActiveMap();
-				if ( !pLand )								return false;
+				if (!pLand)
+					return false;
 
-				DxLandGateMan* pGateMan = &pLand->GetLandGateMan();
-				if ( !pGateMan )							return false;
+				DxLandGateMan *pGateMan = &pLand->GetLandGateMan();
+				if (!pGateMan)
+					return false;
 
-				PDXLANDGATE pGATE = pGateMan->FindLandGate ( dwGATE );
-				if ( !pGATE )
+				PDXLANDGATE pGATE = pGateMan->FindLandGate(dwGATE);
+				if (!pGATE)
 				{
-					CInnerInterface::GetInstance().PrintConsoleText ( "%d gate not exist", dwGATE );
+					CInnerInterface::GetInstance().PrintConsoleText("%d gate not exist", dwGATE);
 				}
 
-				if ( DxGlobalStage::GetInstance().IsEmulator() )
+				if (DxGlobalStage::GetInstance().IsEmulator())
 				{
 					GLMSG::SNET_GM_MOVE2GATE_FLD NetMsgFld;
 					NetMsgFld.dwGaeaID = 0;
 					NetMsgFld.dwGATE = dwGATE;
-					NETSEND ( &NetMsgFld );
+					NETSEND(&NetMsgFld);
 				}
 				else
 				{
 					GLMSG::SNET_GM_MOVE2GATE NetMsg;
 					NetMsg.dwGATE = dwGATE;
-					NETSEND ( &NetMsg );
+					NETSEND(&NetMsg);
 				}
 			}
-			else if ( strCOMMAND=="/move2pos" || strCOMMAND=="/m2p" )
+			else if (strCOMMAND == "/move2pos" || strCOMMAND == "/m2p")
 			{
-				if ( strArray.GetSize() != 5 )			return true;
+				if (strArray.GetSize() != 5)
+					return true;
 				CString strPARAM_01 = strArray.GetAt(1);
 				CString strPARAM_02 = strArray.GetAt(2);
 				CString strPARAM_03 = strArray.GetAt(3);
 				CString strPARAM_04 = strArray.GetAt(4);
 
-				if ( DxGlobalStage::GetInstance().IsEmulator() )
+				if (DxGlobalStage::GetInstance().IsEmulator())
 				{
 					GLMSG::SNET_GM_MOVE2MAPPOS_FLD NetMsgFld;
-					NetMsgFld.nidMAP.wMainID = ( WORD ) atoi( strPARAM_01.GetString() );
-					NetMsgFld.nidMAP.wSubID = ( WORD ) atoi( strPARAM_02.GetString() );
-					NetMsgFld.dwPOSX = ( DWORD ) atoi( strPARAM_03.GetString() );
-					NetMsgFld.dwPOSY = ( DWORD ) atoi( strPARAM_04.GetString() );
+					NetMsgFld.nidMAP.wMainID = (WORD)atoi(strPARAM_01.GetString());
+					NetMsgFld.nidMAP.wSubID = (WORD)atoi(strPARAM_02.GetString());
+					NetMsgFld.dwPOSX = (DWORD)atoi(strPARAM_03.GetString());
+					NetMsgFld.dwPOSY = (DWORD)atoi(strPARAM_04.GetString());
 					NetMsgFld.dwGaeaID = 0;
 
-					NETSEND( &NetMsgFld );
+					NETSEND(&NetMsgFld);
 				}
 				else
 				{
 					GLMSG::SNET_GM_MOVE2MAPPOS NetMsg;
-					NetMsg.nidMAP.wMainID = ( WORD ) atoi( strPARAM_01.GetString() );
-					NetMsg.nidMAP.wSubID = ( WORD ) atoi( strPARAM_02.GetString() );
-					NetMsg.dwPOSX = ( DWORD ) atoi( strPARAM_03.GetString() );
-					NetMsg.dwPOSY = ( DWORD ) atoi( strPARAM_04.GetString() );
+					NetMsg.nidMAP.wMainID = (WORD)atoi(strPARAM_01.GetString());
+					NetMsg.nidMAP.wSubID = (WORD)atoi(strPARAM_02.GetString());
+					NetMsg.dwPOSX = (DWORD)atoi(strPARAM_03.GetString());
+					NetMsg.dwPOSY = (DWORD)atoi(strPARAM_04.GetString());
 
-					NETSEND( &NetMsg );
+					NETSEND(&NetMsg);
 				}
 			}
-			else if ( strCOMMAND=="/m2c")
+			else if (strCOMMAND == "/m2c")
 			{
-				if ( strArray.GetSize() != 2 )			return true;
+				if (strArray.GetSize() != 2)
+					return true;
 				CString strPARAM_01 = strArray.GetAt(1);
 
 				GLMSG::SNETPC_GM_MOVE2CHAR NetMsg;
-				StringCchCopy ( NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString() );
+				StringCchCopy(NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString());
 				NETSEND(&NetMsg);
 
-				CInnerInterface::GetInstance().PrintConsoleText ( "move to charactor : %s", NetMsg.szNAME );
+				CInnerInterface::GetInstance().PrintConsoleText("move to charactor : %s", NetMsg.szNAME);
 			}
 
-			else if ( strCOMMAND=="/move2char_ci" || strCOMMAND=="/m2c_ci" )
+			else if (strCOMMAND == "/move2char_ci" || strCOMMAND == "/m2c_ci")
 			{
-				if ( strArray.GetSize() != 2 )			return true;
+				if (strArray.GetSize() != 2)
+					return true;
 				CString strPARAM_01 = strArray.GetAt(1);
-				DWORD dwCHARID = (DWORD) atoi (strPARAM_01.GetString());
+				DWORD dwCHARID = (DWORD)atoi(strPARAM_01.GetString());
 
 				GLMSG::SNETPC_GM_MOVE2CHAR NetMsg;
 				NetMsg.dwCHARID = dwCHARID;
 				NETSEND(&NetMsg);
 
-				CInnerInterface::GetInstance().PrintConsoleText ( "move to charactor : %s", NetMsg.szNAME );
+				CInnerInterface::GetInstance().PrintConsoleText("move to charactor : %s", NetMsg.szNAME);
 			}
-			else if ( strCOMMAND=="/visible" )
+			else if (strCOMMAND == "/visible")
 			{
-				if ( strArray.GetSize() != 2 )			return true;
+				if (strArray.GetSize() != 2)
+					return true;
 				CString strPARAM_01 = strArray.GetAt(1);
 
-				if ( strPARAM_01=="none" )
+				if (strPARAM_01 == "none")
 				{
 					GLGaeaClient::GetInstance().GetCharacter()->ReqVisibleNone(TRUE);
 				}
-				else if ( strPARAM_01=="off" )
+				else if (strPARAM_01 == "off")
 				{
 					GLGaeaClient::GetInstance().GetCharacter()->ReqVisibleOff(TRUE);
 				}
-				else if ( strPARAM_01=="on" )
+				else if (strPARAM_01 == "on")
 				{
 					GLGaeaClient::GetInstance().GetCharacter()->ReqVisibleOn(TRUE);
 				}
@@ -292,618 +302,663 @@ namespace dxincommand
 			return true;
 		}
 
+		if (dwUSERLVL < NSUSER_TYPE::USER_TYPE_GM3)
+			return true;
 
-		if ( dwUSERLVL < NSUSER_TYPE::USER_TYPE_GM3 )						return true;
-
-		if ( szcommand[0]=='&' )
+		if (szcommand[0] == '&')
 		{
-			int nLEN = (int) strlen(szcommand) - 1;
-			if ( nLEN==0 )								return true;
+			int nLEN = (int)strlen(szcommand) - 1;
+			if (nLEN == 0)
+				return true;
 
-			if ( nLEN > CHAT_MSG_SIZE )	 nLEN = CHAT_MSG_SIZE;
+			if (nLEN > CHAT_MSG_SIZE)
+				nLEN = CHAT_MSG_SIZE;
 
-			NET_CHAT NetMsg;	
-			NetMsg.nmg.nType	= NET_MSG_CHAT;
-			NetMsg.emType		= CHAT_TYPE_GLOBAL;
+			NET_CHAT NetMsg;
+			NetMsg.nmg.nType = NET_MSG_CHAT;
+			NetMsg.emType = CHAT_TYPE_GLOBAL;
 			/* Chat Color, Mhundz 02/22/25 */
-			::StringCchCopyN ( NetMsg.szName, CHR_ID_LENGTH, GLGaeaClient::GetInstance().GetCharacter()->m_szName, strlen(GLGaeaClient::GetInstance().GetCharacter()->m_szName) );
-
+			::StringCchCopyN(NetMsg.szName, CHR_ID_LENGTH, GLGaeaClient::GetInstance().GetCharacter()->m_szName, strlen(GLGaeaClient::GetInstance().GetCharacter()->m_szName));
 
 			/*item link, Juver, 2017/07/31 */
-			if ( pItemLink )
+			if (pItemLink)
 				NetMsg.sItemLink = *pItemLink;
 			/* Chat Color, Mhundz 02/22/25 */
-			::StringCchCopyN ( NetMsg.szChatMsg, CHAT_MSG_SIZE, szcommand+1, nLEN );
+			::StringCchCopyN(NetMsg.szChatMsg, CHAT_MSG_SIZE, szcommand + 1, nLEN);
 
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 
 			return true;
 		}
 
-		if ( strCOMMAND=="/dsp" )
+		if (strCOMMAND == "/dsp")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			if ( strPARAM_01=="off" )
+			if (strPARAM_01 == "off")
 			{
 				bDISP_CONSOLE = false;
 				bDISP_FPS = false;
 
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", "console, fps", BOOL2STR(false) );
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", "console, fps", BOOL2STR(false));
 			}
-			if ( strPARAM_01=="console" )
+			if (strPARAM_01 == "console")
 			{
 				bDISP_CONSOLE = !bDISP_CONSOLE;
 
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", strPARAM_01, BOOL2STR(bDISP_CONSOLE) );
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", strPARAM_01, BOOL2STR(bDISP_CONSOLE));
 			}
-			else if ( strPARAM_01=="fps" )
+			else if (strPARAM_01 == "fps")
 			{
 				bDISP_FPS = !bDISP_FPS;
 
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", strPARAM_01, BOOL2STR(bDISP_FPS) );
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", strPARAM_01, BOOL2STR(bDISP_FPS));
 			}
-			else if ( strPARAM_01=="gate" )
+			else if (strPARAM_01 == "gate")
 			{
 				PLANDMANCLIENT pLand = GLGaeaClient::GetInstance().GetActiveMap();
-				if ( !pLand )							return false;
-				
-				DxLandGateMan* pGateMan = &pLand->GetLandGateMan();
-				if ( !pGateMan )						return false;
+				if (!pLand)
+					return false;
+
+				DxLandGateMan *pGateMan = &pLand->GetLandGateMan();
+				if (!pGateMan)
+					return false;
 
 				PDXLANDGATE pLandGate = pGateMan->GetListLandGate();
-				while ( pLandGate )
+				while (pLandGate)
 				{
 					CString strGATE;
-					strGATE.Format ( "%d ", pLandGate->GetGateID() );
-					
+					strGATE.Format("%d ", pLandGate->GetGateID());
+
 					strGATE += "[";
-					if ( pLandGate->GetFlags() & DxLandGate::GATE_OUT )	strGATE += "out";
-					if ( (pLandGate->GetFlags()&DxLandGate::GATE_OUT) && (pLandGate->GetFlags()&DxLandGate::GATE_IN) )
+					if (pLandGate->GetFlags() & DxLandGate::GATE_OUT)
+						strGATE += "out";
+					if ((pLandGate->GetFlags() & DxLandGate::GATE_OUT) && (pLandGate->GetFlags() & DxLandGate::GATE_IN))
 						strGATE += "/";
-					if ( pLandGate->GetFlags() & DxLandGate::GATE_IN )	strGATE += "in";
+					if (pLandGate->GetFlags() & DxLandGate::GATE_IN)
+						strGATE += "in";
 					strGATE += "]";
 
-					if ( pLandGate->GetFlags() & DxLandGate::GATE_OUT )
+					if (pLandGate->GetFlags() & DxLandGate::GATE_OUT)
 					{
 						strGATE += "=>";
 
 						/* multi gate out, Juver, 2020/11/17 */
-						if ( pLandGate->GetNewSystem() )
+						if (pLandGate->GetNewSystem())
 						{
-							for ( DWORD i=0; i<pLandGate->GetToMapNum(); ++i )
+							for (DWORD i = 0; i < pLandGate->GetToMapNum(); ++i)
 							{
 								SNATIVEID sToMapID = pLandGate->GetToMapID(i);
-								SMAPNODE *pMapNode = GLGaeaClient::GetInstance().FindMapNode ( sToMapID );
-								if ( pMapNode )
+								SMAPNODE *pMapNode = GLGaeaClient::GetInstance().FindMapNode(sToMapID);
+								if (pMapNode)
 								{
 									DWORD dwNameINDEX = pLandGate->GetNameINDEX(i);
 									std::string strNameKEY = pLandGate->GetNameKEY(i);
 
 									std::string strTEMP("");
 
-									if ( dwNameINDEX != DxLandGate::GATE_OUT_INDEX_NULL && strNameKEY.size() )
-										strTEMP = ID2GAMEWORD( strNameKEY.c_str(), dwNameINDEX );
+									if (dwNameINDEX != DxLandGate::GATE_OUT_INDEX_NULL && strNameKEY.size())
+										strTEMP = ID2GAMEWORD(strNameKEY.c_str(), dwNameINDEX);
 
-									if ( strTEMP.empty() )
+									if (strTEMP.empty())
 										strTEMP = pMapNode->strMapName.c_str();
 
 									strGATE += strTEMP.c_str();
 									strGATE += ",";
 								}
-							}		
+							}
 						}
 						else
 						{
-							const char *szMAPNAME = GLGaeaClient::GetInstance().GetMapName ( pLandGate->GetToMapID( DxLandGate::DEFAULT_GATE_OUT_INDEX ) );
-							if ( szMAPNAME )	strGATE += szMAPNAME;
+							const char *szMAPNAME = GLGaeaClient::GetInstance().GetMapName(pLandGate->GetToMapID(DxLandGate::DEFAULT_GATE_OUT_INDEX));
+							if (szMAPNAME)
+								strGATE += szMAPNAME;
 						}
-						
 					}
 
-					CInnerInterface::GetInstance().PrintConsoleText ( strGATE.GetString() );
+					CInnerInterface::GetInstance().PrintConsoleText(strGATE.GetString());
 
 					pLandGate = pLandGate->m_pNext;
 				};
 			}
-			else if ( strPARAM_01=="player" )
+			else if (strPARAM_01 == "player")
 			{
 				PLANDMANCLIENT pLand = GLGaeaClient::GetInstance().GetActiveMap();
-				if ( !pLand )							return false;
+				if (!pLand)
+					return false;
 
-				GLCHARCLIENTLIST* pLIST = pLand->GetCharList();
+				GLCHARCLIENTLIST *pLIST = pLand->GetCharList();
 				GLCHARCLIENTNODE *pCharCur = pLIST->m_pHead;
-				for ( ; pCharCur; pCharCur = pCharCur->pNext )
+				for (; pCharCur; pCharCur = pCharCur->pNext)
 				{
-					CInnerInterface::GetInstance().PrintConsoleText ( "%s	: charid = %d",
-						pCharCur->Data->m_strName.c_str(), pCharCur->Data->GetCharData().dwCharID );
+					CInnerInterface::GetInstance().PrintConsoleText("%s	: charid = %d",
+																	pCharCur->Data->m_strName.c_str(), pCharCur->Data->GetCharData().dwCharID);
 				}
 			}
-			else if ( strPARAM_01=="allplayer" )
+			else if (strPARAM_01 == "allplayer")
 			{
 				GLMSG::SNET_GM_VIEWALLPLAYER NetMsg;
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 			}
-			else if ( strPARAM_01=="event" )
+			else if (strPARAM_01 == "event")
 			{
 				GLMSG::SNET_GM_VIEWWORKEVENT NetMsg;
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 			}
 		}
 
-		else if ( strCOMMAND== "/shop_info" )
+		else if (strCOMMAND == "/shop_info")
 		{
-			if ( strArray.GetSize() != 3 &&  strArray.GetSize() != 1  )			return true;
+			if (strArray.GetSize() != 3 && strArray.GetSize() != 1)
+				return true;
 
 			SNATIVEID mapID = GLGaeaClient::GetInstance().GetActiveMapID();
 
-			if( mapID.wMainID != 22 || mapID.wSubID != 0 )
+			if (mapID.wMainID != 22 || mapID.wSubID != 0)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "Can't use the command in this map." );
+				CInnerInterface::GetInstance().PrintConsoleText("Can't use the command in this map.");
 				return true;
 			}
 
 			GLMSG::SNET_GM_SHOP_INFO_REQ NetMsg;
 
-			if( strArray.GetSize() == 3 )
+			if (strArray.GetSize() == 3)
 			{
 				CString strPARAM_01 = strArray.GetAt(1);
 				CString strPARAM_02 = strArray.GetAt(2);
 
 				NetMsg.bBasicInfo = FALSE;
-				
-				NetMsg.sSearchItemID.wMainID = (WORD) atoi ( strPARAM_01.GetString() );
-				NetMsg.sSearchItemID.wSubID  = (WORD) atoi ( strPARAM_02.GetString() );
-				NETSENDTOFIELD ( &NetMsg );
-			}else{
-				NETSENDTOFIELD( &NetMsg );
+
+				NetMsg.sSearchItemID.wMainID = (WORD)atoi(strPARAM_01.GetString());
+				NetMsg.sSearchItemID.wSubID = (WORD)atoi(strPARAM_02.GetString());
+				NETSENDTOFIELD(&NetMsg);
+			}
+			else
+			{
+				NETSENDTOFIELD(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/profile")
+		else if (strCOMMAND == "/profile")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			if ( strPARAM_01=="on" )
+			if (strPARAM_01 == "on")
 			{
 				g_bProfile = TRUE;
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", "profile", "on" );
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", "profile", "on");
 			}
-			else if ( strPARAM_01=="off" )
+			else if (strPARAM_01 == "off")
 			{
 				g_bProfile = FALSE;
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", "profile", "off" );
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", "profile", "off");
 			}
 		}
 
-		else if ( strCOMMAND=="/chatlog")
+		else if (strCOMMAND == "/chatlog")
 		{
-			const	int	NORMAL		= 0x0001;	//	일반
-			const	int	PRIVATE		= 0x0002;	//	귓속말
-			const	int	PARTY		= 0x0004;	//	파티
-			const	int	GUILD		= 0x0008;	//	클럽
-			const	int	TOALL		= 0x0010;	//	확성기
-			const	int ALLIANCE	= 0x0020;	//	동맹
-			const	int	SYSTEM		= 0x0100;	//	시스템
-			const	int	ALL			= NORMAL | PRIVATE | PARTY | GUILD | TOALL | ALLIANCE | SYSTEM;
+			const int NORMAL = 0x0001;	 //	일반
+			const int PRIVATE = 0x0002;	 //	귓속말
+			const int PARTY = 0x0004;	 //	파티
+			const int GUILD = 0x0008;	 //	클럽
+			const int TOALL = 0x0010;	 //	확성기
+			const int ALLIANCE = 0x0020; //	동맹
+			const int SYSTEM = 0x0100;	 //	시스템
+			const int ALL = NORMAL | PRIVATE | PARTY | GUILD | TOALL | ALLIANCE | SYSTEM;
 
-
-			if ( strArray.GetSize() != 3 )			return true;
+			if (strArray.GetSize() != 3)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 			CString strPARAM_02 = strArray.GetAt(2);
 
 			int nChatLogType = 0;
 
-			if ( strPARAM_02 == "normal" )			nChatLogType = NORMAL;
-			else if ( strPARAM_02 == "private" )	nChatLogType = PRIVATE;
-			else if ( strPARAM_02 == "party" )		nChatLogType = PARTY;
-			else if ( strPARAM_02 == "guild" )		nChatLogType = GUILD;
-			else if ( strPARAM_02 == "toall" )		nChatLogType = TOALL;
-			else if ( strPARAM_02 == "alliance" )	nChatLogType = ALLIANCE;
-			else if ( strPARAM_02 == "system" )		nChatLogType = SYSTEM;
-			else if ( strPARAM_02 == "all" )		nChatLogType = ALL;
-			else	return true;
+			if (strPARAM_02 == "normal")
+				nChatLogType = NORMAL;
+			else if (strPARAM_02 == "private")
+				nChatLogType = PRIVATE;
+			else if (strPARAM_02 == "party")
+				nChatLogType = PARTY;
+			else if (strPARAM_02 == "guild")
+				nChatLogType = GUILD;
+			else if (strPARAM_02 == "toall")
+				nChatLogType = TOALL;
+			else if (strPARAM_02 == "alliance")
+				nChatLogType = ALLIANCE;
+			else if (strPARAM_02 == "system")
+				nChatLogType = SYSTEM;
+			else if (strPARAM_02 == "all")
+				nChatLogType = ALL;
+			else
+				return true;
 
-			if ( strPARAM_01=="on" )
+			if (strPARAM_01 == "on")
 			{
-				CInnerInterface::GetInstance().ChatLog( true, nChatLogType );
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s : %s", "chatlog", "on", strPARAM_02 );
+				CInnerInterface::GetInstance().ChatLog(true, nChatLogType);
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s : %s", "chatlog", "on", strPARAM_02);
 			}
-			else if ( strPARAM_01=="off" )
+			else if (strPARAM_01 == "off")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s : %s", "chatlog", "off", strPARAM_02 );
-				CInnerInterface::GetInstance().ChatLog( false, nChatLogType );
-
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s : %s", "chatlog", "off", strPARAM_02);
+				CInnerInterface::GetInstance().ChatLog(false, nChatLogType);
 			}
 		}
-		else if ( strCOMMAND=="/weather" )
+		else if (strCOMMAND == "/weather")
 		{
-			if ( strArray.GetSize() < 2 )			return true;
+			if (strArray.GetSize() < 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			DWORD dwWeather(NULL);
 			bool bActiveWeather(true);
 			WORD map_mID = 0, map_sID = 0;
 			DWORD dwApplyTime = 0;
-            bool  bEveryApply = TRUE;
+			bool bEveryApply = TRUE;
 
-			if( strArray.GetSize() == 2 )
+			if (strArray.GetSize() == 2)
 			{
-				bEveryApply = TRUE; 
+				bEveryApply = TRUE;
 
-				if ( strPARAM_01=="clear" )
+				if (strPARAM_01 == "clear")
 				{
-					if( strArray.GetSize() != 2 ) return true;
+					if (strArray.GetSize() != 2)
+						return true;
 
 					bActiveWeather = FALSE;
-					dwWeather	   = NULL;
-					CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", strPARAM_01, "clear" );
-				}else if ( strPARAM_01=="rain" )
+					dwWeather = NULL;
+					CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", strPARAM_01, "clear");
+				}
+				else if (strPARAM_01 == "rain")
 				{
 					dwWeather = FGW_RAIN;
 
-					CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", strPARAM_01, "begin");
 				}
-				else if ( strPARAM_01=="snow" )
+				else if (strPARAM_01 == "snow")
 				{
 					dwWeather = FGW_SNOW;
 
-					CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", strPARAM_01, "begin");
 				}
-				else if ( strPARAM_01=="spore" )
+				else if (strPARAM_01 == "spore")
 				{
 					dwWeather = FGW_SPORE;
 
-					CInnerInterface::GetInstance().PrintConsoleText( "%s  : %s", strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", strPARAM_01, "begin");
 				}
-				else if ( strPARAM_01=="leave" )
+				else if (strPARAM_01 == "leave")
 				{
 					dwWeather = FGW_LEAVES;
 
-					CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", strPARAM_01, "begin");
 				}
-
 			}
 			// Add OneMap Weather
-			else if( strArray.GetSize() == 5 )
+			else if (strArray.GetSize() == 5)
 			{
 
-				bEveryApply = FALSE; 
+				bEveryApply = FALSE;
 
 				CString strPARAM_02 = strArray.GetAt(2);
 				CString strPARAM_03 = strArray.GetAt(3);
 				CString strPARAM_04 = strArray.GetAt(4);
 
-				map_mID		= atoi(strPARAM_02.GetString());
-				map_sID		= atoi(strPARAM_03.GetString());
+				map_mID = atoi(strPARAM_02.GetString());
+				map_sID = atoi(strPARAM_03.GetString());
 				dwApplyTime = atoi(strPARAM_04.GetString());
 
-				if ( strPARAM_01=="rain" )
+				if (strPARAM_01 == "rain")
 				{
 					dwWeather = FGW_RAIN;
 
-					CInnerInterface::GetInstance().PrintConsoleText ( "One Map Weather MapID %d %d : %d Minutes : %s  : %s", 
-																	  map_mID, map_sID, dwApplyTime, strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("One Map Weather MapID %d %d : %d Minutes : %s  : %s",
+																	map_mID, map_sID, dwApplyTime, strPARAM_01, "begin");
 				}
-				else if ( strPARAM_01=="snow" )
+				else if (strPARAM_01 == "snow")
 				{
 					dwWeather = FGW_SNOW;
 
-					CInnerInterface::GetInstance().PrintConsoleText ( "One Map Weather MapID %d %d : %d Minutes : %s  : %s", 
-																	  map_mID, map_sID, dwApplyTime, strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("One Map Weather MapID %d %d : %d Minutes : %s  : %s",
+																	map_mID, map_sID, dwApplyTime, strPARAM_01, "begin");
 				}
-				else if ( strPARAM_01=="spore" )
+				else if (strPARAM_01 == "spore")
 				{
 					dwWeather = FGW_SPORE;
 
-					CInnerInterface::GetInstance().PrintConsoleText ( "One Map Weather MapID %d %d : %d Minutes : %s  : %s", 
-																	  map_mID, map_sID, dwApplyTime, strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("One Map Weather MapID %d %d : %d Minutes : %s  : %s",
+																	map_mID, map_sID, dwApplyTime, strPARAM_01, "begin");
 				}
-				else if ( strPARAM_01=="leave" )
+				else if (strPARAM_01 == "leave")
 				{
 					dwWeather = FGW_LEAVES;
 
-					CInnerInterface::GetInstance().PrintConsoleText ( "One Map Weather MapID %d %d : %d Minutes : %s  : %s", 
-																	  map_mID, map_sID, dwApplyTime, strPARAM_01, "begin" );
+					CInnerInterface::GetInstance().PrintConsoleText("One Map Weather MapID %d %d : %d Minutes : %s  : %s",
+																	map_mID, map_sID, dwApplyTime, strPARAM_01, "begin");
 				}
-			}else if( strArray.GetSize() == 4 )
+			}
+			else if (strArray.GetSize() == 4)
 			{
 				CString strPARAM_02 = strArray.GetAt(2);
 				CString strPARAM_03 = strArray.GetAt(3);
 
-				map_mID		= atoi(strPARAM_02.GetString());
-				map_sID		= atoi(strPARAM_03.GetString());
+				map_mID = atoi(strPARAM_02.GetString());
+				map_sID = atoi(strPARAM_03.GetString());
 
-				if ( strPARAM_01=="clear" )
+				if (strPARAM_01 == "clear")
 				{
-					dwWeather	   = NULL;
-					CInnerInterface::GetInstance().PrintConsoleText ( "One Map Weather MapID %d %d : Clear", 
-																	   map_mID, map_sID );
+					dwWeather = NULL;
+					CInnerInterface::GetInstance().PrintConsoleText("One Map Weather MapID %d %d : Clear",
+																	map_mID, map_sID);
 				}
 
-				bEveryApply = FALSE; 
-			}else{
+				bEveryApply = FALSE;
+			}
+			else
+			{
 				return TRUE;
 			}
 
-
 			// Map 설정해서 보내는 메시지
-			if( bEveryApply == FALSE )
+			if (bEveryApply == FALSE)
 			{
 				GLMSG::SNETSERVER_CTRL_WEATHER2 NetMsg;
-				NetMsg.dwWeather   = dwWeather;
-				NetMsg.map_mID     = map_mID;
-				NetMsg.map_sID     = map_sID;
+				NetMsg.dwWeather = dwWeather;
+				NetMsg.map_mID = map_mID;
+				NetMsg.map_sID = map_sID;
 				NetMsg.dwApplyTime = dwApplyTime;
 				NETSEND(&NetMsg);
-			// 전체 맵에 적용되는 메시지
-			}else
+				// 전체 맵에 적용되는 메시지
+			}
+			else
 			{
 				GLMSG::SNETSERVER_CTRL_WEATHER NetMsg;
-				NetMsg.bActive   = bActiveWeather;
+				NetMsg.bActive = bActiveWeather;
 				NetMsg.dwWeather = dwWeather;
 				NETSEND(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/time" )
+		else if (strCOMMAND == "/time")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			DWORD dwTIME = (DWORD) atoi ( strPARAM_01.GetString() );
-			if ( dwTIME > 24 )	return true;
+			DWORD dwTIME = (DWORD)atoi(strPARAM_01.GetString());
+			if (dwTIME > 24)
+				return true;
 
 			GLMSG::SNETSERVER_CTRL_TIME NetMsg;
 			NetMsg.dwTime = dwTIME;
 			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %d", "time", dwTIME );
+			CInnerInterface::GetInstance().PrintConsoleText("%s  : %d", "time", dwTIME);
 		}
-		else if ( strCOMMAND=="/month" )
+		else if (strCOMMAND == "/month")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			DWORD dwMONTH = (DWORD) atoi ( strPARAM_01.GetString() );
-			if ( dwMONTH > 12 )	return true;
+			DWORD dwMONTH = (DWORD)atoi(strPARAM_01.GetString());
+			if (dwMONTH > 12)
+				return true;
 
 			GLMSG::SNETSERVER_CTRL_MONTH NetMsg;
 			NetMsg.dwMonth = dwMONTH;
 			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %d", "month", dwMONTH );
+			CInnerInterface::GetInstance().PrintConsoleText("%s  : %d", "month", dwMONTH);
 		}
-		else if ( strCOMMAND=="/itemhold" )
+		else if (strCOMMAND == "/itemhold")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
-		
+
 			bool bHold(true);
 
-			if ( strPARAM_01=="on" )
+			if (strPARAM_01 == "on")
 			{
 				bHold = true;
 
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", "itemhold", "on" );
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", "itemhold", "on");
 			}
-			else if ( strPARAM_01=="off" )
+			else if (strPARAM_01 == "off")
 			{
 				bHold = false;
-				CInnerInterface::GetInstance().PrintConsoleText ( "%s  : %s", "itemhold", "off" );
+				CInnerInterface::GetInstance().PrintConsoleText("%s  : %s", "itemhold", "off");
 			}
 
 			GLMSG::SNETSERVER_CTRL_GENITEMHOLD NetMsg;
 			NetMsg.bHold = bHold;
 			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/move2gate" || strCOMMAND=="/m2g" )
+		else if (strCOMMAND == "/move2gate" || strCOMMAND == "/m2g")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
-			
-			DWORD dwGATE = (DWORD) atoi ( strPARAM_01.GetString() );
+
+			DWORD dwGATE = (DWORD)atoi(strPARAM_01.GetString());
 
 			PLANDMANCLIENT pLand = GLGaeaClient::GetInstance().GetActiveMap();
-			if ( !pLand )								return false;
-			
-			DxLandGateMan* pGateMan = &pLand->GetLandGateMan();
-			if ( !pGateMan )							return false;
+			if (!pLand)
+				return false;
 
-			PDXLANDGATE pGATE = pGateMan->FindLandGate ( dwGATE );
-			if ( !pGATE )
+			DxLandGateMan *pGateMan = &pLand->GetLandGateMan();
+			if (!pGateMan)
+				return false;
+
+			PDXLANDGATE pGATE = pGateMan->FindLandGate(dwGATE);
+			if (!pGATE)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "%d gate not exist", dwGATE );
+				CInnerInterface::GetInstance().PrintConsoleText("%d gate not exist", dwGATE);
 			}
 
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNET_GM_MOVE2GATE_FLD NetMsgFld;
 				NetMsgFld.dwGaeaID = 0;
 				NetMsgFld.dwGATE = dwGATE;
-				NETSEND ( &NetMsgFld );
+				NETSEND(&NetMsgFld);
 			}
 			else
 			{
 				GLMSG::SNET_GM_MOVE2GATE NetMsg;
 				NetMsg.dwGATE = dwGATE;
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/move2pos" || strCOMMAND=="/m2p" )
+		else if (strCOMMAND == "/move2pos" || strCOMMAND == "/m2p")
 		{
-			if ( strArray.GetSize() != 5 )			return true;
+			if (strArray.GetSize() != 5)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 			CString strPARAM_02 = strArray.GetAt(2);
 			CString strPARAM_03 = strArray.GetAt(3);
 			CString strPARAM_04 = strArray.GetAt(4);
 
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNET_GM_MOVE2MAPPOS_FLD NetMsgFld;
-				NetMsgFld.nidMAP.wMainID = ( WORD ) atoi( strPARAM_01.GetString() );
-				NetMsgFld.nidMAP.wSubID = ( WORD ) atoi( strPARAM_02.GetString() );
-				NetMsgFld.dwPOSX = ( DWORD ) atoi( strPARAM_03.GetString() );
-				NetMsgFld.dwPOSY = ( DWORD ) atoi( strPARAM_04.GetString() );
+				NetMsgFld.nidMAP.wMainID = (WORD)atoi(strPARAM_01.GetString());
+				NetMsgFld.nidMAP.wSubID = (WORD)atoi(strPARAM_02.GetString());
+				NetMsgFld.dwPOSX = (DWORD)atoi(strPARAM_03.GetString());
+				NetMsgFld.dwPOSY = (DWORD)atoi(strPARAM_04.GetString());
 				NetMsgFld.dwGaeaID = 0;
 
-				NETSEND( &NetMsgFld );
+				NETSEND(&NetMsgFld);
 			}
 			else
 			{
 				GLMSG::SNET_GM_MOVE2MAPPOS NetMsg;
-				NetMsg.nidMAP.wMainID = ( WORD ) atoi( strPARAM_01.GetString() );
-				NetMsg.nidMAP.wSubID = ( WORD ) atoi( strPARAM_02.GetString() );
-				NetMsg.dwPOSX = ( DWORD ) atoi( strPARAM_03.GetString() );
-				NetMsg.dwPOSY = ( DWORD ) atoi( strPARAM_04.GetString() );
+				NetMsg.nidMAP.wMainID = (WORD)atoi(strPARAM_01.GetString());
+				NetMsg.nidMAP.wSubID = (WORD)atoi(strPARAM_02.GetString());
+				NetMsg.dwPOSX = (DWORD)atoi(strPARAM_03.GetString());
+				NetMsg.dwPOSY = (DWORD)atoi(strPARAM_04.GetString());
 
-				NETSEND( &NetMsg );
+				NETSEND(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/move2char_cn" || strCOMMAND=="/m2c" )
+		else if (strCOMMAND == "/move2char_cn" || strCOMMAND == "/m2c")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			GLMSG::SNETPC_GM_MOVE2CHAR NetMsg;
-			StringCchCopy ( NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString() );
+			StringCchCopy(NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString());
 			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "move to charactor : %s", NetMsg.szNAME );
+			CInnerInterface::GetInstance().PrintConsoleText("move to charactor : %s", NetMsg.szNAME);
 		}
 
-		else if ( strCOMMAND=="/move2char_ci" || strCOMMAND=="/m2c_ci" )
+		else if (strCOMMAND == "/move2char_ci" || strCOMMAND == "/m2c_ci")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
-			DWORD dwCHARID = (DWORD) atoi (strPARAM_01.GetString());
+			DWORD dwCHARID = (DWORD)atoi(strPARAM_01.GetString());
 
 			GLMSG::SNETPC_GM_MOVE2CHAR NetMsg;
 			NetMsg.dwCHARID = dwCHARID;
 			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "move to charactor : %s", NetMsg.szNAME );
+			CInnerInterface::GetInstance().PrintConsoleText("move to charactor : %s", NetMsg.szNAME);
 		}
 
-		else if ( strCOMMAND=="/spy" )
+		else if (strCOMMAND == "/spy")
 		{
-			if ( strArray.GetSize() < 2 ) return true;
+			if (strArray.GetSize() < 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			GLMSG::SNETPC_GM_GETWHISPERMSG NetMsg;
-			if ( strPARAM_01=="off" )
+			if (strPARAM_01 == "off")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "message view : off" );
-			}else{			
-				StringCchCopy( NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString() );
-				CInnerInterface::GetInstance().PrintConsoleText ( "message view : %s on", NetMsg.szNAME );
+				CInnerInterface::GetInstance().PrintConsoleText("message view : off");
 			}
-			NETSEND(&NetMsg);		
-
+			else
+			{
+				StringCchCopy(NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString());
+				CInnerInterface::GetInstance().PrintConsoleText("message view : %s on", NetMsg.szNAME);
+			}
+			NETSEND(&NetMsg);
 		}
 
-		else if ( strCOMMAND=="/genchar" )
+		else if (strCOMMAND == "/genchar")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			GLMSG::SNETPC_GM_GENCHAR NetMsg;
-			StringCchCopy ( NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString() );
+			StringCchCopy(NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString());
 			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "Recall charactor : %s", NetMsg.szNAME );
+			CInnerInterface::GetInstance().PrintConsoleText("Recall charactor : %s", NetMsg.szNAME);
 		}
 
-		else if ( strCOMMAND=="/genchar_ci" )
+		else if (strCOMMAND == "/genchar_ci")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
-			DWORD dwCHARID = (DWORD) atoi (strPARAM_01.GetString());
+			DWORD dwCHARID = (DWORD)atoi(strPARAM_01.GetString());
 
 			GLMSG::SNETPC_GM_GENCHAR NetMsg;
 			NetMsg.dwCHARID = dwCHARID;
 			NETSEND(&NetMsg);
 		}
 		/* genchar pt, Juver, 2020/12/03 */
-		else if ( strCOMMAND=="/genchar_pt" )
+		else if (strCOMMAND == "/genchar_pt")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			DWORD dwPartyID = (DWORD) atoi (strPARAM_01.GetString());
+			DWORD dwPartyID = (DWORD)atoi(strPARAM_01.GetString());
 
 			GLMSG::SNETPC_GM_GENCHAR_PARTY NetMsg;
 			NetMsg.dwPartyID = dwPartyID;
 			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/visible" )
+		else if (strCOMMAND == "/visible")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			if ( strPARAM_01=="none" )
+			if (strPARAM_01 == "none")
 			{
 				GLGaeaClient::GetInstance().GetCharacter()->ReqVisibleNone(TRUE);
 			}
-			else if ( strPARAM_01=="off" )
+			else if (strPARAM_01 == "off")
 			{
 				GLGaeaClient::GetInstance().GetCharacter()->ReqVisibleOff(TRUE);
 			}
-			else if ( strPARAM_01=="on" )
+			else if (strPARAM_01 == "on")
 			{
 				GLGaeaClient::GetInstance().GetCharacter()->ReqVisibleOn(TRUE);
 			}
 		}
-		else if ( strCOMMAND=="/kickuser" )
+		else if (strCOMMAND == "/kickuser")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
-			
-			DWORD dwID = (DWORD) atoi ( strPARAM_01.GetString() );
+
+			DWORD dwID = (DWORD)atoi(strPARAM_01.GetString());
 
 			GLMSG::SNET_GM_KICK_USER NetMsg;
 			NetMsg.dwID = dwID;
 			NetMsg.bGaeaID = FALSE;
 			NetMsg.bName = FALSE;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/kick" )
+		else if (strCOMMAND == "/kick")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			GLMSG::SNET_GM_KICK_USER NetMsg;
-			StringCchCopy ( NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString() );
+			StringCchCopy(NetMsg.szNAME, CHAR_SZNAME, strPARAM_01.GetString());
 			NetMsg.bName = TRUE;
 			NetMsg.bGaeaID = FALSE;
 
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "Disconnecting Character : %s", strPARAM_01 );
+			CInnerInterface::GetInstance().PrintConsoleText("Disconnecting Character : %s", strPARAM_01);
 		}
-		else if ( strCOMMAND=="/kick_all" )
+		else if (strCOMMAND == "/kick_all")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
-			if ( strPARAM_01 == "sure" )
+			if (strPARAM_01 == "sure")
 			{
 				GLMSG::SNET_GM_KICK_USER NetMsg;
 				NetMsg.bGaeaID = TRUE;
 				NetMsg.bName = FALSE;
 
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 
-				CInnerInterface::GetInstance().PrintConsoleText ( "Disconnecting All GaeaID Except Executor" );
+				CInnerInterface::GetInstance().PrintConsoleText("Disconnecting All GaeaID Except Executor");
 			}
-			else CInnerInterface::GetInstance().PrintConsoleText ( "Disconnecting Failed" );
-
+			else
+				CInnerInterface::GetInstance().PrintConsoleText("Disconnecting Failed");
 		}
-		else if( strCOMMAND=="/btg" )
+		else if (strCOMMAND == "/btg")
 		{
-#ifdef CH_PARAM_USEGAIN 
+#ifdef CH_PARAM_USEGAIN
 			return true;
 #endif
-			if ( strArray.GetSize() != 7 && strArray.GetSize() != 8 ) return true;
+			if (strArray.GetSize() != 7 && strArray.GetSize() != 8)
+				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 			CString strPARAM_02 = strArray.GetAt(2);
@@ -911,273 +966,279 @@ namespace dxincommand
 			CString strPARAM_04 = strArray.GetAt(4);
 			CString strPARAM_05 = strArray.GetAt(5);
 			CString strPARAM_06 = strArray.GetAt(6);
-			
-			int start_Lv	  = (int)atoi(strPARAM_01.GetString());
-			int end_Lv		  = (int)atoi(strPARAM_02.GetString());
-			int play_Time	  = (int)atoi(strPARAM_03.GetString());
-			int buster_Time   = (int)atoi(strPARAM_04.GetString());
-			float expGain_Rate  = (float)atof(strPARAM_05.GetString());
+
+			int start_Lv = (int)atoi(strPARAM_01.GetString());
+			int end_Lv = (int)atoi(strPARAM_02.GetString());
+			int play_Time = (int)atoi(strPARAM_03.GetString());
+			int buster_Time = (int)atoi(strPARAM_04.GetString());
+			float expGain_Rate = (float)atof(strPARAM_05.GetString());
 			float itemGain_Rate = (float)atof(strPARAM_06.GetString());
 
-			DWORD dwEventMinute = 0;			
-			if( strArray.GetSize() == 8 ) 
+			DWORD dwEventMinute = 0;
+			if (strArray.GetSize() == 8)
 			{
 				CString strPARAM_07;
 				strPARAM_07 = strArray.GetAt(7);
-				dwEventMinute   = (DWORD)atoi(strPARAM_07.GetString());
+				dwEventMinute = (DWORD)atoi(strPARAM_07.GetString());
 			}
-			
 
 #if !defined(_RELEASED)
-			if( expGain_Rate > 10.0f ) expGain_Rate = 10.0f;
-			if( itemGain_Rate > 10.0f ) itemGain_Rate = 10.0f;
+			if (expGain_Rate > 10.0f)
+				expGain_Rate = 10.0f;
+			if (itemGain_Rate > 10.0f)
+				itemGain_Rate = 10.0f;
 #endif
 
-
-			CInnerInterface::GetInstance().PrintConsoleText ( 
+			CInnerInterface::GetInstance().PrintConsoleText(
 				"Limit Event Start, StartLv: %d, EndLv: %d, PlayTime: %d, BusterTime: %d ExpGainRate: %.3f ItemGainRate: %.3f EventMinute %d",
-				start_Lv, end_Lv, play_Time, buster_Time, expGain_Rate, itemGain_Rate, dwEventMinute );
+				start_Lv, end_Lv, play_Time, buster_Time, expGain_Rate, itemGain_Rate, dwEventMinute);
 
 			GLMSG::SNET_GM_LIMIT_EVENT_BEGIN NetMsg;
-			NetMsg.start_Lv		 = start_Lv;
-			NetMsg.end_Lv		 = end_Lv;
-			NetMsg.play_Time	 = play_Time;
-			NetMsg.buster_Time   = buster_Time;
-			NetMsg.expGain_Rate  = expGain_Rate;
+			NetMsg.start_Lv = start_Lv;
+			NetMsg.end_Lv = end_Lv;
+			NetMsg.play_Time = play_Time;
+			NetMsg.buster_Time = buster_Time;
+			NetMsg.expGain_Rate = expGain_Rate;
 			NetMsg.itemGain_Rate = itemGain_Rate;
 			NetMsg.dwEventMinute = dwEventMinute;
-			NETSEND ( &NetMsg );
-
+			NETSEND(&NetMsg);
 		}
-		else if( strCOMMAND=="/btg_end" )
+		else if (strCOMMAND == "/btg_end")
 		{
-			CInnerInterface::GetInstance().PrintConsoleText ( "Limit Event End" );
+			CInnerInterface::GetInstance().PrintConsoleText("Limit Event End");
 			GLMSG::SNET_GM_LIMIT_EVENT_END NetMsg;
-			NETSEND ( &NetMsg );
-
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/eventexp_begin" )
+		else if (strCOMMAND == "/eventexp_begin")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			float fSCALE = (float) atof ( strPARAM_01.GetString() );
+			float fSCALE = (float)atof(strPARAM_01.GetString());
 
 			GLMSG::SNET_GM_EVENT_EXP NetMsg;
 			NetMsg.fRATE = fSCALE;
 			NetMsg.dwCHARID = GLGaeaClient::GetInstance().GetCharacter()->m_dwCharID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/eventexp_end" )
+		else if (strCOMMAND == "/eventexp_end")
 		{
 			GLMSG::SNET_GM_EVENT_EXP_END NetMsg;
 			NetMsg.dwCHARID = GLGaeaClient::GetInstance().GetCharacter()->m_dwCharID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/eventitem_begin" )
+		else if (strCOMMAND == "/eventitem_begin")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			float fSCALE = (float) atof ( strPARAM_01.GetString() );
+			float fSCALE = (float)atof(strPARAM_01.GetString());
 
 			GLMSG::SNET_GM_EVENT_ITEM_GEN NetMsg;
 			NetMsg.fRATE = fSCALE;
 			NetMsg.dwCHARID = GLGaeaClient::GetInstance().GetCharacter()->m_dwCharID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/eventitem_end" )
+		else if (strCOMMAND == "/eventitem_end")
 		{
 			GLMSG::SNET_GM_EVENT_ITEM_GEN_END NetMsg;
 			NetMsg.dwCHARID = GLGaeaClient::GetInstance().GetCharacter()->m_dwCharID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/eventmoney_begin" )
+		else if (strCOMMAND == "/eventmoney_begin")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
-			float fSCALE = (float) atof ( strPARAM_01.GetString() );
+			float fSCALE = (float)atof(strPARAM_01.GetString());
 
 			GLMSG::SNET_GM_EVENT_MONEY_GEN NetMsg;
 			NetMsg.fRATE = fSCALE;
 			NetMsg.dwCHARID = GLGaeaClient::GetInstance().GetCharacter()->m_dwCharID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/eventmoney_end" )
+		else if (strCOMMAND == "/eventmoney_end")
 		{
 			GLMSG::SNET_GM_EVENT_MONEY_GEN_END NetMsg;
 			NetMsg.dwCHARID = GLGaeaClient::GetInstance().GetCharacter()->m_dwCharID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/pk_mode" )
+		else if (strCOMMAND == "/pk_mode")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			BOOL bMODE(FALSE);
-			if ( strPARAM_01=="off" )
+			if (strPARAM_01 == "off")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "pk_mode : off" );
+				CInnerInterface::GetInstance().PrintConsoleText("pk_mode : off");
 				bMODE = FALSE;
 			}
-			else if ( strPARAM_01=="on" )
+			else if (strPARAM_01 == "on")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "pk_mode : on" );
+				CInnerInterface::GetInstance().PrintConsoleText("pk_mode : on");
 				bMODE = TRUE;
 			}
 			else
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "pk_mode : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("pk_mode : invalid param");
 				return true;
 			}
 
 			GLMSG::SNET_SERVER_PLAYERKILLING_MODE NetMsg;
 			NetMsg.bMODE = bMODE;
 			NetMsg.dwCHARID = GLGaeaClient::GetInstance().GetCharacter()->m_dwCharID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/where_npc" )
+		else if (strCOMMAND == "/where_npc")
 		{
-			if ( strArray.GetSize() != 3 )			return true;
+			if (strArray.GetSize() != 3)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 			CString strPARAM_02 = strArray.GetAt(2);
-		
-			WORD mid = (WORD) atoi (strPARAM_01.GetString());
-			WORD sid = (WORD) atoi (strPARAM_02.GetString());
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "where_npc : [%d/%d]", mid, sid );
+			WORD mid = (WORD)atoi(strPARAM_01.GetString());
+			WORD sid = (WORD)atoi(strPARAM_02.GetString());
 
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			CInnerInterface::GetInstance().PrintConsoleText("where_npc : [%d/%d]", mid, sid);
+
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNET_GM_WHERE_NPC_FLD NetMsgFld;
-				NetMsgFld.nidNPC   = SNATIVEID(mid,sid);
+				NetMsgFld.nidNPC = SNATIVEID(mid, sid);
 				NetMsgFld.dwGaeaID = 0;
-				NETSEND ( &NetMsgFld );
+				NETSEND(&NetMsgFld);
 			}
 			else
 			{
 				GLMSG::SNET_GM_WHERE_NPC NetMsg;
-				NetMsg.nidNPC = SNATIVEID(mid,sid);
-				NETSEND ( &NetMsg );
+				NetMsg.nidNPC = SNATIVEID(mid, sid);
+				NETSEND(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/crow_list" )
+		else if (strCOMMAND == "/crow_list")
 		{
-			if ( strArray.GetSize() > 2 )			return true;
+			if (strArray.GetSize() > 2)
+				return true;
 
 			BYTE dwFindMob = 0;
-			if( strArray.GetSize() != 1 )
+			if (strArray.GetSize() != 1)
 			{
-				CString strPARAM_01 = strArray.GetAt(1);				
-				if ( strPARAM_01=="mob" )
+				CString strPARAM_01 = strArray.GetAt(1);
+				if (strPARAM_01 == "mob")
 				{
 					dwFindMob = 1;
 				}
-				else if ( strPARAM_01=="npc" )
+				else if (strPARAM_01 == "npc")
 				{
 					dwFindMob = 2;
 				}
 				/* crow zone, Juver, 2018/02/21 */
-				else if ( strPARAM_01=="zone_name" )
+				else if (strPARAM_01 == "zone_name")
 				{
 					dwFindMob = 3;
 				}
 				/* crow zone, Juver, 2018/02/21 */
-				else if ( strPARAM_01=="gate_name" )
+				else if (strPARAM_01 == "gate_name")
 				{
 					dwFindMob = 4;
 				}
 			}
 
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNET_GM_PRINT_CROWLIST_FLD NetMsgFld;
 				NetMsgFld.dwGaeaID = 0;
 				NetMsgFld.dwFindMob = dwFindMob;
-				NETSEND ( &NetMsgFld );
+				NETSEND(&NetMsgFld);
 			}
 			else
 			{
 				GLMSG::SNET_GM_PRINT_CROWLIST NetMsg;
 				NetMsg.dwFindMob = dwFindMob;
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/bighead" )
+		else if (strCOMMAND == "/bighead")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			bool bMODE(false);
-			if ( strPARAM_01=="off" )
+			if (strPARAM_01 == "off")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "bighead : off" );
+				CInnerInterface::GetInstance().PrintConsoleText("bighead : off");
 				bMODE = false;
 			}
-			else if ( strPARAM_01=="on" )
+			else if (strPARAM_01 == "on")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "bighead : on" );
+				CInnerInterface::GetInstance().PrintConsoleText("bighead : on");
 				bMODE = true;
 			}
 			else
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "bighead : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("bighead : invalid param");
 				return true;
 			}
 
 			GLMSG::SNET_GM_BIGHEAD NetMsg;
 			NetMsg.bBIGHEAD = bMODE;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/bighand" )
+		else if (strCOMMAND == "/bighand")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			bool bMODE(false);
-			if ( strPARAM_01=="off" )
+			if (strPARAM_01 == "off")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "bighand : off" );
+				CInnerInterface::GetInstance().PrintConsoleText("bighand : off");
 				bMODE = false;
 			}
-			else if ( strPARAM_01=="on" )
+			else if (strPARAM_01 == "on")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "bighand : on" );
+				CInnerInterface::GetInstance().PrintConsoleText("bighand : on");
 				bMODE = true;
 			}
 			else
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "bighand : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("bighand : invalid param");
 				return true;
 			}
 
 			GLMSG::SNET_GM_BIGHAND NetMsg;
 			NetMsg.bBIGHAND = bMODE;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/mob_gen" )
+		else if (strCOMMAND == "/mob_gen")
 		{
-			if( strArray.GetSize() == 3 ) 
+			if (strArray.GetSize() == 3)
 			{
 				CString strPARAM_01 = strArray.GetAt(1);
 				CString strPARAM_02 = strArray.GetAt(2);
 
-				WORD wMainID = (WORD) atoi (strPARAM_01.GetString() );
-				WORD wSubID = (WORD) atoi (strPARAM_02.GetString() );
-				
+				WORD wMainID = (WORD)atoi(strPARAM_01.GetString());
+				WORD wSubID = (WORD)atoi(strPARAM_02.GetString());
+
 				D3DXVECTOR3 vcharpos = GLGaeaClient::GetInstance().GetCharacter()->GetPosition();
 				int posx, posy;
-				GLGaeaClient::GetInstance().GetActiveMap()->GetMapAxisInfo().Convert2MapPos( vcharpos.x, vcharpos.z, posx, posy );
+				GLGaeaClient::GetInstance().GetActiveMap()->GetMapAxisInfo().Convert2MapPos(vcharpos.x, vcharpos.z, posx, posy);
 
-				PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData ( wMainID, wSubID );
-				if ( !pCrowData )
+				PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData(wMainID, wSubID);
+				if (!pCrowData)
 				{
-					CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen : invalid mob_id" );
+					CInnerInterface::GetInstance().PrintConsoleText("mob_gen : invalid mob_id");
 					return true;
 				}
 
-				if ( DxGlobalStage::GetInstance().IsEmulator() )
+				if (DxGlobalStage::GetInstance().IsEmulator())
 				{
 					GLMSG::SNET_GM_MOB_GEN_FLD NetMsgFld;
 					NetMsgFld.dwGaeaID = 0;
@@ -1185,7 +1246,7 @@ namespace dxincommand
 					NetMsgFld.wSubID = wSubID;
 					NetMsgFld.wPosX = (WORD)posx;
 					NetMsgFld.wPosY = (WORD)posy;
-					NETSEND ( &NetMsgFld );
+					NETSEND(&NetMsgFld);
 				}
 				else
 				{
@@ -1194,29 +1255,29 @@ namespace dxincommand
 					NetMsg.wSubID = wSubID;
 					NetMsg.wPosX = (WORD)posx;
 					NetMsg.wPosY = (WORD)posy;
-					NETSEND ( &NetMsg );
+					NETSEND(&NetMsg);
 				}
 			}
-			else if ( strArray.GetSize() == 5 )
+			else if (strArray.GetSize() == 5)
 			{
 				CString strPARAM_01 = strArray.GetAt(1);
 				CString strPARAM_02 = strArray.GetAt(2);
 				CString strPARAM_03 = strArray.GetAt(3);
 				CString strPARAM_04 = strArray.GetAt(4);
 
-				WORD wMainID = (WORD) atoi (strPARAM_01.GetString() );
-				WORD wSubID = (WORD) atoi (strPARAM_02.GetString() );
-				WORD wPosX = (WORD) atoi (strPARAM_03.GetString() );
-				WORD wPosY = (WORD) atoi (strPARAM_04.GetString() );
+				WORD wMainID = (WORD)atoi(strPARAM_01.GetString());
+				WORD wSubID = (WORD)atoi(strPARAM_02.GetString());
+				WORD wPosX = (WORD)atoi(strPARAM_03.GetString());
+				WORD wPosY = (WORD)atoi(strPARAM_04.GetString());
 
-				PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData ( wMainID, wSubID );
-				if ( !pCrowData )
+				PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData(wMainID, wSubID);
+				if (!pCrowData)
 				{
-					CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen : invalid mob_id" );
+					CInnerInterface::GetInstance().PrintConsoleText("mob_gen : invalid mob_id");
 					return true;
 				}
 
-				if ( DxGlobalStage::GetInstance().IsEmulator() )
+				if (DxGlobalStage::GetInstance().IsEmulator())
 				{
 					GLMSG::SNET_GM_MOB_GEN_FLD NetMsgFld;
 					NetMsgFld.dwGaeaID = 0;
@@ -1224,7 +1285,7 @@ namespace dxincommand
 					NetMsgFld.wSubID = wSubID;
 					NetMsgFld.wPosX = wPosX;
 					NetMsgFld.wPosY = wPosY;
-					NETSEND ( &NetMsgFld );
+					NETSEND(&NetMsgFld);
 				}
 				else
 				{
@@ -1233,22 +1294,20 @@ namespace dxincommand
 					NetMsg.wSubID = wSubID;
 					NetMsg.wPosX = wPosX;
 					NetMsg.wPosY = wPosY;
-					NETSEND ( &NetMsg );
+					NETSEND(&NetMsg);
 				}
 			}
 			else
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_gen : invalid param");
 				return true;
 			}
-
-			
 		}
-		else if ( strCOMMAND=="/mob_gen_ex" )
+		else if (strCOMMAND == "/mob_gen_ex")
 		{
-			if ( strArray.GetSize() != 10 )
+			if (strArray.GetSize() != 10)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen_ex : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_gen_ex : invalid param");
 				return true;
 			}
 
@@ -1261,52 +1320,52 @@ namespace dxincommand
 			CString strPARAM_07 = strArray.GetAt(7);
 			CString strPARAM_08 = strArray.GetAt(8);
 			CString strPARAM_09 = strArray.GetAt(9);
-			
-			WORD wMobMID = (WORD) atoi (strPARAM_01.GetString() );
-			WORD wMobSID = (WORD) atoi (strPARAM_02.GetString() );
-			WORD wMapMID = (WORD) atoi (strPARAM_03.GetString() );
-			WORD wMapSID = (WORD) atoi (strPARAM_04.GetString() );
-			WORD wPosX	 = (WORD) atoi (strPARAM_05.GetString() );
-			WORD wPosY	 = (WORD) atoi (strPARAM_06.GetString() );
-			WORD wRange  = (WORD) atoi (strPARAM_07.GetString() );
-			WORD wNum	 = (WORD) atoi (strPARAM_08.GetString() );
-			WORD wChannel = (WORD) atoi (strPARAM_09.GetString() );
 
-			PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData ( wMobMID, wMobSID );
-			if ( !pCrowData )
+			WORD wMobMID = (WORD)atoi(strPARAM_01.GetString());
+			WORD wMobSID = (WORD)atoi(strPARAM_02.GetString());
+			WORD wMapMID = (WORD)atoi(strPARAM_03.GetString());
+			WORD wMapSID = (WORD)atoi(strPARAM_04.GetString());
+			WORD wPosX = (WORD)atoi(strPARAM_05.GetString());
+			WORD wPosY = (WORD)atoi(strPARAM_06.GetString());
+			WORD wRange = (WORD)atoi(strPARAM_07.GetString());
+			WORD wNum = (WORD)atoi(strPARAM_08.GetString());
+			WORD wChannel = (WORD)atoi(strPARAM_09.GetString());
+
+			PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData(wMobMID, wMobSID);
+			if (!pCrowData)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen_ex : invalid mob_id" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_gen_ex : invalid mob_id");
 				return false;
 			}
-			
+
 			SNATIVEID sMapID(wMapMID, wMapSID);
-			GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList ();
-			GLMapList::FIELDMAP_ITER iter = MapsList.find ( sMapID.dwID );
-			if ( iter==MapsList.end() )
+			GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList();
+			GLMapList::FIELDMAP_ITER iter = MapsList.find(sMapID.dwID);
+			if (iter == MapsList.end())
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen_ex : invalid map_id" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_gen_ex : invalid map_id");
 				return false;
 			}
 
-			if ( wRange*100 < wNum )
+			if (wRange * 100 < wNum)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen_ex : out of mob amount in range" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_gen_ex : out of mob amount in range");
 				return false;
 			}
 
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNET_GM_MOB_GEN_EX_FLD NetMsgFld;
-				NetMsgFld.wMobMID  = wMobMID;
-				NetMsgFld.wMobSID  = wMobSID;
-				NetMsgFld.wMapMID  = wMapMID;
-				NetMsgFld.wMapSID  = wMapSID;
-				NetMsgFld.wPosX	   = wPosX;
-				NetMsgFld.wPosY    = wPosY;
-				NetMsgFld.wRange   = wRange;
-				NetMsgFld.wNum     = wNum;
+				NetMsgFld.wMobMID = wMobMID;
+				NetMsgFld.wMobSID = wMobSID;
+				NetMsgFld.wMapMID = wMapMID;
+				NetMsgFld.wMapSID = wMapSID;
+				NetMsgFld.wPosX = wPosX;
+				NetMsgFld.wPosY = wPosY;
+				NetMsgFld.wRange = wRange;
+				NetMsgFld.wNum = wNum;
 				NetMsgFld.dwGaeaID = 0;
-				NETSEND ( &NetMsgFld );
+				NETSEND(&NetMsgFld);
 			}
 			else
 			{
@@ -1315,19 +1374,19 @@ namespace dxincommand
 				NetMsg.wMobSID = wMobSID;
 				NetMsg.wMapMID = wMapMID;
 				NetMsg.wMapSID = wMapSID;
-				NetMsg.wPosX   = wPosX;
-				NetMsg.wPosY   = wPosY;
-				NetMsg.wRange  = wRange;
-				NetMsg.wNum	   = wNum;
+				NetMsg.wPosX = wPosX;
+				NetMsg.wPosY = wPosY;
+				NetMsg.wRange = wRange;
+				NetMsg.wNum = wNum;
 				NetMsg.bThisChannel = wChannel;
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/mob_del" )
+		else if (strCOMMAND == "/mob_del")
 		{
-			if ( strArray.GetSize() > 3 )
+			if (strArray.GetSize() > 3)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_del : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_del : invalid param");
 				return true;
 			}
 
@@ -1335,29 +1394,28 @@ namespace dxincommand
 			WORD wMobSID = USHRT_MAX;
 			bool bMaterial = false;
 
-			if ( strArray.GetSize() == 2 )
+			if (strArray.GetSize() == 2)
 			{
-				 CString strPARAM_01 = strArray.GetAt(1);
-				 bMaterial = (bool) atoi( strPARAM_01.GetString() );
+				CString strPARAM_01 = strArray.GetAt(1);
+				bMaterial = (atoi(strPARAM_01.GetString()) != 0);
 			}
 
-			if ( strArray.GetSize() == 3 )
+			if (strArray.GetSize() == 3)
 			{
 				CString strPARAM_01 = strArray.GetAt(1);
 				CString strPARAM_02 = strArray.GetAt(2);
-				wMobMID = (WORD) atoi (strPARAM_01.GetString() );
-				wMobSID = (WORD) atoi (strPARAM_02.GetString() );
+				wMobMID = (WORD)atoi(strPARAM_01.GetString());
+				wMobSID = (WORD)atoi(strPARAM_02.GetString());
 			}
 
-
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNET_GM_MOB_DEL_FLD NetMsgFld;
-				NetMsgFld.dwGaeaID = 0;	
+				NetMsgFld.dwGaeaID = 0;
 				NetMsgFld.sMobID.wMainID = wMobMID;
 				NetMsgFld.sMobID.wSubID = wMobSID;
 				NetMsgFld.bMaterial = bMaterial;
-				NETSEND ( &NetMsgFld );
+				NETSEND(&NetMsgFld);
 			}
 			else
 			{
@@ -1365,14 +1423,14 @@ namespace dxincommand
 				NetMsg.sMobID.wMainID = wMobMID;
 				NetMsg.sMobID.wSubID = wMobSID;
 				NetMsg.bMaterial = bMaterial;
-				NETSEND ( &NetMsg );
+				NETSEND(&NetMsg);
 			}
 		}
-		else if ( strCOMMAND=="/mob_del_ex" )
+		else if (strCOMMAND == "/mob_del_ex")
 		{
-			if ( strArray.GetSize() != 6 )
+			if (strArray.GetSize() != 6)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_del_ex : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_del_ex : invalid param");
 				return true;
 			}
 
@@ -1381,36 +1439,36 @@ namespace dxincommand
 			CString strPARAM_03 = strArray.GetAt(3);
 			CString strPARAM_04 = strArray.GetAt(4);
 			CString strPARAM_05 = strArray.GetAt(5);
-			
-			WORD wMobMID = (WORD) atoi (strPARAM_01.GetString() );
-			WORD wMobSID = (WORD) atoi (strPARAM_02.GetString() );
-			WORD wMapMID = (WORD) atoi (strPARAM_03.GetString() );
-			WORD wMapSID = (WORD) atoi (strPARAM_04.GetString() );
-			WORD wChannel = (WORD) atoi (strPARAM_05.GetString() );
 
-			PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData ( wMobMID, wMobSID );
-			if ( !pCrowData )
+			WORD wMobMID = (WORD)atoi(strPARAM_01.GetString());
+			WORD wMobSID = (WORD)atoi(strPARAM_02.GetString());
+			WORD wMapMID = (WORD)atoi(strPARAM_03.GetString());
+			WORD wMapSID = (WORD)atoi(strPARAM_04.GetString());
+			WORD wChannel = (WORD)atoi(strPARAM_05.GetString());
+
+			PCROWDATA pCrowData = GLCrowDataMan::GetInstance().GetCrowData(wMobMID, wMobSID);
+			if (!pCrowData)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen_ex : invalid mob_id" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_gen_ex : invalid mob_id");
 				return false;
 			}
-			
+
 			SNATIVEID sMapID(wMapMID, wMapSID);
-			GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList ();
-			GLMapList::FIELDMAP_ITER iter = MapsList.find ( sMapID.dwID );
-			if ( iter==MapsList.end() )
+			GLMapList::FIELDMAP MapsList = GLGaeaClient::GetInstance().GetMapList();
+			GLMapList::FIELDMAP_ITER iter = MapsList.find(sMapID.dwID);
+			if (iter == MapsList.end())
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "mob_gen_ex : invalid map_id" );
+				CInnerInterface::GetInstance().PrintConsoleText("mob_gen_ex : invalid map_id");
 				return false;
 			}
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNET_GM_MOB_DEL_EX_FLD NetMsgFld;
 				NetMsgFld.wMobMID = wMobMID;
 				NetMsgFld.wMobSID = wMobSID;
 				NetMsgFld.wMapMID = wMapMID;
 				NetMsgFld.wMapSID = wMapSID;
-				NETSEND ( &NetMsgFld );
+				NETSEND(&NetMsgFld);
 			}
 			else
 			{
@@ -1419,22 +1477,22 @@ namespace dxincommand
 				NetMsg.wMobSID = wMobSID;
 				NetMsg.wMapMID = wMapMID;
 				NetMsg.wMapSID = wMapSID;
-				NETSEND ( &NetMsg );
-			}			
+				NETSEND(&NetMsg);
+			}
 		}
-		else if ( strCOMMAND=="/lev_new" )
+		else if (strCOMMAND == "/lev_new")
 		{
-			if ( strArray.GetSize() != 2 )
+			if (strArray.GetSize() != 2)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "lev_new : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("lev_new : invalid param");
 				return true;
 			}
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			PLANDMANCLIENT pLAND = GLGaeaClient::GetInstance().GetActiveMap();
-			if ( !pLAND )
+			if (!pLAND)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "lev_new : unknown error" );
+				CInnerInterface::GetInstance().PrintConsoleText("lev_new : unknown error");
 				return true;
 			}
 
@@ -1443,15 +1501,15 @@ namespace dxincommand
 			GLMSG::SNET_GM_MOB_LEV NetMsg;
 			NetMsg.wMAP_MID = nidMAP.wMainID;
 			NetMsg.wMAP_SID = nidMAP.wSubID;
-			StringCchCopy ( NetMsg.szLevelFile, GLMSG::SNET_GM_MOB_LEV::FILE_NAME, strPARAM_01.GetString() );
-			NETSEND ( &NetMsg );
+			StringCchCopy(NetMsg.szLevelFile, GLMSG::SNET_GM_MOB_LEV::FILE_NAME, strPARAM_01.GetString());
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/lev_del" )
+		else if (strCOMMAND == "/lev_del")
 		{
 			PLANDMANCLIENT pLAND = GLGaeaClient::GetInstance().GetActiveMap();
-			if ( !pLAND )
+			if (!pLAND)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "lev_del : unknown error" );
+				CInnerInterface::GetInstance().PrintConsoleText("lev_del : unknown error");
 				return true;
 			}
 
@@ -1460,14 +1518,14 @@ namespace dxincommand
 			GLMSG::SNET_GM_MOB_LEV_CLEAR NetMsg;
 			NetMsg.wMAP_MID = nidMAP.wMainID;
 			NetMsg.wMAP_SID = nidMAP.wSubID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
 		/*chatblock reason, Juver, 2018/09/25 */
-		else if ( strCOMMAND=="/chatblock_ua" )
+		else if (strCOMMAND == "/chatblock_ua")
 		{
-			if ( strArray.GetSize() != 4 )
+			if (strArray.GetSize() != 4)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "chatblock_ua : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("chatblock_ua : invalid param");
 				return true;
 			}
 
@@ -1475,33 +1533,33 @@ namespace dxincommand
 			CString strPARAM_02 = strArray.GetAt(2);
 			CString strPARAM_03 = strArray.GetAt(3);
 
-			DWORD dwMinute = (DWORD) atoi (strPARAM_02.GetString());
+			DWORD dwMinute = (DWORD)atoi(strPARAM_02.GetString());
 
-			if ( dwMinute > RPARAM::dwChatBlockMaxMinute )
+			if (dwMinute > RPARAM::dwChatBlockMaxMinute)
 			{
-				CTimeSpan tTimeSpan( 0, 0, RPARAM::dwChatBlockMaxMinute, 0 );
-				CInnerInterface::GetInstance().PrintConsoleText ( "maximum chat block minute is %u or %I64d days", RPARAM::dwChatBlockMaxMinute, tTimeSpan.GetDays() );
+				CTimeSpan tTimeSpan(0, 0, RPARAM::dwChatBlockMaxMinute, 0);
+				CInnerInterface::GetInstance().PrintConsoleText("maximum chat block minute is %u or %I64d days", RPARAM::dwChatBlockMaxMinute, tTimeSpan.GetDays());
 				return true;
 			}
 
-			if ( dwMinute > MAXIMUM_CHATBLOCK_MINUTE )
+			if (dwMinute > MAXIMUM_CHATBLOCK_MINUTE)
 				return true;
 
-			GLMSG::SNET_GM_CHAT_BLOCK_UACCOUNT	NetMsg;
-			StringCchCopy ( NetMsg.szUACCOUNT, USR_ID_LENGTH+1, strPARAM_01.GetString() );
+			GLMSG::SNET_GM_CHAT_BLOCK_UACCOUNT NetMsg;
+			StringCchCopy(NetMsg.szUACCOUNT, USR_ID_LENGTH + 1, strPARAM_01.GetString());
 			NetMsg.dwBLOCK_MINUTE = dwMinute;
-			StringCchCopy ( NetMsg.szReason, sizeof NetMsg.szReason, strPARAM_03.GetString() );
-			NETSEND ( &NetMsg );
+			StringCchCopy(NetMsg.szReason, sizeof NetMsg.szReason, strPARAM_03.GetString());
+			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "request chat block : uaccount %s, minute %d, reason \"%s\"",
-				NetMsg.szUACCOUNT, NetMsg.dwBLOCK_MINUTE, NetMsg.szReason );
+			CInnerInterface::GetInstance().PrintConsoleText("request chat block : uaccount %s, minute %d, reason \"%s\"",
+															NetMsg.szUACCOUNT, NetMsg.dwBLOCK_MINUTE, NetMsg.szReason);
 		}
 		/*chatblock reason, Juver, 2018/09/25 */
-		else if ( strCOMMAND=="/chatblock_cn" )
+		else if (strCOMMAND == "/chatblock_cn")
 		{
-			if ( strArray.GetSize() != 4 )
+			if (strArray.GetSize() != 4)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "chatblock_cn : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("chatblock_cn : invalid param");
 				return true;
 			}
 
@@ -1509,33 +1567,33 @@ namespace dxincommand
 			CString strPARAM_02 = strArray.GetAt(2);
 			CString strPARAM_03 = strArray.GetAt(3);
 
-			DWORD dwMinute = (DWORD) atoi (strPARAM_02.GetString());
+			DWORD dwMinute = (DWORD)atoi(strPARAM_02.GetString());
 
-			if ( dwMinute > RPARAM::dwChatBlockMaxMinute )
+			if (dwMinute > RPARAM::dwChatBlockMaxMinute)
 			{
-				CTimeSpan tTimeSpan( 0, 0, RPARAM::dwChatBlockMaxMinute, 0 );
-				CInnerInterface::GetInstance().PrintConsoleText ( "maximum chat block minute is %u or %I64d days", RPARAM::dwChatBlockMaxMinute, tTimeSpan.GetDays() );
+				CTimeSpan tTimeSpan(0, 0, RPARAM::dwChatBlockMaxMinute, 0);
+				CInnerInterface::GetInstance().PrintConsoleText("maximum chat block minute is %u or %I64d days", RPARAM::dwChatBlockMaxMinute, tTimeSpan.GetDays());
 				return true;
 			}
 
-			if ( dwMinute > MAXIMUM_CHATBLOCK_MINUTE )
+			if (dwMinute > MAXIMUM_CHATBLOCK_MINUTE)
 				return true;
 
-			GLMSG::SNET_GM_CHAT_BLOCK_CHARNAME	NetMsg;
-			StringCchCopy ( NetMsg.szCHARNAME, CHAR_SZNAME, strPARAM_01.GetString() );
+			GLMSG::SNET_GM_CHAT_BLOCK_CHARNAME NetMsg;
+			StringCchCopy(NetMsg.szCHARNAME, CHAR_SZNAME, strPARAM_01.GetString());
 			NetMsg.dwBLOCK_MINUTE = dwMinute;
-			StringCchCopy ( NetMsg.szReason, sizeof NetMsg.szReason, strPARAM_03.GetString() );
-			NETSEND ( &NetMsg );
+			StringCchCopy(NetMsg.szReason, sizeof NetMsg.szReason, strPARAM_03.GetString());
+			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "request chat block : charname %s, minute %d, reason \"%s\"",
-				NetMsg.szCHARNAME, NetMsg.dwBLOCK_MINUTE, NetMsg.szReason );
+			CInnerInterface::GetInstance().PrintConsoleText("request chat block : charname %s, minute %d, reason \"%s\"",
+															NetMsg.szCHARNAME, NetMsg.dwBLOCK_MINUTE, NetMsg.szReason);
 		}
 		/*chatblock reason, Juver, 2018/09/25 */
-		else if ( strCOMMAND=="/chatblock_ci" )
+		else if (strCOMMAND == "/chatblock_ci")
 		{
-			if ( strArray.GetSize() != 4 )
+			if (strArray.GetSize() != 4)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "chatblock_ci : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("chatblock_ci : invalid param");
 				return true;
 			}
 
@@ -1543,208 +1601,213 @@ namespace dxincommand
 			CString strPARAM_02 = strArray.GetAt(2);
 			CString strPARAM_03 = strArray.GetAt(3);
 
-			DWORD dwCHARID = (DWORD) atoi (strPARAM_01.GetString());
-			DWORD dwMinute = (DWORD) atoi (strPARAM_02.GetString());
+			DWORD dwCHARID = (DWORD)atoi(strPARAM_01.GetString());
+			DWORD dwMinute = (DWORD)atoi(strPARAM_02.GetString());
 
-			if ( dwMinute > RPARAM::dwChatBlockMaxMinute )
+			if (dwMinute > RPARAM::dwChatBlockMaxMinute)
 			{
-				CTimeSpan tTimeSpan( 0, 0, RPARAM::dwChatBlockMaxMinute, 0 );
-				CInnerInterface::GetInstance().PrintConsoleText ( "maximum chat block minute is %u or %I64d days", RPARAM::dwChatBlockMaxMinute, tTimeSpan.GetDays() );
+				CTimeSpan tTimeSpan(0, 0, RPARAM::dwChatBlockMaxMinute, 0);
+				CInnerInterface::GetInstance().PrintConsoleText("maximum chat block minute is %u or %I64d days", RPARAM::dwChatBlockMaxMinute, tTimeSpan.GetDays());
 				return true;
 			}
 
-			if ( dwMinute > MAXIMUM_CHATBLOCK_MINUTE )
+			if (dwMinute > MAXIMUM_CHATBLOCK_MINUTE)
 				return true;
 
-			GLMSG::SNET_GM_CHAT_BLOCK_CHARID	NetMsg;
+			GLMSG::SNET_GM_CHAT_BLOCK_CHARID NetMsg;
 			NetMsg.dwCHARID = dwCHARID;
 			NetMsg.dwBLOCK_MINUTE = dwMinute;
-			StringCchCopy ( NetMsg.szReason, sizeof NetMsg.szReason, strPARAM_03.GetString() );
-			NETSEND ( &NetMsg );
+			StringCchCopy(NetMsg.szReason, sizeof NetMsg.szReason, strPARAM_03.GetString());
+			NETSEND(&NetMsg);
 
-			CInnerInterface::GetInstance().PrintConsoleText ( "request chat block : charid %d, minute %d, reason \"%s\"",
-				NetMsg.dwCHARID, NetMsg.dwBLOCK_MINUTE, NetMsg.szReason );
+			CInnerInterface::GetInstance().PrintConsoleText("request chat block : charid %d, minute %d, reason \"%s\"",
+															NetMsg.dwCHARID, NetMsg.dwBLOCK_MINUTE, NetMsg.szReason);
 		}
-		else if ( strCOMMAND=="/charinfo_cn" )
+		else if (strCOMMAND == "/charinfo_cn")
 		{
-			if ( strArray.GetSize() != 2 )
+			if (strArray.GetSize() != 2)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "charinfo_cn : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("charinfo_cn : invalid param");
 				return true;
 			}
 
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			GLMSG::SNET_GM_CHAR_INFO_4NAME NetMsg;
-			StringCchCopy ( NetMsg.szCHARNAME, CHAR_SZNAME, strPARAM_01.GetString() );
-			NETSEND ( &NetMsg );
+			StringCchCopy(NetMsg.szCHARNAME, CHAR_SZNAME, strPARAM_01.GetString());
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/charinfo_ci" )
+		else if (strCOMMAND == "/charinfo_ci")
 		{
-			if ( strArray.GetSize() != 2 )
+			if (strArray.GetSize() != 2)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "charinfo_ci : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("charinfo_ci : invalid param");
 				return true;
 			}
 
 			CString strPARAM_01 = strArray.GetAt(1);
-			
-			DWORD dwCHARID = (DWORD) atoi (strPARAM_01.GetString());
+
+			DWORD dwCHARID = (DWORD)atoi(strPARAM_01.GetString());
 
 			GLMSG::SNET_GM_CHAR_INFO_4CHARID NetMsg;
 			NetMsg.dwCHARID = dwCHARID;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/freepk_on" )
+		else if (strCOMMAND == "/freepk_on")
 		{
-			if ( strArray.GetSize() != 4 )
+			if (strArray.GetSize() != 4)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "freepk : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("freepk : invalid param");
 				return true;
 			}
 
 			PLANDMANCLIENT pLAND = GLGaeaClient::GetInstance().GetActiveMap();
-			if ( !pLAND )			return true;
+			if (!pLAND)
+				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 			CString strPARAM_02 = strArray.GetAt(2);
 			CString strPARAM_03 = strArray.GetAt(3);
 
-			DWORD dwTIME = (DWORD) atoi (strPARAM_01.GetString());
+			DWORD dwTIME = (DWORD)atoi(strPARAM_01.GetString());
 			/*dmk14 freepk*/
-			DWORD dwMid = (DWORD) atoi (strPARAM_02.GetString());
-			DWORD dwSid = (DWORD) atoi (strPARAM_03.GetString());
+			DWORD dwMid = (DWORD)atoi(strPARAM_02.GetString());
+			DWORD dwSid = (DWORD)atoi(strPARAM_03.GetString());
 
 			GLMSG::SNET_GM_FREEPK NetMsg;
 			NetMsg.dwPKTIME = dwTIME;
 			/*dmk14 freepk*/
-			NetMsg.sMapID = pLAND->GetMapID();	
-			NetMsg.sItemReward = SNATIVEID(dwMid,dwSid);
-			NETSEND ( &NetMsg );
+			NetMsg.sMapID = pLAND->GetMapID();
+			NetMsg.sItemReward = SNATIVEID(static_cast<WORD>(dwMid), static_cast<WORD>(dwSid));
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/freepk_off" )
+		else if (strCOMMAND == "/freepk_off")
 		{
 			DWORD dwTIME(0);
 
 			GLMSG::SNET_GM_FREEPK NetMsg;
 			NetMsg.dwPKTIME = dwTIME;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if ( strCOMMAND=="/warning_msg" )
+		else if (strCOMMAND == "/warning_msg")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 			CString strPARAM_01 = strArray.GetAt(1);
 
 			bool bOn(false);
-			if ( strPARAM_01=="off" )
+			if (strPARAM_01 == "off")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "Warning Message : off" );
+				CInnerInterface::GetInstance().PrintConsoleText("Warning Message : off");
 				bOn = false;
 			}
-			else if ( strPARAM_01=="on" )
+			else if (strPARAM_01 == "on")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "Warning Message : on" );
+				CInnerInterface::GetInstance().PrintConsoleText("Warning Message : on");
 				bOn = true;
 			}
 			else
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "warning_msg : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("warning_msg : invalid param");
 				return true;
 			}
 
 			GLMSG::SNET_GM_WARNING_MSG NetMsg;
 			NetMsg.bOn = bOn;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
 		//	Memo :	(이동속도설정 1~50까지만 설정가능)
 		//			(공격속도설정 1~50까지만 설정가능)
 		//			(공격력설정 1~50까지만 설정가능)
-		else if( strCOMMAND=="/event_ex_begin" )
+		else if (strCOMMAND == "/event_ex_begin")
 		{
-			if ( strArray.GetSize() != 3 )			return true;
-			
+			if (strArray.GetSize() != 3)
+				return true;
+
 			CString strPARAM_01 = strArray.GetAt(1);
 			CString strPARAM_02 = strArray.GetAt(2);
 
 			EMGM_EVENT_TYPE emType(EMGM_EVENT_NONE);
-			WORD wValue = (WORD)atoi( strPARAM_02.GetString() );
+			WORD wValue = (WORD)atoi(strPARAM_02.GetString());
 
-			if ( strPARAM_01=="speed" )
+			if (strPARAM_01 == "speed")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_begin : speed" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_begin : speed");
 				emType = EMGM_EVENT_SPEED;
 			}
-			else if ( strPARAM_01=="aspeed" )
+			else if (strPARAM_01 == "aspeed")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_begin : aspeed" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_begin : aspeed");
 				emType = EMGM_EVENT_ASPEED;
 			}
-			else if ( strPARAM_01=="attack" )
+			else if (strPARAM_01 == "attack")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_begin : attack" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_begin : attack");
 				emType = EMGM_EVENT_ATTACK;
 			}
 			else
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_begin : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_begin : invalid param");
 				return true;
 			}
 
 			GLMSG::SNET_GM_EVENT_EX NetMsg;
 			NetMsg.emType = emType;
 			NetMsg.wValue = wValue;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		else if( strCOMMAND=="/event_ex_end" )
+		else if (strCOMMAND == "/event_ex_end")
 		{
-			if ( strArray.GetSize() != 2 )			return true;
+			if (strArray.GetSize() != 2)
+				return true;
 
 			CString strPARAM_01 = strArray.GetAt(1);
 			EMGM_EVENT_TYPE emType(EMGM_EVENT_NONE);
 
-			if ( strPARAM_01=="speed" )
+			if (strPARAM_01 == "speed")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_end : speed" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_end : speed");
 				emType = EMGM_EVENT_SPEED;
 			}
-			else if ( strPARAM_01=="aspeed" )
+			else if (strPARAM_01 == "aspeed")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_end : aspeed" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_end : aspeed");
 				emType = EMGM_EVENT_ASPEED;
 			}
-			else if ( strPARAM_01=="attack" )
+			else if (strPARAM_01 == "attack")
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_end : attack" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_end : attack");
 				emType = EMGM_EVENT_ATTACK;
 			}
 			else
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "event_ex_end : invalid param" );
+				CInnerInterface::GetInstance().PrintConsoleText("event_ex_end : invalid param");
 				return true;
 			}
 
 			GLMSG::SNET_GM_EVENT_EX_END NetMsg;
 			NetMsg.emType = emType;
-			NETSEND ( &NetMsg );
+			NETSEND(&NetMsg);
 		}
-		
+
 		/*event map move, Juver, 2017/08/25 */
-		else if ( strCOMMAND=="/m2mp" )
+		else if (strCOMMAND == "/m2mp")
 		{
-			if ( strArray.GetSize() != 5 )			return true;
+			if (strArray.GetSize() != 5)
+				return true;
 
-			CString strPARAM_01 = strArray.GetAt(1); //map mid
-			CString strPARAM_02 = strArray.GetAt(2); //map sid
-			CString strPARAM_03 = strArray.GetAt(3); //map posx
-			CString strPARAM_04 = strArray.GetAt(4); //map posy
+			CString strPARAM_01 = strArray.GetAt(1); // map mid
+			CString strPARAM_02 = strArray.GetAt(2); // map sid
+			CString strPARAM_03 = strArray.GetAt(3); // map posx
+			CString strPARAM_04 = strArray.GetAt(4); // map posy
 
-			if ( DxGlobalStage::GetInstance().IsEmulator() )
+			if (DxGlobalStage::GetInstance().IsEmulator())
 			{
 				GLMSG::SNETPC_REQ_EVENT_MOVEMAP_FLD net_msg_command;
-				net_msg_command.nidMAP.wMainID = (WORD)atoi( strPARAM_01.GetString() );
-				net_msg_command.nidMAP.wSubID = (WORD)atoi( strPARAM_02.GetString() );
-				net_msg_command.wPosX = (WORD)atoi( strPARAM_03.GetString() );
-				net_msg_command.wPosY = (WORD)atoi( strPARAM_04.GetString() );
+				net_msg_command.nidMAP.wMainID = (WORD)atoi(strPARAM_01.GetString());
+				net_msg_command.nidMAP.wSubID = (WORD)atoi(strPARAM_02.GetString());
+				net_msg_command.wPosX = (WORD)atoi(strPARAM_03.GetString());
+				net_msg_command.wPosY = (WORD)atoi(strPARAM_04.GetString());
 				net_msg_command.bCurMapCheck = FALSE;
 				net_msg_command.bCalculatePos = TRUE;
 				net_msg_command.dwCharID = 0;
@@ -1754,14 +1817,13 @@ namespace dxincommand
 			else
 			{
 				GLMSG::SNETPC_GM_MOVE2_MAPPOS net_msg_command;
-				net_msg_command.nidMAP.wMainID = (WORD)atoi( strPARAM_01.GetString() );
-				net_msg_command.nidMAP.wSubID = (WORD)atoi( strPARAM_02.GetString() );
-				net_msg_command.wPosX = (WORD)atoi( strPARAM_03.GetString() );
-				net_msg_command.wPosY = (WORD)atoi( strPARAM_04.GetString() );
+				net_msg_command.nidMAP.wMainID = (WORD)atoi(strPARAM_01.GetString());
+				net_msg_command.nidMAP.wSubID = (WORD)atoi(strPARAM_02.GetString());
+				net_msg_command.wPosX = (WORD)atoi(strPARAM_03.GetString());
+				net_msg_command.wPosY = (WORD)atoi(strPARAM_04.GetString());
 
 				NETSEND(&net_msg_command);
 			}
-			
 		}
 		/*private market set, Juver, 2018/01/02 */
 		/*else if ( strCOMMAND=="/setvend_on" )
@@ -1796,88 +1858,88 @@ namespace dxincommand
 			CInnerInterface::GetInstance().PrintConsoleText ( "mega off" );
 		}*/
 
-		else if ( strCOMMAND == "/kickout" )
+		else if (strCOMMAND == "/kickout")
 		{
-			if ( strArray.GetSize() != 4 )
+			if (strArray.GetSize() != 4)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "invalid command!" );
+				CInnerInterface::GetInstance().PrintConsoleText("invalid command!");
 				return true;
 			}
 
-			CString strPARAM_01 = strArray.GetAt(1); //usernum
-			CString strPARAM_02 = strArray.GetAt(2); //time
-			CString strPARAM_03 = strArray.GetAt(3); //pass
+			CString strPARAM_01 = strArray.GetAt(1); // usernum
+			CString strPARAM_02 = strArray.GetAt(2); // time
+			CString strPARAM_03 = strArray.GetAt(3); // pass
 
-			DWORD dwUserNum = (DWORD) atoi ( strPARAM_01.GetString() );
+			DWORD dwUserNum = (DWORD)atoi(strPARAM_01.GetString());
 			float fTime = (float)atof(strPARAM_02.GetString());
 			std::string strPass = strPARAM_03.GetString();
 
-			GLGaeaClient::GetInstance().GetCharacter()->GMKickOut( dwUserNum, fTime, strPass );
+			GLGaeaClient::GetInstance().GetCharacter()->GMKickOut(dwUserNum, fTime, strPass);
 		}
-		else if ( strCOMMAND == "/pcid" )
+		else if (strCOMMAND == "/pcid")
 		{
-			if ( strArray.GetSize() != 4 )
+			if (strArray.GetSize() != 4)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "invalid command!" );
+				CInnerInterface::GetInstance().PrintConsoleText("invalid command!");
 				return true;
 			}
 
-			CString strPARAM_01 = strArray.GetAt(1); //action type
-			CString strPARAM_02 = strArray.GetAt(2); //charid
-			CString strPARAM_03 = strArray.GetAt(3); //pass
+			CString strPARAM_01 = strArray.GetAt(1); // action type
+			CString strPARAM_02 = strArray.GetAt(2); // charid
+			CString strPARAM_03 = strArray.GetAt(3); // pass
 
-			DWORD dwType = (DWORD) atoi ( strPARAM_01.GetString() );
-			DWORD dwCharID = (DWORD) atoi ( strPARAM_02.GetString() );
+			DWORD dwType = (DWORD)atoi(strPARAM_01.GetString());
+			DWORD dwCharID = (DWORD)atoi(strPARAM_02.GetString());
 			std::string strPass = strPARAM_03.GetString();
 
-			GLGaeaClient::GetInstance().GetCharacter()->GMPCIDGet( dwType, dwCharID, strPass );
+			GLGaeaClient::GetInstance().GetCharacter()->GMPCIDGet(dwType, dwCharID, strPass);
 		}
 
 		/* camera zoom gm command, Juver, 2020/06/10 */
-		else if ( strCOMMAND == "/cz" )
+		else if (strCOMMAND == "/cz")
 		{
-			if ( strArray.GetSize() != 2 )
+			if (strArray.GetSize() != 2)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "invalid command!" );
+				CInnerInterface::GetInstance().PrintConsoleText("invalid command!");
 				return true;
 			}
 
-			CString strPARAM_01 = strArray.GetAt(1); //value
-			float fValue = (float) atof (strPARAM_01.GetString());
+			CString strPARAM_01 = strArray.GetAt(1); // value
+			float fValue = (float)atof(strPARAM_01.GetString());
 
-			GLGaeaClient::GetInstance().GetCharacter()->GMCameraZoom( fValue );
+			GLGaeaClient::GetInstance().GetCharacter()->GMCameraZoom(fValue);
 		}
 		/* game notice, Juver, 2021/06/12 */
-		else if ( strCOMMAND == "/gn_reload" )
+		else if (strCOMMAND == "/gn_reload")
 		{
-			if ( strArray.GetSize() != 2 )
+			if (strArray.GetSize() != 2)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "invalid command!" );
+				CInnerInterface::GetInstance().PrintConsoleText("invalid command!");
 				return true;
 			}
 
-			CString strPARAM_01 = strArray.GetAt(1); //pass
+			CString strPARAM_01 = strArray.GetAt(1); // pass
 			std::string strPass = strPARAM_01.GetString();
 
-			GLGaeaClient::GetInstance().GetCharacter()->GMGameNoticeReload( strPass );
+			GLGaeaClient::GetInstance().GetCharacter()->GMGameNoticeReload(strPass);
 		}
-		else if ( strCOMMAND == "/gis_reload" )
+		else if (strCOMMAND == "/gis_reload")
 		{
-			if ( strArray.GetSize() != 2 )
+			if (strArray.GetSize() != 2)
 			{
-				CInnerInterface::GetInstance().PrintConsoleText ( "invalid command!" );
+				CInnerInterface::GetInstance().PrintConsoleText("invalid command!");
 				return true;
 			}
 
-			CString strPARAM_01 = strArray.GetAt(1); //pass
+			CString strPARAM_01 = strArray.GetAt(1); // pass
 			std::string strPass = strPARAM_01.GetString();
 
-			GLGaeaClient::GetInstance().GetCharacter()->GMGISReload( strPass );
+			GLGaeaClient::GetInstance().GetCharacter()->GMGISReload(strPass);
 		}
 		else
 		{
 			CString strPARAM_00 = strArray.GetAt(0);
-			CInnerInterface::GetInstance().PrintConsoleText ( "invalid command : %s", strPARAM_00.GetString() );
+			CInnerInterface::GetInstance().PrintConsoleText("invalid command : %s", strPARAM_00.GetString());
 		}
 
 		return true;

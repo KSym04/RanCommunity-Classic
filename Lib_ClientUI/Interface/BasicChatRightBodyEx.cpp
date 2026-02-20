@@ -654,7 +654,7 @@ void CBasicChatRightBody::TranslateUIMessage(UIGUID ControlID, DWORD dwMsg)
 				bool bBeginDetected(false);
 				bool bEndDetected(false);
 				CString strCharName = m_pTextBox_ALL->GetText(nIndex);
-				for (int i = 1; i < strlen(strCharName); i++)
+				for (int i = 1; i < strCharName.GetLength(); i++)
 				{
 					if (!bBeginDetected)
 					{

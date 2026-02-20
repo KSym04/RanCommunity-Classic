@@ -1036,7 +1036,7 @@ namespace NS_ITEMINFO
 					strText.Format("%s:%s", ID2GAMEWORD("ITEM_BASIC_INFO", 1), strMoney);
 
 					//	커미션 액수
-					dwCOMMISSION_MONEY = dwPrice - dwNpcSellPrice;
+					dwCOMMISSION_MONEY = static_cast<DWORD>(dwPrice - dwNpcSellPrice);
 
 					D3DCOLOR dwColor = NS_UITEXTCOLOR::RED;
 					if (dwPrice <= GLGaeaClient::GetInstance().GetCharacterLogic().m_lnMoney)
